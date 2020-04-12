@@ -1,0 +1,125 @@
+<form [formGroup]="parentForm">
+    
+    <div class="card">
+        <div class="card-header container-fluid " data-toggle="collapse" data-target="#idIssueType">
+          Issue Details Child Component
+          <button
+            class="oi oi-chevron-bottom float-right"
+            data-toggle="collapse"
+            data-target="#idIssueType"
+          ></button>
+        </div>
+        <div id="idIssueType" class="collapse">
+          <div class="card-body">
+            <div class="form-group">
+              <div class="row">
+                <div class="col-md-3">
+                  <label
+                    for="formGroupExampleInput"
+                    class="col-form-label col-form-label-sm"
+                    >Issue Type</label
+                  >
+                  <select
+                    class="form-control"
+                    id="exampleFormControlSelect1"
+                    formControlName="fctlIssueType"
+                    (change)="setEnvironment1($event)"
+                  >
+                    <option>Choose..</option>
+                    <option *ngFor="let issueType of ticketIssueTypesRef">{{
+                      issueType.name
+                    }}</option>
+                  </select>
+                </div>
+                <div class="col-md-3">
+                  <label
+                    for="formGroupExampleInput"
+                    class="col-form-label col-form-label-sm"
+                    >Severity</label
+                  >
+                  <select
+                    class="form-control"
+                    id="exampleFormControlSelect1"
+                    formControlName="fctlSeverity"
+                    (change)="setEnvironment1($event)"
+                  >
+                    <option>Choose..</option>
+                    <option *ngFor="let severity of ticketSeveritiesRef">{{
+                      severity.name
+                    }}</option>
+                  </select>
+                </div>
+                <div class="col-md-3">
+                  <label
+                    for="formGroupExampleInput"
+                    class="col-form-label col-form-label-sm"
+                    >Priority</label
+                  >
+                  <select
+                    class="form-control"
+                    id="exampleFormControlSelect1"
+                    formControlName="fctlPriority"
+                    (change)="setEnvironment1($event)"
+                  >
+                    <option>Choose..</option>
+                    <option *ngFor="let priority of ticketPrioritiesRef">{{
+                      priority.name
+                    }}</option>
+                  </select>
+                </div>
+    
+                <div class="col-md-3">
+                  <label
+                    for="formGroupExampleInput"
+                    class="col-form-label col-form-label-sm"
+                    >Environment</label
+                  >
+                  <select
+                    class="form-control"
+                    id="exampleFormControlSelect1"
+                    formControlName="fctlEnvironment"
+                    (change)="setEnvironment1($event)"
+                  >
+                    <option>Choose..</option>
+                    <option *ngFor="let env of ticketEnvRef">{{ env.name }}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-3">
+                  <label
+                    for="formGroupExampleInput"
+                    class="col-form-label col-form-label-sm"
+                    >Issue Status</label
+                  >
+                  <select
+                    class="form-control"
+                    id="exampleFormControlSelect1"
+                    formControlName="fctlIssueStatus"
+                    (change)="setEnvironment1($event)"
+                  >
+                  <option>Choose..</option>
+                    <option *ngFor="let issueStatus of ticketIssueStatusesRef">{{
+                      issueStatus.name
+                    }}</option>
+                  </select>
+                </div>
+                <div class="col-md-3">
+                  <label
+                    for="formGroupExampleInput"
+                    class="col-form-label col-form-label-sm"
+                    >Blocking?</label
+                  >
+                  <div>
+                    <label class="switch">
+                      <input type="checkbox" formControlName="fctlIsBlocking" />
+                      <span class="slider round"></span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+</form>

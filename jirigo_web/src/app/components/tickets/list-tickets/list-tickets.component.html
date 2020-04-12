@@ -1,0 +1,45 @@
+<div class="form-group">
+    <div class="card">
+        <div class="card-header"><h4>List Tickets</h4></div>
+        <div class="card-body">
+            <table datatable [dtOptions]="dtOptions" class="row-border hover">
+                <thead>
+                <tr>
+                    <th *ngFor="let col of ticker_header_cols">{{col}}</th>
+                </tr>
+                </thead>
+                <tbody>
+                    <!-- <tr *ngFor="let car of cars.data">
+                        <td>
+                            <span class="oi oi-pencil" (click)="cellToEdit($event,car.brand);"></span>
+                        </td>
+                        <td><a [routerLink]="['/view-edit-tickets', car.vin]" class="btn btn-success btn-lg">Show Details</a></td>
+                        <td >{{ car.brand }}</td>
+                        <td (dblclick)="cellToDblEdit($event,car.year);">{{ car.year }}</td>
+                        <td>{{ car.color }}</td>
+                        <td>{{ car.vin }}</td>
+                    </tr> -->
+                    <tr *ngFor="let ticket of tickets_data_temp.dbQryResponse">
+                        <!-- <td>{{ticket.ticket_int_id}}</td> -->
+                        <td><a [routerLink]="['/view-edit-tickets', ticket.ticket_no]">{{ticket.ticket_no}}</a></td>
+                        <td>{{ticket.summary}}</td>
+                        <td>{{ticket.description}}</td>
+                        <td>{{ticket.issue_status}}</td>
+                        <td>{{ticket.issue_type}}</td>
+                        <td>{{ticket.severity}}</td>
+                        <td>{{ticket.priority}}</td>
+                        <td>{{ticket.environment}}</td>
+                        <td>{{ticket.is_blocking}}</td>
+                        <td>{{ticket.created_by}}</td>
+                        <td>{{ticket.created_date}}</td>
+                        <td>{{ticket.modified_by}}</td>
+                        <td>{{ticket.modified_date}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+    
+    

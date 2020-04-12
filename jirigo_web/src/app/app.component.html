@@ -1,0 +1,26 @@
+<!-- <div class="jumbotron"> -->
+<div class="">
+
+    <div class="container-fluid p-3 mb-2 bg-white text-dark">
+        
+        <div class="row">
+            <div id="mySidebar" class="sidebar">
+                <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+                <a [routerLink]="['/create-ticket']" href="#">Create Tickets</a>
+                <a [routerLink]="['/view-edit-tickets']" href="#">View Tickets</a>
+                <a [routerLink]="['/list-tickets']" href="#">List Tickets</a>
+                <a href="#">Projects</a>
+              </div>
+              
+              <div id="main">
+                <button class="openbtn" onclick="openNav()">&#9776; Open Sidebar</button>
+              </div>
+            <!-- <div class="col-sm-6 offset-sm-6 col-md-10 offset-md-2" > -->
+                <div class="col-sm-3 col-md-6 col-lg-9" >
+                <app-header></app-header>
+                <router-outlet></router-outlet>
+                <app-footer></app-footer>
+            </div>
+        </div>
+    </div>
+</div>

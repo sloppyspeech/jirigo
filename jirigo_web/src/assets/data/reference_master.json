@@ -1,0 +1,105 @@
+{
+    "IssueStatuses": [
+      {
+        "name": "Open"
+      },
+      {
+        "name": "Closed"
+      },
+      {
+        "name": "Dev"
+      },
+      {
+        "name": "Testing"
+      },
+      {
+        "name": "Code Review"
+      },
+      {
+        "name": "Perf Testing"
+      },
+      {
+        "name": "UAT"
+      },
+      {
+        "name": "On Hold"
+      },
+      {
+        "name": "Released"
+      },
+      {
+        "name": "Rejected"
+      },
+      {
+        "name": "QA"
+      }
+    ],
+    "Severities": [
+      {
+        "name": "Low"
+      },
+      {
+        "name": "Medium"
+      },
+      {
+        "name": "High"
+      },
+      {
+        "name": "Critical"
+      }
+    ],
+    "Priorities": [
+      {
+        "name": "Low"
+      },
+      {
+        "name": "Medium"
+      },
+      {
+        "name": "High"
+      },
+      {
+        "name": "Critical"
+      }
+    ],
+    "IssueTypes": [
+      {
+        "name": "Clarification"
+      },
+      {
+        "name": "Bug"
+      },
+      {
+        "name": "Enhancement"
+      }
+    ],
+    "Environments": [
+      {
+        "name": "Dev"
+      },
+      {
+        "name": "UAT"
+      },
+      {
+        "name": "SIT"
+      },
+      {
+        "name": "Integration Testing"
+      },
+      {
+        "name": "Pre-Prod"
+      },
+      {
+        "name": "Regression Testing"
+      },
+      {
+        "name": "Performance Testing"
+      },
+      {
+        "name": "DR"
+      },
+      {
+        "name": "Prod"
+      }
+    ]
+  }

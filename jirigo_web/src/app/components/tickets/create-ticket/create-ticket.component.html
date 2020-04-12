@@ -1,0 +1,334 @@
+<h3>Create Ticket</h3>
+
+<form [formGroup]="createTicketFB" (ngSubmit)="onSubmit()">
+  <div class="form-group">
+    <div class="row">
+      <div class="col">
+        <label
+          for="formGroupExampleInput"
+          class="col-form-label col-form-label-sm"
+          >Summary</label
+        >
+        <input
+          formControlName="fctlSummary"
+          type="text"
+          placeholder=""
+          id="summary"
+          class="form-control"
+          required
+        />
+      </div>
+    </div>
+  </div>
+  <div class="form-group">
+    <div class="row">
+      <div class="col">
+        <label
+          for="formGroupExampleInput"
+          class="col-form-label col-form-label-sm"
+          >Description</label
+        >
+        <!-- <input type="text" placeholder="Ticket Description" id="description" class="form-control"> -->
+        <!-- <textarea formControlName="fctlDescription" class="form-control rounded-1" id="description" rows="2"></textarea> -->
+        <quill-editor
+          formControlName="fctlDescription"
+          [styles]="editorStyle"
+          [modules]="config"
+        >
+        </quill-editor>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- 
+    commented below to accomodate the child component
+  -->
+  <!-- <div class="card">
+    <div class="card-header container-fluid">
+      Issue Details
+      <button
+        class="oi oi-chevron-bottom float-right"
+        data-toggle="collapse"
+        data-target="#idIssueType"
+      ></button>
+    </div>
+    <div id="idIssueType" class="collapse">
+      <div class="card-body">
+        <div class="form-group">
+          <div class="row">
+            <div class="col-md-3">
+              <label
+                for="formGroupExampleInput"
+                class="col-form-label col-form-label-sm"
+                >Issue Type</label
+              >
+              <select
+                class="form-control"
+                id="exampleFormControlSelect1"
+                formControlName="fctlIssueType"
+                (change)="setEnvironment1($event)"
+              >
+                <option *ngFor="let issueType of ticketIssueTypesRef">{{
+                  issueType.name
+                }}</option>
+              </select>
+            </div>
+            <div class="col-md-3">
+              <label
+                for="formGroupExampleInput"
+                class="col-form-label col-form-label-sm"
+                >Severity</label
+              >
+              <select
+                class="form-control"
+                id="exampleFormControlSelect1"
+                formControlName="fctlSeverity"
+                (change)="setEnvironment1($event)"
+              >
+                <option *ngFor="let severity of ticketSeveritiesRef">{{
+                  severity.name
+                }}</option>
+              </select>
+            </div>
+            <div class="col-md-3">
+              <label
+                for="formGroupExampleInput"
+                class="col-form-label col-form-label-sm"
+                >Priority</label
+              >
+              <select
+                class="form-control"
+                id="exampleFormControlSelect1"
+                formControlName="fctlPriority"
+                (change)="setEnvironment1($event)"
+              >
+                <option *ngFor="let priority of ticketPrioritiesRef">{{
+                  priority.name
+                }}</option>
+              </select>
+            </div>
+
+            <div class="col-md-3">
+              <label
+                for="formGroupExampleInput"
+                class="col-form-label col-form-label-sm"
+                >Environment</label
+              >
+              <select
+                class="form-control"
+                id="exampleFormControlSelect1"
+                formControlName="fctlEnvironment"
+                (change)="setEnvironment1($event)"
+              >
+                <option *ngFor="let env of ticketEnvRef">{{ env.name }}</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3">
+              <label
+                for="formGroupExampleInput"
+                class="col-form-label col-form-label-sm"
+                >Issue Status</label
+              >
+              <select
+                class="form-control"
+                id="exampleFormControlSelect1"
+                formControlName="fctlIssueStatus"
+                (change)="setEnvironment1($event)"
+              >
+                <option *ngFor="let issueStatus of ticketIssueStatusesRef">{{
+                  issueStatus.name
+                }}</option>
+              </select>
+            </div>
+            <div class="col-md-3">
+              <label
+                for="formGroupExampleInput"
+                class="col-form-label col-form-label-sm"
+                >Blocking?</label
+              >
+              <div>
+                <label class="switch">
+                  <input type="checkbox" formControlName="fctlIsBlocking" />
+                  <span class="slider round"></span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+   -->
+  <br />
+
+<app-issue-details [parentForm]="createTicketFB"></app-issue-details>
+  <br/>
+
+  <div class="card">
+    <div class="card-header container-fluid">
+      Audit
+      <button
+        class="oi oi-chevron-bottom float-right"
+        data-toggle="collapse"
+        data-target="#idAuditCardDetails"
+      ></button>
+    </div>
+    <div id="idAuditCardDetails" class="collapse">
+      <div class="card-body">
+        <div class="form-group">
+          <div class="row">
+            <div class="col-md-3">
+              <label
+                for="formGroupExampleInput"
+                class="col-form-label col-form-label-sm"
+                >Created Date</label
+              >
+              <div class="input-group">
+                <input
+                  class="form-control"
+                  formControlName="fctlCreatedDate"
+                  placeholder="yyyy-mm-dd"
+                  name="cd"
+                  ngbDatepicker
+                  #cd="ngbDatepicker"
+                />
+                <div class="input-group-append">
+                  <button
+                    class="btn btn-outline-secondary calendar"
+                    (click)="cd.toggle()"
+                    type="button"
+                  >
+                    <span class="oi oi-calendar"></span>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <label
+                for="formGroupExampleInput"
+                class="col-form-label col-form-label-sm"
+                >Created By</label
+              >
+              <input
+                type="text"
+                formControlName="fctlCreatedBy"
+                placeholder=""
+                id="createdBy"
+                class="form-control"
+              />
+            </div>
+            <div class="col-md-3">
+              <label
+                for="formGroupExampleInput"
+                class="col-form-label col-form-label-sm"
+                >Reported Date</label
+              >
+              <div class="input-group">
+                <input
+                  class="form-control"
+                  formControlName="fctlReportedDate"
+                  placeholder="yyyy-mm-dd"
+                  name="md"
+                  ngbDatepicker
+                  #md="ngbDatepicker"
+                />
+                <div class="input-group-append">
+                  <button
+                    class="btn btn-outline-secondary calendar"
+                    (click)="md.toggle()"
+                    type="button"
+                  >
+                    <span class="oi oi-calendar"></span>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <label
+                for="formGroupExampleInput"
+                class="col-form-label col-form-label-sm"
+                >Reported By</label
+              >
+              <input
+                type="text"
+                formControlName="fctlReportedBy"
+                placeholder=""
+                id="modifiedBy"
+                class="form-control"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br />
+
+<div class="card">
+    <div class="card-header container-fluid">
+      Comment
+      <button
+        class="oi oi-chevron-bottom float-right"
+        data-toggle="collapse"
+        data-target="#idComments"
+      ></button>
+    </div>
+    <div id="idComments" class="collapse">
+        <div class="card-body">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col">
+                        <label
+                        for="formGroupExampleInput"
+                        class="col-form-label col-form-label-sm"
+                        > &nbsp;&nbsp;<span
+                            class="oi oi-pencil"
+                            (click)="markCellToEdit($event, 'fctlComment')"
+                            >&nbsp;</span
+                        ></label
+                        >
+                        <!-- <textarea formControlName="fctlComment" class="form-control rounded-1" id="comment" rows="3" (dblclick)="markCellToEdit($event,'fctlComment');"></textarea> -->
+                        <quill-editor
+                        formControlName="fctlComment"
+                        [styles]="editorStyle"
+                        ></quill-editor>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+  <div class="panel">
+    <!-- <div class="card-header">Audit</div> -->
+    <div class="card-body">
+      <div class="form-group">
+        <div class="row">
+          <div class="offset-md-9 offset-sm-1">
+            <!-- <label for="formGroupExampleInput" class="col-form-label col-form-label-sm">Summary</label> -->
+            <input
+              type="button"
+              value="Cancel"
+              id="summary"
+              class="btn btn-secondary"
+            />
+          </div>
+          <div class="col-md-1 col-sm-1">
+            <!-- <label for="formGroupExampleInput" class="col-form-label col-form-label-sm">Summary</label> -->
+            <input
+              type="submit"
+              [disabled]="!createTicketFB.valid"
+              value="Submit"
+              id="summary"
+              class="btn btn-primary"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
