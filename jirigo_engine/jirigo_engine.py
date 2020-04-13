@@ -1,6 +1,6 @@
 from flask import Flask
 from flask import request,jsonify,make_response,Response
-from flask_cors import CORS
+from flask_cors import CORS,cross_origin
 import pprint
 import sys
 from services.dbservice.jirigo_tickets_dbservice import JirigoTicket
@@ -10,26 +10,45 @@ from services.dbservice.jirigo_refmaster_dbservice import JirigoRefMaster
 
 
 app=Flask(__name__)
-CORS(app)
+cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 @app.route('/api/v1/')
 def def_route(methods=['GET']):
     return "Hello In The world is tno tht esam"
 
-@app.route('/api/v1/ticket-management/create-ticket',methods=['POST'])
+@app.route('/api/v1/ticket-management/ticket',methods=['POST'])
 def create_ticket():
     if request.method == 'POST':
         print('In Post create_ticket')
         print(request.get_json())
         try:
-            jdb=JirigoTicket.for_create_ticket(request.get_json())
+            jdb=JirigoTicket.for_create_update_ticket(request.get_json())
             data=jdb.create_ticket()
+            print('*'*40)
+            print(data['dbQryResponse'])
             return jsonify(data)
         except Exception as error:
-            print(f'Error in get_ticket_details {error}')
+            print(f'Error in create_ticket {error}')
             return get_jsonified_error_response('Failure',error)
     else:
         return get_jsonified_error_response('Failure',"Not a GET Request")
+
+@app.route('/api/v1/ticket-management/ticket',methods=['PUT'])
+def update_ticket():
+    if request.method == 'PUT':
+        print('In Put update_ticket')
+        print(request.get_json())
+        try:
+            jdb=JirigoTicket.for_create_update_ticket(request.get_json())
+            data=jdb.update_ticket()
+            print('*'*40)
+            print(data['dbQryResponse'])
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in update_ticket {error}')
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',"Not a PUT Request")
 
 
 @app.route('/api/v1/ticket-management/tickets/<ticket_id>',methods=['GET'])

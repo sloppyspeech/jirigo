@@ -132,7 +132,7 @@ export class ViewEditTicketsComponent implements OnInit {
             console.log('------@@@@@@@--------');
             console.log(this.ticket_data.dbQryResponse);
             this.ticket_data = this.ticket_data.dbQryResponse;
-
+            this.ticket_no=this.ticket_data.ticket_no;
             this.viewModifyTicketFB.get('fctlTicket_no').setValue(this.ticket_data.ticket_no);
             this.viewModifyTicketFB.get('fctlSummary').setValue(this.ticket_data.summary);
             this.viewModifyTicketFB.get('fctlDescription').setValue(this.ticket_data.description);

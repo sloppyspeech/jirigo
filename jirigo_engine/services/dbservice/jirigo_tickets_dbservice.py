@@ -11,7 +11,7 @@ class JirigoTicket(object):
 
     def __init__(self,data={}):
         print("Initializing JirigiCRUD")
-        print(f'In for create Ticket **** :{data}')
+        print(f'In for Create/Update Ticket **** :{data}')
         self.ticket_int_id = data.get('ticket_int_id')
         self.jdb=JirigoDBConn()
         self.summary = data.get('summary')
@@ -24,11 +24,16 @@ class JirigoTicket(object):
         self.created_date = data.get('created_date')
         self.modified_by = data.get('modified_by')
         self.modified_date = data.get('modified_date')
+        self.reported_by = data.get('reported_by')
+        self.reported_date = data.get('reported_date')
+        self.ticket_no=data.get('ticket_no','-')
         self.logger=Logger()
 
     @classmethod
-    def for_create_ticket(cls,data):
-        print(f'In for create Ticket :{data}')
+    def for_create_update_ticket(cls,data):
+        print("-"*40)
+        print(f'In  for_create_update_ticket Ticket :{data}')
+        print("-"*40)
         return cls(data)
 
     def create_ticket(self):
@@ -59,7 +64,7 @@ class JirigoTicket(object):
             row_count=cursor.rowcount
             self.logger.debug(f'Insert Success with {row_count} row(s) Ticket ID {ticket_int_id}')
             response_data['dbQryStatus']='Success'
-            response_data['dbQryResponse']=jsonify(ticket_int_id=ticket_int_id,row_count=row_count)
+            response_data['dbQryResponse']={"ticketId":ticket_int_id,"rowCount":row_count}
             return response_data
         except  (Exception, psycopg2.Error) as error:
             if(self.jdb.dbConn):
@@ -123,4 +128,44 @@ class JirigoTicket(object):
             if(self.jdb.dbConn):
                 print(f'Error While Creating Ticket :{error.pgcode} == {error.pgerror}')
                 print('-'*80)
+                raise
+
+    
+    def update_ticket(self):
+        response_data={}
+        self.logger.debug("Inside Update Ticket update_tickets")
+
+        update_sql="""
+                        UPDATE TTICKETS 
+                           SET  summary=%s,
+                                description=%s,
+                                severity=%s,
+                                priority=%s,
+                                issue_status=%s,
+                                issue_type=%s,
+                                environment=%s,
+                                modified_by=%s,
+                                modified_date=%s,
+                                reported_by=%s,
+                                reported_date=%s
+                         WHERE ticket_int_id=%s;
+                    """
+        values=(self.summary,self.description,self.severity,self.priority,
+                "Open",self.issue_type,self.environment,self.modified_by,
+                datetime.datetime.today(),self.reported_by,datetime.datetime.today(),self.ticket_no,)
+
+        self.logger.debug(f'Update : {update_sql}  {values}')
+
+        try:
+            print('-'*80)
+            print(type(self.jdb.dbConn))
+            cursor=self.jdb.dbConn.cursor()
+            cursor.execute(update_sql,values)
+            self.jdb.dbConn.commit()
+            response_data['dbQryStatus']='Success'
+            response_data['dbQryResponse']={"ticketId":self.ticket_no,"rowCount":1}
+            return response_data
+        except  (Exception, psycopg2.Error) as error:
+            if(self.jdb.dbConn):
+                print(f'Error While Updating Ticket {error}')
                 raise

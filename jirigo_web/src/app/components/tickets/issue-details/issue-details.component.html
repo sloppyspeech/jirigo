@@ -17,7 +17,7 @@
                   <label
                     for="formGroupExampleInput"
                     class="col-form-label col-form-label-sm"
-                    >Issue Type</label
+                    >Issue Type<span class="required-field"></span></label
                   >
                   <select
                     class="form-control"
@@ -25,7 +25,7 @@
                     formControlName="fctlIssueType"
                     (change)="setEnvironment1($event)"
                   >
-                    <option>Choose..</option>
+                    <option value="" disabled>Choose..</option>
                     <option *ngFor="let issueType of ticketIssueTypesRef" [ngValue]="issueType.name">{{
                       issueType.name
                     }}</option>
@@ -35,7 +35,7 @@
                   <label
                     for="formGroupExampleInput"
                     class="col-form-label col-form-label-sm"
-                    >Severity</label
+                    >Severity<span class="required-field"></span></label
                   >
                   <select
                     class="form-control"
@@ -43,7 +43,7 @@
                     formControlName="fctlSeverity"
                     (change)="setEnvironment1($event)"
                   >
-                    <option>Choose..</option>
+                    <option value="" disabled>Choose..</option>
                     <option *ngFor="let severity of ticketSeveritiesRef" [ngValue]="severity.name">{{
                       severity.name
                     }}</option>
@@ -53,7 +53,7 @@
                   <label
                     for="formGroupExampleInput"
                     class="col-form-label col-form-label-sm"
-                    >Priority</label
+                    >Priority<span class="required-field"></span></label
                   >
                   <select
                     class="form-control"
@@ -61,7 +61,7 @@
                     formControlName="fctlPriority"
                     (change)="setEnvironment1($event)"
                   >
-                    <option>Choose..</option>
+                    <option value="" disabled>Choose..</option>
                     <option *ngFor="let priority of ticketPrioritiesRef" [ngValue]="priority.name">{{
                       priority.name
                     }}</option>
@@ -72,7 +72,7 @@
                   <label
                     for="formGroupExampleInput"
                     class="col-form-label col-form-label-sm"
-                    >Environment</label
+                    >Environment<span class="required-field"></span></label
                   >
                   <select
                     class="form-control"
@@ -80,7 +80,7 @@
                     formControlName="fctlEnvironment"
                     (change)="setEnvironment1($event)"
                   >
-                    <option>Choose..</option>
+                    <option value="" disabled>Choose..</option>
                     <option *ngFor="let env of ticketEnvRef" [ngValue]="env.name">{{ env.name }}</option>
                   </select>
                 </div>
@@ -90,7 +90,7 @@
                   <label
                     for="formGroupExampleInput"
                     class="col-form-label col-form-label-sm"
-                    >Issue Status</label
+                    >Issue Status<span class="required-field"></span></label
                   >
                   <select
                     class="form-control"
@@ -98,17 +98,18 @@
                     formControlName="fctlIssueStatus"
                     (change)="setReportedBy($event)"
                   >
-                  <option>Choose..</option>
+                  <option value="" value="" disabled>Choose..</option>
                     <option *ngFor="let issueStatus of ticketIssueStatusesRef" [ngValue]="issueStatus.name">{{
                       issueStatus.name
                     }}</option>
                   </select>
                 </div>
+
                 <div class="col-md-3">
                   <label
                     for="formGroupExampleInput"
                     class="col-form-label col-form-label-sm"
-                    >Blocking?</label
+                    >Blocking?<span class="required-field"></span></label
                   >
                   <div>
                     <label class="switch">
@@ -121,7 +122,7 @@
                   <label
                     for="formGroupExampleInput"
                     class="col-form-label col-form-label-sm"
-                    >Reported Date</label
+                    >Reported Date<span class="required-field"></span></label
                   >
                   <div class="input-group">
                     <input
@@ -147,7 +148,7 @@
                   <label
                     for="formGroupExampleInput"
                     class="col-form-label col-form-label-sm"
-                    >Reported By</label
+                    >Reported By<span class="required-field"></span></label
                   >
                   <input
                     type="text"

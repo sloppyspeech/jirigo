@@ -10,7 +10,10 @@ export class TicketDetailsService {
   sApiEndPoint:string=this.sApiBaseUrl+"ticket-management/"
   private sHttpOptions = {
     headers: new HttpHeaders({
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods':'GET,PUT,OPTIONS,DELETE,POST,PATCH',
+      "Access-Control-Allow-Headers":"Content-Type"
     })
   };
   constructor(private _httpCli: HttpClient) { }
@@ -27,10 +30,27 @@ export class TicketDetailsService {
       });
   }
 
+  getAllTickets() {
+    console.log('@@@@getAllTickets :');
+    console.log("getTicketDetails End point :"+this.sApiEndPoint+'tickets');
+    return this._httpCli.get<any>(this.sApiEndPoint+'tickets')
+      .toPromise()
+      .then(res => { 
+        console.log("In  Get All Tickets:"+JSON.stringify(res));
+        return res; 
+      });
+  }
+
   creTicket(inpData){
-    this._httpCli.post(this.sApiEndPoint+'create_ticket/',JSON.stringify(inpData),this.sHttpOptions)
-        .subscribe(res=>{
-            console.log('Ticket Creation Response :'+res);
-        });
+    console.log("@@@@@ CreTicket @@@@@@@");
+    console.log(inpData)
+    return  this._httpCli.post(this.sApiEndPoint+'ticket',inpData,this.sHttpOptions);
+  }
+
+  updateTicket(inpData){
+    console.log("***Inside Update ticket***");
+    console.log(inpData);
+    return this._httpCli.put(this.sApiEndPoint+'ticket',inpData,this.sHttpOptions);
+
   }
 }

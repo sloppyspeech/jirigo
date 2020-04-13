@@ -1,10 +1,12 @@
 import { environment } from './../../../../environments/environment';
-import { Component, OnInit, Input, Output,EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output,EventEmitter, ɵConsole } from '@angular/core';
 import { FormBuilder,FormGroup,FormControl,Validators } from '@angular/forms';
 import { StaticDataService  } from '../../../services/static-data.service';
+import { TicketDetailsService  } from '../../../services/tickets/ticket-details.service';
 // import { EventEmitter } from 'protractor';
 import { NgbDateStruct, NgbCalendar} from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerService } from "ngx-spinner";
+import  { Router  } from '@angular/router';
 
 
 @Component({
@@ -56,9 +58,11 @@ export class CreateTicketComponent implements OnInit {
   constructor(private _formBuilder:FormBuilder,
               private _staticRefData:StaticDataService,
               private _calendar: NgbCalendar,
-              private _ngxSpinner:NgxSpinnerService) { 
+              private _NgxSpinner:NgxSpinnerService,
+              private _serTicketDetails:TicketDetailsService,
+              private _router:Router) { 
               
-              this._ngxSpinner.show(); 
+              this._NgxSpinner.show(); 
               console.log("Calling the New Ref Master");
               this._staticRefData.getRefMaster()
                 .then(res=>{
@@ -74,7 +78,7 @@ export class CreateTicketComponent implements OnInit {
                             console.log("ticketSeverityRef:"+JSON.stringify(this.ticketSeveritiesRef));
                             console.log("ticketIssueTypesRef:"+JSON.stringify(this.ticketIssueTypesRef));
                             setTimeout(()=>{
-                              this._ngxSpinner.hide();
+                              this._NgxSpinner.hide();
                             },1500)
                            }
                      );
@@ -89,13 +93,13 @@ export class CreateTicketComponent implements OnInit {
     this.createTicketFB= this._formBuilder.group({
       fctlSummary:new FormControl({ value: '', disabled: false }, Validators.required),
       fctlDescription:new FormControl({ value: '', disabled: false }, Validators.required),
-      fctlIssueType:new FormControl({ value: 'Issue Type', disabled: false }, Validators.required),
-      fctlIssueStatus:new FormControl({ value: 'Issue Type', disabled: false }, Validators.required),
-      fctlSeverity:new FormControl({ value: 'Severity', disabled: false }, Validators.required),
-      fctlPriority:new FormControl({ value: 'Priority', disabled: false }, Validators.required),
-      fctlEnvironment:new FormControl({ value: 'Environment', disabled: false }, Validators.required),
-      fctlCreatedDate:new FormControl({ value:this._calendar.getToday() , disabled: true }, Validators.required),
-      fctlCreatedBy:new FormControl({ value:'', disabled: false }, Validators.required),
+      fctlIssueType:new FormControl({ value: '', disabled: false }, Validators.required),
+      fctlIssueStatus:new FormControl({ value: '', disabled: false }, Validators.required),
+      fctlSeverity:new FormControl({ value: '', disabled: false }, Validators.required),
+      fctlPriority:new FormControl({ value: '', disabled: false }, Validators.required),
+      fctlEnvironment:new FormControl({ value: '', disabled: false }, Validators.required),
+      fctlCreatedDate:new FormControl({ value:this._calendar.getToday() , disabled: true }),
+      fctlCreatedBy:new FormControl({ value:'', disabled: false }),
       fctlIsBlocking:new FormControl({ value:false, disabled: false }),
       fctlModifiedDate:new FormControl({ value:'', disabled: true }),
       fctlModifiedBy:new FormControl({ value:'', disabled: true }),
@@ -107,21 +111,63 @@ export class CreateTicketComponent implements OnInit {
   }
 
   onSubmit(){
-    console.log(this.createTicketFB.get('fctlSummary').value);
-    console.log(this.createTicketFB.get('fctlDescription').value);
-    console.log(this.createTicketFB.get('fctlIssueType').value);
-    console.log(this.createTicketFB.get('fctlSeverity').value);
-    console.log(this.createTicketFB.get('fctlPriority').value);
-    console.log(this.createTicketFB.get('fctlStatusType').value);
-    console.log(this.createTicketFB.get('fctlIsBlocking').value);
-    console.log(this.createTicketFB.get('fctlEnvironment').value);
-    console.log(this.createTicketFB.get('fctlCreatedDate').value);
-    console.log(this.createTicketFB.get('fctlCreatedBy').value);
+    let formData:any;
+    console.log("Here in On Submit");
     console.log(this.createTicketFB.status);
     console.log(this.createTicketFB.valid);
     console.log('===============================');
     console.log(this.createTicketFB.getRawValue());
     console.log('===============================');
+    console.log(this.createTicketFB.get('fctlSummary').value);
+    console.log(this.createTicketFB.get('fctlDescription').value);
+    console.log(this.createTicketFB.get('fctlIssueType').value);
+    console.log(this.createTicketFB.get('fctlSeverity').value);
+    console.log(this.createTicketFB.get('fctlPriority').value);
+    console.log(this.createTicketFB.get('fctlIssueStatus').value);
+    console.log(this.createTicketFB.get('fctlIsBlocking').value);
+    console.log(this.createTicketFB.get('fctlEnvironment').value);
+    // console.log(this.createTicketFB.get('fctlCreatedDate').value);
+    // console.log(this.createTicketFB.get('fctlCreatedBy').value);
+    formData={
+      "summary":this.createTicketFB.get('fctlSummary').value,
+      "description":this.createTicketFB.get('fctlDescription').value,
+      "severity":this.createTicketFB.get('fctlSeverity').value,
+      "priority":this.createTicketFB.get('fctlPriority').value,
+      "issue_type":this.createTicketFB.get('fctlIssueType').value,
+      "issue_status":this.createTicketFB.get('fctlIssueStatus').value,
+      "environment":this.createTicketFB.get('fctlEnvironment').value,
+      "created_by":1,
+      "created_date":this.createTicketFB.get('fctlCreatedDate').value,
+      "reported_by": this.createTicketFB.get('fctlReportedBy').value,
+      "reported_date":this.createTicketFB.get('fctlReportedDate').value
+    }
+    console.log('@@------@@');
+    console.log(formData);
+
+    this._serTicketDetails.creTicket(formData)
+        .subscribe(res=>{
+          console.log("Create Ticket Output :"+JSON.stringify(res));
+          console.log("Create Ticket Output :"+res['dbQryStatus']);
+          console.log("Create Ticket Output :"+res['dbQryResponse']);
+          if (res['dbQryStatus'] == 'Success'){
+            this._NgxSpinner.show();
+            this.createTicketFB.reset();
+            // alert(res['dbQryResponse']['ticketId'] +"  Created Successfully.");
+            alert("Created Successfully.");
+            this._NgxSpinner.hide();
+            // this._router.navigate(['/view-edit-tickets',res['dbQryResponse']['ticketId']]);
+            formData['summary']="UPDATE "+formData['summary'];
+            formData['ticket_no']=res['dbQryResponse']['ticketId'];
+            this._serTicketDetails.updateTicket(formData)
+                .subscribe(res=>{
+                    console.log("_serTicketDetails.updateTicket");
+                    console.log(res);
+                });
+          }
+          else{
+            alert('Ticket Creation Unsuccessful');
+          }
+        })
 
     // alert("submitted");
   }
@@ -164,10 +210,13 @@ export class CreateTicketComponent implements OnInit {
 
   showSpinner(){
     console.log('Show Spinner Called');
-    this._ngxSpinner.show();
+    this._NgxSpinner.show();
     setTimeout(()=>{
-      this._ngxSpinner.hide();
+      this._NgxSpinner.hide();
     },3000)
+  }
 
+  cancelForm(){
+    this.createTicketFB.reset();
   }
 }
