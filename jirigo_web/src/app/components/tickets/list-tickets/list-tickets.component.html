@@ -21,7 +21,7 @@
                     </tr> -->
                     <tr *ngFor="let ticket of tickets_data_temp.dbQryResponse">
                         <!-- <td>{{ticket.ticket_int_id}}</td> -->
-                        <td><a [routerLink]="['/view-edit-tickets', ticket.ticket_no]">{{ticket.ticket_no}}</a></td>
+                        <td><a [routerLink]="['/view-edit-tickets', ticket.ticket_int_id]">{{ticket.ticket_no}}</a></td>
                         <td>{{ticket.summary}}</td>
                         <td>{{ticket.description}}</td>
                         <td>{{ticket.issue_status}}</td>

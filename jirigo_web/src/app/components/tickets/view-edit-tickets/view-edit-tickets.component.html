@@ -6,7 +6,7 @@
 </div>
 
 <ngx-spinner> </ngx-spinner>
-<form [formGroup]="createTicketFB" (ngSubmit)="onSubmit()">
+<form [formGroup]="viewModifyTicketFB" (ngSubmit)="onSubmit()" *ngIf="isLoaded">
   <div class="form-group">
     <div class="row">
       <div class="col">
@@ -46,15 +46,17 @@
     </div>
   </div>
 
+
   <div class="card">
     <div class="card-header container-fluid">
       Issue Details
       <button
         class="oi oi-chevron-bottom float-right"
-        data-toggle="collapse"
+        data-toggle="collapse"  
         data-target="#idIssueType"
       ></button>
     </div>
+
     <div id="idIssueType" class="collapse">
       <div class="card-body">
         <div class="form-group">
@@ -66,12 +68,13 @@
                 >Issue Type</label
               >
               <select
+                
                 class="form-control"
                 id="exampleFormControlSelect1"
                 formControlName="fctlIssueType"
                 (change)="setEnvironment1($event)"
               >
-                <option *ngFor="let issueType of ticketIssueTypesRef">{{
+                <option *ngFor="let issueType of ticketIssueTypesRef" [ngValue]="issueType.name">{{
                   issueType.name
                 }}</option>
               </select>
@@ -88,7 +91,7 @@
                 formControlName="fctlSeverity"
                 (change)="setEnvironment1($event)"
               >
-                <option *ngFor="let severity of ticketSeveritiesRef">{{
+                <option *ngFor="let severity of ticketSeveritiesRef" [ngValue]="severity.name">{{
                   severity.name
                 }}</option>
               </select>
@@ -105,22 +108,12 @@
                 formControlName="fctlPriority"
                 (change)="setEnvironment1($event)"
               >
-                <option *ngFor="let priority of ticketPrioritiesRef">{{
+                <option *ngFor="let priority of ticketPrioritiesRef" [ngValue]="priority.name">{{
                   priority.name
                 }}</option>
               </select>
             </div>
 
-            <!-- <div class="col-md-3">
-                        <button class="btn btn-primary dropdown-toggle" type="button"
-                            data-toggle="dropdown">{{environment}}
-                            <span class="caret"></span>
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <li class="dropdown-item" *ngFor="let env of ticketEnvRef"
-                                (click)="setEnvironment($event,env.name)">{{env.name}}</li>
-                        </div>
-                    </div> -->
             <div class="col-md-3">
               <label
                 for="formGroupExampleInput"
@@ -133,7 +126,7 @@
                 formControlName="fctlEnvironment"
                 (change)="setEnvironment1($event)"
               >
-                <option *ngFor="let env of ticketEnvRef">{{ env.name }}</option>
+                <option *ngFor="let env of ticketEnvRef" [ngValue]="env.name">{{ env.name }}</option>
               </select>
             </div>
           </div>
@@ -148,9 +141,10 @@
                 class="form-control"
                 id="exampleFormControlSelect1"
                 formControlName="fctlIssueStatus"
-                (change)="setEnvironment1($event)"
+                (change)="setReportedBy($event)"
+                
               >
-                <option *ngFor="let issueStatus of ticketIssueStatusesRef">{{
+                <option *ngFor="let issueStatus of ticketIssueStatusesRef" [ngValue]="issueStatus.name">{{
                   issueStatus.name
                 }}</option>
               </select>
@@ -167,66 +161,6 @@
                   <span class="slider round"></span>
                 </label>
               </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <br />
-
-  <div class="card">
-    <div class="card-header container-fluid">
-      Audit
-      <button
-        class="oi oi-chevron-bottom float-right"
-        data-toggle="collapse"
-        data-target="#idAuditCardDetails"
-      ></button>
-    </div>
-    <div id="idAuditCardDetails" class="collapse">
-      <div class="card-body">
-        <div class="form-group">
-          <div class="row">
-            <div class="col-md-3">
-              <label
-                for="formGroupExampleInput"
-                class="col-form-label col-form-label-sm"
-                >Created Date</label
-              >
-              <div class="input-group">
-                <input
-                  class="form-control"
-                  formControlName="fctlCreatedDate"
-                  placeholder="yyyy-mm-dd"
-                  name="cd"
-                  ngbDatepicker
-                  #cd="ngbDatepicker"
-                />
-                <div class="input-group-append">
-                  <button
-                    class="btn btn-outline-secondary calendar"
-                    (click)="cd.toggle()"
-                    type="button"
-                  >
-                    <span class="oi oi-calendar"></span>
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-3">
-              <label
-                for="formGroupExampleInput"
-                class="col-form-label col-form-label-sm"
-                >Created By</label
-              >
-              <input
-                type="text"
-                formControlName="fctlCreatedBy"
-                placeholder=""
-                id="createdBy"
-                class="form-control"
-              />
             </div>
             <div class="col-md-3">
               <label
@@ -273,6 +207,73 @@
       </div>
     </div>
   </div>
+
+
+  <br />
+  <app-issue-details [parentForm]="viewModifyTicketFB"></app-issue-details>
+  <br>
+  <!-- <div class="card">
+    <div class="card-header container-fluid">
+      Audit
+      <button
+        class="oi oi-chevron-bottom float-right"
+        data-toggle="collapse"
+        data-target="#idAuditCardDetails"
+      ></button>
+    </div>
+
+    <div id="idAuditCardDetails" class="collapse">
+      <div class="card-body">
+        <div class="form-group">
+          <div class="row">
+            <div class="col-md-3">
+              <label
+                for="formGroupExampleInput"
+                class="col-form-label col-form-label-sm"
+                >Created Date</label
+              >
+              <div class="input-group">
+                <input
+                  class="form-control"
+                  formControlName="fctlCreatedDate"
+                  placeholder="yyyy-mm-dd"
+                  name="cd"
+                  ngbDatepicker
+                  #cd="ngbDatepicker"
+                />
+                <div class="input-group-append">
+                  <button
+                    class="btn btn-outline-secondary calendar"
+                    (click)="cd.toggle()"
+                    type="button"
+                  >
+                    <span class="oi oi-calendar"></span>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <label
+                for="formGroupExampleInput"
+                class="col-form-label col-form-label-sm"
+                >Created By</label
+              >
+              <input
+                type="text"
+                formControlName="fctlCreatedBy"
+                placeholder=""
+                id="createdBy"
+                class="form-control"
+              />
+            </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> -->
+
+  
   <br />
 
   <div class="card">
@@ -322,7 +323,7 @@
             <!-- <label for="formGroupExampleInput" class="col-form-label col-form-label-sm">Summary</label> -->
             <input
               type="submit"
-              [disabled]="!createTicketFB.valid"
+              [disabled]="!viewModifyTicketFB.valid"
               value="Submit"
               id="summary"
               class="btn btn-primary"

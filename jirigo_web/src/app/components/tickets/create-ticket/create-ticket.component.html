@@ -167,7 +167,8 @@
 <app-issue-details [parentForm]="createTicketFB"></app-issue-details>
   <br/>
 
-  <div class="card">
+
+  <!-- <div class="card">
     <div class="card-header container-fluid">
       Audit
       <button
@@ -264,10 +265,10 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
   <br />
 
-<div class="card">
+<!-- <div class="card">
     <div class="card-header container-fluid">
       Comment
       <button
@@ -290,7 +291,6 @@
                             >&nbsp;</span
                         ></label
                         >
-                        <!-- <textarea formControlName="fctlComment" class="form-control rounded-1" id="comment" rows="3" (dblclick)="markCellToEdit($event,'fctlComment');"></textarea> -->
                         <quill-editor
                         formControlName="fctlComment"
                         [styles]="editorStyle"
@@ -300,7 +300,7 @@
             </div>
         </div>
     </div>
-</div>
+</div> -->
 
 
   <div class="panel">
@@ -313,7 +313,7 @@
             <input
               type="button"
               value="Cancel"
-              id="summary"
+              id="cancel"
               class="btn btn-secondary"
             />
           </div>
@@ -323,7 +323,7 @@
               type="submit"
               [disabled]="!createTicketFB.valid"
               value="Submit"
-              id="summary"
+              id="submit"
               class="btn btn-primary"
             />
           </div>

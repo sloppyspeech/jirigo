@@ -26,7 +26,7 @@
                     (change)="setEnvironment1($event)"
                   >
                     <option>Choose..</option>
-                    <option *ngFor="let issueType of ticketIssueTypesRef">{{
+                    <option *ngFor="let issueType of ticketIssueTypesRef" [ngValue]="issueType.name">{{
                       issueType.name
                     }}</option>
                   </select>
@@ -44,7 +44,7 @@
                     (change)="setEnvironment1($event)"
                   >
                     <option>Choose..</option>
-                    <option *ngFor="let severity of ticketSeveritiesRef">{{
+                    <option *ngFor="let severity of ticketSeveritiesRef" [ngValue]="severity.name">{{
                       severity.name
                     }}</option>
                   </select>
@@ -62,7 +62,7 @@
                     (change)="setEnvironment1($event)"
                   >
                     <option>Choose..</option>
-                    <option *ngFor="let priority of ticketPrioritiesRef">{{
+                    <option *ngFor="let priority of ticketPrioritiesRef" [ngValue]="priority.name">{{
                       priority.name
                     }}</option>
                   </select>
@@ -81,7 +81,7 @@
                     (change)="setEnvironment1($event)"
                   >
                     <option>Choose..</option>
-                    <option *ngFor="let env of ticketEnvRef">{{ env.name }}</option>
+                    <option *ngFor="let env of ticketEnvRef" [ngValue]="env.name">{{ env.name }}</option>
                   </select>
                 </div>
               </div>
@@ -96,10 +96,10 @@
                     class="form-control"
                     id="exampleFormControlSelect1"
                     formControlName="fctlIssueStatus"
-                    (change)="setEnvironment1($event)"
+                    (change)="setReportedBy($event)"
                   >
                   <option>Choose..</option>
-                    <option *ngFor="let issueStatus of ticketIssueStatusesRef">{{
+                    <option *ngFor="let issueStatus of ticketIssueStatusesRef" [ngValue]="issueStatus.name">{{
                       issueStatus.name
                     }}</option>
                   </select>
@@ -116,6 +116,47 @@
                       <span class="slider round"></span>
                     </label>
                   </div>
+                </div>
+                <div class="col-md-3">
+                  <label
+                    for="formGroupExampleInput"
+                    class="col-form-label col-form-label-sm"
+                    >Reported Date</label
+                  >
+                  <div class="input-group">
+                    <input
+                      class="form-control"
+                      formControlName="fctlReportedDate"
+                      placeholder="yyyy-mm-dd"
+                      name="md"
+                      ngbDatepicker
+                      #md="ngbDatepicker"
+                    />
+                    <div class="input-group-append">
+                      <button
+                        class="btn btn-outline-secondary calendar"
+                        (click)="md.toggle()"
+                        type="button"
+                      >
+                        <span class="oi oi-calendar"></span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <label
+                    for="formGroupExampleInput"
+                    class="col-form-label col-form-label-sm"
+                    >Reported By</label
+                  >
+                  <input
+                    type="text"
+                    formControlName="fctlReportedBy"
+                    placeholder=""
+                    id="modifiedBy"
+                    class="form-control"
+                    
+                  />
                 </div>
               </div>
             </div>

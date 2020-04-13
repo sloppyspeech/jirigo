@@ -32,7 +32,7 @@ def create_ticket():
         return get_jsonified_error_response('Failure',"Not a GET Request")
 
 
-@app.route('/api/v1/ticket-management/tickets/<ticket_id>',methods=['GET','POST'])
+@app.route('/api/v1/ticket-management/tickets/<ticket_id>',methods=['GET'])
 def get_ticket_details(ticket_id):
     error_response={}
     data={}

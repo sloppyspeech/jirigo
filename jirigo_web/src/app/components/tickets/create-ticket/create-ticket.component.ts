@@ -112,11 +112,17 @@ export class CreateTicketComponent implements OnInit {
     console.log(this.createTicketFB.get('fctlIssueType').value);
     console.log(this.createTicketFB.get('fctlSeverity').value);
     console.log(this.createTicketFB.get('fctlPriority').value);
+    console.log(this.createTicketFB.get('fctlStatusType').value);
+    console.log(this.createTicketFB.get('fctlIsBlocking').value);
     console.log(this.createTicketFB.get('fctlEnvironment').value);
     console.log(this.createTicketFB.get('fctlCreatedDate').value);
     console.log(this.createTicketFB.get('fctlCreatedBy').value);
     console.log(this.createTicketFB.status);
     console.log(this.createTicketFB.valid);
+    console.log('===============================');
+    console.log(this.createTicketFB.getRawValue());
+    console.log('===============================');
+
     // alert("submitted");
   }
 
