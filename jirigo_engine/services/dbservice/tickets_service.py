@@ -1,4 +1,4 @@
-from .jirigo_dbconn_service import JirigoDBConn
+from services.dbservice.dbconn_service import JirigoDBConn
 from services.logging.logger import Logger
 from flask import jsonify
 
@@ -10,7 +10,7 @@ from pprint import pprint
 class JirigoTicket(object):
 
     def __init__(self,data={}):
-        print("Initializing JirigiCRUD")
+        print("Initializing JirigoTicket")
         print(f'In for Create/Update Ticket **** :{data}')
         self.ticket_int_id = data.get('ticket_int_id')
         self.jdb=JirigoDBConn()
@@ -27,6 +27,7 @@ class JirigoTicket(object):
         self.reported_by = data.get('reported_by')
         self.reported_date = data.get('reported_date')
         self.ticket_no=data.get('ticket_no','-')
+        self.project_name=data.get('project_name','')
         self.logger=Logger()
 
     @classmethod
@@ -39,27 +40,29 @@ class JirigoTicket(object):
     def create_ticket(self):
         response_data={}
         self.logger.debug("Inside Create Ticket")
-        insert_sql="""  INSERT INTO TTICKETS(summary,description,severity,priority,
-                        issue_status,issue_type,environment,created_by,created_date) 
-                        VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s) returning ticket_int_id;
+        insert_sql="""  INSERT INTO TTICKETS(ticket_no,summary,description,severity,priority,
+                        issue_status,issue_type,environment,created_by,
+                        created_date,reported_by,reported_date) 
+                        VALUES (get_next_ticket_no_by_proj(%s),%s,%s,%s,%s,%s,%s,%s,%s,%s,get_user_id(%s),%s) returning ticket_int_id;
                     """
-        values=(self.summary,self.description,self.severity,self.priority,
-                "Open",self.issue_type,self.environment,self.created_by,datetime.datetime.today(),)
+        values=(self.project_abbr,self.summary,self.description,self.severity,self.priority,
+                "Open",self.issue_type,self.environment,self.created_by,
+                datetime.datetime.today(),self.reported_by,datetime.datetime.today(),)
         self.logger.debug(f'Insert : {insert_sql}  {values}')
 
-        update_sql=""" UPDATE TTICKETS 
-                          SET ticket_no=%s
-                         WHERE ticket_int_id=%s;
-                    """
+        # update_sql=""" UPDATE TTICKETS 
+        #                   SET ticket_no=%s
+        #                  WHERE ticket_int_id=%s;
+        #             """
         try:
             print('-'*80)
             print(type(self.jdb.dbConn))
             cursor=self.jdb.dbConn.cursor()
             cursor.execute(insert_sql,values)
             ticket_int_id=cursor.fetchone()[0]
-            update_values=('Proj-'+str(ticket_int_id),ticket_int_id,)
-            cursor.execute(update_sql,update_values)
-            self.logger.debug(f'Update : {update_sql}  {update_values}')
+            # update_values=('Proj-'+str(ticket_int_id),ticket_int_id,)
+            # cursor.execute(update_sql,update_values)
+            # self.logger.debug(f'Update : {update_sql}  {update_values}')
             self.jdb.dbConn.commit()
             row_count=cursor.rowcount
             self.logger.debug(f'Insert Success with {row_count} row(s) Ticket ID {ticket_int_id}')
@@ -77,7 +80,7 @@ class JirigoTicket(object):
         self.logger.debug("Inside get_all_tickets")
         query_sql="""  
                         WITH t AS (
-                            SELECT * FROM ttickets
+                            SELECT * FROM ttickets order by ticket_int_id
                         )
                         SELECT json_agg(t) from t;
                    """
@@ -104,10 +107,27 @@ class JirigoTicket(object):
         self.logger.debug('Inside get_ticket_details')
         response_data={}
         query_sql="""  
-                        WITH t AS (
-                            SELECT * FROM ttickets WHERE TICKET_INT_ID=%s
-                        )
-                        SELECT json_agg(t) from t;
+                       WITH t AS
+                                (SELECT ticket_int_id,
+                                        ticket_no,
+                                        SUMMARY,
+                                        description,
+                                        issue_status,
+                                        issue_type,
+                                        severity,
+                                        priority,
+                                        environment,
+                                        is_blocking,
+                                        get_user_name(COALESCE(created_by, 0)) created_by,
+                                        created_date,
+                                        get_user_name(COALESCE(modified_by, 0)) modified_by,
+                                        modified_date,
+                                        get_user_name(COALESCE(reported_by, 0)) reported_by,
+                                        reported_date
+                                FROM ttickets
+                                WHERE TICKET_INT_ID=%s )
+                                SELECT json_agg(t)
+                                FROM t;
                    """
         values=(self.ticket_int_id,)
         # print(f'Select : {query_sql} Values :{values}')

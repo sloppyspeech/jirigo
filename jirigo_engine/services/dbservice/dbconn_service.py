@@ -17,7 +17,13 @@ class JirigoDBConn(object):
             # print ( dbConn.get_dsn_parameters(),"\n")
             print('JirigoDBConn Initiation Successful')
         except (Exception, psycopg2.Error) as error :
-            print ("Error while connecting to PostgreSQL", error)
+            print("\n\n\n")
+            print("*"*50)
+            print ("********* C R I T I C A L    E R R O R  *********")
+            print("          While connecting to PostgreSQL")
+            print(error)
+            print("*"*50)
+            print("\n\n\n")
         
     def close_conn(self):
         #closing database connection.

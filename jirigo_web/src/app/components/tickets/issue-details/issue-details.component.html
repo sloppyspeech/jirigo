@@ -1,167 +1,200 @@
 <form [formGroup]="parentForm">
-    
-    <div class="card">
-        <div class="card-header container-fluid " data-toggle="collapse" data-target="#idIssueType">
-          Issue Details Child Component
-          <button
-            class="oi oi-chevron-bottom float-right"
-            data-toggle="collapse"
-            data-target="#idIssueType"
-          ></button>
-        </div>
-        <div id="idIssueType" class="collapse">
-          <div class="card-body">
-            <div class="form-group">
-              <div class="row">
-                <div class="col-md-3">
-                  <label
-                    for="formGroupExampleInput"
-                    class="col-form-label col-form-label-sm"
-                    >Issue Type<span class="required-field"></span></label
-                  >
-                  <select
-                    class="form-control"
-                    id="exampleFormControlSelect1"
-                    formControlName="fctlIssueType"
-                    (change)="setEnvironment1($event)"
-                  >
-                    <option value="" disabled>Choose..</option>
-                    <option *ngFor="let issueType of ticketIssueTypesRef" [ngValue]="issueType.name">{{
-                      issueType.name
-                    }}</option>
-                  </select>
-                </div>
-                <div class="col-md-3">
-                  <label
-                    for="formGroupExampleInput"
-                    class="col-form-label col-form-label-sm"
-                    >Severity<span class="required-field"></span></label
-                  >
-                  <select
-                    class="form-control"
-                    id="exampleFormControlSelect1"
-                    formControlName="fctlSeverity"
-                    (change)="setEnvironment1($event)"
-                  >
-                    <option value="" disabled>Choose..</option>
-                    <option *ngFor="let severity of ticketSeveritiesRef" [ngValue]="severity.name">{{
-                      severity.name
-                    }}</option>
-                  </select>
-                </div>
-                <div class="col-md-3">
-                  <label
-                    for="formGroupExampleInput"
-                    class="col-form-label col-form-label-sm"
-                    >Priority<span class="required-field"></span></label
-                  >
-                  <select
-                    class="form-control"
-                    id="exampleFormControlSelect1"
-                    formControlName="fctlPriority"
-                    (change)="setEnvironment1($event)"
-                  >
-                    <option value="" disabled>Choose..</option>
-                    <option *ngFor="let priority of ticketPrioritiesRef" [ngValue]="priority.name">{{
-                      priority.name
-                    }}</option>
-                  </select>
-                </div>
-    
-                <div class="col-md-3">
-                  <label
-                    for="formGroupExampleInput"
-                    class="col-form-label col-form-label-sm"
-                    >Environment<span class="required-field"></span></label
-                  >
-                  <select
-                    class="form-control"
-                    id="exampleFormControlSelect1"
-                    formControlName="fctlEnvironment"
-                    (change)="setEnvironment1($event)"
-                  >
-                    <option value="" disabled>Choose..</option>
-                    <option *ngFor="let env of ticketEnvRef" [ngValue]="env.name">{{ env.name }}</option>
-                  </select>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-3">
-                  <label
-                    for="formGroupExampleInput"
-                    class="col-form-label col-form-label-sm"
-                    >Issue Status<span class="required-field"></span></label
-                  >
-                  <select
-                    class="form-control"
-                    id="exampleFormControlSelect1"
-                    formControlName="fctlIssueStatus"
-                    (change)="setReportedBy($event)"
-                  >
-                  <option value="" value="" disabled>Choose..</option>
-                    <option *ngFor="let issueStatus of ticketIssueStatusesRef" [ngValue]="issueStatus.name">{{
-                      issueStatus.name
-                    }}</option>
-                  </select>
-                </div>
+  <div class="card">
+    <div
+      class="card-header container-fluid"
+      data-toggle="collapse"
+      data-target="#idIssueType"
+    >
+      Issue Details Child Component
+      <button
+        class="oi oi-chevron-bottom float-right"
+        data-toggle="collapse"
+        data-target="#idIssueType"
+      ></button>
+    </div>
+    <div id="idIssueType" class="collapse">
+      <div class="card-body">
+        <div class="form-group">
+          <div class="row">
+            <div class="col-md-3">
+              <label
+                for="formGroupExampleInput"
+                class="col-form-label col-form-label-sm"
+                >Issue Type<span class="required-field"></span
+              ></label>
+              <select
+                class="form-control"
+                id="exampleFormControlSelect1"
+                formControlName="fctlIssueType"
+                (change)="setEnvironment1($event)"
+              >
+                <option value="" disabled>Choose..</option>
+                <option
+                  *ngFor="let issueType of ticketIssueTypesRef"
+                  [ngValue]="issueType.name"
+                  >{{ issueType.name }}</option
+                >
+              </select>
+            </div>
+            <div class="col-md-3">
+              <label
+                for="formGroupExampleInput"
+                class="col-form-label col-form-label-sm"
+                >Severity<span class="required-field"></span
+              ></label>
+              <select
+                class="form-control"
+                id="exampleFormControlSelect1"
+                formControlName="fctlSeverity"
+                (change)="setEnvironment1($event)"
+              >
+                <option value="" disabled>Choose..</option>
+                <option
+                  *ngFor="let severity of ticketSeveritiesRef"
+                  [ngValue]="severity.name"
+                  >{{ severity.name }}</option
+                >
+              </select>
+            </div>
+            <div class="col-md-3">
+              <label
+                for="formGroupExampleInput"
+                class="col-form-label col-form-label-sm"
+                >Priority<span class="required-field"></span
+              ></label>
+              <select
+                class="form-control"
+                id="exampleFormControlSelect1"
+                formControlName="fctlPriority"
+                (change)="setEnvironment1($event)"
+              >
+                <option value="" disabled>Choose..</option>
+                <option
+                  *ngFor="let priority of ticketPrioritiesRef"
+                  [ngValue]="priority.name"
+                  >{{ priority.name }}</option
+                >
+              </select>
+            </div>
 
-                <div class="col-md-3">
-                  <label
-                    for="formGroupExampleInput"
-                    class="col-form-label col-form-label-sm"
-                    >Blocking?<span class="required-field"></span></label
+            <div class="col-md-3">
+              <label
+                for="formGroupExampleInput"
+                class="col-form-label col-form-label-sm"
+                >Environment<span class="required-field"></span
+              ></label>
+              <select
+                class="form-control"
+                id="exampleFormControlSelect1"
+                formControlName="fctlEnvironment"
+                (change)="setEnvironment1($event)"
+              >
+                <option value="" disabled>Choose..</option>
+                <option *ngFor="let env of ticketEnvRef" [ngValue]="env.name">{{
+                  env.name
+                }}</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3">
+              <label
+                for="formGroupExampleInput"
+                class="col-form-label col-form-label-sm"
+                >Issue Status<span class="required-field"></span
+              ></label>
+              <select
+                class="form-control"
+                id="exampleFormControlSelect1"
+                formControlName="fctlIssueStatus"
+                (change)="setReportedBy($event)"
+              >
+                <option value="" value="" disabled>Choose..</option>
+                <option
+                  *ngFor="let issueStatus of ticketIssueStatusesRef"
+                  [ngValue]="issueStatus.name"
+                  >{{ issueStatus.name }}</option
+                >
+              </select>
+            </div>
+
+            <div class="col-md-3">
+              <label
+                for="formGroupExampleInput"
+                class="col-form-label col-form-label-sm"
+                >Blocking?<span class="required-field"></span
+              ></label>
+              <div>
+                <label class="switch">
+                  <input type="checkbox" formControlName="fctlIsBlocking" />
+                  <span class="slider round"></span>
+                </label>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <label
+                for="formGroupExampleInput"
+                class="col-form-label col-form-label-sm"
+                >Reported Date<span class="required-field"></span
+              ></label>
+              <div class="input-group">
+                <input
+                  class="form-control"
+                  formControlName="fctlReportedDate"
+                  placeholder="yyyy-mm-dd"
+                  name="md"
+                  ngbDatepicker
+                  #md="ngbDatepicker"
+                />
+                <div class="input-group-append">
+                  <button
+                    class="btn btn-outline-secondary calendar"
+                    (click)="md.toggle()"
+                    type="button"
                   >
-                  <div>
-                    <label class="switch">
-                      <input type="checkbox" formControlName="fctlIsBlocking" />
-                      <span class="slider round"></span>
-                    </label>
-                  </div>
-                </div>
-                <div class="col-md-3">
-                  <label
-                    for="formGroupExampleInput"
-                    class="col-form-label col-form-label-sm"
-                    >Reported Date<span class="required-field"></span></label
-                  >
-                  <div class="input-group">
-                    <input
-                      class="form-control"
-                      formControlName="fctlReportedDate"
-                      placeholder="yyyy-mm-dd"
-                      name="md"
-                      ngbDatepicker
-                      #md="ngbDatepicker"
-                    />
-                    <div class="input-group-append">
-                      <button
-                        class="btn btn-outline-secondary calendar"
-                        (click)="md.toggle()"
-                        type="button"
-                      >
-                        <span class="oi oi-calendar"></span>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-3">
-                  <label
-                    for="formGroupExampleInput"
-                    class="col-form-label col-form-label-sm"
-                    >Reported By<span class="required-field"></span></label
-                  >
-                  <input
-                    type="text"
-                    formControlName="fctlReportedBy"
-                    placeholder=""
-                    id="modifiedBy"
-                    class="form-control"
-                    
-                  />
+                    <span class="oi oi-calendar"></span>
+                  </button>
                 </div>
               </div>
             </div>
+
+            <!-- <div class="col-md-3">
+              <label
+                for="formGroupExampleInput"
+                class="col-form-label col-form-label-sm"
+                >Reported By<span class="required-field"></span
+              ></label>
+              <input
+                type="text"
+                formControlName="fctlReportedBy"
+                placeholder=""
+                id="modifiedBy"
+                class="form-control"
+              />
+            </div> -->
+
+            <div class="col-md-3">
+              <label for="typeahead-http" class="col-form-label col-form-label-sm">Reported By<span class="required-field"></span></label>
+              <input
+                id="typeahead-http"
+                type="text"
+                class="form-control"
+                formControlName="fctlReportedBy"
+                [class.is-invalid]="searchFailed"
+                [ngbTypeahead]="search"
+                placeholder="Start Typing User Name"
+              />
+              <small *ngIf="searching" class="form-text text-muted"
+                >searching...</small
+              >
+              <div class="invalid-feedback" *ngIf="searchFailed">
+                Sorry, suggestions could not be loaded.
+              </div>
+            </div>
+
           </div>
         </div>
       </div>
+    </div>
+  </div>
 </form>

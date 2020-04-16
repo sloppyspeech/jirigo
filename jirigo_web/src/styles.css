@@ -3,3 +3,9 @@
     content: " *";
     color: red;
   }
+.overon{
+  z-index: 1;
+}
+.card-header{
+  cursor: pointer; 
+}

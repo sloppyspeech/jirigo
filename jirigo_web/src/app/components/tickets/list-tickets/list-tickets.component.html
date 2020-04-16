@@ -1,20 +1,19 @@
+<ngx-spinner></ngx-spinner>
 <div class="form-group">
     <div class="card">
-        <div class="card-header"><h4>List Tickets</h4></div>
+        <div class="card-header"><h4 id="testTicket">List Tickets</h4></div>
         <div class="card-body">
-            <table datatable [dtOptions]="dtOptions" class="table table-sm table-bordered table-hover table-striped">
+            <table *ngIf="allTickets" datatable  [dtOptions]="dtOptions" width="100%" class="table table-hover table-striped table-bordered" cellspacing="0">
                 <thead>
                 <tr>
                     <th *ngFor="let col of ticker_header_cols">{{col}}</th>
                 </tr>
                 </thead>
                 <tbody>
-
-                    <tr *ngFor="let ticket of allTickets.dbQryResponse">
+                    <tr *ngFor="let ticket of allTickets">
                         <!-- <td>{{ticket.ticket_int_id}}</td> -->
                         <td><a [routerLink]="['/view-edit-tickets', ticket.ticket_int_id]">{{ticket.ticket_no}}</a></td>
                         <td>{{ticket.summary}}</td>
-                        <!-- <td>{{ticket.description}}</td> -->
                         <td>{{ticket.issue_status}}</td>
                         <td>{{ticket.issue_type}}</td>
                         <td>{{ticket.severity}}</td>

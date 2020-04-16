@@ -36,7 +36,7 @@ export class TicketDetailsService {
     return this._httpCli.get<any>(this.sApiEndPoint+'tickets')
       .toPromise()
       .then(res => { 
-        console.log("In  Get All Tickets:"+JSON.stringify(res));
+        console.log("In  Get All Tickets:"+res);
         return res; 
       });
   }

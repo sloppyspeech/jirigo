@@ -31,22 +31,22 @@ export class ViewEditTicketsComponent implements OnInit {
     height: '200px'
   };
 
-  config = {
+  config={
     toolbar: [
       ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-      ['blockquote', 'code-block'],
-      [{ 'header': 1 }, { 'header': 2 }],               // custom button values
-      [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-      [{ 'script': 'sub' }, { 'script': 'super' }],      // superscript/subscript
-      [{ 'indent': '-1' }, { 'indent': '+1' }],          // outdent/indent
-      [{ 'direction': 'rtl' }],                         // text direction
+      // ['blockquote', 'code-block'],
+      // [{ 'header': 1 }, { 'header': 2 }],               // custom button values
+      [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+      // [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
+      [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
+      // [{ 'direction': 'rtl' }],                         // text direction
       [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
-      [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+      // [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
       [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
       [{ 'font': [] }],
-      [{ 'align': [] }],
-      ['clean'],                                         // remove formatting button
-      ['link', 'image']                         // link and image, video
+      [{ 'align': [] }]
+      // ['clean'],                                         // remove formatting button
+      // ['link', 'image']                         // link and image, video
     ]
   };
 
@@ -67,8 +67,8 @@ export class ViewEditTicketsComponent implements OnInit {
     private _serNgxSpinner:NgxSpinnerService) {
 
       this.viewModifyTicketFB = this._formBuilder.group({
-        fctlTicket_id: new FormControl({ value: '', disabled: true }),
-        fctlTicket_no: new FormControl({ value: '', disabled: true }),
+        fctlTicketId: new FormControl({ value: '', disabled: true }),
+        fctlTicketNo: new FormControl({ value: '', disabled: true }),
         fctlSummary: new FormControl({ value: '', disabled: true }, Validators.required),
         fctlDescription: new FormControl({ value: '', disabled: true }, Validators.required),
         fctlIssueType: new FormControl({ value: '', disabled: false }, Validators.required),
@@ -83,7 +83,7 @@ export class ViewEditTicketsComponent implements OnInit {
         fctlModifiedBy: new FormControl({ value: '', disabled: true }),
         fctlReportedBy: new FormControl({ value: '', disabled: true }, Validators.required),
         fctlReportedDate: new FormControl({ value: '', disabled: true }, Validators.required),
-        fctlComment: new FormControl({ value: '', disabled: true })
+        fctlComment: new FormControl({ value: '', disabled: false })
       });
 
 
@@ -96,7 +96,7 @@ export class ViewEditTicketsComponent implements OnInit {
     console.log("NgOnInit");
     this.isLoaded = false;
     this.ticket_id = this._activatedRoute.snapshot.paramMap.get('ticket_id');
-    this.viewModifyTicketFB.get('fctlTicket_id').setValue(this.ticket_id);
+    this.viewModifyTicketFB.get('fctlTicketId').setValue(this.ticket_id);
     this._serNgxSpinner.show();
     this._staticRefData.getRefMaster()
       .then(res => {
@@ -115,7 +115,6 @@ export class ViewEditTicketsComponent implements OnInit {
         console.log('Activated Route check');
         console.log(this._activatedRoute.snapshot.paramMap.get('ticket_id'));
         
-
         this._serTicketDetails.getTicketDetails(this.ticket_id)
           .then(res => {
             console.log("Inside Response this._serTicketDetails.getRefMaster");
@@ -133,7 +132,7 @@ export class ViewEditTicketsComponent implements OnInit {
             console.log(this.ticket_data.dbQryResponse);
             this.ticket_data = this.ticket_data.dbQryResponse;
             this.ticket_no=this.ticket_data.ticket_no;
-            this.viewModifyTicketFB.get('fctlTicket_no').setValue(this.ticket_data.ticket_no);
+            this.viewModifyTicketFB.get('fctlTicketNo').setValue(this.ticket_data.ticket_no);
             this.viewModifyTicketFB.get('fctlSummary').setValue(this.ticket_data.summary);
             this.viewModifyTicketFB.get('fctlDescription').setValue(this.ticket_data.description);
             this.viewModifyTicketFB.get('fctlIssueType').setValue(this.ticket_data.issue_type);
@@ -143,13 +142,13 @@ export class ViewEditTicketsComponent implements OnInit {
             this.viewModifyTicketFB.get('fctlEnvironment').setValue(this.ticket_data.environment);
             this.viewModifyTicketFB.get('fctlCreatedDate').setValue(this.ticket_data.created_date);
             this.viewModifyTicketFB.get('fctlCreatedBy').setValue(this.ticket_data.created_by);
-            console.log('------@@@@@@@--------');
-            console.log(this.viewModifyTicketFB.get('fctlPriority').value);
+            this.viewModifyTicketFB.get('fctlReportedDate').setValue(this.ticket_data.reported_date);
+            this.viewModifyTicketFB.get('fctlReportedBy').setValue(this.ticket_data.reported_by);
+            console.log('------@@@@fctlReportedDate@@@--------');
+            console.log(this.viewModifyTicketFB.get('fctlReportedDate').value);
             this.isLoaded = true;
             this._serNgxSpinner.hide();
           });
-
-
       }
       );
 

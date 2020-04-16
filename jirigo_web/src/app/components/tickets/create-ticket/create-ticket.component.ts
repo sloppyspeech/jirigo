@@ -3,10 +3,13 @@ import { Component, OnInit, Input, Output,EventEmitter, ɵConsole } from '@angul
 import { FormBuilder,FormGroup,FormControl,Validators } from '@angular/forms';
 import { StaticDataService  } from '../../../services/static-data.service';
 import { TicketDetailsService  } from '../../../services/tickets/ticket-details.service';
-// import { EventEmitter } from 'protractor';
+import { UsersService  } from '../../../services/users/users.service';
 import { NgbDateStruct, NgbCalendar} from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerService } from "ngx-spinner";
 import  { Router  } from '@angular/router';
+
+import {Observable, of} from 'rxjs';
+import {catchError, debounceTime, distinctUntilChanged, map, tap, switchMap} from 'rxjs/operators';
 
 
 @Component({
@@ -32,19 +35,19 @@ export class CreateTicketComponent implements OnInit {
   config={
     toolbar: [
       ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-      ['blockquote', 'code-block'],
-      [{ 'header': 1 }, { 'header': 2 }],               // custom button values
+      // ['blockquote', 'code-block'],
+      // [{ 'header': 1 }, { 'header': 2 }],               // custom button values
       [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-      [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
+      // [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
       [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
-      [{ 'direction': 'rtl' }],                         // text direction
+      // [{ 'direction': 'rtl' }],                         // text direction
       [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
-      [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+      // [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
       [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
       [{ 'font': [] }],
-      [{ 'align': [] }],
-      ['clean'],                                         // remove formatting button
-      ['link', 'image']                         // link and image, video
+      [{ 'align': [] }]
+      // ['clean'],                                         // remove formatting button
+      // ['link', 'image']                         // link and image, video
     ]
   };
 
@@ -60,6 +63,7 @@ export class CreateTicketComponent implements OnInit {
               private _calendar: NgbCalendar,
               private _NgxSpinner:NgxSpinnerService,
               private _serTicketDetails:TicketDetailsService,
+              private _serUsers:UsersService,
               private _router:Router) { 
               
               this._NgxSpinner.show(); 
@@ -91,6 +95,7 @@ export class CreateTicketComponent implements OnInit {
     console.log("NgOnInit");
     
     this.createTicketFB= this._formBuilder.group({
+      fctlProjectName:new FormControl({ value: '', disabled: true }),
       fctlSummary:new FormControl({ value: '', disabled: false }, Validators.required),
       fctlDescription:new FormControl({ value: '', disabled: false }, Validators.required),
       fctlIssueType:new FormControl({ value: '', disabled: false }, Validators.required),
@@ -129,6 +134,7 @@ export class CreateTicketComponent implements OnInit {
     // console.log(this.createTicketFB.get('fctlCreatedDate').value);
     // console.log(this.createTicketFB.get('fctlCreatedBy').value);
     formData={
+      "project_name":this.createTicketFB.get('fctlProjectName').value,
       "summary":this.createTicketFB.get('fctlSummary').value,
       "description":this.createTicketFB.get('fctlDescription').value,
       "severity":this.createTicketFB.get('fctlSeverity').value,
@@ -156,13 +162,15 @@ export class CreateTicketComponent implements OnInit {
             alert("Created Successfully.");
             this._NgxSpinner.hide();
             // this._router.navigate(['/view-edit-tickets',res['dbQryResponse']['ticketId']]);
-            formData['summary']="UPDATE "+formData['summary'];
-            formData['ticket_no']=res['dbQryResponse']['ticketId'];
-            this._serTicketDetails.updateTicket(formData)
-                .subscribe(res=>{
-                    console.log("_serTicketDetails.updateTicket");
-                    console.log(res);
-                });
+
+            //-- Test Done to verify Update worked
+            // formData['summary']="UPDATE "+formData['summary'];
+            // formData['ticket_no']=res['dbQryResponse']['ticketId'];
+            // // this._serTicketDetails.updateTicket(formData)
+            // //     .subscribe(res=>{
+            // //         console.log("_serTicketDetails.updateTicket");
+            // //         console.log(res);
+            // //     });
           }
           else{
             alert('Ticket Creation Unsuccessful');
@@ -217,6 +225,13 @@ export class CreateTicketComponent implements OnInit {
   }
 
   cancelForm(){
+    if (this.createTicketFB.dirty){
+      alert('Unsaved Data');
+    }
     this.createTicketFB.reset();
   }
+
+
+  
+
 }

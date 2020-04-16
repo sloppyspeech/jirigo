@@ -5,7 +5,11 @@
   </div>
 </div>
 
-<ngx-spinner> </ngx-spinner>
+<ngx-spinner
+  [fullScreen]="true"
+  type="ball-climbing-dot"
+  size="medium"
+></ngx-spinner>
 <form [formGroup]="viewModifyTicketFB" (ngSubmit)="onSubmit()" *ngIf="isLoaded">
   <div class="form-group">
     <div class="row">
@@ -20,7 +24,7 @@
           type="text"
           placeholder=""
           id="summary"
-          class="form-control"
+          class="form-control summary-text"
           required
         />
       </div>
@@ -34,8 +38,6 @@
           class="col-form-label col-form-label-sm"
           >Description</label
         >
-        <!-- <input type="text" placeholder="Ticket Description" id="description" class="form-control"> -->
-        <!-- <textarea formControlName="fctlDescription" class="form-control rounded-1" id="description" rows="2"></textarea> -->
         <quill-editor
           formControlName="fctlDescription"
           [styles]="editorStyle"
@@ -46,272 +48,21 @@
     </div>
   </div>
 
-
-  <div class="card">
-    <div class="card-header container-fluid">
-      Issue Details
-      <button
-        class="oi oi-chevron-bottom float-right"
-        data-toggle="collapse"  
-        data-target="#idIssueType"
-      ></button>
-    </div>
-
-    <div id="idIssueType" class="collapse">
-      <div class="card-body">
-        <div class="form-group">
-          <div class="row">
-            <div class="col-md-3">
-              <label
-                for="formGroupExampleInput"
-                class="col-form-label col-form-label-sm"
-                >Issue Type</label
-              >
-              <select
-                
-                class="form-control"
-                id="exampleFormControlSelect1"
-                formControlName="fctlIssueType"
-                (change)="setEnvironment1($event)"
-              >
-                <option *ngFor="let issueType of ticketIssueTypesRef" [ngValue]="issueType.name">{{
-                  issueType.name
-                }}</option>
-              </select>
-            </div>
-            <div class="col-md-3">
-              <label
-                for="formGroupExampleInput"
-                class="col-form-label col-form-label-sm"
-                >Severity</label
-              >
-              <select
-                class="form-control"
-                id="exampleFormControlSelect1"
-                formControlName="fctlSeverity"
-                (change)="setEnvironment1($event)"
-              >
-                <option *ngFor="let severity of ticketSeveritiesRef" [ngValue]="severity.name">{{
-                  severity.name
-                }}</option>
-              </select>
-            </div>
-            <div class="col-md-3">
-              <label
-                for="formGroupExampleInput"
-                class="col-form-label col-form-label-sm"
-                >Priority</label
-              >
-              <select
-                class="form-control"
-                id="exampleFormControlSelect1"
-                formControlName="fctlPriority"
-                (change)="setEnvironment1($event)"
-              >
-                <option *ngFor="let priority of ticketPrioritiesRef" [ngValue]="priority.name">{{
-                  priority.name
-                }}</option>
-              </select>
-            </div>
-
-            <div class="col-md-3">
-              <label
-                for="formGroupExampleInput"
-                class="col-form-label col-form-label-sm"
-                >Environment</label
-              >
-              <select
-                class="form-control"
-                id="exampleFormControlSelect1"
-                formControlName="fctlEnvironment"
-                (change)="setEnvironment1($event)"
-              >
-                <option *ngFor="let env of ticketEnvRef" [ngValue]="env.name">{{ env.name }}</option>
-              </select>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-3">
-              <label
-                for="formGroupExampleInput"
-                class="col-form-label col-form-label-sm"
-                >Issue Status</label
-              >
-              <select
-                class="form-control"
-                id="exampleFormControlSelect1"
-                formControlName="fctlIssueStatus"
-                (change)="setReportedBy($event)"
-                
-              >
-                <option *ngFor="let issueStatus of ticketIssueStatusesRef" [ngValue]="issueStatus.name">{{
-                  issueStatus.name
-                }}</option>
-              </select>
-            </div>
-            <div class="col-md-3">
-              <label
-                for="formGroupExampleInput"
-                class="col-form-label col-form-label-sm"
-                >Blocking?</label
-              >
-              <div>
-                <label class="switch">
-                  <input type="checkbox" formControlName="fctlIsBlocking" />
-                  <span class="slider round"></span>
-                </label>
-              </div>
-            </div>
-            <div class="col-md-3">
-              <label
-                for="formGroupExampleInput"
-                class="col-form-label col-form-label-sm"
-                >Reported Date</label
-              >
-              <div class="input-group">
-                <input
-                  class="form-control"
-                  formControlName="fctlReportedDate"
-                  placeholder="yyyy-mm-dd"
-                  name="md"
-                  ngbDatepicker
-                  #md="ngbDatepicker"
-                />
-                <div class="input-group-append">
-                  <button
-                    class="btn btn-outline-secondary calendar"
-                    (click)="md.toggle()"
-                    type="button"
-                  >
-                    <span class="oi oi-calendar"></span>
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-3">
-              <label
-                for="formGroupExampleInput"
-                class="col-form-label col-form-label-sm"
-                >Reported By</label
-              >
-              <input
-                type="text"
-                formControlName="fctlReportedBy"
-                placeholder=""
-                id="modifiedBy"
-                class="form-control"
-              />
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-
   <br />
   <app-issue-details [parentForm]="viewModifyTicketFB"></app-issue-details>
-  <br>
-  <!-- <div class="card">
-    <div class="card-header container-fluid">
-      Audit
-      <button
-        class="oi oi-chevron-bottom float-right"
-        data-toggle="collapse"
-        data-target="#idAuditCardDetails"
-      ></button>
-    </div>
 
-    <div id="idAuditCardDetails" class="collapse">
-      <div class="card-body">
-        <div class="form-group">
-          <div class="row">
-            <div class="col-md-3">
-              <label
-                for="formGroupExampleInput"
-                class="col-form-label col-form-label-sm"
-                >Created Date</label
-              >
-              <div class="input-group">
-                <input
-                  class="form-control"
-                  formControlName="fctlCreatedDate"
-                  placeholder="yyyy-mm-dd"
-                  name="cd"
-                  ngbDatepicker
-                  #cd="ngbDatepicker"
-                />
-                <div class="input-group-append">
-                  <button
-                    class="btn btn-outline-secondary calendar"
-                    (click)="cd.toggle()"
-                    type="button"
-                  >
-                    <span class="oi oi-calendar"></span>
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-3">
-              <label
-                for="formGroupExampleInput"
-                class="col-form-label col-form-label-sm"
-                >Created By</label
-              >
-              <input
-                type="text"
-                formControlName="fctlCreatedBy"
-                placeholder=""
-                id="createdBy"
-                class="form-control"
-              />
-            </div>
-            
-          </div>
-        </div>
-      </div>
-    </div>
-  </div> -->
-
-  
+  <!-- New COmments Component Start-->
   <br />
-
-  <div class="card">
-    <div class="card-header container-fluid">
-      Comment
-      <button
-      class="oi oi-chevron-bottom float-right"
-      data-toggle="collapse"
-      data-target="#idComments"></button>
-      <span
-        class="oi oi-pencil float-right comment-edit-button"
-        (click)="markCellToEdit($event, 'fctlComment')">
-        &nbsp;</span>
-
-    </div>
-    <div id="idComments" class="collapse">
-      <div class="card-body">
-        <div class="form-group">
-          <div class="row">
-            <div class="col">
-              <quill-editor
-                formControlName="fctlComment"
-                [styles]="editorStyle"
-              ></quill-editor>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+  <app-ticket-comments [parentForm]="viewModifyTicketFB"></app-ticket-comments>
+  <br />
+  <!-- New COmments Component End-->
 
   <div class="panel">
     <!-- <div class="card-header">Audit</div> -->
     <div class="card-body">
       <div class="form-group">
         <div class="row container-fluid">
-          <div class="offset-md-9 offset-sm-1">
-            <!-- <label for="formGroupExampleInput" class="col-form-label col-form-label-sm">Summary</label> -->
+          <div class="align-self-end ml-auto">
             <input
               type="button"
               value="Cancel"
@@ -319,13 +70,14 @@
               class="btn btn-secondary"
             />
           </div>
-          <div class="col-md-1 col-sm-1">
-            <!-- <label for="formGroupExampleInput" class="col-form-label col-form-label-sm">Summary</label> -->
+          <div class="align-self-center mx-auto">
             <input
               type="submit"
-              [disabled]="!viewModifyTicketFB.valid"
-              value="Submit"
-              id="summary"
+              [disabled]="
+                !viewModifyTicketFB.valid || !viewModifyTicketFB.dirty
+              "
+              value="Update"
+              id="update"
               class="btn btn-primary"
             />
           </div>

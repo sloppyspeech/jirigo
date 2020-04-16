@@ -1,0 +1,17 @@
+<form [formGroup]="parentForm">
+<input
+      id="typeahead-http"
+      type="text"
+      class="form-control"
+      formControlName="fctlCompUserName"
+      [class.is-invalid]="searchFailed"
+      [ngbTypeahead]="search"
+      placeholder="Start Typing User Name"
+    />
+    <small *ngIf="searching" class="form-text text-muted"
+      >searching...</small
+    >
+    <div class="invalid-feedback" *ngIf="searchFailed">
+      Sorry, suggestions could not be loaded.
+    </div>
+</form>

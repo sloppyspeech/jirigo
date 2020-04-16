@@ -1,1 +1,109 @@
-<p>create-project works!</p>
+<h3>Create Project</h3>
+<!-- <div class="panel">
+  <div class="card-header"></div>
+  <div class="card-body"-->
+    <ngx-spinner [fullScreen]="true" type="ball-climbing-dot" size="medium"></ngx-spinner>
+    <form [formGroup]="createProjectFG" (ngSubmit)="createProject()">
+      <div class="form-group">
+        <div class="row">
+          <div class="col-sm-3 col-md-3 col-lg-4">
+            <label
+              for="formGroupExampleInput"
+              class="col-form-label col-form-label-sm"
+              >Project Name<span class="required-field"></span
+            ></label>
+            <input
+              formControlName="fctlProjectName"
+              type="text"
+              placeholder=""
+              id="summary"
+              class="form-control required"
+              required
+            />
+          </div>
+          <div class="col-sm-3 col-md-3 col-lg-4">
+            <label
+              for="formGroupExampleInput"
+              class="col-form-label col-form-label-sm"
+              >Project Abbreviation<span class="required-field"></span
+            ></label>
+            <input
+              formControlName="fctlProjectAbbr"
+              type="text"
+              placeholder=""
+              id="projectAbbr"
+              class="form-control required"
+              required
+            />
+          </div>
+          <div class="col-sm-3 col-md-3 col-lg-4">
+            <label
+              for="formGroupExampleInput"
+              class="col-form-label col-form-label-sm"
+              >Project Type<span class="required-field"></span
+            ></label>
+            <input
+              formControlName="fctlProjectType"
+              type="text"
+              placeholder="Scrum,Kanban,Waterfall"
+              id="projectTYpe"
+              class="form-control required"
+              required
+            />
+          </div>
+        </div>
+        <!-- Usage of User Name as COmponent -->
+        <!-- <div class="row">
+            <div class="col-sm-3 col-md-3 col-lg-4">
+                <label
+              for="formGroupExampleInput"
+              class="col-form-label col-form-label-sm"
+              >User Name<span class="required-field"></span
+            ></label>
+                <app-select-user-comp [parentForm]="createProjectFG"></app-select-user-comp>
+            </div>
+        </div> -->
+      </div>
+
+      <div class="panel">
+        <!-- <div class="card-header">Audit</div> -->
+        <div class="card-body">
+          <div class="form-group">
+            <div class="row">
+              <div class="offset-md-9 offset-sm-1">
+                <input
+                  type="button"
+                  value="Cancel"
+                  id="cancel"
+                  class="btn btn-secondary"
+                  (click)="cancelProjectCreationForm()"
+                />
+              </div>
+              <div class="col-md-1 col-sm-1">
+                <input
+                  type="submit"
+                  [disabled]="!createProjectFG.valid"
+                  value="Submit"
+                  id="submit"
+                  class="btn btn-primary"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <p-tabView>
+      <p-tabPanel header="Header 1">
+         Content 1
+      </p-tabPanel>
+      <p-tabPanel header="Header 2">
+          Content 2
+      </p-tabPanel>
+      <p-tabPanel header="Header 3">
+          Content 3
+      </p-tabPanel>
+  </p-tabView>
+  <!-- </div>
+</div> -->

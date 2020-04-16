@@ -4,6 +4,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent  } from './components/login/login.component';
 import { CreateTicketComponent  } from './components/tickets/create-ticket/create-ticket.component';
 import { ListTicketsComponent  } from './components/tickets/list-tickets/list-tickets.component';
+import { CreateProjectComponent } from './components/projects/create-project/create-project.component';
+
 
 const routes: Routes = [
   {
@@ -27,8 +29,12 @@ const routes: Routes = [
     component:ViewEditTicketsComponent
   },
   {
-    path:'view-edit-tickets',
+    path:'view-edit-ticket',
     component:ViewEditTicketsComponent
+  },
+  {
+    path:'create-project',
+    component:CreateProjectComponent
   }
 ];
 

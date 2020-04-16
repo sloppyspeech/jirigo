@@ -7,8 +7,8 @@
         <label
           for="formGroupExampleInput"
           class="col-form-label col-form-label-sm"
-          >Summary<span class="required-field"></span></label
-        >
+          >Summary<span class="required-field"></span
+        ></label>
         <input
           formControlName="fctlSummary"
           type="text"
@@ -26,8 +26,8 @@
         <label
           for="formGroupExampleInput"
           class="col-form-label col-form-label-sm"
-          >Description<span class="required-field"></span></label
-        >
+          >Description<span class="required-field"></span
+        ></label>
         <quill-editor
           formControlName="fctlDescription"
           [styles]="editorStyle"
@@ -36,15 +36,13 @@
         </quill-editor>
       </div>
     </div>
+
     
-
-
   </div>
+  <br />
 
-<br />
-
-<app-issue-details [parentForm]="createTicketFB"></app-issue-details>
-  <br/>
+  <app-issue-details [parentForm]="createTicketFB"></app-issue-details>
+  <br />
 
   <div class="panel">
     <!-- <div class="card-header">Audit</div> -->
@@ -57,7 +55,7 @@
               value="Cancel"
               id="cancel"
               class="btn btn-secondary"
-              (click)="cancelForm();"
+              (click)="cancelForm()"
             />
           </div>
           <div class="col-md-1 col-sm-1">

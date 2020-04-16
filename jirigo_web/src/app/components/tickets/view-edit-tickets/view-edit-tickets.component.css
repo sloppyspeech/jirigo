@@ -66,3 +66,7 @@
     cursor: pointer; 
     margin-top: 0.25rem;
 }
+
+.summary-text{
+  font-weight: 600;
+}

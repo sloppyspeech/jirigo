@@ -1,4 +1,4 @@
-from .jirigo_dbconn_service import JirigoDBConn
+from services.dbservice.dbconn_service import JirigoDBConn
 from services.logging.logger import Logger
 import json
 from flask import jsonify
