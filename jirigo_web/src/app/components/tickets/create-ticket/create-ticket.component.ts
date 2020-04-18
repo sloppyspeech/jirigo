@@ -95,7 +95,7 @@ export class CreateTicketComponent implements OnInit {
     console.log("NgOnInit");
     
     this.createTicketFB= this._formBuilder.group({
-      fctlProjectName:new FormControl({ value: '', disabled: true }),
+      fctlProjectName:new FormControl({ value: localStorage.getItem('currentProjectName'), disabled: true }),
       fctlSummary:new FormControl({ value: '', disabled: false }, Validators.required),
       fctlDescription:new FormControl({ value: '', disabled: false }, Validators.required),
       fctlIssueType:new FormControl({ value: '', disabled: false }, Validators.required),
@@ -110,7 +110,8 @@ export class CreateTicketComponent implements OnInit {
       fctlModifiedBy:new FormControl({ value:'', disabled: true }),
       fctlReportedBy:new FormControl({ value:'', disabled: false }, Validators.required),
       fctlReportedDate:new FormControl({ value:'', disabled: false }, Validators.required),
-      fctlComment:new FormControl({ value: '', disabled: true })
+      fctlComment:new FormControl({ value: '', disabled: true }),
+      fctlAssigneeName:new FormControl({ value: '', disabled: false })
     });
     
   }
@@ -140,9 +141,11 @@ export class CreateTicketComponent implements OnInit {
       "severity":this.createTicketFB.get('fctlSeverity').value,
       "priority":this.createTicketFB.get('fctlPriority').value,
       "issue_type":this.createTicketFB.get('fctlIssueType').value,
-      "issue_status":this.createTicketFB.get('fctlIssueStatus').value,
+      "issue_status":this.createTicketFB.get('fctlIssueStatus').value ? 'Y':'N',
+      "is_blocking":this.createTicketFB.get('fctlIsBlocking').value,
       "environment":this.createTicketFB.get('fctlEnvironment').value,
-      "created_by":1,
+      "assignee_name":this.createTicketFB.get('fctlAssigneeName').value,
+      "created_by":localStorage.getItem('loggedInUserId'),
       "created_date":this.createTicketFB.get('fctlCreatedDate').value,
       "reported_by": this.createTicketFB.get('fctlReportedBy').value,
       "reported_date":this.createTicketFB.get('fctlReportedDate').value

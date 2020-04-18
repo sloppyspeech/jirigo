@@ -10,6 +10,7 @@ import { NgxSpinnerComponent, NgxSpinnerService } from 'ngx-spinner';
 })
 export class ListTicketsComponent implements OnInit {
   allTickets=[];
+  showTable:boolean=false;
 ticker_header_cols:string[]=[
     // 'ticket_int_id',
     'Ticket No',
@@ -21,49 +22,50 @@ ticker_header_cols:string[]=[
     'Environment',
     'Blocking',
     'Reported By',
-    // 'Reported Date',
-    'Created By',
-    // 'Created Date'
-    'Modified By'
+    'Reported Date'
+    // ,
+    // 'Created By',
+    // 'Created Date',
+    // 'Modified By',
     // 'Modified Date'
-    
   ];
   
-
-dtOptions: DataTables.Settings = {
-  "columnDefs": [
-    { "orderable": false, "targets": 0 },
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null
-  ],
-  "columns": [
-    { "orderable": false,"width":"80%" },
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null,
-    null
-  ]
-};
+  dtOptions: DataTables.Settings = {};
+// dtOptions: DataTables.Settings = {
+//   "columnDefs": [
+//     { "orderable": false, "targets": 0 },
+//     null,
+//     null,
+//     null,
+//     null,
+//     null,
+//     null,
+//     null,
+//     null,
+//     null,
+//     null
+//   ],
+//   "columns": [
+//     { "orderable": false,"width":"80%" },
+//     null,
+//     null,
+//     null,
+//     null,
+//     null,
+//     null,
+//     null,
+//     null,
+//     null,
+//     null
+//   ]
+// };
   constructor(private _router:Router,
               private _serTicketDetails:TicketDetailsService,
               private _serNgxSpinner:NgxSpinnerService) { }
 
   ngOnInit(): void {
     this.allTickets=[];
+    this.showTable=false;
     // this._serNgxSpinner.show();
     this.dtOptions = {
       // pagingType: 'full_numbers',
@@ -73,31 +75,35 @@ dtOptions: DataTables.Settings = {
       responsive: true  
     };
 
-    this._serTicketDetails.getAllTickets()
-        .then(res=>{
-          console.log("_serTicketDetails Output :"+JSON.stringify(res));
-          console.log("===================");
-          console.log(res['dbQryResponse']);
-          console.log("===================");
-          // this.allTickets['dbQryResponse']=res['dbQryResponse'];
-          for (var i=0;i<=res['dbQryResponse'].length;i++){
-            this.allTickets.push(res['dbQryResponse'][i]);
-          }
-          // this.allTickets=res['dbQryResponse'];
-          console.log(this.allTickets);
-          // setTimeout(() => {
-          //   this._serNgxSpinner.hide();
-          //   // $(()=>{
-          //   //   $('#testTicket').html("List Tickets");
-          //   // });
-          // }, 1000);
 
-        })
-        .catch(e=>{
-            console.log("Error Fetching all tickets getAllTickets in list-tickets-components:"+e);
-        });
   }
 
+  ngAfterViewInit() {
+    this._serTicketDetails.getAllTickets()
+    .then(res=>{
+      console.log("_serTicketDetails Output :"+JSON.stringify(res));
+      console.log("===================");
+      console.log(res['dbQryResponse']);
+      console.log("===================");
+      // this.allTickets['dbQryResponse']=res['dbQryResponse'];
+      for (var i=0;i<=res['dbQryResponse'].length;i++){
+        this.allTickets.push(res['dbQryResponse'][i]);
+      }
+      // this.allTickets=res['dbQryResponse'];
+      console.log(this.allTickets);
+      this.showTable=true;
+      // setTimeout(() => {
+      //   this._serNgxSpinner.hide();
+      //   // $(()=>{
+      //   //   $('#testTicket').html("List Tickets");
+      //   // });
+      // }, 1000);
+
+    })
+    .catch(e=>{
+        console.log("Error Fetching all tickets getAllTickets in list-tickets-components:"+e);
+    });
+  }
   cellToEdit(e,val){
     alert(val);
   }

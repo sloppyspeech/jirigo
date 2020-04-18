@@ -2,6 +2,8 @@ import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { TicketCommentsService } from '../../../services/tickets/ticket-comments.service';
 import { NgxSpinnerService  }  from 'ngx-spinner';
+import { Router} from '@angular/router';
+
 
 @Component({
   selector: 'app-ticket-comments',
@@ -29,7 +31,7 @@ export class TicketCommentsComponent implements OnInit {
       // [{ 'direction': 'rtl' }],                         // text direction
       [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
       // [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-      [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+      // [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
       [{ 'font': [] }],
       [{ 'align': [] }]
       // ['clean'],                                         // remove formatting button
@@ -39,7 +41,8 @@ export class TicketCommentsComponent implements OnInit {
 
   constructor(
     private _serTicketComments: TicketCommentsService,
-    private _serNgxSpinner:NgxSpinnerService
+    private _serNgxSpinner:NgxSpinnerService,
+    private _router:Router
   ) { }
 
   ngOnInit(): void {
@@ -84,6 +87,7 @@ export class TicketCommentsComponent implements OnInit {
           this.parentForm.reset();
           setTimeout(() => {
             this.getTicketComments(inpData['ticket_no']);
+            this.reloadComponent();
             this._serNgxSpinner.hide();
           }, 1200);
         });
@@ -105,5 +109,11 @@ export class TicketCommentsComponent implements OnInit {
         }
       })
   }
-
+  reloadComponent() {
+    console.log("===============reloadComponent=================");
+    console.log(this._router.url);
+    this._router.routeReuseStrategy.shouldReuseRoute = () => false;
+    this._router.onSameUrlNavigation = 'reload';
+    this._router.navigate([this._router.url]);
+}
 }

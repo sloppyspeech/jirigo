@@ -1,22 +1,36 @@
-<div class="card">
-  <div class="card-header">
-    View/Edit Ticket
-    <h4>{{ ticket_no }}</h4>
-  </div>
-</div>
+<div class="form-group"></div>
 
 <ngx-spinner
   [fullScreen]="true"
   type="ball-climbing-dot"
   size="medium"
 ></ngx-spinner>
-<form [formGroup]="viewModifyTicketFB" (ngSubmit)="onSubmit()" *ngIf="isLoaded">
+<form [formGroup]="viewModifyTicketFB" (ngSubmit)="updateTicket()" *ngIf="isLoaded">
   <div class="form-group">
+    <div class="row" *ngIf="viewEditFormEditBtnEnabled">
+      <div class="col col-md-2 col-sm-1 col-lg-2">
+        <button
+          pButton
+          type="button"
+          label="Modify Ticket"
+          class="ui-button-rounded ui-button-warning"
+          style="font-weight: bolder;"
+          (click)="markFormEditable()"
+        ></button>
+      </div>
+    </div>
+    <br />
+    <div class="card">
+      <div class="card-header" style="width: auto;">
+        <h4>{{ ticket_no }}</h4>
+      </div>
+    </div>
+<br>
     <div class="row">
       <div class="col">
         <label
           for="formGroupExampleInput"
-          class="col-form-label col-form-label-sm"
+          class="col-form-label-md"
           >Summary</label
         >
         <input
@@ -35,7 +49,7 @@
       <div class="col">
         <label
           for="formGroupExampleInput"
-          class="col-form-label col-form-label-sm"
+          class="col-form-label-md"
           >Description</label
         >
         <quill-editor
@@ -54,8 +68,9 @@
   <!-- New COmments Component Start-->
   <br />
   <app-ticket-comments [parentForm]="viewModifyTicketFB"></app-ticket-comments>
-  <br />
   <!-- New COmments Component End-->
+
+  <app-ticket-audit [parentForm]="viewModifyTicketFB"></app-ticket-audit>
 
   <div class="panel">
     <!-- <div class="card-header">Audit</div> -->
@@ -68,6 +83,7 @@
               value="Cancel"
               id="summary"
               class="btn btn-secondary"
+              (click)="cancelViewEditForm()"
             />
           </div>
           <div class="align-self-center mx-auto">
@@ -85,4 +101,12 @@
       </div>
     </div>
   </div>
+
+<p-dialog header="Unsaved Data Alert" [(visible)]="displayPageDirtyDialog" [style]="{width: '50vw'}" [baseZIndex]="10000">
+    There are unsaved Items on this page. Do you want to leave without saving ?
+<p-footer>
+    <button type="button" pButton icon="pi pi-check" (click)="showDirtyPageDialog(true)" label="Yes"></button>
+    <button type="button" pButton icon="pi pi-times" (click)="showDirtyPageDialog(false)" label="No" class="ui-button-secondary"></button>
+</p-footer>
+</p-dialog>
 </form>

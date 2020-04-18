@@ -1,11 +1,11 @@
-<form [formGroup]="parentForm">
+<form [formGroup]="parentForm" #issueDetailsComponent>
   <div class="card">
     <div
       class="card-header container-fluid"
       data-toggle="collapse"
       data-target="#idIssueType"
     >
-      Issue Details Child Component
+      Issue Details
       <button
         class="oi oi-chevron-bottom float-right"
         data-toggle="collapse"
@@ -191,7 +191,24 @@
                 Sorry, suggestions could not be loaded.
               </div>
             </div>
-
+            <div class="col-md-3">
+              <label for="typeahead-http" class="col-form-label col-form-label-sm">Assigned To<span class="required-field"></span></label>
+              <input
+                id="typeahead-http"
+                type="text"
+                class="form-control"
+                formControlName="fctlAssigneeName"
+                [class.is-invalid]="searchFailed"
+                [ngbTypeahead]="search"
+                placeholder="Start Typing Assignee Name"
+              />
+              <small *ngIf="searching" class="form-text text-muted"
+                >searching...</small
+              >
+              <div class="invalid-feedback" *ngIf="searchFailed">
+                Sorry, suggestions could not be loaded.
+              </div>
+            </div>
           </div>
         </div>
       </div>

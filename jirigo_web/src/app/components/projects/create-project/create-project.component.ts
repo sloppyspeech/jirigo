@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup,FormBuilder,FormControl,Validators  } from '@angular/forms';
 import { ProjectsService  } from '../../../services/projects/projects.service';
+import { UsersService  } from '../../../services/users/users.service';
 import { NgxSpinnerService  } from 'ngx-spinner';
 
 
@@ -11,10 +12,12 @@ import { NgxSpinnerService  } from 'ngx-spinner';
 })
 export class CreateProjectComponent implements OnInit {
   createProjectFG:FormGroup;
+  results:any[]=[];
 
   constructor(private _formBuilder:FormBuilder,
               private _serProjects:ProjectsService,
-              private _serNgxSpinner:NgxSpinnerService) { }
+              private _serNgxSpinner:NgxSpinnerService,
+              private _serUserService:UsersService) { }
 
   ngOnInit(): void {
     this.createProjectFG=this._formBuilder.group({
@@ -29,7 +32,7 @@ export class CreateProjectComponent implements OnInit {
     this._serNgxSpinner.show();
     setTimeout(() => {
         this._serNgxSpinner.hide();
-    }, 4000);
+    }, 1000);
   }
 
   createProject(){
@@ -58,4 +61,21 @@ export class CreateProjectComponent implements OnInit {
   cancelProjectCreationForm (){
 
   }
+  search(event) {
+    let queryRes:any[]=[];
+      this._serUserService.getUserNamesForDropDownSearch(event.query)
+        .subscribe(data => {
+          console.log("********************");
+          console.log(data);
+          console.log(data.length);
+          console.log(this.results);
+          for(var i=0; i<data.length;i++){
+            console.log(data[i]["name"]);
+            queryRes.push(data[i]['name']);
+          }
+          this.results=queryRes;
+          console.log("=========:"+this.results);
+      });
+  }
+
 }

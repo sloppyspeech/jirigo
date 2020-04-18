@@ -3,11 +3,12 @@ from flask import request,jsonify,make_response,Response
 from flask_cors import CORS,cross_origin
 import pprint
 import sys
-from services.dbservice.tickets_service import JirigoTicket
+from services.dbservice.tickets.tickets_service import JirigoTicket
 from services.dbservice.projects_service import JirigoProject
 from services.dbservice.users_service import JirigoUsers
 from services.dbservice.refmaster_service import JirigoRefMaster
-from services.dbservice.ticket_comments_service import JirigoTicketComments
+from services.dbservice.tickets.ticket_comments_service import JirigoTicketComments
+from services.dbservice.tickets.ticket_audit_service import JirigoTicketAudit
 
 app=Flask(__name__)
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
@@ -51,15 +52,15 @@ def update_ticket():
         return get_jsonified_error_response('Failure',"Not a PUT Request")
 
 
-@app.route('/api/v1/ticket-management/tickets/<ticket_id>',methods=['GET'])
-def get_ticket_details(ticket_id):
+@app.route('/api/v1/ticket-management/tickets/<ticket_no>',methods=['GET'])
+def get_ticket_details(ticket_no):
     error_response={}
     data={}
 
     if request.method == 'GET':
         print('In GET create_ticket')
         try:
-            jdb=JirigoTicket({'ticket_int_id':ticket_id})
+            jdb=JirigoTicket({'ticket_no':ticket_no})
             data=jdb.get_ticket_details()
             return jsonify(data)
         except Exception as error:
@@ -118,6 +119,25 @@ def create_ticket_comment():
         return jsonify(request.get_json())
     else:
         return get_jsonified_error_response('Failure',"create_ticket_comment Not a POST Request")
+
+
+@app.route('/api/v1/ticket-management/audit/<ticket_no>',methods=['GET'])
+def get_ticket_audit(ticket_no):
+    error_response={}
+    data={}
+
+    if request.method == 'GET':
+        print('In GET get_tickets_all_comments')
+        try:
+            jdb=JirigoTicketAudit({'ticket_no':ticket_no})
+            data=jdb.get_ticket_audit()
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in get_ticket_audit {error}')
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',"get_ticket_audit Not a GET Request")
+
 
 @app.route('/api/v1/project-management/create-project',methods=['POST'])
 def create_project():

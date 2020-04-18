@@ -28,7 +28,7 @@ export class IssueDetailsComponent implements OnInit {
   ticketSeveritiesRef:[any];
   ticketIssueTypesRef:[any];
   isLoaded:boolean=false;
-  ticket_id:string='NA';
+  ticket_no:string='NA';
   ticket_data:any;
   model: any;
   searching = false;
@@ -56,7 +56,7 @@ export class IssueDetailsComponent implements OnInit {
 
     this._serNgxSpinner.show();
     try{
-      this.ticket_id=this.parentForm.get('fctlTicketId').value;
+      this.ticket_no=this.parentForm.get('fctlTicketNo').value;
     }
     catch(e){
       console.log('@@@@@@@@@@@@@');
@@ -78,13 +78,13 @@ export class IssueDetailsComponent implements OnInit {
         console.log("ticketSeverityRef:" + JSON.stringify(this.ticketSeveritiesRef));
         console.log("ticketIssueTypesRef:" + JSON.stringify(this.ticketIssueTypesRef));
         console.log('Activated Route check');
-        // console.log(this._activatedRoute.snapshot.paramMap.get('ticket_id'));
-        console.log('@@@@@ this.ticket_id:'+this.ticket_id);
+        // console.log(this._activatedRoute.snapshot.paramMap.get('ticket_no'));
+        console.log('@@@@@ this.ticket_no:'+this.ticket_no);
         
-        if (this.ticket_id !== 'NA'){
-        console.log('if done @@@@@ this.ticket_id:'+this.ticket_id);
+        if (this.ticket_no !== 'NA'){
+        console.log('if done @@@@@ this.ticket_no:'+this.ticket_no);
 
-        this._serTicketDetails.getTicketDetails(this.ticket_id)
+        this._serTicketDetails.getTicketDetails(this.ticket_no)
           .then(res => {
             console.log("Inside Response this._serTicketDetails.getRefMaster");
             console.log(res);
@@ -113,6 +113,8 @@ export class IssueDetailsComponent implements OnInit {
             this.parentForm.get('fctlCreatedBy').setValue(this.ticket_data.created_by);
             this.parentForm.get('fctlReportedDate').setValue(this.ticket_data.reported_date);
             this.parentForm.get('fctlReportedBy').setValue(this.ticket_data.reported_by);
+            this.parentForm.get('fctlAssigneeName').setValue(this.ticket_data.assignee_name);
+            this.parentForm.get('fctlIsBlocking').setValue(( this.ticket_data.is_blocking =='Y') ? true :false);
             console.log('------@@@@@@@--------');
             console.log(this.parentForm.get('fctlReportedDate').value);
             // tempDate=this.dataPipe.transform(this.ticket_data.reported_date,'y-M-d').split('-');

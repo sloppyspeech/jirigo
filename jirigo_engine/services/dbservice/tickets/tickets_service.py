@@ -19,15 +19,18 @@ class JirigoTicket(object):
         self.severity = data.get('severity')
         self.priority = data.get('priority')
         self.issue_type = data.get('issue_type')
+        self.issue_status = data.get('issue_status')
+        self.is_blocking = data.get('is_blocking','N')
         self.environment = data.get('environment')
         self.created_by = data.get('created_by')
-        self.created_date = data.get('created_date')
+        self.created_date = datetime.datetime.now()
         self.modified_by = data.get('modified_by')
-        self.modified_date = data.get('modified_date')
+        self.modified_date = datetime.datetime.now()
         self.reported_by = data.get('reported_by')
         self.reported_date = data.get('reported_date')
         self.ticket_no=data.get('ticket_no','-')
         self.project_name=data.get('project_name','')
+        self.assignee_name=data.get('assignee_name','')
         self.logger=Logger()
 
     @classmethod
@@ -41,13 +44,13 @@ class JirigoTicket(object):
         response_data={}
         self.logger.debug("Inside Create Ticket")
         insert_sql="""  INSERT INTO TTICKETS(ticket_no,summary,description,severity,priority,
-                        issue_status,issue_type,environment,created_by,
-                        created_date,reported_by,reported_date) 
-                        VALUES (get_next_ticket_no_by_proj(%s),%s,%s,%s,%s,%s,%s,%s,%s,%s,get_user_id(%s),%s) returning ticket_int_id;
+                        issue_status,issue_type,environment,is_blocking,created_by,
+                        created_date,reported_by,reported_date,assignee_id,project_id) 
+                        VALUES (get_next_ticket_no_by_proj(%s),%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,get_user_id(%s),%s,get_user_id(%s),get_proj_id(%s)) returning ticket_int_id;
                     """
-        values=(self.project_abbr,self.summary,self.description,self.severity,self.priority,
-                "Open",self.issue_type,self.environment,self.created_by,
-                datetime.datetime.today(),self.reported_by,datetime.datetime.today(),)
+        values=(self.project_name,self.summary,self.description,self.severity,self.priority,
+                "Open",self.issue_type,self.environment,self.is_blocking,self.created_by,
+                datetime.datetime.today(),self.reported_by,datetime.datetime.today(),self.assignee_name,self.project_name,)
         self.logger.debug(f'Insert : {insert_sql}  {values}')
 
         # update_sql=""" UPDATE TTICKETS 
@@ -80,7 +83,24 @@ class JirigoTicket(object):
         self.logger.debug("Inside get_all_tickets")
         query_sql="""  
                         WITH t AS (
-                            SELECT * FROM ttickets order by ticket_int_id
+                            SELECT ticket_int_id,
+                                    ticket_no,
+                                    summary,
+                                    description,
+                                    issue_status,
+                                    issue_type,
+                                    severity,
+                                    priority,
+                                    environment,
+                                    is_blocking,
+                                    get_user_name(created_by) created_by,
+                                    to_char(created_date, 'DD-Mon-YYYY HH24:MI:SS') created_date,
+                                    get_user_name(modified_by) modified_by,
+                                    to_char(created_date, 'DD-Mon-YYYY HH24:MI:SS') modified_date,
+                                    get_user_name(reported_by) reported_by,
+                                    to_char(created_date, 'DD-Mon-YYYY HH24:MI:SS') reported_date
+                              FROM ttickets 
+                             order by ticket_int_id
                         )
                         SELECT json_agg(t) from t;
                    """
@@ -118,6 +138,8 @@ class JirigoTicket(object):
                                         priority,
                                         environment,
                                         is_blocking,
+                                        get_proj_name(project_id) project_name,
+                                        get_user_name(COALESCE(assignee_id, 0)) assignee_name,
                                         get_user_name(COALESCE(created_by, 0)) created_by,
                                         created_date,
                                         get_user_name(COALESCE(modified_by, 0)) modified_by,
@@ -125,11 +147,11 @@ class JirigoTicket(object):
                                         get_user_name(COALESCE(reported_by, 0)) reported_by,
                                         reported_date
                                 FROM ttickets
-                                WHERE TICKET_INT_ID=%s )
+                                WHERE TICKET_NO=%s )
                                 SELECT json_agg(t)
                                 FROM t;
                    """
-        values=(self.ticket_int_id,)
+        values=(self.ticket_no,)
         # print(f'Select : {query_sql} Values :{values}')
         self.logger.debug(f'Select : {query_sql} Values :{values}')
 
@@ -164,15 +186,20 @@ class JirigoTicket(object):
                                 issue_status=%s,
                                 issue_type=%s,
                                 environment=%s,
-                                modified_by=%s,
+                                modified_by=get_user_id(%s),
                                 modified_date=%s,
-                                reported_by=%s,
-                                reported_date=%s
-                         WHERE ticket_int_id=%s;
+                                reported_by=get_user_id(%s),
+                                reported_date=%s,
+                                project_id=get_proj_id(%s),
+                                assignee_id=get_user_id(%s),
+                                is_blocking=%s
+                         WHERE ticket_no=%s;
                     """
         values=(self.summary,self.description,self.severity,self.priority,
-                "Open",self.issue_type,self.environment,self.modified_by,
-                datetime.datetime.today(),self.reported_by,datetime.datetime.today(),self.ticket_no,)
+                self.issue_status,self.issue_type,self.environment,self.modified_by,
+                datetime.datetime.today(),self.reported_by,datetime.datetime.today(),
+                self.project_name,self.assignee_name,self.is_blocking,self.ticket_no
+               ,)
 
         self.logger.debug(f'Update : {update_sql}  {values}')
 

@@ -16,6 +16,12 @@ import { QuillModule  } from 'ngx-quill';
 
 import { TabViewModule  } from 'primeng/tabview';
 import { ButtonModule } from 'primeng/button';
+import { TableModule } from 'primeng/table';
+import { CalendarModule  } from 'primeng/calendar';
+import { SelectButtonModule  } from 'primeng/selectbutton';
+import { AutoComplete, AutoCompleteModule  } from 'primeng/autocomplete';
+import { DialogModule } from "primeng/dialog";
+import { CardModule  } from 'primeng/card';
 
 import { LoginComponent } from './components/login/login.component';
 import { CreateTicketComponent } from './components/tickets/create-ticket/create-ticket.component';
@@ -28,6 +34,7 @@ import { FooterComponent } from './components/footer/footer.component';
 import { IssueDetailsComponent } from './components/tickets/issue-details/issue-details.component';
 import { TicketCommentsComponent } from './components/tickets/ticket-comments/ticket-comments.component';
 import { SelectUserComponent } from './components/common/select-user/select-user.component';
+import { TicketAuditComponent } from './components/tickets/ticket-audit/ticket-audit.component';
 
 @NgModule({
   declarations: [
@@ -42,7 +49,8 @@ import { SelectUserComponent } from './components/common/select-user/select-user
     FooterComponent,
     IssueDetailsComponent,
     TicketCommentsComponent,
-    SelectUserComponent
+    SelectUserComponent,
+    TicketAuditComponent
   ],
   imports: [
     BrowserModule,
@@ -58,7 +66,13 @@ import { SelectUserComponent } from './components/common/select-user/select-user
     QuillModule.forRoot(),
     NgxSpinnerModule,
     TabViewModule,
-    ButtonModule
+    ButtonModule,
+    TableModule,
+    CalendarModule,
+    SelectButtonModule,
+    AutoCompleteModule,
+    DialogModule,
+    CardModule
   ],
   providers: [],
   bootstrap: [AppComponent]

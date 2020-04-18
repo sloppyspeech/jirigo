@@ -18,8 +18,8 @@
                       <a [routerLink]="['/create-project']" href="#" class="dropdown-item">Create Project</a>
                       <a [routerLink]="['/list-tickets']" href="#" class="dropdown-item">List Tickets</a>
                       <!-- <a href="#" class="dropdown-item">Sent Items</a> -->
-                      <div class="dropdown-divider"></div>
-                      <a href="#"class="dropdown-item">Trash</a>
+                      <!-- <div class="dropdown-divider"></div>
+                      <a href="#"class="dropdown-item">Trash</a> -->
                   </div>
               </li>
                 <li class="nav-item dropdown">
@@ -28,8 +28,8 @@
                         <a [routerLink]="['/create-ticket']" href="#" class="dropdown-item">Create Ticket</a>
                         <a [routerLink]="['/list-tickets']" href="#" class="dropdown-item">List Tickets</a>
                         <!-- <a href="#" class="dropdown-item">Sent Items</a> -->
-                        <div class="dropdown-divider"></div>
-                        <a href="#"class="dropdown-item">Trash</a>
+                        <!-- <div class="dropdown-divider"></div>
+                        <a href="#"class="dropdown-item">Trash</a> -->
                     </div>
                 </li>
             </ul>
@@ -47,32 +47,14 @@
         </div>
     </nav>
     <br>
-    <!-- </div> -->
 
-   <!-- --> 
-  <!-- <div class="container-fluid p-3 mb-2 bg-white text-dark"> -->
-    <!-- <div class="container col-sm-3 col-md-6 col-lg-9 bg-white text-dark"> -->
     <div class="row">
-      <!-- <div id="mySidebar" class="sidebar overon" *ngIf="showMenu">
-        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()"
-          >&times;</a
-        >
-        <a [routerLink]="['/create-ticket']" href="#">Create Tickets</a>
-        <a [routerLink]="['/view-edit-tickets']" href="#">View Tickets</a>
-        <a [routerLink]="['/list-tickets']" href="#">List Tickets</a>
-        <a href="#">Projects</a>
-      </div> -->
-
-      <!-- <div id="main" class="menu">
-        <button class="openbtn" onclick="openNav();">
-          &#9776; Open Sidebar
-        </button>
-      </div> -->
-      <!-- <div class="col-sm-6 offset-sm-6 col-md-10 offset-md-2" > -->
       <div class="col-sm-6 col-md-9 col-lg-12">
-        <app-header></app-header>
+        
+        <app-header ></app-header>
         <router-outlet></router-outlet>
         <app-footer></app-footer>
+
       </div>
     </div>
   </div>

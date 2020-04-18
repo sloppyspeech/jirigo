@@ -25,7 +25,7 @@ const routes: Routes = [
     component:ListTicketsComponent
   },
   {
-    path:'view-edit-tickets/:ticket_id',
+    path:'view-edit-tickets/:ticket_no',
     component:ViewEditTicketsComponent
   },
   {

@@ -12,6 +12,7 @@ export class AppComponent {
   ngOnInit() {
     localStorage.setItem('loggedInUserId','1');
     localStorage.setItem('currentProjectId','4');
+    localStorage.setItem('currentProjectName','Project Inferno');
   }
   openNav(){
     alert('called '+this.showMenu);
