@@ -1,4 +1,4 @@
-<ngx-spinner></ngx-spinner>
+<ngx-spinner [fullScreen]="true" type="ball-newton-cradle"></ngx-spinner>
 <!-- <div class="form-group">
     <div class="card">
         <div class="card-header"><h4 id="testTicket">List Tickets</h4></div>
@@ -29,7 +29,7 @@
     </div>
 </div> -->
 
-<p-table #dt *ngIf="showTable" [value]="allTickets" [columns]="ticker_header_cols" [rowHover]="true" [responsive]="true"
+<p-table #dt *ngIf="showTable" [value]="allTickets" [columns]="ticket_header_cols" [rowHover]="true" [responsive]="true"
 [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[2,5,10,25,50]" 
 [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
 [filterDelay]="1" [globalFilterFields]="['ticket_no','summary','reported_by','issue_status','priority','environment','severity','issue_type']" >

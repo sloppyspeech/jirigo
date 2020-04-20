@@ -51,6 +51,11 @@ export class TicketDetailsService {
     console.log("***Inside Update ticket***");
     console.log(inpData);
     return this._httpCli.put(this.sApiEndPoint + 'ticket', inpData, this.sHttpOptions);
+  }
 
+  cloneTicket(inpData) {
+    console.log("***Inside Clone ticket***");
+    console.log(inpData);
+    return this._httpCli.post(this.sApiEndPoint + 'clone-ticket', inpData, this.sHttpOptions);
   }
 }

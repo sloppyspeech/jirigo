@@ -7,7 +7,7 @@ from services.logging.logger import Logger
 
 from pprint import pprint
 
-class JirigoProject(object):
+class JirigoProjects(object):
 
     def __init__(self,data):
         print("Initializing JirigoProject")
@@ -50,4 +50,35 @@ class JirigoProject(object):
             if(self.jdb.dbConn):
                 print(f'Error While Creating Project {error}')
                 self.logger.debug(f'Error While Creating Project {error}')
+                raise
+        
+    def get_all_projects(self):
+        response_data={}
+        self.logger.debug("Inside get_all_projects")
+        query_sql="""  
+                    WITH t AS (
+                    select *
+                        from tprojects 
+                    where is_active='Y'
+                    )
+                    SELECT json_agg(t) from t;
+                   """
+        self.logger.debug(f'Select : {query_sql}')
+        try:
+            print('-'*80)
+            cursor=self.jdb.dbConn.cursor()
+            cursor.execute(query_sql)
+            json_data=cursor.fetchone()[0]
+            row_count=cursor.rowcount
+            self.logger.debug(f'get_all_projects Select Success with {row_count} row(s) data {json_data}')
+            if (json_data == None):
+                response_data['dbQryStatus']='No Data Found'
+            else:
+                response_data['dbQryStatus']='Success'
+
+            response_data['dbQryResponse']=json_data
+            return response_data
+        except  (Exception, psycopg2.Error) as error:
+            if(self.jdb.dbConn):
+                print(f'Error While Select Projects {error}')
                 raise

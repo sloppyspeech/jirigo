@@ -1,0 +1,26 @@
+<p-table #dt *ngIf="showTable" [value]="allProjects" [columns]="project_list_header_cols" [rowHover]="true" [responsive]="true"
+[rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[2,5,10,25,50]" 
+[paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+[filterDelay]="1" [globalFilterFields]="['project_no','summary','reported_by','issue_status','priority','environment','severity','issue_type']" >
+    <ng-template pTemplate="caption">
+        <div style="text-align: right">        
+            <i class="pi pi-search" style="margin:4px 4px 0 0"></i>
+            <input type="text" pInputText size="50" placeholder="Global Filter" (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto">
+        </div>
+    </ng-template>
+    <ng-template pTemplate="header" let-columns>
+        <tr>
+            <th *ngFor="let col of columns" [pSortableColumn]="col">
+                {{col}}
+                <p-sortIcon [field]="col" ></p-sortIcon>
+            </th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-project>
+        <tr>
+            <td><a [routerLink]="['/view-edit-projects', project.project_abbr]">{{project.project_name}}</a></td>
+            <td>{{project.project_abbr}}</td>
+            <td>{{project.project_type}}</td>
+        </tr>
+    </ng-template>
+</p-table>

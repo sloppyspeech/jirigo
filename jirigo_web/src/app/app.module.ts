@@ -22,6 +22,9 @@ import { SelectButtonModule  } from 'primeng/selectbutton';
 import { AutoComplete, AutoCompleteModule  } from 'primeng/autocomplete';
 import { DialogModule } from "primeng/dialog";
 import { CardModule  } from 'primeng/card';
+import { ToastModule  } from 'primeng/toast';
+
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { LoginComponent } from './components/login/login.component';
 import { CreateTicketComponent } from './components/tickets/create-ticket/create-ticket.component';
@@ -35,6 +38,7 @@ import { IssueDetailsComponent } from './components/tickets/issue-details/issue-
 import { TicketCommentsComponent } from './components/tickets/ticket-comments/ticket-comments.component';
 import { SelectUserComponent } from './components/common/select-user/select-user.component';
 import { TicketAuditComponent } from './components/tickets/ticket-audit/ticket-audit.component';
+import { ListProjectsComponent } from './components/projects/list-projects/list-projects.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +54,9 @@ import { TicketAuditComponent } from './components/tickets/ticket-audit/ticket-a
     IssueDetailsComponent,
     TicketCommentsComponent,
     SelectUserComponent,
-    TicketAuditComponent
+    TicketAuditComponent,
+    ListProjectsComponent
+    
   ],
   imports: [
     BrowserModule,
@@ -72,7 +78,9 @@ import { TicketAuditComponent } from './components/tickets/ticket-audit/ticket-a
     SelectButtonModule,
     AutoCompleteModule,
     DialogModule,
-    CardModule
+    CardModule,
+    ToastModule,
+    FontAwesomeModule
   ],
   providers: [],
   bootstrap: [AppComponent]

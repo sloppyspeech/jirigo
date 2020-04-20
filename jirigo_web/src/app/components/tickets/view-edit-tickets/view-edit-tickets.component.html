@@ -1,23 +1,32 @@
-<div class="form-group"></div>
-
 <ngx-spinner
   [fullScreen]="true"
-  type="ball-climbing-dot"
+  type="ball-newton-cradle"
   size="medium"
 ></ngx-spinner>
+<p-toast [style]="{marginTop: '10px'}" position="top-right"></p-toast>
 <form [formGroup]="viewModifyTicketFB" (ngSubmit)="updateTicket()" *ngIf="isLoaded">
   <div class="form-group">
     <div class="row" *ngIf="viewEditFormEditBtnEnabled">
-      <div class="col col-md-2 col-sm-1 col-lg-2">
+      <div class="col-md-2 col-sm-2 col-lg-2">
+        <div>
+        
         <button
-          pButton
           type="button"
           label="Modify Ticket"
-          class="ui-button-rounded ui-button-warning"
-          style="font-weight: bolder;"
+          class="btn btn-outline-warning"
           (click)="markFormEditable()"
-        ></button>
+        ><fa-icon [icon]="faEdit" style="padding-right: 3px; color:darkorange;" ></fa-icon>Modify Ticket</button>
       </div>
+      </div>
+      <div class="col-md-2 col-sm-2 col-lg-2">
+        <button
+          type="button"
+          label="Clone Ticket"
+          class="btn btn-outline-purple-secondary"
+          (click)="cloneTicket()"
+        ><fa-icon [icon]="faClone" style="color: blueviolet;"></fa-icon>&nbsp; Clone Ticket</button>
+      </div>
+
     </div>
     <br />
     <div class="card">
@@ -38,7 +47,7 @@
           type="text"
           placeholder=""
           id="summary"
-          class="form-control summary-text"
+          class="form-control-plain"
           required
         />
       </div>

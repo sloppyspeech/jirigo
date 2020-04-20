@@ -149,9 +149,9 @@ class JirigoRefMaster(object):
                 print(f'Error While Select Reference ISSUE_TYPE {error}')
                 raise
     
-    def get_issue_type_values(self):
+    def get_module_values(self):
         response_data={}
-        self.logger.debug("Inside get_issue_type_values")
+        self.logger.debug("Inside get_module_values")
         query_sql="""  
                     WITH t AS (
                             select
@@ -161,25 +161,25 @@ class JirigoRefMaster(object):
                             where
                                 ref_category = 'TICKETS'
                                 and is_active = 'Y'
-                                and ref_name = 'ISSUE_TYPE'
+                                and ref_name = 'Module'
                                 order by order_id
                         )
                         SELECT json_agg(t) from t;
                    """
-        self.logger.debug(f'Select ISSUE_TYPE : {query_sql}')
+        self.logger.debug(f'Select Module : {query_sql}')
         try:
             print('-'*80)
             cursor=self.jdb.dbConn.cursor()
             cursor.execute(query_sql)
             json_data=cursor.fetchone()[0]
             row_count=cursor.rowcount
-            self.logger.debug(f'ISSUE_TYPE Select Success with {row_count} row(s) data {json_data}')
+            self.logger.debug(f'Module Select Success with {row_count} row(s) data {json_data}')
             response_data['dbQryStatus']='Success'
             response_data['dbQryResponse']=json_data
             return response_data
         except  (Exception, psycopg2.Error) as error:
             if(self.jdb.dbConn):
-                print(f'Error While Select Reference ISSUE_TYPE {error}')
+                print(f'Error While Select Reference Module {error}')
                 raise
     
     def get_all_ticket_refs(self):
@@ -197,6 +197,7 @@ class JirigoRefMaster(object):
                                         when REF_NAME='PRIORITY' then 'Priorities'
                                         when REF_NAME='SEVERITY' then 'Severities'
                                         when REF_NAME='STATUS' then 'IssueStatuses'
+                                        when REF_NAME='Module' then 'Modules'
                                     end REF_NAME ,
                                     ref_value
                                 from

@@ -27,6 +27,7 @@ export class IssueDetailsComponent implements OnInit {
   ticketPrioritiesRef:[any];
   ticketSeveritiesRef:[any];
   ticketIssueTypesRef:[any];
+  ticketModuleRef:[any];
   isLoaded:boolean=false;
   ticket_no:string='NA';
   ticket_data:any;
@@ -69,14 +70,16 @@ export class IssueDetailsComponent implements OnInit {
         this.ticketEnvRef = res[0].Environments;
         this.ticketIssueStatusesRef = res[1].IssueStatuses;
         this.ticketIssueTypesRef = res[2].IssueTypes;
-        this.ticketPrioritiesRef = res[3].Priorities;
-        this.ticketSeveritiesRef = res[4].Severities;
+        this.ticketPrioritiesRef = res[4].Priorities;
+        this.ticketSeveritiesRef = res[5].Severities;
+        this.ticketModuleRef = res[3].Modules;
         
         console.log("here:" + JSON.stringify(this.ticketEnvRef));
         console.log("ticketIssueStatusesRef:" + JSON.stringify(this.ticketIssueStatusesRef));
         console.log("ticketPrioritiesRef:" + JSON.stringify(this.ticketPrioritiesRef));
         console.log("ticketSeverityRef:" + JSON.stringify(this.ticketSeveritiesRef));
         console.log("ticketIssueTypesRef:" + JSON.stringify(this.ticketIssueTypesRef));
+        console.log("ticketModuleRef:" + JSON.stringify(this.ticketModuleRef));
         console.log('Activated Route check');
         // console.log(this._activatedRoute.snapshot.paramMap.get('ticket_no'));
         console.log('@@@@@ this.ticket_no:'+this.ticket_no);
@@ -108,6 +111,7 @@ export class IssueDetailsComponent implements OnInit {
             this.parentForm.get('fctlIssueStatus').setValue(this.ticket_data.issue_status);
             this.parentForm.get('fctlSeverity').setValue(this.ticket_data.severity);
             this.parentForm.get('fctlPriority').setValue(this.ticket_data.priority);
+            this.parentForm.get('fctlModule').setValue(this.ticket_data.module);
             this.parentForm.get('fctlEnvironment').setValue(this.ticket_data.environment);
             this.parentForm.get('fctlCreatedDate').setValue(this.ticket_data.created_date);
             this.parentForm.get('fctlCreatedBy').setValue(this.ticket_data.created_by);
@@ -117,10 +121,6 @@ export class IssueDetailsComponent implements OnInit {
             this.parentForm.get('fctlIsBlocking').setValue(( this.ticket_data.is_blocking =='Y') ? true :false);
             console.log('------@@@@@@@--------');
             console.log(this.parentForm.get('fctlReportedDate').value);
-            // tempDate=this.dataPipe.transform(this.ticket_data.reported_date,'y-M-d').split('-');
-            // console.log(tempDate);
-            // this.parentForm.get('fctlReportedDate').setValue(
-            //   { "year": parseInt(tempDate[0]), "month": parseInt(tempDate[1]), "day": parseInt(tempDate[2])});
             this.parentForm.get('fctlReportedDate').setValue(this._serUtils.parseDateAsYYYYMMDD(this.ticket_data.reported_date));
             this.isLoaded = true;
             this._serNgxSpinner.hide();

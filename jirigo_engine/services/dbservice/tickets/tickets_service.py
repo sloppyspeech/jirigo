@@ -31,6 +31,7 @@ class JirigoTicket(object):
         self.ticket_no=data.get('ticket_no','-')
         self.project_name=data.get('project_name','')
         self.assignee_name=data.get('assignee_name','')
+        self.module=data.get('module','')
         self.logger=Logger()
 
     @classmethod
@@ -45,27 +46,22 @@ class JirigoTicket(object):
         self.logger.debug("Inside Create Ticket")
         insert_sql="""  INSERT INTO TTICKETS(ticket_no,summary,description,severity,priority,
                         issue_status,issue_type,environment,is_blocking,created_by,
-                        created_date,reported_by,reported_date,assignee_id,project_id) 
-                        VALUES (get_next_ticket_no_by_proj(%s),%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,get_user_id(%s),%s,get_user_id(%s),get_proj_id(%s)) returning ticket_int_id;
+                        created_date,reported_by,reported_date,assignee_id,project_id,module) 
+                        VALUES (get_next_ticket_no_by_proj(%s),%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,
+                                get_user_id(%s),%s,get_user_id(%s),get_proj_id(%s),%s) returning ticket_int_id;
                     """
         values=(self.project_name,self.summary,self.description,self.severity,self.priority,
                 "Open",self.issue_type,self.environment,self.is_blocking,self.created_by,
-                datetime.datetime.today(),self.reported_by,datetime.datetime.today(),self.assignee_name,self.project_name,)
+                datetime.datetime.today(),self.reported_by,datetime.datetime.today(),
+                self.assignee_name,self.project_name,self.module,)
         self.logger.debug(f'Insert : {insert_sql}  {values}')
 
-        # update_sql=""" UPDATE TTICKETS 
-        #                   SET ticket_no=%s
-        #                  WHERE ticket_int_id=%s;
-        #             """
         try:
             print('-'*80)
             print(type(self.jdb.dbConn))
             cursor=self.jdb.dbConn.cursor()
             cursor.execute(insert_sql,values)
             ticket_int_id=cursor.fetchone()[0]
-            # update_values=('Proj-'+str(ticket_int_id),ticket_int_id,)
-            # cursor.execute(update_sql,update_values)
-            # self.logger.debug(f'Update : {update_sql}  {update_values}')
             self.jdb.dbConn.commit()
             row_count=cursor.rowcount
             self.logger.debug(f'Insert Success with {row_count} row(s) Ticket ID {ticket_int_id}')
@@ -93,6 +89,7 @@ class JirigoTicket(object):
                                     priority,
                                     environment,
                                     is_blocking,
+                                    module,
                                     get_user_name(created_by) created_by,
                                     to_char(created_date, 'DD-Mon-YYYY HH24:MI:SS') created_date,
                                     get_user_name(modified_by) modified_by,
@@ -138,6 +135,7 @@ class JirigoTicket(object):
                                         priority,
                                         environment,
                                         is_blocking,
+                                        module,
                                         get_proj_name(project_id) project_name,
                                         get_user_name(COALESCE(assignee_id, 0)) assignee_name,
                                         get_user_name(COALESCE(created_by, 0)) created_by,
@@ -193,13 +191,14 @@ class JirigoTicket(object):
                                 project_id=get_proj_id(%s),
                                 assignee_id=get_user_id(%s),
                                 is_blocking=%s
+                                module=%s,
                          WHERE ticket_no=%s;
                     """
         values=(self.summary,self.description,self.severity,self.priority,
                 self.issue_status,self.issue_type,self.environment,self.modified_by,
                 datetime.datetime.today(),self.reported_by,datetime.datetime.today(),
-                self.project_name,self.assignee_name,self.is_blocking,self.ticket_no
-               ,)
+                self.project_name,self.assignee_name,self.is_blocking,self.module,
+                self.ticket_no,)
 
         self.logger.debug(f'Update : {update_sql}  {values}')
 
@@ -215,4 +214,51 @@ class JirigoTicket(object):
         except  (Exception, psycopg2.Error) as error:
             if(self.jdb.dbConn):
                 print(f'Error While Updating Ticket {error}')
+                raise
+
+    def clone_ticket(self):
+        response_data={}
+        new_ticket_no='Error'
+        self.logger.debug("Inside Update Ticket update_tickets")
+
+        insert_sql="""
+                        INSERT INTO ttickets (ticket_no, SUMMARY, description, issue_status, issue_type, 
+                                              severity, priority, environment, is_blocking, module,created_by, 
+                                              created_date, reported_by, reported_date, project_id)
+                                    SELECT get_next_ticket_no_by_proj(get_proj_name(project_id)),
+                                        SUMMARY,
+                                        description,
+                                        issue_status,
+                                        issue_type,
+                                        severity,
+                                        priority,
+                                        environment,
+                                        is_blocking,
+                                        module,
+                                        %s,
+                                        %s,
+                                        reported_by,
+                                        reported_date,
+                                        project_id
+                                    FROM ttickets
+                                    WHERE ticket_no=%s
+                                    returning ticket_no;
+                    """
+        values=(self.created_by,datetime.datetime.today(),self.ticket_no,)
+
+        self.logger.debug(f'Update : {insert_sql}  {values}')
+
+        try:
+            print('-'*80)
+            print(type(self.jdb.dbConn))
+            cursor=self.jdb.dbConn.cursor()
+            cursor.execute(insert_sql,values)
+            new_ticket_no=cursor.fetchone()[0]
+            self.jdb.dbConn.commit()
+            response_data['dbQryStatus']='Success'
+            response_data['dbQryResponse']={"ticketNo":new_ticket_no,"rowCount":1}
+            return response_data
+        except  (Exception, psycopg2.Error) as error:
+            if(self.jdb.dbConn):
+                print(f'Error While clone_ticket Ticket {error}')
                 raise

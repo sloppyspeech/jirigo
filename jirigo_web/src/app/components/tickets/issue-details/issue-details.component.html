@@ -23,10 +23,9 @@
                 >Issue Type<span class="required-field"></span
               ></label>
               <select
-                class="form-control"
+                class="form-control-plain"
                 id="exampleFormControlSelect1"
                 formControlName="fctlIssueType"
-                (change)="setEnvironment1($event)"
               >
                 <option value="" disabled>Choose..</option>
                 <option
@@ -43,7 +42,7 @@
                 >Severity<span class="required-field"></span
               ></label>
               <select
-                class="form-control"
+                class="form-control-plain"
                 id="exampleFormControlSelect1"
                 formControlName="fctlSeverity"
                 (change)="setEnvironment1($event)"
@@ -63,7 +62,7 @@
                 >Priority<span class="required-field"></span
               ></label>
               <select
-                class="form-control"
+                class="form-control-plain"
                 id="exampleFormControlSelect1"
                 formControlName="fctlPriority"
                 (change)="setEnvironment1($event)"
@@ -84,7 +83,7 @@
                 >Environment<span class="required-field"></span
               ></label>
               <select
-                class="form-control"
+                class="form-control-plain"
                 id="exampleFormControlSelect1"
                 formControlName="fctlEnvironment"
                 (change)="setEnvironment1($event)"
@@ -104,7 +103,7 @@
                 >Issue Status<span class="required-field"></span
               ></label>
               <select
-                class="form-control"
+                class="form-control-plain"
                 id="exampleFormControlSelect1"
                 formControlName="fctlIssueStatus"
                 (change)="setReportedBy($event)"
@@ -131,54 +130,30 @@
                 </label>
               </div>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-3 input-group">
               <label
                 for="formGroupExampleInput"
                 class="col-form-label col-form-label-sm"
                 >Reported Date<span class="required-field"></span
               ></label>
-              <div class="input-group">
                 <input
-                  class="form-control"
+                  class="form-control-plain"
                   formControlName="fctlReportedDate"
                   placeholder="yyyy-mm-dd"
                   name="md"
                   ngbDatepicker
                   #md="ngbDatepicker"
+                  (click)="md.toggle()"
                 />
-                <div class="input-group-append">
-                  <button
-                    class="btn btn-outline-secondary calendar"
-                    (click)="md.toggle()"
-                    type="button"
-                  >
-                    <span class="oi oi-calendar"></span>
-                  </button>
-                </div>
-              </div>
+                <!-- <span class="oi oi-calendar" ></span> -->
             </div>
-
-            <!-- <div class="col-md-3">
-              <label
-                for="formGroupExampleInput"
-                class="col-form-label col-form-label-sm"
-                >Reported By<span class="required-field"></span
-              ></label>
-              <input
-                type="text"
-                formControlName="fctlReportedBy"
-                placeholder=""
-                id="modifiedBy"
-                class="form-control"
-              />
-            </div> -->
-
+            
             <div class="col-md-3">
               <label for="typeahead-http" class="col-form-label col-form-label-sm">Reported By<span class="required-field"></span></label>
               <input
                 id="typeahead-http"
                 type="text"
-                class="form-control"
+                class="form-control-plain"
                 formControlName="fctlReportedBy"
                 [class.is-invalid]="searchFailed"
                 [ngbTypeahead]="search"
@@ -191,12 +166,13 @@
                 Sorry, suggestions could not be loaded.
               </div>
             </div>
+
             <div class="col-md-3">
               <label for="typeahead-http" class="col-form-label col-form-label-sm">Assigned To<span class="required-field"></span></label>
               <input
                 id="typeahead-http"
                 type="text"
-                class="form-control"
+                class="form-control-plain"
                 formControlName="fctlAssigneeName"
                 [class.is-invalid]="searchFailed"
                 [ngbTypeahead]="search"
@@ -208,6 +184,26 @@
               <div class="invalid-feedback" *ngIf="searchFailed">
                 Sorry, suggestions could not be loaded.
               </div>
+            </div>
+            <div class="col-md-3">
+              <label
+                for="formGroupExampleInput"
+                class="col-form-label col-form-label-sm"
+                >Affected Module
+              </label>
+              <select
+                class="form-control-plain"
+                id="exampleFormControlSelect1"
+                formControlName="fctlModule"
+                (change)="setEnvironment1($event)"
+              >
+                <option value="" disabled>Choose..</option>
+                <option
+                  *ngFor="let module of ticketModuleRef"
+                  [ngValue]="module.name"
+                  >{{ module.name }}</option
+                >
+              </select>
             </div>
           </div>
         </div>

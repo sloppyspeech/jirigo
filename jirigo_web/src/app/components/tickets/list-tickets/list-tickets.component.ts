@@ -11,7 +11,7 @@ import { NgxSpinnerComponent, NgxSpinnerService } from 'ngx-spinner';
 export class ListTicketsComponent implements OnInit {
   allTickets=[];
   showTable:boolean=false;
-ticker_header_cols:string[]=[
+  ticket_header_cols:string[]=[
     // 'ticket_int_id',
     'Ticket No',
     'Summary',

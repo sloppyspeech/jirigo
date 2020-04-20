@@ -5,12 +5,18 @@ import { TicketDetailsService } from '../../../services/tickets/ticket-details.s
 import { ActivatedRoute } from '@angular/router';
 import { NgxSpinnerService  } from 'ngx-spinner';
 import { Router  } from '@angular/router';
+import { faClone,faEdit } from '@fortawesome/free-solid-svg-icons';
+import {MessageService} from 'primeng/api';
+
 @Component({
   selector: 'app-create-ticket',
   templateUrl: './view-edit-tickets.component.html',
-  styleUrls: ['./view-edit-tickets.component.css']
+  styleUrls: ['./view-edit-tickets.component.css'],
+  providers:[MessageService]
 })
 export class ViewEditTicketsComponent implements OnInit {
+  faClone=faClone;
+  faEdit=faEdit;
   isLoaded: boolean = false;
   viewEditFormEditBtnEnabled:boolean=true;
   viewModifyTicketFB: FormGroup;
@@ -63,7 +69,8 @@ export class ViewEditTicketsComponent implements OnInit {
     private _activatedRoute: ActivatedRoute,
     private _serTicketDetails: TicketDetailsService,
     private _serNgxSpinner:NgxSpinnerService,
-    private _router:Router) {
+    private _router:Router,
+    private _toastService: MessageService) {
 
       this.viewModifyTicketFB = this._formBuilder.group({
         fctlTicketId: new FormControl({ value: '', disabled: true }),
@@ -75,6 +82,7 @@ export class ViewEditTicketsComponent implements OnInit {
         fctlSeverity: new FormControl({ value: '', disabled: true }, Validators.required),
         fctlPriority: new FormControl({ value: '', disabled: true }, Validators.required),
         fctlEnvironment: new FormControl({ value: '', disabled: true }, Validators.required),
+        fctlModule: new FormControl({ value: '', disabled: true }),
         fctlCreatedDate: new FormControl({ value: '', disabled: true }),
         fctlCreatedBy: new FormControl({ value: '', disabled: true }),
         fctlIsBlocking: new FormControl({ value: false, disabled: true }),
@@ -170,27 +178,15 @@ export class ViewEditTicketsComponent implements OnInit {
   }
 
   updateTicket() {
-    console.log(this.viewModifyTicketFB.getRawValue());
-    console.log(this.viewModifyTicketFB.status);
-    console.log(this.viewModifyTicketFB.valid);
-    // alert("submitted");
     let formData:any;
-    console.log("Here in On Submit");
+
+    console.log("updateTicket");
+    console.log('===============================');
     console.log(this.viewModifyTicketFB.status);
     console.log(this.viewModifyTicketFB.valid);
-    console.log('===============================');
     console.log(this.viewModifyTicketFB.getRawValue());
     console.log('===============================');
-    console.log(this.viewModifyTicketFB.get('fctlSummary').value);
-    console.log(this.viewModifyTicketFB.get('fctlDescription').value);
-    console.log(this.viewModifyTicketFB.get('fctlIssueType').value);
-    console.log(this.viewModifyTicketFB.get('fctlSeverity').value);
-    console.log(this.viewModifyTicketFB.get('fctlPriority').value);
-    console.log(this.viewModifyTicketFB.get('fctlIssueStatus').value);
-    console.log(this.viewModifyTicketFB.get('fctlIsBlocking').value);
-    console.log(this.viewModifyTicketFB.get('fctlEnvironment').value);
-    // console.log(this.viewModifyTicketFB.get('fctlCreatedDate').value);
-    // console.log(this.viewModifyTicketFB.get('fctlCreatedBy').value);
+
     formData={
       "ticket_no":this.viewModifyTicketFB.get('fctlTicketNo').value,
       "project_name":this.viewModifyTicketFB.get('fctlProjectName').value,
@@ -199,6 +195,7 @@ export class ViewEditTicketsComponent implements OnInit {
       "severity":this.viewModifyTicketFB.get('fctlSeverity').value,
       "priority":this.viewModifyTicketFB.get('fctlPriority').value,
       "issue_type":this.viewModifyTicketFB.get('fctlIssueType').value,
+      "module":this.viewModifyTicketFB.get('fctlModule').value,
       "is_blocking":this.viewModifyTicketFB.get('fctlIsBlocking').value? 'Y':'N',
       "issue_status":this.viewModifyTicketFB.get('fctlIssueStatus').value,
       "environment":this.viewModifyTicketFB.get('fctlEnvironment').value,
@@ -227,7 +224,7 @@ export class ViewEditTicketsComponent implements OnInit {
           else{
             alert('Ticket Updation Unsuccessful');
           }
-        })
+        });
 
     // alert("submitted");
   }
@@ -243,19 +240,6 @@ export class ViewEditTicketsComponent implements OnInit {
     this.viewEditFormEditBtnEnabled=false;
   }
 
-
-// click cancel 
-// if form is dirty 
-//    show dirtyPage Dialog
-//    ask to choose yes or no
-//      if yes
-//          change values to old values in form control
-//          disable the form controls
-//          enable the edit button
-//      if no
-//          do nothing
-// if form is not dirty
-//  enable the edit button
 
   cancelViewEditForm(){
     console.log("Inside cancelViewEditForm()");
@@ -286,10 +270,43 @@ export class ViewEditTicketsComponent implements OnInit {
 
   reloadComponent() {
     console.log("===============reloadComponent=================");
+    console.log();
     console.log(this._router.url);
     this._router.routeReuseStrategy.shouldReuseRoute = () => false;
     this._router.onSameUrlNavigation = 'reload';
     this._router.navigate([this._router.url]);
+}
+
+cloneTicket(){
+  let formData={
+    "ticket_no":this.viewModifyTicketFB.get('fctlTicketNo').value,
+    "created_by":localStorage.getItem('loggedInUserId')
+  }
+  this._serNgxSpinner.show();
+  this._serTicketDetails.cloneTicket(formData)
+  .subscribe(res=>{
+    console.log("Clone Ticket Output :"+JSON.stringify(res));
+    console.log("Clone Ticket Output :"+res['dbQryStatus']);
+    console.log("Clone Ticket Output :"+res['dbQryResponse']);
+    if (res['dbQryStatus'] == 'Success'){
+      this._serNgxSpinner.show();
+      this.viewModifyTicketFB.reset();
+        this._serNgxSpinner.hide();
+        this._toastService.add({severity:'success', 
+        summary:'New Ticket Number : '+res['dbQryResponse']['ticketNo'], 
+        detail:'Ticket Cloning Successful'
+        });
+       setTimeout(() => {
+         this.reloadComponent();
+       }, 4000);
+    }
+    else{
+      this._toastService.add({severity:'error', 
+      summary:'Ticket Cloning Unsuccessful', 
+      detail:'Clone Failure'
+      });
+    }
+  });
 }
 
 }

@@ -102,6 +102,7 @@ export class CreateTicketComponent implements OnInit {
       fctlIssueStatus:new FormControl({ value: '', disabled: false }, Validators.required),
       fctlSeverity:new FormControl({ value: '', disabled: false }, Validators.required),
       fctlPriority:new FormControl({ value: '', disabled: false }, Validators.required),
+      fctlModule:new FormControl({ value: '', disabled: false }),
       fctlEnvironment:new FormControl({ value: '', disabled: false }, Validators.required),
       fctlCreatedDate:new FormControl({ value:this._calendar.getToday() , disabled: true }),
       fctlCreatedBy:new FormControl({ value:'', disabled: false }),
@@ -129,6 +130,7 @@ export class CreateTicketComponent implements OnInit {
     console.log(this.createTicketFB.get('fctlIssueType').value);
     console.log(this.createTicketFB.get('fctlSeverity').value);
     console.log(this.createTicketFB.get('fctlPriority').value);
+    console.log(this.createTicketFB.get('fctlModule').value);
     console.log(this.createTicketFB.get('fctlIssueStatus').value);
     console.log(this.createTicketFB.get('fctlIsBlocking').value);
     console.log(this.createTicketFB.get('fctlEnvironment').value);
@@ -140,9 +142,10 @@ export class CreateTicketComponent implements OnInit {
       "description":this.createTicketFB.get('fctlDescription').value,
       "severity":this.createTicketFB.get('fctlSeverity').value,
       "priority":this.createTicketFB.get('fctlPriority').value,
+      "module":this.createTicketFB.get('fctlModule').value,
       "issue_type":this.createTicketFB.get('fctlIssueType').value,
-      "issue_status":this.createTicketFB.get('fctlIssueStatus').value ? 'Y':'N',
-      "is_blocking":this.createTicketFB.get('fctlIsBlocking').value,
+      "issue_status":this.createTicketFB.get('fctlIssueStatus').value ,
+      "is_blocking":this.createTicketFB.get('fctlIsBlocking').value? 'Y':'N',
       "environment":this.createTicketFB.get('fctlEnvironment').value,
       "assignee_name":this.createTicketFB.get('fctlAssigneeName').value,
       "created_by":localStorage.getItem('loggedInUserId'),

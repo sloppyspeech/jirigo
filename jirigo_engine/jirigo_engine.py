@@ -4,11 +4,12 @@ from flask_cors import CORS,cross_origin
 import pprint
 import sys
 from services.dbservice.tickets.tickets_service import JirigoTicket
-from services.dbservice.projects_service import JirigoProject
+from services.dbservice.projects_service import JirigoProjects
 from services.dbservice.users_service import JirigoUsers
 from services.dbservice.refmaster_service import JirigoRefMaster
 from services.dbservice.tickets.ticket_comments_service import JirigoTicketComments
 from services.dbservice.tickets.ticket_audit_service import JirigoTicketAudit
+from services.dbservice.tickets.ticket_dashboard import JirigoTicketDashboard
 
 app=Flask(__name__)
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
@@ -33,6 +34,23 @@ def create_ticket():
             return get_jsonified_error_response('Failure',error)
     else:
         return get_jsonified_error_response('Failure',"Not a POST Request")
+
+@app.route('/api/v1/ticket-management/clone-ticket',methods=['POST'])
+def clone_ticket():
+    if request.method == 'POST':
+        print('In Post clone_ticket')
+        print(request.get_json())
+        try:
+            jdb=JirigoTicket.for_create_update_ticket(request.get_json())
+            data=jdb.clone_ticket()
+            print('*'*40)
+            print(data['dbQryResponse'])
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in clone_ticket {error}')
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',"clone_ticket Not a POST Request")
 
 @app.route('/api/v1/ticket-management/ticket',methods=['PUT'])
 def update_ticket():
@@ -145,7 +163,7 @@ def create_project():
         print('In Post create_project')
         print(request.get_json())
         try:
-            jdb=JirigoProject(request.get_json())
+            jdb=JirigoProjects(request.get_json())
             data=jdb.create_project()
             return jsonify(data)
         except Exception as error:
@@ -154,6 +172,21 @@ def create_project():
         return jsonify(request.get_json())
     else:
         return get_jsonified_error_response('Failure',"Not a POST Request")
+
+@app.route('/api/v1/project-management/projects',methods=['GET'])
+def get_all_projects():
+    if request.method == 'GET':
+        print('In Get get_all_projects')
+        try:
+            jdb=JirigoProjects({})
+            data=jdb.get_all_projects()
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in get_all_projects {error}')
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',"get_all_projects Not a GET Request")
+
 
 @app.route('/api/v1/user-management/user',methods=['POST'])
 def create_user():
@@ -245,6 +278,24 @@ def get_all_ticket_refs():
             return get_jsonified_error_response('Failure',error)
     else:
         return get_jsonified_error_response('Failure',"Not a GET Request")
+
+
+@app.route('/api/v1/dashboard-data/summaries',methods=['GET'])
+def get_dashboard_summaries():
+    data={}
+    if request.method == 'GET':
+        print('In GET get_ticket_ref_status')
+        try:
+            jdb=JirigoTicketDashboard()
+            data=jdb.get_ticket_summaries()
+            print("="*80)
+            print(data)
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in get_dashboard_summaries {error}')
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',"get_dashboard_summaries Not a GET Request")
 
 
 def get_jsonified_error_response(status,error):

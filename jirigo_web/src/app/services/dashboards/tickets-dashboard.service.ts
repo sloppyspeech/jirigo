@@ -3,12 +3,13 @@ import { HttpClient,HttpHeaders  } from '@angular/common/http';
 import { environment  } from '../../../environments/environment';
 import { map  } from 'rxjs/operators';
 
+
 @Injectable({
   providedIn: 'root'
 })
-export class ProjectsService {
+export class TicketsDashboardService {
   sApiBaseUrl:string=environment.apiBaseUrl;
-  sApiEndPoint:string=this.sApiBaseUrl+"project-management/"
+  sApiEndPoint:string=this.sApiBaseUrl+"dashboard-data/"
   private sHttpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
@@ -18,20 +19,18 @@ export class ProjectsService {
     })
   };
 
-  constructor(
-    private _httpCli:HttpClient
-  ) { }
+  constructor(private _httpCli:HttpClient) { }
 
+  getDashboardTicketSummary(){
+    console.log('@@@@getDashboardTicketSummary');
+    console.log("getTicketDetails End point :"+this.sApiEndPoint+'summaries/');
+    return this._httpCli.get<any>(this.sApiEndPoint+'summaries').pipe(
+      map((response) => {
+        console.log(response);
+        return response;
+      })
+    );;
+      
+  }
 
-  createProject(inpData:any){
-    console.log("@@@@@ createProject @@@@@@@");
-    console.log(inpData)
-    return  this._httpCli.post(this.sApiEndPoint+'create-project',inpData,this.sHttpOptions);
-  }
-  getAllProjects(){
-    console.log("@@@@getAllProjects@@@@@")
-    console.log("getAllProjects:");
-    console.log("this.sApiEndPoint:"+this.sApiEndPoint+'projects');
-    return this._httpCli.get(this.sApiEndPoint+'projects');
-  }
 }
