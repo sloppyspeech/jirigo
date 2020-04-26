@@ -47,7 +47,7 @@ class JirigoTicket(object):
         insert_sql="""  INSERT INTO TTICKETS(ticket_no,summary,description,severity,priority,
                         issue_status,issue_type,environment,is_blocking,created_by,
                         created_date,reported_by,reported_date,assignee_id,project_id,module) 
-                        VALUES (get_next_ticket_no_by_proj(%s),%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,
+                        VALUES (get_issue_no_by_proj(%s),%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,
                                 get_user_id(%s),%s,get_user_id(%s),get_proj_id(%s),%s) returning ticket_int_id;
                     """
         values=(self.project_name,self.summary,self.description,self.severity,self.priority,
@@ -190,8 +190,8 @@ class JirigoTicket(object):
                                 reported_date=%s,
                                 project_id=get_proj_id(%s),
                                 assignee_id=get_user_id(%s),
-                                is_blocking=%s
-                                module=%s,
+                                is_blocking=%s,
+                                module=%s
                          WHERE ticket_no=%s;
                     """
         values=(self.summary,self.description,self.severity,self.priority,
@@ -225,7 +225,7 @@ class JirigoTicket(object):
                         INSERT INTO ttickets (ticket_no, SUMMARY, description, issue_status, issue_type, 
                                               severity, priority, environment, is_blocking, module,created_by, 
                                               created_date, reported_by, reported_date, project_id)
-                                    SELECT get_next_ticket_no_by_proj(get_proj_name(project_id)),
+                                    SELECT get_issue_no_by_proj(get_proj_name(project_id)),
                                         SUMMARY,
                                         description,
                                         issue_status,
@@ -262,3 +262,6 @@ class JirigoTicket(object):
             if(self.jdb.dbConn):
                 print(f'Error While clone_ticket Ticket {error}')
                 raise
+
+
+ 

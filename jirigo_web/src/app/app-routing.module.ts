@@ -6,6 +6,7 @@ import { CreateTicketComponent  } from './components/tickets/create-ticket/creat
 import { ListTicketsComponent  } from './components/tickets/list-tickets/list-tickets.component';
 import { CreateProjectComponent } from './components/projects/create-project/create-project.component';
 import { ListProjectsComponent  } from './components/projects/list-projects/list-projects.component';
+import { ScrumBoardComponent } from './components/boards/scrum/scrum-board/scrum-board.component';
 
 
 const routes: Routes = [
@@ -42,12 +43,20 @@ const routes: Routes = [
     component:CreateProjectComponent
   },
   {
-    path:'create-task',
+    path:'tasks',
     loadChildren: () => import('./components/tasks/tasks.module').then( m => m.TasksModule)
+  },
+  {
+    path:'scrumboard',
+    component:ScrumBoardComponent
   },
   {
     path:'dashboard',
     loadChildren: () => import('./components/dashboard/dashboard.module').then( m => m.DashboardModule)
+  },
+  {
+    path:'sprints',
+    loadChildren: () => import('./components/sprints/sprint.module').then( m => m.SprintModule)
   }
 ];
 

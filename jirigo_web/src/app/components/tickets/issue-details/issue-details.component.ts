@@ -64,7 +64,7 @@ export class IssueDetailsComponent implements OnInit {
       console.log(e);
     }
 
-    this._staticRefData.getRefMaster()
+    this._staticRefData.getRefTicketMaster()
       .then(res => {
         console.log(res);
         this.ticketEnvRef = res[0].Environments;

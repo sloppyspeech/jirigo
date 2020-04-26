@@ -1,0 +1,70 @@
+<!-- <h4 style="margin-bottom: 20px;">Create Sprint</h4> -->
+<div class="col">
+    <button type="submit" (click)="showSprintNameDialog();" class="btn btn-secondary float-center">Create Sprint</button>
+</div>
+<p-pickList
+  [source]="sourceTasks"
+  [target]="targetTasks"
+  sourceHeader="Available"
+  targetHeader="Selected"
+  [responsive]="true"
+  filterBy="brand"
+  dragdrop="true"
+  sourceFilterPlaceholder="Search"
+  targetFilterPlaceholder="Search"
+  [sourceStyle]="{ height: '480px' }"
+  [targetStyle]="{ height: '480px' }"
+  dragdrop="true"
+
+>
+  <ng-template let-task pTemplate="item" >
+    <div class="ui-helper-clearfix"  style="border-radius: 6px;background-color: #DEF3FD ;">
+        <span class="badge badge-info float-right" >Status : {{task.issue_status}}</span>
+      <div
+        style="
+          font-size: 14px;
+          float: left;
+          margin: 15px 5px 0 0;
+          
+        "
+      >
+      <pre style="font-size:14px;font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">
+      <strong>Task No  : </strong>{{ task.task_no }} 
+      <strong>Summary  : </strong>{{ task.summary }} 
+      <strong>Severity : </strong>{{ task.severity}}    <strong>Priority :</strong>{{ task.priority}}
+      </pre>
+      </div>
+    </div>
+  </ng-template>
+</p-pickList>
+<div style="margin-bottom:20px;"></div>
+
+<div style="margin-bottom:20px;"></div>
+<p-dialog [(visible)]="displayConfirmSprintNameModal" [modal]="true" [style]="{width: '28vw'}" [baseZIndex]="10000"
+    [draggable]="false" [resizable]="false" onHide="sprintNameModalOnHide()">
+     <p-header>
+        Create Sprint
+     </p-header>
+     <div style="height:50px; margin: 20px 0 0 0 ;">
+     <span class="ui-float-label">
+        <input id="float-input" type=text pInputText [(ngModel)]="sprintName" size="50" maxlength="50" (keyup)="countInputTextChars()"/>
+        <label for="float-input" >Enter Sprint Name, <span style="font-weight: 600;font-size: 13px; color:darkviolet; background-color: bisque;">{{sprintNameCharsRemaining}}</span> Chars remaining</label>
+     </span>
+     <span *ngIf="showNoSprintNameEnteredDiag" style="color: red; font-size:13px;">Please Enter Sprint Name</span>
+    </div>
+        <p-footer>
+            <button type="button" pButton icon="pi pi-check" (click)="createSprint()" label="Create" class="ui-button-primary"></button>
+            <button type="button" pButton icon="pi pi-times" (click)="cancelSprintName()" label="Cancel" class="ui-button-warning"></button>
+        </p-footer>
+</p-dialog>
+
+<p-dialog [(visible)]="displayDialogForNoTasksSelected" [modal]="true" [style]="{width: '28vw'}" [baseZIndex]="10000"
+    [draggable]="false" [resizable]="false" onHide="sprintNameModalOnHide()">
+     <p-header>
+        No Tasks Selected
+     </p-header>
+     Please select some tasks to create Sprint.
+        <p-footer>
+            <button type="button" pButton icon="pi pi-times" (click)="closeNoTasksSelectedDialog()" label="Close" class="ui-button-warning"></button>
+        </p-footer>
+</p-dialog>

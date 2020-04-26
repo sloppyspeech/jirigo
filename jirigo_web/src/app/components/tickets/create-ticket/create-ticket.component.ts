@@ -68,7 +68,7 @@ export class CreateTicketComponent implements OnInit {
               
               this._NgxSpinner.show(); 
               console.log("Calling the New Ref Master");
-              this._staticRefData.getRefMaster()
+              this._staticRefData.getRefTicketMaster()
                 .then(res=>{
                             console.log(res);
                             this.ticketEnvRef=res[0].Environments;

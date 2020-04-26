@@ -36,6 +36,8 @@
     "datatables.net-responsive-dt": "^2.2.3",
     "font-awesome": "^4.7.0",
     "jquery": "^3.4.1",
+    "jquery-ui": "^1.12.1",
+    "jquery-ui-dist": "^1.12.1",
     "moment": "^2.24.0",
     "ng2-smart-table": "^1.6.0",
     "ngx-quill": "^8.1.3",

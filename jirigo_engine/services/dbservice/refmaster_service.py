@@ -184,7 +184,7 @@ class JirigoRefMaster(object):
     
     def get_all_ticket_refs(self):
         response_data={}
-        self.logger.debug("Inside get_issue_type_values")
+        self.logger.debug("Inside get_all_ticket_refs")
         query_sql="""  
                         with t as (
                         select
@@ -230,4 +230,104 @@ class JirigoRefMaster(object):
             print(f'Error While Select Reference get_all_ticket_refs {error}')
             if(self.jdb.dbConn):
                 print(f'Error While Select Reference get_all_ticket_refs {error}')
+                raise
+
+    def get_all_task_refs(self):
+        response_data={}
+        self.logger.debug("Inside get_all_task_refs")
+        query_sql="""  
+                        with t as (
+                        select
+                                json_build_object( t.ref_name , json_agg( json_build_object( 'name', t.ref_value) ) ) refs
+                            from
+                                (
+                                select
+                                    case when REF_NAME='Environment' then 'Environments'
+                                        when REF_NAME='ISSUE_TYPE' then 'IssueTypes'
+                                        when REF_NAME='PRIORITY' then 'Priorities'
+                                        when REF_NAME='SEVERITY' then 'Severities'
+                                        when REF_NAME='STATUS' then 'IssueStatuses'
+                                        when REF_NAME='Module' then 'Modules'
+                                    end REF_NAME ,
+                                    ref_value
+                                from
+                                    tref_master
+                                where
+                                    ref_category = 'TASKS'
+                                    and is_active = 'Y'
+                                order by
+                                    ref_name,
+                                    order_id )t
+                            group by
+                                t.ref_name 
+                        )
+                        select json_build_object('rowData',json_agg(t.refs)) from t ;
+                   """
+        self.logger.debug(f'Select all task_refs : {query_sql}')
+        try:
+            print('-'*80)
+            cursor=self.jdb.dbConn.cursor()
+            cursor.execute(query_sql)
+            json_data=cursor.fetchone()[0]
+            print(json_data)
+            row_count=cursor.rowcount
+            self.logger.debug(f'get_all_task_refs Select Success with {row_count} row(s) data {json_data}')
+            response_data['dbQryStatus']='Success'
+            response_data['dbQryResponse']=json_data['rowData']
+            print(response_data)
+            return response_data
+        except  (Exception, psycopg2.Error) as error:
+            print(f'Error While Select Reference get_all_task_refs {error}')
+            if(self.jdb.dbConn):
+                print(f'Error While Select Reference get_all_task_refs {error}')
+                raise
+
+    def get_all_sprint_refs(self):
+        response_data={}
+        self.logger.debug("Inside get_all_sprint_refs")
+        query_sql="""  
+                    with t as (
+                    select
+                            json_build_object( t.ref_name , json_agg( json_build_object( 'name', t.ref_value) ) ) refs
+                        from
+                            (
+                            select
+                                case when REF_NAME='Environment' then 'Environments'
+                                    when REF_NAME='ISSUE_TYPE' then 'IssueTypes'
+                                    when REF_NAME='PRIORITY' then 'Priorities'
+                                    when REF_NAME='SEVERITY' then 'Severities'
+                                    when REF_NAME='STATUS' then 'SprintStatuses'
+                                    when REF_NAME='Module' then 'Modules'
+                                end REF_NAME ,
+                                ref_value
+                            from
+                                tref_master
+                            where
+                                ref_category = 'SPRINT'
+                                and is_active = 'Y'
+                            order by
+                                ref_name,
+                                order_id )t
+                        group by
+                            t.ref_name 
+                    )
+                    select json_build_object('rowData',json_agg(t.refs)) from t ;
+                   """
+        self.logger.debug(f'Select all sprint : {query_sql}')
+        try:
+            print('-'*80)
+            cursor=self.jdb.dbConn.cursor()
+            cursor.execute(query_sql)
+            json_data=cursor.fetchone()[0]
+            print(json_data)
+            row_count=cursor.rowcount
+            self.logger.debug(f'get_all_sprint_refs Select Success with {row_count} row(s) data {json_data}')
+            response_data['dbQryStatus']='Success'
+            response_data['dbQryResponse']=json_data['rowData']
+            print(response_data)
+            return response_data
+        except  (Exception, psycopg2.Error) as error:
+            print(f'Error While Select Reference get_all_sprint_refs {error}')
+            if(self.jdb.dbConn):
+                print(f'Error While Select Reference get_all_sprint_refs {error}')
                 raise

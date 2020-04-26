@@ -106,7 +106,7 @@ export class ViewEditTicketsComponent implements OnInit {
     console.log('Routed Ticket No :'+this.ticket_no);
     this.viewModifyTicketFB.get('fctlTicketNo').setValue(this.ticket_no);
     this._serNgxSpinner.show();
-    this._staticRefData.getRefMaster()
+    this._staticRefData.getRefTicketMaster()
       .then(res => {
         console.log(res);
         

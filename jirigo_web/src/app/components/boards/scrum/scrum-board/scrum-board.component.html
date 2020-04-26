@@ -1,0 +1,231 @@
+<h3>Scrum Board</h3>
+<div class="small  text-dark">Drag and drop between swim lanes</div>
+<div class="container-fluid pt-3">
+    
+    <div class="row flex-row flex-sm-nowrap py-3" pDroppable="cars">
+        <div class="col-sm-6 col-md-3 col-xl-3">
+            <div class="card " style="background-color: mintcream;">
+                <div class="card-body">
+                    <h6 class="card-title text-uppercase text-truncate py-2">To Do</h6>
+                    <div class="items border border-light">
+                        <div class="card draggable shadow-sm" id="cd1" draggable="true" ondragstart="drag(event)">
+                            <div class="card-body p-2">
+                                <div class="card-title">
+                                    <!-- <img src="//placehold.it/30" class="rounded-circle float-right"> -->
+                                    <span class="badge float-right badge-primary"> Testing </span>
+                                    <a href="" class="lead font-weight-light">TSK-154</a>
+                                </div>
+                                <p>
+                                    This is a description of a item on the board.
+                                </p>
+                                <!-- <button class="btn btn-primary btn-sm">View</button> -->
+                            </div>
+                        </div>
+                        <div class="dropzone rounded" ondrop="drop(event)" ondragover="allowDrop(event)" ondragleave="clearDrop(event)"> &nbsp; </div>
+                        <div class="card draggable shadow-sm" id="cd2" draggable="true" ondragstart="drag(event)">
+                            <div class="card-body p-2">
+                                <div class="card-title">
+                                    <img src="//placehold.it/30" class="rounded-circle float-right">
+                                    <a href="" class="lead font-weight-light">TSK-156</a>
+                                </div>
+                                <p>
+                                    This is a description of a item on the board.
+                                </p>
+                                <!-- <button class="btn btn-primary btn-sm">View</button> -->
+                            </div>
+                        </div>
+                        <div class="dropzone rounded" ondrop="drop(event)" ondragover="allowDrop(event)" ondragleave="clearDrop(event)"> &nbsp; </div>
+                        <div class="card draggable shadow-sm" id="cd3" draggable="true" ondragstart="drag(event)">
+                            <div class="card-body p-2">
+                                <div class="card-title">
+                                    <img src="//placehold.it/30" class="rounded-circle float-right">
+                                    <a href="" class="lead font-weight-light">TSK-157</a>
+                                </div>
+                                <p>
+                                    This is an item on the board.
+                                </p>
+                                <!-- <button class="btn btn-primary btn-sm">View</button> -->
+                            </div>
+                        </div>
+                        <div class="dropzone rounded" ondrop="drop(event)" ondragover="allowDrop(event)" ondragleave="clearDrop(event)"> &nbsp; </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-3 col-xl-3">
+            <div class="card bg-light">
+                <div class="card-body">
+                    <h6 class="card-title text-uppercase text-truncate py-2">In-progess</h6>
+                    <div class="items border border-light">
+                        <div class="card draggable shadow-sm" id="cd1" draggable="true" ondragstart="drag(event)">
+                            <div class="card-body p-2">
+                                <div class="card-title">
+                                    <img src="//placehold.it/30" class="rounded-circle float-right">
+                                    <a href="" class="lead font-weight-light">TSK-152</a>
+                                </div>
+                                <p>
+                                    This is a task that is being worked on.
+                                </p>
+                                <!-- <button class="btn btn-primary btn-sm">View</button> -->
+                            </div>
+                        </div>
+                        <div class="dropzone rounded" ondrop="drop(event)" ondragover="allowDrop(event)" ondragleave="clearDrop(event)"> &nbsp; </div>
+                        <div class="card draggable shadow-sm" id="cd2" draggable="true" ondragstart="drag(event)">
+                            <div class="card-body p-2">
+                                <div class="card-title">
+                                    <span class="badge float-right badge-warning"> Testing </span>
+                                    <a href="" class="lead font-weight-light">TSK-153</a>
+                                </div>
+                                <p>
+                                    This is an item that is in progress.
+                                </p>
+                                <!-- <button class="btn btn-primary btn-sm">View</button> -->
+                            </div>
+                        </div>
+                        <div class="dropzone rounded" ondrop="drop(event)" ondragover="allowDrop(event)" ondragleave="clearDrop(event)"> &nbsp; </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-3 col-xl-3">
+            <div class="card bg-light">
+                <div class="card-body">
+                    <h6 class="card-title text-uppercase text-truncate py-2">Review</h6>
+                    <div class="items border border-light">
+                        <div class="card draggable shadow-sm" id="cd9" draggable="true" ondragstart="drag(event)">
+                            <div class="card-body p-2">
+                                <div class="card-title">
+                                    <img src="//placehold.it/30" class="rounded-circle float-right">
+                                    <a href="" class="lead font-weight-light">TSK-158</a>
+                                </div>
+                                <p>
+                                    This is a description of a item on the board.
+                                </p>
+                                <!-- <button class="btn btn-primary btn-sm">View</button> -->
+                            </div>
+                        </div>
+                        <div class="dropzone rounded" ondrop="drop(event)" ondragover="allowDrop(event)" ondragleave="clearDrop(event)"> &nbsp; </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 col-md-3 col-xl-3">
+            <div class="card">
+                <div class="card-body">
+                    <h6 class="card-title text-uppercase text-truncate py-2">Complete</h6>
+                    <div class="items border border-light">
+                        <div class="card draggable shadow-sm" id="cd11" draggable="true" ondragstart="drag(event)">
+                            <div class="card-body p-2">
+                                <div class="card-title">
+                                    <img src="//placehold.it/30" class="rounded-circle float-right">
+                                    <a href="" class="lead font-weight-light">TSK-144</a>
+                                </div>
+                                <p>
+                                    This is a description of an item.
+                                </p>
+                                <!-- <button class="btn btn-primary btn-sm">View</button> -->
+                            </div>
+                        </div>
+                        <div class="dropzone rounded" ondrop="drop(event)" ondragover="allowDrop(event)" ondragleave="clearDrop(event)"> &nbsp; </div>
+                        <div class="card draggable shadow-sm" id="cd12" draggable="true" ondragstart="drag(event)">
+                            <div class="card-body p-2">
+                                <div class="card-title">
+                                    <img src="//placehold.it/30" class="rounded-circle float-right">
+                                    <a href="" class="lead font-weight-light">TSK-146</a>
+                                </div>
+                                <p>
+                                    This is a description of a task item.
+                                </p>
+                                <!-- <button class="btn btn-primary btn-sm">View</button> -->
+                            </div>
+                        </div>
+                        <div class="dropzone rounded" ondrop="drop(event)" ondragover="allowDrop(event)" ondragleave="clearDrop(event)"> &nbsp; </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- <div class="p-grid " >
+    <div class="p-col-fixed  drag-column" style="width:200px;border-radius: 8px ;margin-right:5px;background-color:lavender;padding: 0 4px 0 4px;" pDroppable="cars" >
+        <h6 class="swimlane-heading">Sprint backlog</h6>
+        <ul style="margin:10px 0 0 0;padding:0">
+            <div *ngFor="let car of availableCars" class="ui-helper-clearfix" pDraggable="cars"
+                (onDragStart)="dragStart($event,car)" (onDragEnd)="dragEnd($event)">
+                <p-card [style]="{margin: '4px 8px 4px 8px'}">
+                    <div ><h5>{{car.vin}}</h5> {{car.year}}</div>
+                </p-card>
+            </div>
+        </ul>
+    </div>
+    <div class="p-col-2  drop-column drag-column" pDroppable="cars"  
+        (onDrop)="drop($event)" [ngClass]="{'ui-highlight-car':draggedCar}" style="border-radius: 8px ;margin-right:5px;padding: 0 4px 0 4px;background-color:#fff6e9;">
+        <h6 class="swimlane-heading">To Be Done</h6>
+        <p-table [value]="selectedCars">
+            <ng-template pTemplate="header">
+ 
+            </ng-template>
+            <ng-template pTemplate="body" let-car pDraggable="cars">
+ 
+                <p-card [style]="{margin: '4px 8px 4px 8px'}">
+                    <div  ><h5>{{car.vin}}</h5> {{car.year}}</div>
+                </p-card>
+            </ng-template>
+        </p-table>
+    </div>
+    <div class="p-col-2  drop-column drag-column" pDroppable="cars" 
+    (onDrop)="drop($event)" [ngClass]="{'ui-highlight-car':draggedCar}" style="border-radius: 8px ;margin-right:5px;padding: 0 4px 0 4px;background-color:#ffefd7;">
+    <h6 class="swimlane-heading">Dev</h6>
+    <p-table [value]="selectedCars">
+        <ng-template pTemplate="header" >
+
+        </ng-template>
+        <ng-template pTemplate="body" let-car >
+ 
+            <p-card [style]="{margin: '4px 8px 4px 8px'}">
+                <div ><h5>{{car.vin}}</h5> {{car.year}}</div>
+            </p-card>
+        </ng-template>
+    </p-table>
+    </div>
+    <div class="p-col-2  drop-column drag-column" pDroppable="cars" 
+    (onDrop)="drop($event)" [ngClass]="{'ui-highlight-car':draggedCar}" style="border-radius: 8px ;margin-right:5px;padding: 0 4px 0 4px;background-color:#e3f0ff;">
+    <h6 class="swimlane-heading">Review</h6>
+    <p-table [value]="selectedCars">
+
+        <ng-template pTemplate="body" let-car  pDroppable="cars" >
+
+            <p-card [style]="{margin: '4px 8px 4px 8px'}">
+                <div ><h5>{{car.vin}}</h5> {{car.year}}</div>
+            </p-card>
+        </ng-template>
+    </p-table>
+    </div>
+    <div class="p-col-2  drop-column drag-column" pDroppable="cars" 
+    (onDrop)="drop($event)" [ngClass]="{'ui-highlight-car':draggedCar}" style="border-radius: 8px ;margin-right:5px;padding: 0 4px 0 4px;background-color:#d2e7ff ;">
+    <h6 class="swimlane-heading">Done</h6>
+    <p-table [value]="selectedCars">
+
+        <ng-template pTemplate="body" let-car  pDroppable="cars" >
+
+            <p-card [style]="{margin: '4px 8px 4px 8px'}">
+                <div ><h5>{{car.vin}}</h5> {{car.year}}</div>
+            </p-card>
+        </ng-template>
+    </p-table>
+    </div>
+    <div class="p-col-2  drop-column drag-column" pDroppable="cars" 
+    (onDrop)="drop($event)" [ngClass]="{'ui-highlight-car':draggedCar}" style="border-radius: 8px ;margin-right:5px;padding: 0 4px 0 4px;background-color:#84c1ff ;">
+    <h6 class="swimlane-heading">Released</h6>
+    <p-table [value]="selectedCars">
+
+        <ng-template pTemplate="body" let-car  pDroppable="cars" >
+
+            <p-card [style]="{margin: '4px 8px 4px 8px'}">
+                <div ><h5>{{car.vin}}</h5> {{car.year}}</div>
+            </p-card>
+        </ng-template>
+    </p-table>
+    </div>
+</div> -->

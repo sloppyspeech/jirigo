@@ -23,6 +23,8 @@ import { AutoComplete, AutoCompleteModule  } from 'primeng/autocomplete';
 import { DialogModule } from "primeng/dialog";
 import { CardModule  } from 'primeng/card';
 import { ToastModule  } from 'primeng/toast';
+import { DragDropModule  } from 'primeng/dragdrop';
+import { PanelModule  } from 'primeng/panel';
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
@@ -40,6 +42,7 @@ import { SelectUserComponent } from './components/common/select-user/select-user
 import { TicketAuditComponent } from './components/tickets/ticket-audit/ticket-audit.component';
 import { ListProjectsComponent } from './components/projects/list-projects/list-projects.component';
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -55,8 +58,7 @@ import { ListProjectsComponent } from './components/projects/list-projects/list-
     TicketCommentsComponent,
     SelectUserComponent,
     TicketAuditComponent,
-    ListProjectsComponent
-    
+    ListProjectsComponent    
   ],
   imports: [
     BrowserModule,
@@ -80,6 +82,8 @@ import { ListProjectsComponent } from './components/projects/list-projects/list-
     DialogModule,
     CardModule,
     ToastModule,
+    DragDropModule,
+    PanelModule,
     FontAwesomeModule
   ],
   providers: [],

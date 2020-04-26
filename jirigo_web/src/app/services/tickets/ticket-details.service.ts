@@ -41,6 +41,7 @@ export class TicketDetailsService {
       });
   }
 
+
   creTicket(inpData) {
     console.log("@@@@@ CreTicket @@@@@@@");
     console.log(inpData)
