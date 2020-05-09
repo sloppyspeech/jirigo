@@ -32,8 +32,8 @@ export class TaskDetailsService {
 
   getAllTasks() {
     console.log('@@@@getAllTasks :');
-    console.log("getTaskDetails End point :" + this.sApiEndPoint + 'tasks');
-    return this._httpCli.get<any>(this.sApiEndPoint + 'tasks')
+    console.log("getTaskDetails End point :" + this.sApiEndPoint + 'all-tasks/'+localStorage.getItem('currentProjectId'));
+    return this._httpCli.get<any>(this.sApiEndPoint + 'all-tasks/'+localStorage.getItem('currentProjectId'))
       .toPromise()
       .then(res => {
         console.log("In  Get All Tasks:" + res);

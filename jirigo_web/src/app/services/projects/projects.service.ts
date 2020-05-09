@@ -34,4 +34,11 @@ export class ProjectsService {
     console.log("this.sApiEndPoint:"+this.sApiEndPoint+'projects');
     return this._httpCli.get(this.sApiEndPoint+'projects');
   }
+
+  getAllProjectsForUser(userId){
+    console.log("@@@@getAllProjectsForUser@@@@@")
+    console.log("this.sApiEndPoint:"+this.sApiEndPoint+'projects/user-projects/'+userId);
+    return this._httpCli.get(this.sApiEndPoint+'projects/user-projects/'+userId);
+  }
+
 }

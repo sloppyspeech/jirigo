@@ -193,6 +193,19 @@ def get_all_projects():
     else:
         return get_jsonified_error_response('Failure',"get_all_projects Not a GET Request")
 
+@app.route('/api/v1/project-management/projects/user-projects/<user_id>',methods=['GET'])
+def get_all_projects_for_user(user_id):
+    if request.method == 'GET':
+        print('In Get get_all_projects')
+        try:
+            jdb=JirigoProjects({'user_id':user_id})
+            data=jdb.get_all_projects_for_user()
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in get_all_projects_for_user {error}')
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',"get_all_projects_for_user Not a GET Request")
 
 @app.route('/api/v1/user-management/register-user',methods=['POST'])
 def register_user():
@@ -443,13 +456,13 @@ def get_task_details(task_no):
         return get_jsonified_error_response('Failure',"Not a GET Request")
 
 
-@app.route('/api/v1/task-management/tasks',methods=['GET'])
-def get_all_tasks():
+@app.route('/api/v1/task-management/all-tasks/<project_id>',methods=['GET'])
+def get_all_tasks(project_id):
     data={}
     if request.method == 'GET':
         print('In GET get_all_tasks')
         try:
-            jdb=JirigoTask()
+            jdb=JirigoTask({'project_id':project_id})
             data=jdb.get_all_tasks()
             return jsonify(data)
         except Exception as error:

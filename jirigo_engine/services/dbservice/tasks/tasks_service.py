@@ -31,6 +31,7 @@ class JirigoTask(object):
         self.reported_date = data.get('reported_date')
         self.task_no=data.get('task_no','-')
         self.project_name=data.get('project_name','')
+        self.project_id=data.get('project_id','')
         self.assignee_name=data.get('assignee_name','')
         self.module_name=data.get('module_name','')
         self.estimated_time=data.get('estimated_time',0)
@@ -94,17 +95,18 @@ class JirigoTask(object):
                                     to_char(created_date, 'DD-Mon-YYYY HH24:MI:SS') reported_date,
                                     estimated_time
                               FROM ttasks 
+                             WHERE project_id=%s
                              order by task_int_id
                         )
                         SELECT json_agg(t) from t;
                    """
-
-        self.logger.debug(f'Select : {query_sql}')
+        values=(self.project_id,)
+        self.logger.debug(f'Select : {query_sql} values {values}')
 
         try:
             print('-'*80)
             cursor=self.jdb.dbConn.cursor()
-            cursor.execute(query_sql)
+            cursor.execute(query_sql,values)
             json_data=cursor.fetchone()[0]
             row_count=cursor.rowcount
             self.logger.debug(f'Select Success with {row_count} row(s) Task ID {json_data}')

@@ -25,7 +25,8 @@ import { CardModule  } from 'primeng/card';
 import { ToastModule  } from 'primeng/toast';
 import { DragDropModule  } from 'primeng/dragdrop';
 import { PanelModule  } from 'primeng/panel';
-
+import { DynamicDialogModule  } from 'primeng/dynamicdialog';
+import { RadioButtonModule } from 'primeng/radiobutton';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { LoginComponent } from './components/login/login.component';
@@ -43,6 +44,7 @@ import { TicketAuditComponent } from './components/tickets/ticket-audit/ticket-a
 import { ListProjectsComponent } from './components/projects/list-projects/list-projects.component';
 import { RegisterComponent } from './components/register/register.component';
 import { LogoutComponent } from './components/logout/logout.component';
+import { ChangeProjectComponent } from './components/projects/change-project/change-project.component';
 
 
 @NgModule({
@@ -62,7 +64,8 @@ import { LogoutComponent } from './components/logout/logout.component';
     TicketAuditComponent,
     ListProjectsComponent,
     RegisterComponent,
-    LogoutComponent
+    LogoutComponent,
+    ChangeProjectComponent
   ],
   imports: [
     BrowserModule,
@@ -88,6 +91,8 @@ import { LogoutComponent } from './components/logout/logout.component';
     ToastModule,
     DragDropModule,
     PanelModule,
+    DynamicDialogModule,
+    RadioButtonModule,
     FontAwesomeModule
   ],
   providers: [],

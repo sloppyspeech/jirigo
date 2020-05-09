@@ -12,6 +12,7 @@ class JirigoProjects(object):
     def __init__(self,data):
         print("Initializing JirigoProject")
         pprint(data)
+        self.user_id = data.get('user_id',0)
         self.project_name = data.get('project_name')
         self.project_abbr = data.get('project_abbr')
         self.project_type = data.get('project_type')
@@ -82,3 +83,41 @@ class JirigoProjects(object):
             if(self.jdb.dbConn):
                 print(f'Error While Select Projects {error}')
                 raise
+
+    def get_all_projects_for_user(self):
+        response_data={}
+        self.logger.debug("Inside get_all_projects_for_user")
+        query_sql="""  
+                    WITH t AS (
+                            SELECT t.user_id,t.email,tup.default_project ,
+                                   tp.project_name ,tp.project_id,tp.project_abbr,
+                                   get_user_name(t.user_id) user_name
+                              FROM tuser_projects tup,tusers t ,tprojects tp  
+                             WHERE tup.project_id = tp.project_id 
+                               AND tup.user_id =t.user_id 
+                               AND t.user_id =%s
+                              ORDER BY tp.project_id
+                    )
+                    SELECT json_agg(t) from t;
+                   """
+        values=(self.user_id,)
+        self.logger.debug(f'Select : {query_sql} values{values}')
+        try:
+            print('-'*80)
+            cursor=self.jdb.dbConn.cursor()
+            cursor.execute(query_sql,values)
+            json_data=cursor.fetchone()[0]
+            row_count=cursor.rowcount
+            self.logger.debug(f'get_all_projects_for_user Select Success with {row_count} row(s) data {json_data}')
+            if (json_data == None):
+                response_data['dbQryStatus']='No Data Found'
+            else:
+                response_data['dbQryStatus']='Success'
+
+            response_data['dbQryResponse']=json_data
+            return response_data
+        except  (Exception, psycopg2.Error) as error:
+            if(self.jdb.dbConn):
+                print(f'Error While Select get_all_projects_for_user {error}')
+                raise
+

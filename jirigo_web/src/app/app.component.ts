@@ -16,6 +16,7 @@ export class AppComponent {
   showMenu:boolean=true;
   loggedIn:boolean=true;
   loggedInUserName:string;
+  currentProjectName:string;
   
   ngOnInit() {
     this._serUser.isLoggedIn.subscribe(res=>{
@@ -23,6 +24,7 @@ export class AppComponent {
       console.log(res);
       console.log(localStorage.getItem('loggedInUserId'));
       console.log(localStorage.getItem('loggedInUserName'));
+      console.log(localStorage.getItem('currentProjectName'));
 
       //when user just refreshes the page
       if (res ){
@@ -43,9 +45,11 @@ export class AppComponent {
       //when user just refreshes the page
       if (typeof(res['user_name']) !== 'undefined' ){
         this.loggedInUserName=res['user_name'];
+        this.currentProjectName=res['project_name'];
       }
       else{
         this.loggedInUserName=localStorage.getItem('loggedInUserName');
+        this.currentProjectName=localStorage.getItem('currentProjectName');
       }
     });
   }

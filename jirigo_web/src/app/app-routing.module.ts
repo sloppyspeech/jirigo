@@ -8,6 +8,7 @@ import { ListTicketsComponent  } from './components/tickets/list-tickets/list-ti
 import { CreateProjectComponent } from './components/projects/create-project/create-project.component';
 import { ListProjectsComponent  } from './components/projects/list-projects/list-projects.component';
 import { RegisterComponent  } from './components/register/register.component';
+import { ChangeProjectComponent  } from './components/projects/change-project/change-project.component';
 import { AuthGuardService as AuthGuard } from './components/auth/auth-guard.service';
 
 const routes: Routes = [
@@ -26,6 +27,10 @@ const routes: Routes = [
   {
     path:'register',
     component:RegisterComponent
+  },
+  {
+    path:'change-project',
+    component:ChangeProjectComponent
   },
   {
     path:'create-ticket',
