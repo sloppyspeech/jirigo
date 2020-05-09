@@ -7,6 +7,8 @@ import { StaticDataService  } from '../../../services/static-data.service';
 import * as moment from 'moment';
 import { NgbDate } from '@ng-bootstrap/ng-bootstrap';
 
+import { faPenSquare,faPenNib,faPencilAlt,faEdit  } from '@fortawesome/free-solid-svg-icons';
+
 declare var $: any;
 
 @Component({
@@ -15,6 +17,11 @@ declare var $: any;
   styleUrls: ['./list-sprints.component.css']
 })
 export class ListSprintsComponent implements OnInit {
+  faPenSquare=faPenSquare;
+  faPenNib=faPenNib;
+  faPencilAlt=faPencilAlt;
+  faEdit=faEdit;
+
   allSprints=[];
   refSprintStatus=[];
   showTable:boolean=false;
@@ -85,6 +92,10 @@ export class ListSprintsComponent implements OnInit {
     alert(ev);
   }
 
+  showSprintBoard(sprint){
+    console.log(sprint);
+    this._router.navigate(['boards/scrum',sprint['sprint_id']]);
+  }
 
   editSprint(ele){
     let [sYear, sMonth, sDay]=['','',''];

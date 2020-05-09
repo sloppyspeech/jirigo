@@ -9,7 +9,7 @@ import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
 import { CalendarModule  } from 'primeng/calendar';
 import { SelectButtonModule  } from 'primeng/selectbutton';
-import { AutoComplete, AutoCompleteModule  } from 'primeng/autocomplete';
+import { AutoCompleteModule  } from 'primeng/autocomplete';
 import { DialogModule } from "primeng/dialog";
 import { CardModule  } from 'primeng/card';
 import { ToastModule  } from 'primeng/toast';

@@ -1,82 +1,67 @@
 <ngx-spinner [fullScreen]="true" type="ball-newton-cradle"></ngx-spinner>
-<!-- <div class="form-group">
-    <div class="card">
-        <div class="card-header"><h4 id="testTicket">List Tickets</h4></div>
-        <div class="card-body">
-            <table *ngIf="allTickets" datatable  [dtOptions]="dtOptions" width="100%" class="table table-hover table-striped table-bordered" cellspacing="0">
-                <thead>
-                <tr>
-                    <th *ngFor="let col of ticker_header_cols">{{col}}</th>
-                </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let ticket of allTickets">
-                        <td><a [routerLink]="['/view-edit-tickets', ticket.ticket_int_id]">{{ticket.ticket_no}}</a></td>
-                        <td>{{ticket.summary}}</td>
-                        <td>{{ticket.issue_status}}</td>
-                        <td>{{ticket.issue_type}}</td>
-                        <td>{{ticket.severity}}</td>
-                        <td>{{ticket.priority}}</td>
-                        <td>{{ticket.environment}}</td>
-                        <td>{{ticket.is_blocking}}</td>
-                        <td>{{ticket.reported_by}}</td>
-                        <td>{{ticket.created_by}}</td>
-                        <td>{{ticket.modified_by}}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+
+<p-table
+  #dt
+  *ngIf="showTable"
+  [value]="allTickets"
+  [columns]="ticketDetailsCols"
+  [rowHover]="true"
+  [responsive]="true"
+  [rows]="10"
+  [showCurrentPageReport]="true"
+  [rowsPerPageOptions]="[2, 5, 10, 25, 50]"
+  [paginator]="true"
+  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+  [filterDelay]="1"
+  [globalFilterFields]="[
+    'ticket_no',
+    'summary',
+    'reported_by',
+    'issue_status',
+    'priority',
+    'environment',
+    'severity',
+    'issue_type',
+    'reported_date'
+  ]"
+>
+  <ng-template pTemplate="caption">
+    <div style="text-align: right;">
+      <i class="pi pi-search" style="margin: 4px 4px 0 0;"></i>
+      <input
+        type="text"
+        pInputText
+        size="50"
+        placeholder="Global Filter"
+        (input)="dt.filterGlobal($event.target.value, 'contains')"
+        style="width: auto;"
+      />
     </div>
-</div> -->
-
-<p-table #dt *ngIf="showTable" [value]="allTickets" [columns]="ticket_header_cols" [rowHover]="true" [responsive]="true"
-[rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[2,5,10,25,50]" 
-[paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
-[filterDelay]="1" [globalFilterFields]="['ticket_no','summary','reported_by','issue_status','priority','environment','severity','issue_type']" >
-    <ng-template pTemplate="caption">
-        <div style="text-align: right">        
-            <i class="pi pi-search" style="margin:4px 4px 0 0"></i>
-            <input type="text" pInputText size="50" placeholder="Global Filter" (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto">
-        </div>
-    </ng-template>
-    <ng-template pTemplate="header" let-columns>
-        <!-- <tr>
-            <th pSortableColumn="ticket.ticket_no">Ticket No</th>
-            <th pSortableColumn="ticket.summary">Summary</th>
-            <th pSortableColumn="ticket.issue_status">Issue Status</th>
-            <th pSortableColumn="ticket.issue_type">Issue Type</th>
-            <th pSortableColumn="ticket.severity">Severity</th>
-            <th pSortableColumn="ticket.priority">Priority</th>
-            <th pSortableColumn="ticket.environment">Environment</th>
-            <th pSortableColumn="ticket.blocking">Blocking</th>
-            <th pSortableColumn="ticket.reported_by">Reported By</th>
-        </tr> -->
-        <tr>
-            <th *ngFor="let col of columns" [pSortableColumn]="col">
-                {{col}}
-                <p-sortIcon [field]="col" ></p-sortIcon>
-            </th>
-        </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-ticket>
-        <tr>
-            <td><a [routerLink]="['/view-edit-tickets', ticket.ticket_no]">{{ticket.ticket_no}}</a></td>
-            <td>{{ticket.summary}}</td>
-            <td>{{ticket.issue_status}}</td>
-            <td>{{ticket.issue_type}}</td>
-            <td>{{ticket.severity}}</td>
-            <td>{{ticket.priority}}</td>
-            <td>{{ticket.environment}}</td>
-            <td>{{ticket.blocking}}</td>
-            <td>{{ticket.reported_by}}</td>
-            <td>{{ticket.reported_date}}</td>
-            <!-- <td>{{ticket.created_by}}</td>
-            <td>{{ticket.created_date}}</td>
-            <td>{{ticket.modified_by}}</td>
-            <td>{{ticket.modified_date}}</td> -->
-        </tr>
-    </ng-template>
+  </ng-template>
+  <ng-template pTemplate="header" let-columns>
+    <tr>
+      <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+        {{ col.header }}
+        <p-sortIcon [field]="col.field"></p-sortIcon>
+      </th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-ticket let-columns="ticketDetailsCols">
+    <tr>
+      <td>
+        <a [routerLink]="['/view-edit-tickets', ticket.ticket_no]">{{
+          ticket.ticket_no
+        }}</a>
+      </td>
+      <td>{{ ticket.summary }}</td>
+      <td>{{ ticket.issue_status }}</td>
+      <td>{{ ticket.issue_type }}</td>
+      <td>{{ ticket.severity }}</td>
+      <td>{{ ticket.priority }}</td>
+      <td>{{ ticket.environment }}</td>
+      <td>{{ ticket.blocking }}</td>
+      <td>{{ ticket.reported_by }}</td>
+      <td>{{ ticket.reported_date |date:'d-MMM-y h:mm:ss a'}}</td>
+    </tr>
+  </ng-template>
 </p-table>
-
-    
-    

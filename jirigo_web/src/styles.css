@@ -33,8 +33,9 @@
   transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 }
 
-.btn-outline-purple-secondary-orig {
-  color: #6c757d;
+.btn-purple {
+  background-color: #8D47E0;
+  color:white;
   border-color: #6c757d;
 }
 

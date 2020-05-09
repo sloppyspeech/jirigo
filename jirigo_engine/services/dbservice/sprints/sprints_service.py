@@ -80,23 +80,29 @@ class JirigoSprints(object):
         print("======sprint_values========")
         print(sprint_values)
         create_sprint_tasks_sql="""
-                                INSERT INTO tsprint_tasks (sprint_id,task_no,created_by,created_date)
+                                INSERT INTO tsprint_tasks (sprint_id,task_no,created_by,workflow_step_id,created_date)
                                        VALUES %s
                                 """
         try:
             print('-'*80)
             cursor=self.jdb.dbConn.cursor()
             cursor.execute(create_sprint_sql,sprint_values)
-            sprint_id=cursor.fetchone()[0]
+            ret_sprint_id=cursor.fetchone()[0]
             print(f'sprint_tasks {self.sprint_tasks}')
-            task_vals=[(sprint_id,x ,self.created_by,self.created_date) for x in self.sprint_tasks]
+            
+            cursor.execute('select get_first_step_id_for_workflow(get_proj_id(%s))',(self.project_name,))
+            first_step_id=cursor.fetchone()[0]
+            print(f'First Step id is {first_step_id}')
+            task_vals=[(ret_sprint_id,task ,self.created_by,first_step_id) for task in self.sprint_tasks]
+            
             print(f'task_vals {task_vals}')
-            execute_values(cursor,create_sprint_tasks_sql,task_vals,template="(%s,%s,%s,%s)")
+            execute_values(cursor,create_sprint_tasks_sql,task_vals,template="(%s,%s,%s,%s,now())")
             self.jdb.dbConn.commit()
             row_count=cursor.rowcount
-            self.logger.debug(f'Insert Success with {row_count} row(s) Sprint ID {sprint_id}')
+
+            self.logger.debug(f'Insert Success with {row_count} row(s) Sprint ID {ret_sprint_id}')
             response_data['dbQryStatus']='Success'
-            response_data['dbQryResponse']={"sprintId":sprint_id,"rowCount":row_count}
+            response_data['dbQryResponse']={"sprintId":ret_sprint_id,"rowCount":row_count}
             return response_data
         except  (Exception, psycopg2.Error) as error:
             if(self.jdb.dbConn):
@@ -223,7 +229,7 @@ class JirigoSprints(object):
         print(f'sprint_values {sprint_values} at time {self.created_date}')
         self.logger.debug(f'sprint_values {sprint_values} at time {self.created_date}')
         create_sprint_tasks_sql="""
-                                INSERT INTO tsprint_tasks (sprint_id,task_no,created_by,created_date)
+                                INSERT INTO tsprint_tasks (sprint_id,task_no,created_by,workflow_step_id,created_date)
                                        VALUES %s
                                 """
         try:
@@ -233,9 +239,9 @@ class JirigoSprints(object):
             row_count=cursor.rowcount
             self.logger.debug(f'Delete Success with {row_count} row(s) Sprint ID {self.sprint_id}')
             print(f'sprint_tasks {self.sprint_tasks}')
-            task_vals=[(self.sprint_id,x ,self.created_by) for x in self.sprint_tasks]
+            task_vals=[(self.sprint_id,x ,self.created_by,self.sprint_id) for x in self.sprint_tasks]
             print(f'task_vals {task_vals}')
-            execute_values(cursor,create_sprint_tasks_sql,task_vals,template="(%s,%s,%s,now())")
+            execute_values(cursor,create_sprint_tasks_sql,task_vals,template="(%s,%s,%s,get_first_step_id_for_sprint(%s),now())")
             row_count=cursor.rowcount
             self.logger.debug(f'Bulk Insert Success with {row_count} row(s) Sprint ID {self.sprint_id} at time {self.created_date}')
             self.jdb.dbConn.commit()

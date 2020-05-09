@@ -1,6 +1,6 @@
 import { environment } from './../../../../environments/environment';
 import { Component, OnInit, Input, Output, EventEmitter, ɵConsole } from '@angular/core';
-import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, FormControl, Validators,AbstractControl,ValidatorFn } from '@angular/forms';
 import { StaticDataService } from '../../../services/static-data.service';
 import { TaskDetailsService } from '../../../services/tasks/task-details.service';
 import { UsersService } from '../../../services/users/users.service';
@@ -102,12 +102,24 @@ export class CreateTaskComponent implements OnInit {
       fctlReportedBy: new FormControl({ value: '', disabled: false }, Validators.required),
       fctlReportedDate: new FormControl({ value: '', disabled: false }, Validators.required),
       fctlComment: new FormControl({ value: '', disabled: true }),
-      fctlAssigneeName: new FormControl({ value: '', disabled: false })
+      fctlAssigneeName: new FormControl({ value: '', disabled: false }),
+      fctlEstimatedTime: new FormControl({ value: 0, disabled: false })
     });
   }
 
 
   ngOnInit(): void {
+  }
+
+  validateEstimatedTime(estimatedTime:AbstractControl):{ [key: string]: boolean }|null{
+    console.log("validateEstimatedTime");
+    if (estimatedTime.value %0.5 === 0 ){
+      console.log("no Error esti");
+    }
+    else{
+      console.log("Error esti");
+    }
+    return estimatedTime.value %0.5 === 0 ? null :{estimatedTimeIncorrect:true};
   }
 
   onSubmit() {
@@ -135,7 +147,8 @@ export class CreateTaskComponent implements OnInit {
       "created_date": this.createTaskFB.get('fctlCreatedDate').value,
       "reported_by": this.createTaskFB.get('fctlReportedBy').value,
       "reported_date": this.createTaskFB.get('fctlReportedDate').value,
-      "module_name": this.createTaskFB.get('fctlModuleName').value
+      "module_name": this.createTaskFB.get('fctlModuleName').value,
+      "estimated_time": this.createTaskFB.get('fctlEstimatedTime').value
     }
     console.log('@@------@@');
     console.log(formData);

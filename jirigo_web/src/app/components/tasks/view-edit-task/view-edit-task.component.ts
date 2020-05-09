@@ -76,6 +76,7 @@ export class ViewEditTaskComponent implements OnInit {
         fctlPriority: new FormControl({ value: '', disabled: true }, Validators.required),
         fctlEnvironment: new FormControl({ value: '', disabled: true }, Validators.required),
         fctlModuleName: new FormControl({ value: '', disabled: true }),
+        fctlEstimatedTime: new FormControl({ value: '', disabled: true }),
         fctlCreatedDate: new FormControl({ value: '', disabled: true }),
         fctlCreatedBy: new FormControl({ value: '', disabled: true }),
         fctlIsBlocking: new FormControl({ value: false, disabled: true }),
@@ -196,7 +197,8 @@ export class ViewEditTaskComponent implements OnInit {
       "modified_by":localStorage.getItem('loggedInUserId'),
       "modified_date":this.viewModifyTaskFB.get('fctlCreatedDate').value,
       "reported_by": this.viewModifyTaskFB.get('fctlReportedBy').value,
-      "reported_date":this.viewModifyTaskFB.get('fctlReportedDate').value
+      "reported_date":this.viewModifyTaskFB.get('fctlReportedDate').value,
+      "estimated_time":this.viewModifyTaskFB.get('fctlEstimatedTime').value
     }
     console.log('@@------@@');
     console.log(formData);

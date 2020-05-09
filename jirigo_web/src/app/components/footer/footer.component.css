@@ -1,6 +1,8 @@
 .footer_banner{
     background-color:#B5B5B5;
-    margin-top: auto;
+    position:absolute;
+    bottom:0;
+    width: 100%;
 }
 .footer_text{
     color: white;

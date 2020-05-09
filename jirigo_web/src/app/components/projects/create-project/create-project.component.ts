@@ -4,6 +4,7 @@ import { ProjectsService  } from '../../../services/projects/projects.service';
 import { UsersService  } from '../../../services/users/users.service';
 import { NgxSpinnerService  } from 'ngx-spinner';
 
+import { AutoComplete  } from 'primeng/autocomplete';
 
 @Component({
   selector: 'app-create-project',

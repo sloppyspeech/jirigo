@@ -7,7 +7,7 @@ class JirigoDBConn(object):
         print('JirigoDBConn Called For Intiation')
         try:
             self.dbConn = psycopg2.connect(user = "admin",
-                                        password = "admin",
+                                        password = "Gallop",
                                         host = "127.0.0.1",
                                         port = "5432",
                                         database = "jirigo")

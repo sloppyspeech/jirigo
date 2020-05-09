@@ -11,6 +11,18 @@ import { NgxSpinnerComponent, NgxSpinnerService } from 'ngx-spinner';
 export class ListTasksComponent implements OnInit {
   allTasks=[];
   showTable:boolean=false;
+  taskDetailsCols=[
+    {'header':'Task No','field':'task_no'},
+    {'header':'Summary','field':'summary'},
+    {'header':'Issue Status','field':'issue_status'},
+    {'header':'Issue Type','field':'issue_type'},
+    {'header':'Severity','field':'severity'},
+    {'header':'Priority','field':'priority'},
+    {'header':'Environment','field':'environment'},
+    {'header':'Reported By','field':'reported_by'},
+    {'header':'Reported Date','field':'reported_date'},
+  ];
+
   task_header_cols:string[]=[
     // 'task_int_id',
     'Task No',

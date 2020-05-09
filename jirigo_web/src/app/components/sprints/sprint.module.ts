@@ -20,7 +20,7 @@ import { DropdownModule} from 'primeng/dropdown';
 
 import { NgxSpinnerModule  } from 'ngx-spinner';
 import { EditSprintsComponent } from './edit-sprints/edit-sprints.component';
-
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   declarations: [CreateSprintComponent, ListSprintsComponent, EditSprintsComponent],
@@ -37,7 +37,8 @@ import { EditSprintsComponent } from './edit-sprints/edit-sprints.component';
     CalendarModule,
     DropdownModule,
     NgxSpinnerModule,
-    NgbModule
+    NgbModule,
+    FontAwesomeModule
   ],
   providers:[TicketDetailsService]
 })

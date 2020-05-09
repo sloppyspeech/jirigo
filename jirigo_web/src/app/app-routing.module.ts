@@ -2,12 +2,13 @@ import { ViewEditTicketsComponent } from './components/tickets/view-edit-tickets
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent  } from './components/login/login.component';
+import { LogoutComponent  } from './components/logout/logout.component';
 import { CreateTicketComponent  } from './components/tickets/create-ticket/create-ticket.component';
 import { ListTicketsComponent  } from './components/tickets/list-tickets/list-tickets.component';
 import { CreateProjectComponent } from './components/projects/create-project/create-project.component';
 import { ListProjectsComponent  } from './components/projects/list-projects/list-projects.component';
-import { ScrumBoardComponent } from './components/boards/scrum/scrum-board/scrum-board.component';
-
+import { RegisterComponent  } from './components/register/register.component';
+import { AuthGuardService as AuthGuard } from './components/auth/auth-guard.service';
 
 const routes: Routes = [
   {
@@ -19,44 +20,67 @@ const routes: Routes = [
     component:LoginComponent
   },
   {
+    path:'logout',
+    component:LogoutComponent
+  },
+  {
+    path:'register',
+    component:RegisterComponent
+  },
+  {
     path:'create-ticket',
-    component:CreateTicketComponent
+    component:CreateTicketComponent,
+    canActivate:[AuthGuard]
   },
   {
     path:'list-tickets',
-    component:ListTicketsComponent
+    component:ListTicketsComponent,
+    canActivate:[AuthGuard]
   },
   {
     path:'view-edit-tickets/:ticket_no',
-    component:ViewEditTicketsComponent
+    component:ViewEditTicketsComponent,
+    canActivate:[AuthGuard]
   },
   {
     path:'view-edit-ticket',
-    component:ViewEditTicketsComponent
+    component:ViewEditTicketsComponent,
+    canActivate:[AuthGuard]
   },
   {
     path:'list-projects',
-    component:ListProjectsComponent
+    component:ListProjectsComponent,
+    canActivate:[AuthGuard]
   },
   {
     path:'create-project',
-    component:CreateProjectComponent
+    component:CreateProjectComponent,
+    canActivate:[AuthGuard]
   },
   {
     path:'tasks',
-    loadChildren: () => import('./components/tasks/tasks.module').then( m => m.TasksModule)
+    loadChildren: () => import('./components/tasks/tasks.module').then( m => m.TasksModule),
+    canActivate:[AuthGuard]
   },
   {
-    path:'scrumboard',
-    component:ScrumBoardComponent
+    path:'boards',
+    loadChildren:() => import ('./components/boards/boards.module').then(m=> m.BoardsModule),
+    canActivate:[AuthGuard]
   },
   {
     path:'dashboard',
-    loadChildren: () => import('./components/dashboard/dashboard.module').then( m => m.DashboardModule)
+    loadChildren: () => import('./components/dashboard/dashboard.module').then( m => m.DashboardModule),
+    canActivate:[AuthGuard]
   },
   {
     path:'sprints',
-    loadChildren: () => import('./components/sprints/sprint.module').then( m => m.SprintModule)
+    loadChildren: () => import('./components/sprints/sprint.module').then( m => m.SprintModule),
+    canActivate:[AuthGuard]
+  },
+  {
+    path:'user-management',
+    loadChildren: () => import('./components/users/users.module').then( m => m.UsersModule),
+    canActivate:[AuthGuard]
   }
 ];
 

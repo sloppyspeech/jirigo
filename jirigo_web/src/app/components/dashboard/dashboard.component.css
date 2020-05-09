@@ -5,7 +5,7 @@
     padding: 0 7px 25px 7px;
 }
 .topCardRight {
-    padding: 0 0 25px 7px;
+    padding: 0 25px 0  7px;
 }
 .inner1 {
     border-radius: 7px;
@@ -82,7 +82,7 @@
 }
 
 .overview-chart {
-    height: 115px;
+    height: 175px;
     position: relative;
-    background-color: #edeff2;
+    background-color: white;
 }

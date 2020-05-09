@@ -1,214 +1,249 @@
 <form [formGroup]="parentForm" #taskDetailsComponent>
-    <div class="card">
-      <div
-        class="card-header container-fluid"
+  <div class="card">
+    <div
+      class="card-header container-fluid"
+      data-toggle="collapse"
+      data-target="#idIssueType"
+    >
+      Task Details
+      <button
+        class="oi oi-chevron-bottom float-right"
         data-toggle="collapse"
         data-target="#idIssueType"
-      >
-        Task Details
-        <button
-          class="oi oi-chevron-bottom float-right"
-          data-toggle="collapse"
-          data-target="#idIssueType"
-        ></button>
-      </div>
-      <div id="idIssueType" class="collapse">
-        <div class="card-body">
-          <div class="form-group">
-            <div class="row">
-              <div class="col-md-3">
-                <label
-                  for="formGroupExampleInput"
-                  class="col-form-label col-form-label-sm"
-                  >Issue Type<span class="required-field"></span
-                ></label>
-                <select
-                  class="form-control-plain"
-                  id="exampleFormControlSelect1"
-                  formControlName="fctlIssueType"
+      ></button>
+    </div>
+    <div id="idIssueType" class="collapse">
+      <div class="card-body">
+        <div class="form-group">
+          <div class="row">
+            <div class="col-md-3">
+              <label
+                for="formGroupExampleInput"
+                class="col-form-label col-form-label-sm"
+                >Issue Type<span class="required-field"></span
+              ></label>
+              <select
+                class="form-control-plain"
+                id="exampleFormControlSelect1"
+                formControlName="fctlIssueType"
+              >
+                <option value="" disabled>Choose..</option>
+                <option
+                  *ngFor="let issueType of taskIssueTypesRef"
+                  [ngValue]="issueType.name"
+                  >{{ issueType.name }}</option
                 >
-                  <option value="" disabled>Choose..</option>
-                  <option
-                    *ngFor="let issueType of taskIssueTypesRef"
-                    [ngValue]="issueType.name"
-                    >{{ issueType.name }}</option
-                  >
-                </select>
-              </div>
-              <div class="col-md-3">
-                <label
-                  for="formGroupExampleInput"
-                  class="col-form-label col-form-label-sm"
-                  >Severity<span class="required-field"></span
-                ></label>
-                <select
-                  class="form-control-plain"
-                  id="exampleFormControlSelect1"
-                  formControlName="fctlSeverity"
-                  (change)="setEnvironment1($event)"
+              </select>
+            </div>
+            <div class="col-md-3">
+              <label
+                for="formGroupExampleInput"
+                class="col-form-label col-form-label-sm"
+                >Severity<span class="required-field"></span
+              ></label>
+              <select
+                class="form-control-plain"
+                id="exampleFormControlSelect1"
+                formControlName="fctlSeverity"
+                (change)="setEnvironment1($event)"
+              >
+                <option value="" disabled>Choose..</option>
+                <option
+                  *ngFor="let severity of taskSeveritiesRef"
+                  [ngValue]="severity.name"
+                  >{{ severity.name }}</option
                 >
-                  <option value="" disabled>Choose..</option>
-                  <option
-                    *ngFor="let severity of taskSeveritiesRef"
-                    [ngValue]="severity.name"
-                    >{{ severity.name }}</option
-                  >
-                </select>
-              </div>
-              <div class="col-md-3">
-                <label
-                  for="formGroupExampleInput"
-                  class="col-form-label col-form-label-sm"
-                  >Priority<span class="required-field"></span
-                ></label>
-                <select
-                  class="form-control-plain"
-                  id="exampleFormControlSelect1"
-                  formControlName="fctlPriority"
-                  (change)="setEnvironment1($event)"
+              </select>
+            </div>
+            <div class="col-md-3">
+              <label
+                for="formGroupExampleInput"
+                class="col-form-label col-form-label-sm"
+                >Priority<span class="required-field"></span
+              ></label>
+              <select
+                class="form-control-plain"
+                id="exampleFormControlSelect1"
+                formControlName="fctlPriority"
+                (change)="setEnvironment1($event)"
+              >
+                <option value="" disabled>Choose..</option>
+                <option
+                  *ngFor="let priority of taskPrioritiesRef"
+                  [ngValue]="priority.name"
+                  >{{ priority.name }}</option
                 >
-                  <option value="" disabled>Choose..</option>
-                  <option
-                    *ngFor="let priority of taskPrioritiesRef"
-                    [ngValue]="priority.name"
-                    >{{ priority.name }}</option
-                  >
-                </select>
-              </div>
-  
-              <div class="col-md-3">
-                <label
-                  for="formGroupExampleInput"
-                  class="col-form-label col-form-label-sm"
-                  >Environment<span class="required-field"></span
-                ></label>
-                <select
-                  class="form-control-plain"
-                  id="exampleFormControlSelect1"
-                  formControlName="fctlEnvironment"
-                  (change)="setEnvironment1($event)"
+              </select>
+            </div>
+
+            <div class="col-md-3">
+              <label
+                for="formGroupExampleInput"
+                class="col-form-label col-form-label-sm"
+                >Environment<span class="required-field"></span
+              ></label>
+              <select
+                class="form-control-plain"
+                id="exampleFormControlSelect1"
+                formControlName="fctlEnvironment"
+                (change)="setEnvironment1($event)"
+              >
+                <option value="" disabled>Choose..</option>
+                <option *ngFor="let env of taskEnvRef" [ngValue]="env.name">{{
+                  env.name
+                }}</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-3">
+              <label
+                for="formGroupExampleInput"
+                class="col-form-label col-form-label-sm"
+                >Issue Status<span class="required-field"></span
+              ></label>
+              <select
+                class="form-control-plain"
+                id="exampleFormControlSelect1"
+                formControlName="fctlIssueStatus"
+                (change)="setReportedBy($event)"
+              >
+                <option value="" value="" disabled>Choose..</option>
+                <option
+                  *ngFor="let issueStatus of taskIssueStatusesRef"
+                  [ngValue]="issueStatus.name"
+                  >{{ issueStatus.name }}</option
                 >
-                  <option value="" disabled>Choose..</option>
-                  <option *ngFor="let env of taskEnvRef" [ngValue]="env.name">{{
-                    env.name
-                  }}</option>
-                </select>
+              </select>
+            </div>
+
+            <div class="col-md-3">
+              <label
+                for="formGroupExampleInput"
+                class="col-form-label col-form-label-sm"
+                >Blocking?<span class="required-field"></span
+              ></label>
+              <div>
+                <label class="switch">
+                  <input type="checkbox" formControlName="fctlIsBlocking" />
+                  <span class="slider round"></span>
+                </label>
               </div>
             </div>
-            <div class="row">
-              <div class="col-md-3">
-                <label
-                  for="formGroupExampleInput"
-                  class="col-form-label col-form-label-sm"
-                  >Issue Status<span class="required-field"></span
-                ></label>
-                <select
-                  class="form-control-plain"
-                  id="exampleFormControlSelect1"
-                  formControlName="fctlIssueStatus"
-                  (change)="setReportedBy($event)"
+            <div class="col-md-3 input-group">
+              <label
+                for="formGroupExampleInput"
+                class="col-form-label col-form-label-sm"
+                >Reported Date<span class="required-field"></span
+              ></label>
+              <input
+                class="form-control-plain"
+                formControlName="fctlReportedDate"
+                placeholder="yyyy-mm-dd"
+                name="md"
+                ngbDatepicker
+                #md="ngbDatepicker"
+                (click)="md.toggle()"
+              />
+              <!-- <span class="oi oi-calendar" ></span> -->
+            </div>
+
+            <!-- <div class="col-md-3">
+              <label
+                for="typeahead-http"
+                class="col-form-label col-form-label-sm"
+                >Reported By<span class="required-field"></span
+              ></label>
+              <input
+                id="typeahead-http"
+                type="text"
+                class="form-control-plain"
+                formControlName="fctlReportedBy"
+                [class.is-invalid]="searchFailed"
+                [ngbTypeahead]="search"
+                placeholder="Start Typing User Name"
+              />
+              <small *ngIf="searching" class="form-text text-muted"
+                >searching...</small
+              >
+              <div class="invalid-feedback" *ngIf="searchFailed">
+                Sorry, suggestions could not be loaded.
+              </div>
+            </div> -->
+
+            <div class="col-md-3">
+              <label
+                for="typeahead-http"
+                class="col-form-label col-form-label-sm"
+                >Reported By<span class="required-field"></span
+              ></label>
+              <br />
+              <p-autoComplete
+                formControlName="fctlReportedBy"
+                [suggestions]="userListForDropDown"
+                (completeMethod)="searchUsers($event)"
+                [size]="41"
+                [style]="{'border-radius':'40px'}"
+              >
+              </p-autoComplete>
+            </div>
+
+            <div class="col-md-3">
+              <label
+                for="typeahead-http"
+                class="col-form-label col-form-label-sm"
+                >Assigned To</label>
+              <br />
+              <p-autoComplete
+                formControlName="fctlAssigneeName"
+                [suggestions]="userListForDropDown"
+                (completeMethod)="searchUsers($event)"
+                [size]="41"
+                [style]="{'border-radius':'40px'}"
+              >
+              </p-autoComplete>
+            </div>
+
+            <div class="col-md-3">
+              <label
+                for="formGroupExampleInput"
+                class="col-form-label col-form-label-sm"
+                >Affected Module
+              </label>
+              <select
+                class="form-control-plain"
+                id="exampleFormControlSelect1"
+                formControlName="fctlModuleName"
+                (change)="setEnvironment1($event)"
+              >
+                <option value="" disabled>Choose..</option>
+                <option
+                  *ngFor="let module of taskModuleRef"
+                  [ngValue]="module.name"
+                  >{{ module.name }}</option
                 >
-                  <option value="" value="" disabled>Choose..</option>
-                  <option
-                    *ngFor="let issueStatus of taskIssueStatusesRef"
-                    [ngValue]="issueStatus.name"
-                    >{{ issueStatus.name }}</option
-                  >
-                </select>
-              </div>
-  
-              <div class="col-md-3">
-                <label
-                  for="formGroupExampleInput"
-                  class="col-form-label col-form-label-sm"
-                  >Blocking?<span class="required-field"></span
-                ></label>
-                <div>
-                  <label class="switch">
-                    <input type="checkbox" formControlName="fctlIsBlocking" />
-                    <span class="slider round"></span>
-                  </label>
-                </div>
-              </div>
-              <div class="col-md-3 input-group">
-                <label
-                  for="formGroupExampleInput"
-                  class="col-form-label col-form-label-sm"
-                  >Reported Date<span class="required-field"></span
-                ></label>
-                  <input
-                    class="form-control-plain"
-                    formControlName="fctlReportedDate"
-                    placeholder="yyyy-mm-dd"
-                    name="md"
-                    ngbDatepicker
-                    #md="ngbDatepicker"
-                    (click)="md.toggle()"
-                  />
-                  <!-- <span class="oi oi-calendar" ></span> -->
-              </div>
-              
-              <div class="col-md-3">
-                <label for="typeahead-http" class="col-form-label col-form-label-sm">Reported By<span class="required-field"></span></label>
-                <input
-                  id="typeahead-http"
-                  type="text"
-                  class="form-control-plain"
-                  formControlName="fctlReportedBy"
-                  [class.is-invalid]="searchFailed"
-                  [ngbTypeahead]="search"
-                  placeholder="Start Typing User Name"
-                />
-                <small *ngIf="searching" class="form-text text-muted"
-                  >searching...</small
-                >
-                <div class="invalid-feedback" *ngIf="searchFailed">
-                  Sorry, suggestions could not be loaded.
-                </div>
-              </div>
-  
-              <div class="col-md-3">
-                <label for="typeahead-http" class="col-form-label col-form-label-sm">Assigned To<span class="required-field"></span></label>
-                <input
-                  id="typeahead-http"
-                  type="text"
-                  class="form-control-plain"
-                  formControlName="fctlAssigneeName"
-                  [class.is-invalid]="searchFailed"
-                  [ngbTypeahead]="search"
-                  placeholder="Start Typing Assignee Name"
-                />
-                <small *ngIf="searching" class="form-text text-muted"
-                  >searching...</small
-                >
-                <div class="invalid-feedback" *ngIf="searchFailed">
-                  Sorry, suggestions could not be loaded.
-                </div>
-              </div>
-              <div class="col-md-3">
-                <label
-                  for="formGroupExampleInput"
-                  class="col-form-label col-form-label-sm"
-                  >Affected Module
-                </label>
-                <select
-                  class="form-control-plain"
-                  id="exampleFormControlSelect1"
-                  formControlName="fctlModuleName"
-                  (change)="setEnvironment1($event)"
-                >
-                  <option value="" disabled>Choose..</option>
-                  <option
-                    *ngFor="let module of taskModuleRef"
-                    [ngValue]="module.name"
-                    >{{ module.name }}</option
-                  >
-                </select>
-              </div>
+              </select>
+            </div>
+            <div class="col-md-3">
+              <label
+                for="typeahead-http"
+                class="col-form-label col-form-label-sm"
+                >Estimated Time(Hrs)<small class="text-muted"> 0.5 = 30 minutes</small></label
+              >
+              <input
+                step="0.5"
+                id="idEstimatedTime"
+                type="number"
+                class="form-control-plain"
+                formControlName="fctlEstimatedTime"
+                placeholder="Increments of 0.5"
+                (focusout)="validateEstimatedTime($event.target.value)"
+              />
+              <div *ngIf="parentForm.errors">{{ parentForm.errors }}</div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </form>
-  
+  </div>
+</form>

@@ -1,0 +1,104 @@
+<div
+  class="fluid-container col-sm-4 col-md-4 col-lg-4 offset-md-4"
+  style="background-color: aliceblue; margin-bottom: 50px; border-radius: 10px;"
+>
+  <div style="padding: 15px 15px 15px 15px;">
+    <div class="row">
+      <h2>Register</h2>
+    </div>
+    <form [formGroup]="registerFG" (ngSubmit)="registerUser()">
+      <div class="form-group row">
+        <label for="firstName">First Name</label>
+        <input
+          type="text"
+          formControlName="firstName"
+          class="form-control"
+          [ngClass]="{ 'is-invalid': submitted && rf.firstName.errors }"
+          (click)="resetErrors()"
+        />
+        <div *ngIf="submitted && rf.firstName.errors" class="invalid-feedback">
+          <div *ngIf="rf.firstName.errors.required">First Name is required</div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="lastName">Last Name</label>
+        <input
+          type="text"
+          formControlName="lastName"
+          class="form-control"
+          [ngClass]="{ 'is-invalid': submitted && rf.lastName.errors }"
+        />
+        <div *ngIf="submitted && rf.lastName.errors" class="invalid-feedback">
+          <div *ngIf="rf.lastName.errors.required">Last Name is required</div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="email">Email</label>
+        <input
+          type="text"
+          formControlName="email"
+          class="form-control"
+          [ngClass]="{ 'is-invalid': submitted && rf.email.errors }"
+        />
+        <div *ngIf="submitted && rf.email.errors" class="invalid-feedback">
+          <div *ngIf="rf.email.errors.required">Email is required</div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="password">Password</label>
+        <input
+          type="password"
+          formControlName="password"
+          class="form-control"
+          [ngClass]="{ 'is-invalid': submitted && rf.password.errors }"
+        />
+        <div *ngIf="submitted && rf.password.errors" class="invalid-feedback">
+          <div *ngIf="rf.password.errors.required">Password is required</div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="password">Confirm Password</label>
+        <input
+          type="password"
+          formControlName="confirmedPassword"
+          class="form-control"
+          [ngClass]="{ 'is-invalid': submitted && rf.confirmedPassword.errors }"
+        />
+        <div
+          *ngIf="submitted && rf.confirmedPassword.errors"
+          class="invalid-feedback"
+        >
+          <div *ngIf="rf.confirmedPassword.errors.required">
+            Confirm Password is required
+          </div>
+
+        </div>
+        <div  *ngIf="pwdConfirmPwdDontMatch && !registerFG.valid && rf.confirmedPassword.dirty">
+          <small style="color:red">Password & Confirm Password Don't match</small>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <div class="col-md-12 col-lg-12">
+          <button
+            [disabled]="!registerFG.valid"
+            class="btn btn-primary float-right"
+          >
+            Register
+          </button>
+          <a routerLink="/login" class="btn btn-secondary">Login</a>
+        </div>
+      </div>
+      <div class="form-group row" *ngIf="registerFormInvalid">
+        <div *ngFor="let error of errorsList">
+          <span class="error">{{ error }}</span>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<ngx-spinner
+  [fullScreen]="true"
+  type="ball-newton-cradle"
+  size="medium"
+></ngx-spinner>

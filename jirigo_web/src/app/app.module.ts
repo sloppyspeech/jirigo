@@ -19,7 +19,7 @@ import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
 import { CalendarModule  } from 'primeng/calendar';
 import { SelectButtonModule  } from 'primeng/selectbutton';
-import { AutoComplete, AutoCompleteModule  } from 'primeng/autocomplete';
+import { AutoCompleteModule  } from 'primeng/autocomplete';
 import { DialogModule } from "primeng/dialog";
 import { CardModule  } from 'primeng/card';
 import { ToastModule  } from 'primeng/toast';
@@ -41,6 +41,8 @@ import { TicketCommentsComponent } from './components/tickets/ticket-comments/ti
 import { SelectUserComponent } from './components/common/select-user/select-user.component';
 import { TicketAuditComponent } from './components/tickets/ticket-audit/ticket-audit.component';
 import { ListProjectsComponent } from './components/projects/list-projects/list-projects.component';
+import { RegisterComponent } from './components/register/register.component';
+import { LogoutComponent } from './components/logout/logout.component';
 
 
 @NgModule({
@@ -58,7 +60,9 @@ import { ListProjectsComponent } from './components/projects/list-projects/list-
     TicketCommentsComponent,
     SelectUserComponent,
     TicketAuditComponent,
-    ListProjectsComponent    
+    ListProjectsComponent,
+    RegisterComponent,
+    LogoutComponent
   ],
   imports: [
     BrowserModule,

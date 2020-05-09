@@ -33,6 +33,7 @@ class JirigoTask(object):
         self.project_name=data.get('project_name','')
         self.assignee_name=data.get('assignee_name','')
         self.module_name=data.get('module_name','')
+        self.estimated_time=data.get('estimated_time',0)
         self.logger=Logger()
 
     def create_task(self):
@@ -41,14 +42,14 @@ class JirigoTask(object):
         insert_sql="""  INSERT INTO 
                         TTASKS( task_no,summary,description,severity,priority,
                                 issue_status,issue_type,environment,is_blocking,created_by,
-                                created_date,reported_by,reported_date,assignee_id,project_id,module_name) 
+                                created_date,reported_by,reported_date,assignee_id,project_id,module_name,estimated_time) 
                         VALUES (get_issue_no_by_proj(%s),%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,
-                                get_user_id(%s),%s,get_user_id(%s),get_proj_id(%s),%s) returning task_no;
+                                get_user_id(%s),%s,get_user_id(%s),get_proj_id(%s),%s,%s) returning task_no;
                     """
         values=(self.project_name,self.summary,self.description,self.severity,self.priority,
                 "Open",self.issue_type,self.environment,self.is_blocking,self.created_by,
                 datetime.datetime.today(),self.reported_by,datetime.datetime.today(),
-                self.assignee_name,self.project_name,self.module_name,)
+                self.assignee_name,self.project_name,self.module_name,self.estimated_time,)
         self.logger.debug(f'Insert : {insert_sql}  {values}')
 
         try:
@@ -90,7 +91,8 @@ class JirigoTask(object):
                                     get_user_name(modified_by) modified_by,
                                     to_char(created_date, 'DD-Mon-YYYY HH24:MI:SS') modified_date,
                                     get_user_name(reported_by) reported_by,
-                                    to_char(created_date, 'DD-Mon-YYYY HH24:MI:SS') reported_date
+                                    to_char(created_date, 'DD-Mon-YYYY HH24:MI:SS') reported_date,
+                                    estimated_time
                               FROM ttasks 
                              order by task_int_id
                         )
@@ -138,7 +140,8 @@ class JirigoTask(object):
                                         get_user_name(COALESCE(modified_by, 0)) modified_by,
                                         modified_date,
                                         get_user_name(COALESCE(reported_by, 0)) reported_by,
-                                        reported_date
+                                        reported_date,
+                                        estimated_time
                                 FROM ttasks
                                 WHERE TASK_NO=%s )
                                 SELECT json_agg(t)
@@ -186,14 +189,15 @@ class JirigoTask(object):
                                 project_id=get_proj_id(%s),
                                 assignee_id=get_user_id(%s),
                                 is_blocking=%s,
-                                module_name=%s  
+                                module_name=%s,
+                                estimated_time=%s  
                          WHERE task_no=%s;
                     """
         values=(self.summary,self.description,self.severity,self.priority,
                 self.issue_status,self.issue_type,self.environment,self.modified_by,
                 datetime.datetime.today(),self.reported_by,datetime.datetime.today(),
                 self.project_name,self.assignee_name,self.is_blocking,self.module_name,
-                self.task_no,)
+                self.estimated_time,self.task_no,)
 
         self.logger.debug(f'Update : {update_sql}  {values}')
 
@@ -219,7 +223,7 @@ class JirigoTask(object):
         insert_sql="""
                         INSERT INTO ttasks (task_no, SUMMARY, description, issue_status, issue_type, 
                                               severity, priority, environment, is_blocking, module,created_by, 
-                                              created_date, reported_by, reported_date, project_id)
+                                              created_date, reported_by, reported_date, project_id,estimated_time)
                                     SELECT get_issue_no_by_proj(get_proj_name(project_id)),
                                         SUMMARY,
                                         description,
@@ -234,7 +238,8 @@ class JirigoTask(object):
                                         %s,
                                         reported_by,
                                         reported_date,
-                                        project_id
+                                        project_id,
+                                        estimated_time
                                     FROM ttasks
                                     WHERE task_no=%s
                                     returning task_no;

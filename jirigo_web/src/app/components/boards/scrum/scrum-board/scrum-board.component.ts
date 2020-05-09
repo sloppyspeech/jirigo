@@ -1,4 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { Router,ActivatedRoute,ParamMap  } from '@angular/router';
+
+import { SprintDetailsService  }  from '../../../../services/sprints/sprint-details.service';
+import { ScrumBoardService  } from '../../../../services/boards/scrum/scrum-board.service';
+
+
 
 @Component({
   selector: 'app-scrum-board',
@@ -6,60 +12,104 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./scrum-board.component.css']
 })
 export class ScrumBoardComponent implements OnInit {
-  availableCars:any=
- [
-          {"brand": "VW", "year": 2012, "color": "Orange", "vin": "dsad231ff"},
-          {"brand": "Audi", "year": 2011, "color": "Black", "vin": "gwregre345"},
-          {"brand": "Renault", "year": 2005, "color": "Gray", "vin": "h354htr"},
-          {"brand": "BMW", "year": 2003, "color": "Blue", "vin": "j6w54qgh"},
-          {"brand": "Mercedes", "year": 1995, "color": "Orange", "vin": "hrtwy34"},
-          {"brand": "Volvo", "year": 2005, "color": "Black", "vin": "jejtyj"},
-          {"brand": "Honda", "year": 2012, "color": "Yellow", "vin": "g43gr"},
-          {"brand": "Jaguar", "year": 2013, "color": "Orange", "vin": "greg34"},
-          {"brand": "Ford", "year": 2000, "color": "Black", "vin": "h54hw5"},
-          {"brand": "Fiat", "year": 2013, "color": "Red", "vin": "245t2s"}
-];
+  sprint_id:string;
+  t_todos:any[]=[];
+  t_doings:any[]=[];
+  t_reviews:any[]=[];
+  t_dones:any[]=[];
+  showBoard:boolean=false;
 
-
-  selectedCars:any[]=[];
-
-  draggedCar: any[]=[];
-
-  constructor() { }
+  constructor(
+    private _router:Router,
+    private _activatedRoute : ActivatedRoute,
+    private _serSprintDetails:SprintDetailsService,
+    private _serScrumBoard:ScrumBoardService
+  ) { }
 
   ngOnInit(): void {
+    this.t_todos=[];
+    this.t_doings=[];
+    this.t_reviews=[];
+    this.t_dones=[];
+  
+    this.sprint_id=this._activatedRoute.snapshot.paramMap.get("sprint_id");
+    console.log("Inside Init sprint_id :"+this.sprint_id);
+    this._serScrumBoard.getAllTasksOfASprintForScrumBoard(this.sprint_id)
+        .subscribe(res =>{
+          console.log("getAllTasksOfASprintForScrumBoard Response is :");
+          console.log(res['dbQryResponse']);
+          res['dbQryResponse'].forEach(task_status => {
+            // console.log(task_status);
+            if (typeof(task_status['To Do']) !== "undefined"){
+              // console.log("To Do");
+              task_status['To Do'].forEach(val => {
+                this.t_todos.push(val);
+              });
+              // console.log(this.t_todos);
+            }
+            else if (typeof(task_status['Doing']) !== "undefined"){
+              // console.log("Doing");
+              task_status['Doing'].forEach(val => {
+                this.t_doings.push(val);
+              });
+              // console.log(JSON.stringify(this.t_doings));
+            }
+            else if (typeof(task_status['Review']) !== "undefined"){
+              // console.log("Review");
+              task_status['Review'].forEach(val => {
+                this.t_reviews.push(val);
+              });
+              // console.log(this.t_reviews);
+            }
+            else if (typeof(task_status['Done']) !== "undefined"){
+              // console.log("Done");
+              task_status['Done'].forEach(val => {
+                this.t_dones.push(val);
+              });
+              // console.log(this.t_dones);
+            }
+            else {
+            //   null;
+            }
+          });
+          this.showBoard=true;
+        });
+  }
+  ngAfterViewInit() {
+    
   }
 
   dragStart(event,car: any) {
     console.log("dragging car :"+JSON.stringify(car));
-    this.draggedCar = car;
+    // this.draggedCar = car;
 }
 
 drop(event) {
-    if (this.draggedCar) {
-        console.log(JSON.stringify(this.draggedCar));
-        let draggedCarIndex = this.findIndex(this.draggedCar);
-        // this.selectedCars = [...this.selectedCars, this.draggedCar];
-        this.selectedCars.push(this.draggedCar);
-        this.availableCars = this.availableCars.filter((val,i) => i!=draggedCarIndex);
-        this.draggedCar = null;
-    }
+    // if (this.draggedCar) {
+    //     console.log(JSON.stringify(this.draggedCar));
+    //     let draggedCarIndex = this.findIndex(this.draggedCar);
+    //     // this.selectedCars = [...this.selectedCars, this.draggedCar];
+    //     this.selectedCars.push(this.draggedCar);
+    //     this.availableCars = this.availableCars.filter((val,i) => i!=draggedCarIndex);
+    //     this.draggedCar = null;
+    // }
 }
 
 dragEnd(event) {
-    this.draggedCar = null;
+    // this.draggedCar = null;
 }
 
 findIndex(car: any) {
     let index = -1;
-    for(let i = 0; i < this.availableCars.length; i++) {
-        if (car.vin === this.availableCars[i].vin) {
-            index = i;
-            break;
-        }
-    }
-    return index;
+    // for(let i = 0; i < this.availableCars.length; i++) {
+    //     if (car.vin === this.availableCars[i].vin) {
+    //         index = i;
+    //         break;
+    //     }
+    // }
+    // return index;
 }
+
 }
 
 /*

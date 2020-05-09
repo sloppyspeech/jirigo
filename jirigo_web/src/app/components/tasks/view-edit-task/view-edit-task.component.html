@@ -1,33 +1,37 @@
-<p>view-edit-task works!</p>
 <ngx-spinner
   [fullScreen]="true"
   type="ball-newton-cradle"
   size="medium"
 ></ngx-spinner>
-<p-toast [style]="{marginTop: '10px'}" position="top-right"></p-toast>
+<p-toast [style]="{ marginTop: '10px' }" position="top-right"></p-toast>
 <form [formGroup]="viewModifyTaskFB" (ngSubmit)="updateTask()" *ngIf="isLoaded">
   <div class="form-group">
     <div class="row" *ngIf="viewEditFormEditBtnEnabled">
-      <div class="col-md-2 col-sm-2 col-lg-2">
-        <div>
-        
+      <div class="col-md-3 col-sm-6 col-lg-3 ">
         <button
           type="button"
           label="Modify Task"
-          class="btn btn-outline-warning"
+          class="btn btn-warning"
           (click)="markFormEditable()"
-        ><fa-icon [icon]="faEdit" style="padding-right: 3px; color:darkorange;" ></fa-icon>Modify Task</button>
-      </div>
-      </div>
-      <div class="col-md-2 col-sm-2 col-lg-2">
+          style="margin-right: 10px; color:white;"
+        >
+          <fa-icon
+            [icon]="faEdit"
+            style="padding-right: 3px; color: white;"
+          ></fa-icon
+          >Modify Task
+        </button>
+
         <button
           type="button"
           label="Clone Task"
-          class="btn btn-outline-purple-secondary"
+          class="btn btn-purple"
           (click)="cloneTask()"
-        ><fa-icon [icon]="faClone" style="color: blueviolet;"></fa-icon>&nbsp; Clone Task</button>
+        >
+          <fa-icon [icon]="faClone" style="color: white;"></fa-icon>&nbsp;
+          Clone Task
+        </button>
       </div>
-
     </div>
     <br />
     <div class="card">
@@ -35,12 +39,10 @@
         <h4>{{ task_no }}</h4>
       </div>
     </div>
-<br>
+    <br />
     <div class="row">
       <div class="col">
-        <label
-          for="formGroupExampleInput"
-          class="col-form-label-md"
+        <label for="formGroupExampleInput" class="col-form-label-md"
           >Summary</label
         >
         <input
@@ -57,9 +59,7 @@
   <div class="form-group">
     <div class="row">
       <div class="col">
-        <label
-          for="formGroupExampleInput"
-          class="col-form-label-md"
+        <label for="formGroupExampleInput" class="col-form-label-md"
           >Description</label
         >
         <quill-editor
@@ -99,9 +99,7 @@
           <div class="align-self-center mx-auto">
             <input
               type="submit"
-              [disabled]="
-                !viewModifyTaskFB.valid || !viewModifyTaskFB.dirty
-              "
+              [disabled]="!viewModifyTaskFB.valid || !viewModifyTaskFB.dirty"
               value="Update"
               id="update"
               class="btn btn-primary"
@@ -112,11 +110,29 @@
     </div>
   </div>
 
-<p-dialog header="Unsaved Data Alert" [(visible)]="displayPageDirtyDialog" [style]="{width: '50vw'}" [baseZIndex]="10000">
+  <p-dialog
+    header="Unsaved Data Alert"
+    [(visible)]="displayPageDirtyDialog"
+    [style]="{ width: '50vw' }"
+    [baseZIndex]="10000"
+  >
     There are unsaved Items on this page. Do you want to leave without saving ?
-<p-footer>
-    <button type="button" pButton icon="pi pi-check" (click)="showDirtyPageDialog(true)" label="Yes"></button>
-    <button type="button" pButton icon="pi pi-times" (click)="showDirtyPageDialog(false)" label="No" class="ui-button-secondary"></button>
-</p-footer>
-</p-dialog>
+    <p-footer>
+      <button
+        type="button"
+        pButton
+        icon="pi pi-check"
+        (click)="showDirtyPageDialog(true)"
+        label="Yes"
+      ></button>
+      <button
+        type="button"
+        pButton
+        icon="pi pi-times"
+        (click)="showDirtyPageDialog(false)"
+        label="No"
+        class="ui-button-secondary"
+      ></button>
+    </p-footer>
+  </p-dialog>
 </form>

@@ -22,15 +22,18 @@
     </ng-template>
     <ng-template pTemplate="body" let-sprint>
         <tr class="ui-selectable-row">
-            <td>{{sprint.sprint_name}}</td>
+            <td>            
+              <fa-icon [icon]="faEdit" style="color:orange;" class="p-2" size="lg" (click)="editSprint(sprint)" pull="left"></fa-icon>
+            {{sprint.sprint_name}}
+            </td>
             <td>{{sprint.proj_name}}</td>
             <td>{{sprint.status}}</td>
             <td>{{sprint.start_date |  date:'dd-MMM-yyyy'}}
             </td>
             <td>{{sprint.end_date  |  date:'dd-MMM-yyyy'}}</td>
             <td>
-                <button  (click)="editSprint(sprint)" type="button" class="btn btn-warning" label="Edit" style="width:48%;margin:0 2px 0 0;">Edit</button>
-                <button  (click)="sprintDetails(sprint)" type="button" class="btn btn-info float-right" label="Details" style="width:48%; margin:0 0 0 2px;" >Details</button>
+              <button  (click)="sprintDetails(sprint)" type="button" class="btn btn-info " label="Details" style="width:48%; margin:0 0 0 2px;" >Details</button>
+              <button  (click)="showSprintBoard(sprint)" type="button" class="btn btn-secondary float-right" label="Edit" style="width:48%;margin:0 2px 0 0; background-color: blueviolet;">Board</button>
             </td>
         </tr>
     </ng-template>

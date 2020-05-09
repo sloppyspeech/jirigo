@@ -4,6 +4,8 @@ from services.logging.logger import Logger
 
 import psycopg2
 import datetime
+from hashlib import pbkdf2_hmac
+import random,string
 
 from pprint import pprint
 
@@ -12,7 +14,7 @@ class JirigoUsers(object):
     def __init__(self,data):
         print("Initializing JirigoUsers")
         pprint(data)
-        self.user_id=data.get('user_id','')
+        self.user_id=data.get('user_id',0)
         self.first_name = data.get('first_name','')
         self.last_name = data.get('last_name','')
         self.email = data.get('email','')
@@ -35,14 +37,15 @@ class JirigoUsers(object):
         print("-"*40)
         return cls(data)
 
-    def create_user(self):
+    def register_user(self):
         response_data={}
         print("Inside Create User")
+        self.salt=JirigoUsers.generate_salt()
         insert_sql="""  INSERT INTO TUSERS(first_name,last_name,email,salt,password,
                         created_by,created_date,is_active) 
                         VALUES (%s,%s,%s,%s,%s,%s,%s,%s) returning user_id;
                     """
-        values=(self.first_name,self.last_name,self.email,self.salt,self.password,1,datetime.datetime.today(),self.is_active,)
+        values=(self.first_name,self.last_name,self.email,self.salt,JirigoUsers.get_password_digest(self.password,self.salt),1,datetime.datetime.today(),self.is_active,)
         print(f'Insert : {insert_sql}  {values}')
 
         try:
@@ -60,6 +63,7 @@ class JirigoUsers(object):
         except  (Exception, psycopg2.Error) as error:
             if(self.jdb.dbConn):
                 print(f'Error While Creating User {error}')
+                raise
 
     
     def get_all_users(self):
@@ -67,9 +71,10 @@ class JirigoUsers(object):
         self.logger.debug("Inside get_all_users")
         query_sql="""  
                     WITH t AS (
-                    select user_id,get_user_name(user_id) as name,email
-                        from tusers 
-                    where is_active='Y'
+                    select first_name,last_name,user_id,get_user_name(user_id) as name,email,
+                            is_active,password_change_date
+                      from tusers 
+                      order by first_name
                     )
                     SELECT json_agg(t) from t;
                    """
@@ -192,3 +197,128 @@ class JirigoUsers(object):
             if(self.jdb.dbConn):
                 print(f'Error While Updating Ticket {error}')
                 raise
+    
+    def validate_userid_password(self):
+        response_data={}
+        self.logger.debug("Inside validate_userid_password")
+        try:
+            salt=self.get_user_salt()
+        except Exception as error:
+            print("Error while retrieving user Salt")
+            response_data['dbQryStatus']='Failure'
+            response_data['dbQryResponse']='Invalid User Id or Password'
+            return response_data
+
+        print(f'User Salt is {salt} password is {self.password}')
+        query_sql="""  
+                 WITH t AS (
+                    SELECT  tu.user_id,get_user_name(tu.user_id) as user_name,
+                            tu.email,tu.is_active,coalesce(tup.project_id,0) project_id,
+                            get_proj_name(tup.project_id) project_name
+                      FROM tusers tu
+                     LEFT OUTER JOIN tuser_projects tup
+                        ON tu.user_id = tup.user_id 
+                     WHERE tu.email=%s
+                       AND tu.password=%s
+                       AND COALESCE (tup.default_project,'Y') ='Y'
+                    )
+                    SELECT json_agg(t) from t;
+                   """
+
+        values=(self.email,JirigoUsers.get_password_digest(self.password,salt),)
+        self.logger.debug(f'Select : {query_sql} Values {values}')
+        try:
+            print('-'*80)
+            cursor=self.jdb.dbConn.cursor()
+            cursor.execute(query_sql,values)
+            json_data=cursor.fetchone()[0]
+            row_count=cursor.rowcount
+            self.logger.debug(f'Select validate_password Success with {row_count} row(s) data {json_data}')
+            if (json_data == None):
+                response_data['dbQryStatus']='Failure'
+                response_data['dbQryResponse']='Invalid User Id or Password'
+            else:
+                self.logger.debug(f'json_data[0] {json_data[0]}')
+                if (json_data[0]['is_active'] != 'Y'):
+                    response_data['dbQryStatus']='Failure'
+                    response_data['dbQryResponse']='Inactive User, Contact Administrator.'
+                elif (json_data[0]['project_id'] == 0):
+                    response_data['dbQryStatus']='Failure'
+                    response_data['dbQryResponse']='Active User, but no Project Assigned. Contact Adminstrator.'
+                else:
+                    response_data['dbQryStatus']='Success'
+                    response_data['dbQryResponse']=json_data
+
+            return response_data
+        except  (Exception, psycopg2.Error) as error:
+            if(self.jdb.dbConn):
+                print(f'Error While Select validate_password {error}')
+                raise
+    
+
+    def set_user_password(self):
+        response_data={}
+        self.logger.debug("Inside set_password")
+
+        update_sql="""
+                        UPDATE TUSERS 
+                           SET  password=%s,
+                                salt=%s,
+                                modified_by=%s,
+                                modified_date=%s,
+                                password_change_date=%s
+                         WHERE  (user_id=%s 
+                                 OR email=%s)
+                    """
+        salt=JirigoUsers.generate_salt()
+        
+        values=(JirigoUsers.get_password_digest(self.password,salt),salt,self.modified_by,
+                datetime.datetime.now(),datetime.datetime.now(),self.user_id,self.email,)
+
+        self.logger.debug(f'set_password : {update_sql}  {values}')
+
+        try:
+            print('-'*80)
+            print(type(self.jdb.dbConn))
+            cursor=self.jdb.dbConn.cursor()
+            cursor.execute(update_sql,values)
+            self.jdb.dbConn.commit()
+            response_data['dbQryStatus']='Success'
+            response_data['dbQryResponse']={"rowUpdateCount":1}
+            return response_data
+        except  (Exception, psycopg2.Error) as error:
+            print(f'Error While set_user_password{error}')
+            raise
+
+    def get_user_salt(self):
+        response_data={}
+        self.logger.debug("Inside get_user_names")
+        query_sql="""
+                    select salt
+                      from tusers
+                      WHERE ( email=%s
+                             OR user_id=%s )
+                    """
+        values=(self.email,self.user_id,)
+
+        self.logger.debug(f'Select : {query_sql} Values {values}')
+        try:
+            print('-'*80)
+            cursor=self.jdb.dbConn.cursor()
+            cursor.execute(query_sql,values)
+            data=cursor.fetchone()[0]
+            row_count=cursor.rowcount
+            self.logger.debug(f'Select get_user_salt Success with {row_count} row(s) data {data}')
+            return data
+        except  (Exception, psycopg2.Error) as error:
+            print(f'Error While Select get_user_salt {error}')
+            raise
+
+    @staticmethod
+    def get_password_digest(p_password,salt,iterations=1000000,dklen=64):
+        print(f'{p_password}  {p_password.encode()}  {bytes(p_password,"utf-8")}')
+        return pbkdf2_hmac('sha512',p_password.encode(),salt.encode(),iterations,dklen)
+
+    @staticmethod
+    def generate_salt(salt_len=20):
+        return  ''.join([random.choice(string.ascii_letters+string.digits+string.punctuation) for x in range(salt_len)])

@@ -130,26 +130,36 @@
                 </label>
               </div>
             </div>
-            <div class="col-md-3 input-group">
+
+            <div class="col-md-3 ">
               <label
                 for="formGroupExampleInput"
                 class="col-form-label col-form-label-sm"
                 >Reported Date<span class="required-field"></span
               ></label>
+              <div class="row">
+              <div class="input-group col-lg-11" >
                 <input
-                  class="form-control-plain"
-                  formControlName="fctlReportedDate"
-                  placeholder="yyyy-mm-dd"
-                  name="md"
-                  ngbDatepicker
-                  #md="ngbDatepicker"
-                  (click)="md.toggle()"
+                style="max-width: 460px;"
+                class="form-control "
+                formControlName="fctlReportedDate"
+                placeholder="yyyy-mm-dd"
+                name="md"
+                ngbDatepicker
+                #md="ngbDatepicker"
+                (click)="md.toggle()"
                 />
-                <!-- <span class="oi oi-calendar" ></span> -->
+              </div>
+              <div >
+                <span class="oi oi-calendar" style="font-size: 1.75em;"></span>
+                <!-- <fa-icon [icon]="faCalendar" style="color: black; font-size: 2em;"></fa-icon> -->
+              </div>
+            </div>
             </div>
             
             <div class="col-md-3">
               <label for="typeahead-http" class="col-form-label col-form-label-sm">Reported By<span class="required-field"></span></label>
+              
               <input
                 id="typeahead-http"
                 type="text"

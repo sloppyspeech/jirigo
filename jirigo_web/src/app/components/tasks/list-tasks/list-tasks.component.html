@@ -1,7 +1,7 @@
 <h3>Task List</h3>
 <ngx-spinner [fullScreen]="true" type="ball-newton-cradle"></ngx-spinner>
 
-<p-table #dt *ngIf="showTable" [value]="allTasks" [columns]="task_header_cols" [rowHover]="true" [responsive]="true"
+<p-table #dt *ngIf="showTable" [value]="allTasks" [columns]="taskDetailsCols" [rowHover]="true" [responsive]="true"
 [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[2,5,10,25,50]" 
 [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
 [filterDelay]="1" [globalFilterFields]="['task_no','summary','reported_by','issue_status','priority','environment','severity','issue_type']" >
@@ -11,15 +11,15 @@
             <input type="text" pInputText size="50" placeholder="Global Filter" (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto">
         </div>
     </ng-template>
-    <ng-template pTemplate="header" let-columns>
+    <ng-template pTemplate="header">
         <tr>
-            <th *ngFor="let col of columns" [pSortableColumn]="col">
-                {{col}}
-                <p-sortIcon [field]="col" ></p-sortIcon>
+            <th *ngFor="let col of taskDetailsCols" [pSortableColumn]="col.field">
+                {{col.header}}
+                <p-sortIcon [field]="col.field" ></p-sortIcon>
             </th>
         </tr>
     </ng-template>
-    <ng-template pTemplate="body" let-task>
+    <ng-template pTemplate="body" let-task let-columns="taskDetailsCols">
         <tr>
             <td><a [routerLink]="['/tasks/view-edit-task', task.task_no]">{{task.task_no}}</a></td>
             <td>{{task.summary}}</td>
@@ -28,9 +28,8 @@
             <td>{{task.severity}}</td>
             <td>{{task.priority}}</td>
             <td>{{task.environment}}</td>
-            <!-- <td>{{task.blocking}}</td> -->
             <td>{{task.reported_by}}</td>
-            <td>{{task.reported_date}}</td>
+            <td>{{task.reported_date | date:'d-MMM-y h:mm:ss a'}}</td>
 
         </tr>
     </ng-template>

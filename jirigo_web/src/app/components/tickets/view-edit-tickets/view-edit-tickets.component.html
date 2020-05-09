@@ -7,24 +7,30 @@
 <form [formGroup]="viewModifyTicketFB" (ngSubmit)="updateTicket()" *ngIf="isLoaded">
   <div class="form-group">
     <div class="row" *ngIf="viewEditFormEditBtnEnabled">
-      <div class="col-md-2 col-sm-2 col-lg-2">
-        <div>
-        
+      <div class="col-md-3 col-sm-6 col-lg-3 ">
         <button
           type="button"
-          label="Modify Ticket"
-          class="btn btn-outline-warning"
+          label="Modify Task"
+          class="btn btn-warning"
           (click)="markFormEditable()"
-        ><fa-icon [icon]="faEdit" style="padding-right: 3px; color:darkorange;" ></fa-icon>Modify Ticket</button>
-      </div>
-      </div>
-      <div class="col-md-2 col-sm-2 col-lg-2">
+          style="margin-right: 10px; color:white;"
+        >
+          <fa-icon
+            [icon]="faEdit"
+            style="padding-right: 3px; color: white;"
+          ></fa-icon
+          >Modify Task
+        </button>
+
         <button
           type="button"
-          label="Clone Ticket"
-          class="btn btn-outline-purple-secondary"
+          label="Clone Task"
+          class="btn btn-purple"
           (click)="cloneTicket()"
-        ><fa-icon [icon]="faClone" style="color: blueviolet;"></fa-icon>&nbsp; Clone Ticket</button>
+        >
+          <fa-icon [icon]="faClone" style="color: white;"></fa-icon>&nbsp;
+          Clone Task
+        </button>
       </div>
 
     </div>

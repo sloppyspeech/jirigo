@@ -1,22 +1,11 @@
 <div class="row">
-  <div class="col-lg-6">
-    <div class="col-lg-3 float-left">
-      <button type="submit" class="btn btn-secondary float-center" (click)="saveSprintTasks()">
-        Save Sprint
-      </button>
-    </div>
-    <div class="col-lg-3 float-left">
-      <button
-        type="submit"
-        class="btn btn-secondary float-center"
-        (click)="backToSprintList()"
-      >
-        Back
-      </button>
-    </div>
+  <div class="col-lg-12 col-md-12 col-sm-12 text-center">
+      <button type="submit" (click)="saveSprintTasks();" class="btn btn-dark">Save Sprint</button>
+      <button type="submit" (click)="backToSprintList();" class="btn btn-dark" style="margin:0 0 0 20px; padding: 6px 40px 6px 40px;">Back</button>
+      <!-- <a [routerLink]="['/sprints/list-sprints']" class="btn btn-dark" style="margin:0 0 0 20px; padding: 6px 40px 6px 40px;">Cancel</a> -->
   </div>
-</div>
-<br />
+  </div>
+  <br>
 <div class="row">
   <div class="col">
     <p-pickList
@@ -30,54 +19,30 @@
       sourceFilterPlaceholder="Search"
       targetFilterPlaceholder="Search"
       [sourceStyle]="{ height: '480px' }"
-      [targetStyle]="{ height: '480px' }"
+      [targetStyle]="{ 'height': '480px' }"
       dragdrop="true"
     >
-      <ng-template let-task pTemplate="item">
+    <ng-template let-task pTemplate="item" >
+      <!-- background-color: #DEF3FD -->
+      <div class="ui-helper-clearfix "  style="border-radius: 6px;background-color: #B2CEF5 ; padding:10px 0 20px 0;">
+          <span class="badge badge-info float-right"  style="margin:0 10px 0 0;">Status : {{task.issue_status}}</span>
         <div
-          class="ui-helper-clearfix"
-          style="border-radius: 6px; background-color: #def3fd;"
+          style="
+            font-size: 14px;
+            float: left;
+            margin:0 0 0 10px;
+          "
         >
-          <span class="badge badge-info float-right"
-            >Status : {{ task.issue_status }}</span
-          >
-          <div style="font-size: 14px; float: left; margin: 15px 5px 0 0;">
-            <pre
-              style="
-                font-size: 14px;
-                font-family: 'Lucida Sans', 'Lucida Sans Regular',
-                  'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana,
-                  sans-serif;
-              "
-            >
-      <strong>Task No  : </strong>{{ task.task_no }} 
-      <strong>Summary  : </strong>{{ task.summary }} 
-      <strong>Severity : </strong>{{ task.severity}}    <strong>Priority :</strong>{{ task.priority}}
-      </pre>
-          </div>
+        <strong >Task No  : </strong>{{ task.task_no }} <br>
+        <strong >Summary  : </strong>{{ task.summary }} <br>
+        <strong >Severity : </strong>{{ task.severity}}    
+        <strong style="margin:0 0 0 30px;">Priority :</strong>{{ task.priority}}
         </div>
-      </ng-template>
+      </div>
+    </ng-template>
     </p-pickList>
     <div style="margin-bottom: 20px;"></div>
 
-    <!-- <div style="margin-bottom:20px;"></div>
-<p-dialog [(visible)]="displayConfirmSprintNameModal" [modal]="true" [style]="{width: '28vw'}" [baseZIndex]="10000"
-    [draggable]="false" [resizable]="false" onHide="sprintNameModalOnHide()">
-     <p-header>
-        Create Sprint
-     </p-header>
-     <div style="height:50px; margin: 20px 0 0 0 ;">
-     <span class="ui-float-label">
-        <input id="float-input" type=text pInputText [(ngModel)]="sprintName" size="50" maxlength="50" (keyup)="countInputTextChars()"/>
-        <label for="float-input" >Enter Sprint Name, <span style="font-weight: 600;font-size: 13px; color:darkviolet; background-color: bisque;">{{sprintNameCharsRemaining}}</span> Chars remaining</label>
-     </span>
-     <span *ngIf="showNoSprintNameEnteredDiag" style="color: red; font-size:13px;">Please Enter Sprint Name</span>
-    </div>
-        <p-footer>
-            <button type="button" pButton icon="pi pi-check" (click)="createSprint()" label="Create" class="ui-button-primary"></button>
-            <button type="button" pButton icon="pi pi-times" (click)="cancelSprintName()" label="Cancel" class="ui-button-warning"></button>
-        </p-footer>
-</p-dialog> -->
   </div>
 </div>
 

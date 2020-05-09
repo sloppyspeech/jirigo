@@ -15,6 +15,7 @@ from services.dbservice.tasks.tasks_audit_service import JirigoTaskAudit
 from services.dbservice.tasks.tasks_comments_service import JirigoTaskComments
 from services.dbservice.tasks.tasks_dashboard_service import JirigoTaskDashboard
 from services.dbservice.sprints.sprints_service import JirigoSprints
+from services.dbservice.boards.scrum.scrumboard_service import JirigoScrumBoard
 
 app=Flask(__name__)
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
@@ -193,22 +194,53 @@ def get_all_projects():
         return get_jsonified_error_response('Failure',"get_all_projects Not a GET Request")
 
 
-@app.route('/api/v1/user-management/user',methods=['POST'])
-def create_user():
+@app.route('/api/v1/user-management/register-user',methods=['POST'])
+def register_user():
     if request.method == 'POST':
-        print('In Post create_user')
+        print('In Post register_user')
         print(request.get_json())
         try:
             jdb=JirigoUsers(request.get_json())
-            data=jdb.create_user()
+            data=jdb.register_user()
             return jsonify(data)
         except Exception as error:
-            print(f'Error in get_ticket_details {error}')
+            print(f'Error in register_user {error}')
             return get_jsonified_error_response('Failure',error)
     else:
-        return get_jsonified_error_response('Failure',"Not a POST Request")
+        return get_jsonified_error_response('Failure',"Not a POST Request in register_user")
 
-@app.route('/api/v1/user-management/users',methods=['GET'])
+@app.route('/api/v1/user-management/login',methods=['POST'])
+def validate_userid_password():
+    if request.method == 'POST':
+        print('In Post validate_userid_password')
+        print(request.get_json())
+        try:
+            jdb=JirigoUsers(request.get_json())
+            data=jdb.validate_userid_password()
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in validate_userid_password {error}')
+            return get_jsonified_error_response('Failure validate_userid_password',error)
+    else:
+        return get_jsonified_error_response('Failure validate_userid_password',"Not a POST Request")
+
+@app.route('/api/v1/user-management/set-password',methods=['POST'])
+def set_user_password():
+    if request.method == 'POST':
+        print('In Post set_user_password')
+        print(request.get_json())
+        try:
+            jdb=JirigoUsers(request.get_json())
+            data=jdb.set_user_password()
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in set_user_password {error}')
+            return get_jsonified_error_response('Failure set_user_password',error)
+    else:
+        return get_jsonified_error_response('Failure set_user_password',"Not a POST Request")
+
+
+@app.route('/api/v1/user-management/all-users',methods=['GET'])
 def get_all_users():
     if request.method == 'GET':
         print('In Get get_all_users')
@@ -597,6 +629,24 @@ def update_sprint_tasks():
         return jsonify(request.get_json())
     else:
         return get_jsonified_error_response('Failure',"update_sprint_tasks Not a PUT Request")
+
+
+@app.route('/api/v1/boards-management/scrum/<sprint_id>',methods=['GET'])
+def get_all_tasks_of_sprint_for_scrum_board(sprint_id):
+    error_response={}
+    data={}
+
+    if request.method == 'GET':
+        print('In GET get_all_tasks_for_sprint :'+sprint_id)
+        try:
+            jdb=JirigoScrumBoard({'sprint_id':sprint_id})
+            data=jdb.get_all_tasks_of_sprint_for_scrum_board()
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in get_all_tasks_of_sprint_for_scrum_board {error}')
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',"get_all_tasks_of_sprint_for_scrum_board Not a GET Request")
 
 
 def get_jsonified_error_response(status,error):
