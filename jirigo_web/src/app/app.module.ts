@@ -32,7 +32,6 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { LoginComponent } from './components/login/login.component';
 import { CreateTicketComponent } from './components/tickets/create-ticket/create-ticket.component';
 import { CreateProjectComponent  } from './components/projects/create-project/create-project.component';
-import { CreateUserComponent  } from './components/users/create-user/create-user.component';
 import { ListTicketsComponent } from './components/tickets/list-tickets/list-tickets.component';
 import { ViewEditTicketsComponent } from './components/tickets/view-edit-tickets/view-edit-tickets.component';
 import { HeaderComponent } from './components/header/header.component';
@@ -45,6 +44,7 @@ import { ListProjectsComponent } from './components/projects/list-projects/list-
 import { RegisterComponent } from './components/register/register.component';
 import { LogoutComponent } from './components/logout/logout.component';
 import { ChangeProjectComponent } from './components/projects/change-project/change-project.component';
+import { MenuComponent } from './components/menu/menu.component';
 
 
 @NgModule({
@@ -53,7 +53,6 @@ import { ChangeProjectComponent } from './components/projects/change-project/cha
     LoginComponent,
     CreateTicketComponent,
     CreateProjectComponent,
-    CreateUserComponent,
     ListTicketsComponent,
     ViewEditTicketsComponent,
     HeaderComponent,
@@ -65,7 +64,8 @@ import { ChangeProjectComponent } from './components/projects/change-project/cha
     ListProjectsComponent,
     RegisterComponent,
     LogoutComponent,
-    ChangeProjectComponent
+    ChangeProjectComponent,
+    MenuComponent
   ],
   imports: [
     BrowserModule,

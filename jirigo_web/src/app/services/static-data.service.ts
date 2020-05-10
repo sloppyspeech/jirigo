@@ -11,8 +11,8 @@ export class StaticDataService {
 
   constructor(private _httpCli: HttpClient) { }
 
-  getRefTicketMaster() {
-    return this._httpCli.get<any>(this.apiEndPoint+"/all-ticket-refs")
+  getRefTicketMaster(project_id) {
+    return this._httpCli.get<any>(this.apiEndPoint+"/all-ticket-refs/"+project_id)
       .toPromise()
       .then(res => { 
         console.log("In StaticDataService :"+JSON.stringify(res));
@@ -20,8 +20,8 @@ export class StaticDataService {
       });
   }
 
-  getRefTaskMaster() {
-    return this._httpCli.get<any>(this.apiEndPoint+"/all-task-refs")
+  getRefTaskMaster(project_id) {
+    return this._httpCli.get<any>(this.apiEndPoint+"/all-task-refs/"+project_id)
       .toPromise()
       .then(res => { 
         console.log("In getRefTaskMaster :"+JSON.stringify(res));
@@ -29,7 +29,7 @@ export class StaticDataService {
       });
   }
 
-  getRefSprintMaster(){
-    return this._httpCli.get<any>(this.apiEndPoint+"/all-sprint-refs");
+  getRefSprintMaster(project_id){
+    return this._httpCli.get<any>(this.apiEndPoint+"/all-sprint-refs/"+project_id);
   }
 }

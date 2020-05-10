@@ -30,10 +30,10 @@ export class TicketDetailsService {
       });
   }
 
-  getAllTickets() {
+  getAllTickets(projectId) {
     console.log('@@@@getAllTickets :');
-    console.log("getTicketDetails End point :" + this.sApiEndPoint + 'tickets');
-    return this._httpCli.get<any>(this.sApiEndPoint + 'tickets')
+    console.log("getTicketDetails End point :" + this.sApiEndPoint + 'proj-all-tickets/'+projectId);
+    return this._httpCli.get<any>(this.sApiEndPoint + 'proj-all-tickets/'+projectId)
       .toPromise()
       .then(res => {
         console.log("In  Get All Tickets:" + res);

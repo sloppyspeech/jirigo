@@ -11,6 +11,7 @@ import { NgxSpinnerComponent, NgxSpinnerService } from 'ngx-spinner';
 export class ListTicketsComponent implements OnInit {
   allTickets=[];
   showTable:boolean=false;
+  showNoTicketsRetrieved:boolean=false;
 
   ticketDetailsCols=[
     {'header':'Ticket No','field':'ticket_no'},
@@ -79,6 +80,7 @@ export class ListTicketsComponent implements OnInit {
               private _serNgxSpinner:NgxSpinnerService) { }
 
   ngOnInit(): void {
+    this.showNoTicketsRetrieved=false;
     this.allTickets=[];
     this.showTable=false;
     // this._serNgxSpinner.show();
@@ -94,25 +96,36 @@ export class ListTicketsComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    this._serTicketDetails.getAllTickets()
+    this.showNoTicketsRetrieved=false;
+    this._serTicketDetails.getAllTickets(localStorage.getItem('currentProjectId'))
     .then(res=>{
       console.log("_serTicketDetails Output :"+JSON.stringify(res));
       console.log("===================");
       console.log(res['dbQryResponse']);
+      console.log(res['dbQryStatus']);
       console.log("===================");
       // this.allTickets['dbQryResponse']=res['dbQryResponse'];
-      for (var i=0;i<=res['dbQryResponse'].length;i++){
-        this.allTickets.push(res['dbQryResponse'][i]);
+      // for (var i=0;i<=res['dbQryResponse'].length;i++){
+      //   this.allTickets.push(res['dbQryResponse'][i]);
+      // }
+      console.log(res['dbQryStatus']);
+      console.log(res['dbQryStatus'].length);
+
+      if (res['dbQryStatus'] == 'Success' ){
+        console.log("***@@@@@******No WHERE *********");
+        res['dbQryResponse'].forEach(ticket => {
+          this.allTickets.push(ticket);
+        });
+        console.log(this.allTickets);
+        this.showTable=true;
       }
-      // this.allTickets=res['dbQryResponse'];
-      console.log(this.allTickets);
-      this.showTable=true;
-      // setTimeout(() => {
-      //   this._serNgxSpinner.hide();
-      //   // $(()=>{
-      //   //   $('#testTicket').html("List Tickets");
-      //   // });
-      // }, 1000);
+    else{
+      console.log("*********here *********");
+      this.showTable=false;
+      this.showNoTicketsRetrieved=true;
+    }
+
+
 
     })
     .catch(e=>{

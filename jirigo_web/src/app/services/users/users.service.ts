@@ -57,5 +57,11 @@ export class UsersService {
     return this._httpCli.post(this.sApiEndPoint+'register-user',inpData,this.sHttpOptions);
   }
 
+  createUser(inpData){
+    console.log("User Data For Create User "+JSON.stringify(inpData));
+    console.log("registerUser End point :"+this.sApiEndPoint+'create-user/');
+    return this._httpCli.post(this.sApiEndPoint+'create-user',inpData,this.sHttpOptions);
+  }
 
+  
 }

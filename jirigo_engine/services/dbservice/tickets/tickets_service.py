@@ -30,6 +30,7 @@ class JirigoTicket(object):
         self.reported_date = data.get('reported_date')
         self.ticket_no=data.get('ticket_no','-')
         self.project_name=data.get('project_name','')
+        self.project_id=data.get('project_id','')
         self.assignee_name=data.get('assignee_name','')
         self.module=data.get('module','')
         self.logger=Logger()
@@ -97,22 +98,27 @@ class JirigoTicket(object):
                                     get_user_name(reported_by) reported_by,
                                     to_char(created_date, 'DD-Mon-YYYY HH24:MI:SS') reported_date
                               FROM ttickets 
+                             WHERE project_id=%s
                              order by ticket_int_id
                         )
                         SELECT json_agg(t) from t;
                    """
-
-        self.logger.debug(f'Select : {query_sql}')
+        values=(self.project_id,)
+        self.logger.debug(f'Select : {query_sql} values {values}')
 
         try:
             print('-'*80)
             cursor=self.jdb.dbConn.cursor()
-            cursor.execute(query_sql)
+            cursor.execute(query_sql,self.project_id)
             json_data=cursor.fetchone()[0]
             row_count=cursor.rowcount
-            self.logger.debug(f'Select Success with {row_count} row(s) Ticket ID {json_data}')
-            response_data['dbQryStatus']='Success'
-            response_data['dbQryResponse']=json_data
+            self.logger.debug(f'Select Success with {row_count} row(s) Ticket List {json_data}')
+            if json_data == None:
+                response_data['dbQryStatus']='Failure No Rows'
+                response_data['dbQryResponse']={}
+            else:
+                response_data['dbQryStatus']='Success'
+                response_data['dbQryResponse']=json_data
             return response_data
         except  (Exception, psycopg2.Error) as error:
             if(self.jdb.dbConn):

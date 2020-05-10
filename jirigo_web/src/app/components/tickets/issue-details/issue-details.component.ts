@@ -37,6 +37,7 @@ export class IssueDetailsComponent implements OnInit {
   model: any;
   searching = false;
   searchFailed = false;
+  userListForDropDown:any[]=[];
 
   retUserNameVal = [];
   retUserNameArr = [];
@@ -69,7 +70,7 @@ export class IssueDetailsComponent implements OnInit {
       this.ticket_no = 'NA';
     }
 
-    this._staticRefData.getRefTicketMaster()
+    this._staticRefData.getRefTicketMaster(localStorage.getItem('currentProjectId'))
       .then(res => {
         console.log(res);
         this.ticketEnvRef = res[0].Environments;
@@ -238,5 +239,17 @@ export class IssueDetailsComponent implements OnInit {
       tap(() => this.searching = false)
     )
 
-
+    searchUsers(event) {
+      let queryRes:any[]=[];
+        this._serUsers.getUserNamesForDropDownSearch(event.query)
+          .subscribe(data => {
+            console.log("********************");
+            console.log(data);
+            data.forEach(user => {
+              queryRes.push(user.name);
+            });
+            this.userListForDropDown=queryRes;
+            console.log(this.userListForDropDown);
+        });
+    }
 }

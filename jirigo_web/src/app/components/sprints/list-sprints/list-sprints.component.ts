@@ -70,18 +70,12 @@ export class ListSprintsComponent implements OnInit {
             this.allSprints=res['dbQryResponse'];
             this.showTable=true;
             console.log("------------------ngAfterViewInit End-------------------------");
-            this._serRefStaticData.getRefSprintMaster()
+            this._serRefStaticData.getRefSprintMaster(localStorage.getItem('currentProjectId'))
                 .subscribe(res =>{
                     console.log(res['dbQryResponse'][0]['SprintStatuses']);
-                    // res['dbQryResponse'][0]['SprintStatuses'].forEach(element => {
-                    //   console.log(element);
-                    //   this.refSprintStatus.push(element['name']);
-                    // });
-                    // console.log(this.refSprintStatus);
                     this.refSprintStatus=res['dbQryResponse'][0]['SprintStatuses'];
                 });
         });
-        // $(".datePicker").datePicker();
   }
 
   inputClickCalled(){

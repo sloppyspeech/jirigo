@@ -1,28 +1,27 @@
-<h3>Change Project</h3>
-<p-dialog header="Your Project list" [(visible)]="showProjectChange" [style]="{width: '50vw'}" [baseZIndex]="10000">
-    <p-table [columns]="projectHeaderCols" [value]="projectDetails">
+<p-table [columns]="projectHeaderCols" [value]="projectDetails">
         <ng-template pTemplate="header" let-columns>
             <tr>
                 <th *ngFor="let col of columns" [pSortableColumn]="col.field">
                     {{col.header}}
                     <p-sortIcon [field]="col.field" ></p-sortIcon>
                 </th>
-                <th style="width:3.5em;"></th>
+                <th style="width:8.5em;">Set Current Project</th>
             </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-rowData let-columns="columns">
+        <ng-template pTemplate="body" let-rowData let-columns="columns" >
             <tr>
                 <td *ngFor="let col of columns">
                     {{rowData[col.field]}}
                 </td>
                 <td>
-                    <p-radioButton name="groupname" value="rowData" (onClick)="setRowData(rowData);"></p-radioButton>
+                    <p-radioButton name="groupname" [value]="rowData['project_name']" [(ngModel)]="currentProject" (onClick)="setRowData(rowData);"></p-radioButton>
                 </td>
             </tr>
         </ng-template>
     </p-table>
+    <br>
     <p-footer>
-        <button type="button" pButton icon="pi pi-check" (click)="confirmChangeProject();" label="Confirm"></button>
-        <button type="button" pButton icon="pi pi-times" (click)="showProjectChange=false" label="Close" class="ui-button-secondary"></button>
+        <button type="button" pButton icon="pi pi-check" (click)="confirmChangeProject();" label="Confirm" style="margin:0 4px 0 0;"></button>
+        <a [routerLink]="['/list-projects']" href="#" type="button" pButton icon="pi pi-times" label="Cancel" class="ui-button-warning" style="color:white"></a>
     </p-footer>
-</p-dialog>
+<ngx-spinner [fullScreen]="true" type="ball-newton-cradle" size="medium"></ngx-spinner>

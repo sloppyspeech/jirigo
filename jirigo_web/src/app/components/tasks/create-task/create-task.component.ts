@@ -63,7 +63,7 @@ export class CreateTaskComponent implements OnInit {
     this._NgxSpinner.show();
     console.log("Calling the New Ref Master");
 
-    this._staticRefData.getRefTaskMaster()
+    this._staticRefData.getRefTaskMaster(localStorage.getItem('currentProjectId'))
       .then(res => {
         console.log(res);
         this.taskEnvRef = res[0].Environments;

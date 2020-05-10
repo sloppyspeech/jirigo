@@ -100,7 +100,7 @@ export class ViewEditTaskComponent implements OnInit {
     console.log('Routed Task No :'+this.task_no);
     this.viewModifyTaskFB.get('fctlTaskNo').setValue(this.task_no);
     this._serNgxSpinner.show();
-    this._staticRefData.getRefTaskMaster()
+    this._staticRefData.getRefTaskMaster(localStorage.getItem('currentProjectId'))
       .then(res => {
         console.log(res);
         

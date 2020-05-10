@@ -157,7 +157,7 @@
             </div>
             </div>
             
-            <div class="col-md-3">
+            <!-- <div class="col-md-3">
               <label for="typeahead-http" class="col-form-label col-form-label-sm">Reported By<span class="required-field"></span></label>
               
               <input
@@ -175,9 +175,26 @@
               <div class="invalid-feedback" *ngIf="searchFailed">
                 Sorry, suggestions could not be loaded.
               </div>
-            </div>
+            </div> -->
 
             <div class="col-md-3">
+              <label
+                for="typeahead-http"
+                class="col-form-label col-form-label-sm"
+                >Reported By<span class="required-field"></span
+              ></label>
+              <br />
+              <p-autoComplete
+                formControlName="fctlReportedBy"
+                [suggestions]="userListForDropDown"
+                (completeMethod)="searchUsers($event)"
+                [size]="41"
+                [style]="{'border-radius':'40px'}"
+              >
+              </p-autoComplete>
+            </div>
+
+            <!-- <div class="col-md-3">
               <label for="typeahead-http" class="col-form-label col-form-label-sm">Assigned To<span class="required-field"></span></label>
               <input
                 id="typeahead-http"
@@ -194,7 +211,25 @@
               <div class="invalid-feedback" *ngIf="searchFailed">
                 Sorry, suggestions could not be loaded.
               </div>
+            </div> -->
+
+            <div class="col-md-3">
+              <label
+                for="typeahead-http"
+                class="col-form-label col-form-label-sm"
+                >Assigned To<span class="required-field"></span
+              ></label>
+              <br />
+              <p-autoComplete
+                formControlName="fctlAssigneeName"
+                [suggestions]="userListForDropDown"
+                (completeMethod)="searchUsers($event)"
+                [size]="41"
+                [style]="{'border-radius':'40px'}"
+              >
+              </p-autoComplete>
             </div>
+
             <div class="col-md-3">
               <label
                 for="formGroupExampleInput"

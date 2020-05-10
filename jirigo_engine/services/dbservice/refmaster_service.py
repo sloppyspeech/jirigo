@@ -10,14 +10,15 @@ from pprint import pprint
 
 class JirigoRefMaster(object):
 
-    def __init__(self):
+    def __init__(self,data={}):
+        self.project_id=data.get('project_id',0)
         self.jdb=JirigoDBConn()
         self.logger=Logger()
     
 
     def get_status_values(self):
         response_data={}
-        self.logger.debug("Inside get_all_tickets")
+        self.logger.debug("Inside get_status_values")
         query_sql="""  
                     WITH t AS (
                             select
@@ -28,15 +29,17 @@ class JirigoRefMaster(object):
                                 ref_category = 'TICKETS'
                                 and is_active = 'Y'
                                 and ref_name = 'STATUS'
+                                and project_id=%s
                                 order by order_id
                         )
                         SELECT json_agg(t) from t;
                    """
-        self.logger.debug(f'Select : {query_sql}')
+        values=(self.project_id,)
+        self.logger.debug(f'Select : {query_sql} values {values}')
         try:
             print('-'*80)
             cursor=self.jdb.dbConn.cursor()
-            cursor.execute(query_sql)
+            cursor.execute(query_sql,values)
             json_data=cursor.fetchone()[0]
             row_count=cursor.rowcount
             self.logger.debug(f'Select Success with {row_count} row(s) data {json_data}')
@@ -61,15 +64,17 @@ class JirigoRefMaster(object):
                                 ref_category = 'TICKETS'
                                 and is_active = 'Y'
                                 and ref_name = 'PRIORITY'
+                                and project_id=%s
                                 order by order_id
                         )
                         SELECT json_agg(t) from t;
                    """
-        self.logger.debug(f'Select Priority : {query_sql}')
+        values=(self.project_id,)
+        self.logger.debug(f'Select : {query_sql} values {values}')
         try:
             print('-'*80)
             cursor=self.jdb.dbConn.cursor()
-            cursor.execute(query_sql)
+            cursor.execute(query_sql,values)
             json_data=cursor.fetchone()[0]
             row_count=cursor.rowcount
             self.logger.debug(f'Priority Select Success with {row_count} row(s) data {json_data}')
@@ -95,15 +100,17 @@ class JirigoRefMaster(object):
                                 ref_category = 'TICKETS'
                                 and is_active = 'Y'
                                 and ref_name = 'SEVERITY'
+                                and project_id=%s
                                 order by order_id
                         )
                         SELECT json_agg(t) from t;
                    """
-        self.logger.debug(f'Select SEVERITY : {query_sql}')
+        values=(self.project_id,)
+        self.logger.debug(f'Select : {query_sql} values {values}')
         try:
             print('-'*80)
             cursor=self.jdb.dbConn.cursor()
-            cursor.execute(query_sql)
+            cursor.execute(query_sql,values)
             json_data=cursor.fetchone()[0]
             row_count=cursor.rowcount
             self.logger.debug(f'Severity Select Success with {row_count} row(s) data {json_data}')
@@ -129,15 +136,17 @@ class JirigoRefMaster(object):
                                 ref_category = 'TICKETS'
                                 and is_active = 'Y'
                                 and ref_name = 'ISSUE_TYPE'
+                                and project_id=%s
                                 order by order_id
                         )
                         SELECT json_agg(t) from t;
                    """
-        self.logger.debug(f'Select ISSUE_TYPE : {query_sql}')
+        values=(self.project_id,)
+        self.logger.debug(f'Select : {query_sql} values {values}')
         try:
             print('-'*80)
             cursor=self.jdb.dbConn.cursor()
-            cursor.execute(query_sql)
+            cursor.execute(query_sql,values)
             json_data=cursor.fetchone()[0]
             row_count=cursor.rowcount
             self.logger.debug(f'ISSUE_TYPE Select Success with {row_count} row(s) data {json_data}')
@@ -162,15 +171,17 @@ class JirigoRefMaster(object):
                                 ref_category = 'TICKETS'
                                 and is_active = 'Y'
                                 and ref_name = 'Module'
+                                and project_id = %s
                                 order by order_id
                         )
                         SELECT json_agg(t) from t;
                    """
-        self.logger.debug(f'Select Module : {query_sql}')
+        values=(self.project_id,)
+        self.logger.debug(f'Select : {query_sql} values {values}')
         try:
             print('-'*80)
             cursor=self.jdb.dbConn.cursor()
-            cursor.execute(query_sql)
+            cursor.execute(query_sql,values)
             json_data=cursor.fetchone()[0]
             row_count=cursor.rowcount
             self.logger.debug(f'Module Select Success with {row_count} row(s) data {json_data}')
@@ -205,6 +216,7 @@ class JirigoRefMaster(object):
                                 where
                                     ref_category = 'TICKETS'
                                     and is_active = 'Y'
+                                    and project_id=%s
                                 order by
                                     ref_name,
                                     order_id )t
@@ -213,11 +225,12 @@ class JirigoRefMaster(object):
                         )
                         select json_build_object('rowData',json_agg(t.refs)) from t ;
                    """
-        self.logger.debug(f'Select all ticket_refs : {query_sql}')
+        values=(self.project_id,)
+        self.logger.debug(f'Select : {query_sql} values {values}')
         try:
             print('-'*80)
             cursor=self.jdb.dbConn.cursor()
-            cursor.execute(query_sql)
+            cursor.execute(query_sql,values)
             json_data=cursor.fetchone()[0]
             print(json_data)
             row_count=cursor.rowcount
@@ -255,6 +268,7 @@ class JirigoRefMaster(object):
                                 where
                                     ref_category = 'TASKS'
                                     and is_active = 'Y'
+                                    and project_id=%s
                                 order by
                                     ref_name,
                                     order_id )t
@@ -263,11 +277,12 @@ class JirigoRefMaster(object):
                         )
                         select json_build_object('rowData',json_agg(t.refs)) from t ;
                    """
-        self.logger.debug(f'Select all task_refs : {query_sql}')
+        values=(self.project_id,)
+        self.logger.debug(f'Select : {query_sql} values {values}')
         try:
             print('-'*80)
             cursor=self.jdb.dbConn.cursor()
-            cursor.execute(query_sql)
+            cursor.execute(query_sql,values)
             json_data=cursor.fetchone()[0]
             print(json_data)
             row_count=cursor.rowcount
@@ -305,6 +320,7 @@ class JirigoRefMaster(object):
                             where
                                 ref_category = 'SPRINT'
                                 and is_active = 'Y'
+                                and project_id=%s
                             order by
                                 ref_name,
                                 order_id )t
@@ -313,11 +329,12 @@ class JirigoRefMaster(object):
                     )
                     select json_build_object('rowData',json_agg(t.refs)) from t ;
                    """
-        self.logger.debug(f'Select all sprint : {query_sql}')
+        values=(self.project_id,)
+        self.logger.debug(f'Select : {query_sql} values {values}')
         try:
             print('-'*80)
             cursor=self.jdb.dbConn.cursor()
-            cursor.execute(query_sql)
+            cursor.execute(query_sql,values)
             json_data=cursor.fetchone()[0]
             print(json_data)
             row_count=cursor.rowcount

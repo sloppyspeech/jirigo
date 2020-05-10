@@ -94,13 +94,13 @@ def get_ticket_details(ticket_no):
         return get_jsonified_error_response('Failure',"Not a GET Request")
 
 
-@app.route('/api/v1/ticket-management/tickets',methods=['GET'])
-def get_all_tickets():
+@app.route('/api/v1/ticket-management/proj-all-tickets/<project_id>',methods=['GET'])
+def get_all_tickets(project_id):
     data={}
     if request.method == 'GET':
         print('In GET get_all_tickets')
         try:
-            jdb=JirigoTicket()
+            jdb=JirigoTicket({'project_id':project_id})
             data=jdb.get_all_tickets()
             return jsonify(data)
         except Exception as error:
@@ -222,6 +222,21 @@ def register_user():
     else:
         return get_jsonified_error_response('Failure',"Not a POST Request in register_user")
 
+@app.route('/api/v1/user-management/create-user',methods=['POST'])
+def create_user():
+    if request.method == 'POST':
+        print('In Post create_user')
+        print(request.get_json())
+        try:
+            jdb=JirigoUsers(request.get_json())
+            data=jdb.create_user()
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in create_user {error}')
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',"Not a POST Request in create_user")
+
 @app.route('/api/v1/user-management/login',methods=['POST'])
 def validate_userid_password():
     if request.method == 'POST':
@@ -267,7 +282,7 @@ def get_all_users():
     else:
         return get_jsonified_error_response('Failure',"get_all_users Not a GET Request")
 
-@app.route('/api/v1/user-management/user/<user_id>',methods=['GET'])
+@app.route('/api/v1/user-management/user-details/<user_id>',methods=['GET'])
 def get_user_details(user_id):
     if request.method == 'GET':
         print('In Get get_user_details')
@@ -312,13 +327,13 @@ def get_ticket_ref_status():
     else:
         return get_jsonified_error_response('Failure',"Not a GET Request")
 
-@app.route('/api/v1/ref-data-management/all-ticket-refs',methods=['GET'])
-def get_all_ticket_refs():
+@app.route('/api/v1/ref-data-management/all-ticket-refs/<project_id>',methods=['GET'])
+def get_all_ticket_refs(project_id):
     data={}
     if request.method == 'GET':
         print('In GET get_ticket_ref_status')
         try:
-            jdb=JirigoRefMaster()
+            jdb=JirigoRefMaster({'project_id':project_id})
             data=jdb.get_all_ticket_refs()
             print("="*80)
             print(data)
@@ -329,13 +344,13 @@ def get_all_ticket_refs():
     else:
         return get_jsonified_error_response('Failure',"Not a GET Request")
 
-@app.route('/api/v1/ref-data-management/all-task-refs',methods=['GET'])
-def get_all_task_refs():
+@app.route('/api/v1/ref-data-management/all-task-refs/<project_id>',methods=['GET'])
+def get_all_task_refs(project_id):
     data={}
     if request.method == 'GET':
         print('In GET get_all_task_refs')
         try:
-            jdb=JirigoRefMaster()
+            jdb=JirigoRefMaster({'project_id':project_id})
             data=jdb.get_all_task_refs()
             print("="*80)
             print(data)
@@ -347,13 +362,13 @@ def get_all_task_refs():
         return get_jsonified_error_response('Failure',"get_all_task_refs Not a GET Request")
 
 
-@app.route('/api/v1/ref-data-management/all-sprint-refs',methods=['GET'])
-def get_all_sprint_refs():
+@app.route('/api/v1/ref-data-management/all-sprint-refs/<project_id>',methods=['GET'])
+def get_all_sprint_refs(project_id):
     data={}
     if request.method == 'GET':
         print('In GET get_all_sprint_refs')
         try:
-            jdb=JirigoRefMaster()
+            jdb=JirigoRefMaster({'project_id':project_id})
             data=jdb.get_all_sprint_refs()
             print("="*80)
             print(data)

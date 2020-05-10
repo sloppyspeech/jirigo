@@ -22,10 +22,11 @@ class JirigoUsers(object):
         self.salt = data.get('salt','')
         self.password = data.get('password','')
         self.created_by = data.get('created_by','')
-        self.created_date = data.get('created_date','')
+        self.created_date = datetime.datetime.now()
         self.modified_by = None
         self.modified_date = None
         self.is_active = data.get('is_active','')
+        self.assigned_projects=data.get('assigned_projects',[])
         self.jdb=JirigoDBConn()
         self.logger=Logger()
 
@@ -65,6 +66,48 @@ class JirigoUsers(object):
                 print(f'Error While Creating User {error}')
                 raise
 
+    def create_user(self):
+        response_data={}
+        print("Inside Create User")
+        self.salt=JirigoUsers.generate_salt()
+        insert_sql="""  INSERT INTO TUSERS(first_name,last_name,email,salt,password,
+                        created_by,created_date,is_active) 
+                        VALUES (%s,%s,%s,%s,%s,%s,%s,%s) returning user_id;
+                    """
+        values=(self.first_name,self.last_name,self.email,self.salt,JirigoUsers.get_password_digest(self.password,self.salt),1,datetime.datetime.today(),self.is_active,)
+        print(f'Insert : {insert_sql}  {values}')
+
+        add_user_projects_sql="""
+                                INSERT INTO TUSER_PROJECTS 
+                                        (user_id,project_id,created_date,created_by,is_active,default_project)
+                                VALUES  (%s,%s,%s,%s,%s,%s);
+                            """
+        try:
+            print('-'*80)
+            print(type(self.jdb.dbConn))
+            cursor=self.jdb.dbConn.cursor()
+            cursor.execute(insert_sql,values)
+            user_id=cursor.fetchone()[0]
+            print(f'self.assigned_projects {self.assigned_projects}')
+            print(f'User id is {user_id}')
+            default_project='Y'
+            for i in range(len(self.assigned_projects)):
+                print(f'Inserting project id {self.assigned_projects[i]}')
+                values=(user_id,self.assigned_projects[i],self.created_date,self.created_by,'Y',default_project,)
+                print(f'TUSER_PROJECTS Insert : {add_user_projects_sql}  {values}')
+                cursor.execute(add_user_projects_sql,values)
+                default_project='N'
+
+            self.jdb.dbConn.commit()
+            row_count=cursor.rowcount
+            print(f'User Creation Success with {row_count} row(s) User ID {user_id}')
+            response_data['dbQryStatus']='Success'
+            response_data['dbQryResponse']={"userId":user_id,"rowCount":1}
+            return response_data
+        except  (Exception, psycopg2.Error) as error:
+            if(self.jdb.dbConn):
+                print(f'Error While Creating User {error}')
+            raise
     
     def get_all_users(self):
         response_data={}
