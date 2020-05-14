@@ -30,7 +30,8 @@ export class CreateTaskComponent implements OnInit {
   taskIssueTypesRef: [any];
 
   editorStyle = {
-    height: '200px'
+    'height': '200px'
+    // ,'background-color':'#EAF4FC'
   };
 
   config = {

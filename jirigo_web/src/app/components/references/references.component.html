@@ -1,0 +1,136 @@
+<h4>References</h4>
+<hr />
+<div
+  class="container-fluid"
+  style="background-color: #f4f4f4; border-radius: 5px;"
+>
+  <div class="row">
+    <div class="col-lg-3">
+      <div class="form-group">
+        <!-- <label class="col-form-label">Project</label> -->
+        <select
+          class="form-control"
+          [(ngModel)]="defProjectName"
+          (change)="setProjectName($event.target.value)"
+        >
+          <option value="" selected>Choose Project Name</option>
+          <option
+            *ngFor="let project of projectList"
+            [value]="project"
+          >
+            {{ project }}
+          </option>
+        </select>
+      </div>
+    </div>
+    <div class="col-lg-3">
+      <div class="form-group">
+        <!-- <label class="col-form-label">Reference Category</label> -->
+        <select
+          class="form-control"
+          (change)="setRefCategory($event.target.value)"
+        >
+          <option value="" selected>Choose Reference Category</option>
+          <option *ngFor="let refCat of refCategoryList" [value]="refCat">
+            {{ refCat }}
+          </option>
+        </select>
+      </div>
+    </div>
+    <div class="col-lg-3">
+      <div class="form-group">
+        <!-- <label class="col-form-label">Reference Name</label> -->
+        <select class="form-control" (change)="setRefName($event.target.value)">
+          <option value="" selected>Choose Reference Name</option>
+          <option *ngFor="let refName of refNameList" [value]="refName">
+            {{ refName }}
+          </option>
+        </select>
+      </div>
+    </div>
+  </div>
+</div>
+<hr />
+
+<p-table
+  #dt
+  *ngIf="showTable"
+  [value]="filteredRefs"
+  [columns]="refColHeaders"
+  [rowHover]="true"
+  [responsive]="true"
+  [rows]="10"
+  [showCurrentPageReport]="true"
+  [rowsPerPageOptions]="[2, 5, 10, 25, 50]"
+  [paginator]="true"
+  currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries"
+  [filterDelay]="1"
+  [globalFilterFields]="['ref_name', 'ref_value', 'is_active']"
+>
+  <ng-template pTemplate="caption">
+    <button
+      class="float-left"
+      type="button"
+      pButton
+      icon="pi pi-file-o"
+      iconPos="left"
+      label="CSV"
+      (click)="dt.exportCSV()"
+      style="margin-right: 0.5em;"
+    ></button>
+    <button
+      class="float-left"
+      type="button"
+      pButton
+      icon="pi pi-file-o"
+      iconPos="left"
+      label="Add Reference"
+      (click)="addReference()"
+      style="margin-right: 0.5em;"
+    ></button>
+    <div style="text-align: right;">
+      <i class="pi pi-search" style="margin: 4px 4px 0 0;"></i>
+      <input
+        type="text"
+        pInputText
+        size="50"
+        placeholder="Global Filter"
+        (input)="dt.filterGlobal($event.target.value, 'contains')"
+        style="width: auto;"
+      />
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="header" let-columns>
+    <tr>
+      <th style="width: 2.5em;">#</th>
+      <th *ngFor="let col of columns" [pSortableColumn]="col">
+        {{ col.header }}
+        <p-sortIcon [field]="col"></p-sortIcon>
+      </th>
+      <th style="width: 2.5em;"></th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-ref let-i="rowIndex">
+    <tr>
+      <td>{{i+1}}</td>
+      <td>{{ ref.ref_category }}</td>
+      <td>{{ ref.ref_name }}</td>
+      <td>{{ ref.ref_value }}</td>
+      <td>{{ ref.is_active }}</td>
+      <td>{{ ref.order_id }}</td>
+      <td (click)="editReference(ref)" class="edit-icon">
+        <span> <fa-icon [icon]="faPencilAlt"></fa-icon></span>
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
+
+<ng-template [ngIf]="showAddRefTemplate">
+  <app-create-reference (onSuccessRefereshRefGrid)="refreshGridPostCRUD($event)"  (refModalClosed)="setShowModalVal()" [showAddRefModal]="true" [inpProjectList]="projectList" [inpRefCategories]="refCategoryList" [inpRefNames]="refNameList" ></app-create-reference>
+</ng-template>
+
+<ng-template [ngIf]="showEditRefTemplate">
+  <app-edit-reference (onSuccessRefereshRefGrid)="refreshGridPostCRUD($event)"  (refModalClosed)="setShowModalVal()" [showEditRefModal]="true" [inpRefValuesToEdit]="refValuesToEdit"></app-edit-reference>
+</ng-template>
+

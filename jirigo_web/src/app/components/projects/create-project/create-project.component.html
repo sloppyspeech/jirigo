@@ -1,93 +1,81 @@
-<h3>Create Project</h3>
-<!-- <div class="panel">
-  <div class="card-header"></div>
-  <div class="card-body"-->
+
+
+  <div class="fluid-container col-sm-4 col-md-4 col-lg-4 offset-md-4 jcOneRowColumnBox"
+    >
     <ngx-spinner [fullScreen]="true" type="ball-newton-cradle" size="medium"></ngx-spinner>
     <form [formGroup]="createProjectFG" (ngSubmit)="createProject()">
+    <div class="form-group" style="padding: 15px 15px 15px 15px;">
+      <div class="row jcOneRowColumnBoxheader">
+        <h3>Create Project</h3>
+      </div>
+
+      <div class="form-group row">
+        <label for="formGroupExampleInput" class="col-form-label col-form-label-sm">Project Name<span
+            class="required-field"></span></label>
+        <input formControlName="fctlProjectName" type="text" placeholder="" id="summary" class="form-control required"
+          required />
+      </div>
+
+      <div class="form-group row">
+        <label for="formGroupExampleInput" class="col-form-label col-form-label-sm">Project Abbreviation<span
+            class="required-field"></span></label>
+        <input formControlName="fctlProjectAbbr" type="text" placeholder="" id="projectAbbr"
+          class="form-control required" required />
+      </div>
+
       <div class="form-group">
         <div class="row">
-          <div class="col-sm-3 col-md-3 col-lg-4">
-            <label
-              for="formGroupExampleInput"
-              class="col-form-label col-form-label-sm"
-              >Project Name<span class="required-field"></span
-            ></label>
-            <input
-              formControlName="fctlProjectName"
-              type="text"
-              placeholder=""
-              id="summary"
-              class="form-control required"
-              required
-            />
-          </div>
-          <div class="col-sm-3 col-md-3 col-lg-4">
-            <label
-              for="formGroupExampleInput"
-              class="col-form-label col-form-label-sm"
-              >Project Abbreviation<span class="required-field"></span
-            ></label>
-            <input
-              formControlName="fctlProjectAbbr"
-              type="text"
-              placeholder=""
-              id="projectAbbr"
-              class="form-control required"
-              required
-            />
-          </div>
-          <div class="col-sm-3 col-md-3 col-lg-4">
-            <label
-              for="formGroupExampleInput"
-              class="col-form-label col-form-label-sm"
-              >Project Type<span class="required-field"></span
-            ></label>
-            <input
-              formControlName="fctlProjectType"
-              type="text"
-              placeholder="Scrum,Kanban,Waterfall...."
-              id="projectTYpe"
-              class="form-control required"
-              required
-            />
-          </div>
+          <label for="formGroupExampleInput" class="col-form-label col-form-label-sm">Project Type<span
+              class="required-field"></span></label>
         </div>
-
-      </div>
-
-      <div class="panel">
-        <!-- <div class="card-header">Audit</div> -->
-        <div class="card-body">
-          <div class="form-group">
-            <div class="row">
-              <div class="offset-md-9 offset-sm-1">
-                <input
-                  type="button"
-                  value="Cancel"
-                  id="cancel"
-                  class="btn btn-secondary"
-                  (click)="cancelProjectCreationForm()"
-                />
-              </div>
-              <div class="col-md-1 col-sm-1">
-                <input
-                  type="submit"
-                  [disabled]="!createProjectFG.valid"
-                  value="Submit"
-                  id="submit"
-                  class="btn btn-primary"
-                />
-              </div>
-            </div>
-          </div>
+        <div class="row">
+          <select class="form-control-plain" formControlName="fctlProjectType">
+            <option value="" disabled>Choose your Project Type</option>
+            <option *ngFor="let project of projectType" [ngValue]="project.name">
+              {{project.name}}
+            </option>
+          </select>
         </div>
       </div>
-    </form>
 
-<div>
+      <div class="form-group">
+        <div class="row">
+          <label for="formGroupExampleInput" class="col-form-label col-form-label-sm">Project To Clone From</label>
+        </div>
+        <div class="row">
+          <select class="form-control-plain" formControlName="fctlParentProject">
+            <option value="" disabled>Choose Parent Project</option>
+            <option *ngFor="let project of projectList;" [ngValue]="project.name">
+              {{project.name}}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <br>
+      <div class="row">
+        <div class="offset-md-3 ">
+          <button type="button" value="Cancel" id="cancel" class="btn btn-dark"
+            (click)="cancelProjectCreationForm()">Cancel</button>
+        </div>
+        <div class="col-md-1 col-sm-1">
+          <button type="submit" [disabled]="!createProjectFG.valid" value="Submit" id="submit"
+            class="btn btn-primary">Submit</button>
+        </div>
+      </div>
+    </div>
+
+
+  </form>
+  </div>
+
+
+
+
+
 
 <!-- Testing Fields Area 51-->
-
+<!-- 
 <label for="fuel">Fuel level:</label>
 <meter id="fuel"
        min="0" max="100"
@@ -152,7 +140,6 @@
 <p-autoComplete class="" [suggestions]="results" (completeMethod)="search($event)"></p-autoComplete>
 
 
-<button type="button" class="btn btn-outline-secondary">Secondary1</button>
+<button type="button" class="btn btn-outline-secondary">Secondary1</button> -->
 
 <!-- Testing Fields Area 51-->
-

@@ -1,67 +1,52 @@
+<h4>Users</h4>
 <div class="row" style="margin-right: 5px;">
   <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-    <p-table
-      #ut
-      [columns]="cols"
-      [value]="users"
-      [paginator]="true"
-      [rows]="15"
-      [showCurrentPageReport]="true"
-      sortMode="multiple"
-      [responsive]="true"
-    >
+    <p-table #ut [columns]="cols" [value]="users" [paginator]="true" [rows]="15" [showCurrentPageReport]="true"
+      sortMode="multiple" [responsive]="true">
+
       <ng-template pTemplate="caption">
+        <button class="float-left" type="button" pButton icon="pi pi-file-o" iconPos="left" label="CSV" (click)="ut.exportCSV()"
+            style="margin-right: 0.5em;"></button>
         <div style="text-align: right;">
           <i class="pi pi-search" style="margin: 4px 4px 0 0;"></i>
-          <input
-            type="text"
-            pInputText
-            size="50"
-            placeholder="Global Filter"
-            (input)="ut.filterGlobal($event.target.value, 'contains')"
-            style="width: auto;"
-          />
+          <input type="text" pInputText size="50" placeholder="Global Filter"
+            (input)="ut.filterGlobal($event.target.value, 'contains')" style="width: auto;" />
         </div>
       </ng-template>
+
       <ng-template pTemplate="header">
         <tr>
-          <th style="width: 2.5em;"></th>
+          <th style="width: 2.5em;">#</th>
           <th *ngFor="let col of cols" [pSortableColumn]="col.field">
             {{ col.header }}
             <p-sortIcon [field]="col.field"></p-sortIcon>
           </th>
+          <th style="width: 2.5em;"></th>
         </tr>
       </ng-template>
 
-      <ng-template pTemplate="body" let-user let-columns="cols">
+      <ng-template pTemplate="body" let-user let-columns="cols" let-i="rowIndex">
         <tr>
-          <td>
-            <i
-              class="pi pi-pencil"
-              style="color: orange; display: flex; justify-content: center;"
-              pReorderableRowHandle
-            ></i>
-          </td>
+          <td>{{i+1}}</td>
           <td>{{ user.first_name }}</td>
           <td>{{ user.last_name }}</td>
           <td>{{ user.email }}</td>
           <td>
             <h6 *ngIf="user.is_active == 'Y'" style="margin: 2px 0 0 0;">
-              <span
-                class="label"
-                style="padding: 0 10px 0 10px; background-color: #d9eedc;"
-                >Active</span
-              >
+              <span class="label active-user">Active</span>
             </h6>
             <h6 *ngIf="user.is_active == 'N'" style="margin: 2px 0 0 0;">
-              <span
-                class="label"
-                style="padding: 0 10px 0 10px; background-color: #ddacac;"
-                >In Active</span
-              >
+              <span class="label inactive-user">In Active</span>
             </h6>
           </td>
           <td>{{ user.password_change_date | date: "d-MMM-y h:mm:ss a" }}</td>
+          <!-- <td>
+            <i class="pi pi-pencil" style="color: orange; display: flex; justify-content: center;"
+              pReorderableRowHandle></i>
+          </td> -->
+          <td class="edit-icon">
+            <span> <fa-icon [icon]="faPencilAlt"></fa-icon></span>
+          </td>
         </tr>
       </ng-template>
     </p-table>

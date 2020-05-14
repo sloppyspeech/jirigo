@@ -2,23 +2,30 @@
     [responsive]="true" [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[2,5,10,25,50]"
     [paginator]="true" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [filterDelay]="1"
     [globalFilterFields]="['project_no','summary','reported_by','issue_status','priority','environment','severity','issue_type']">
+
     <ng-template pTemplate="caption">
+        <button class="float-left" type="button" pButton icon="pi pi-file-o" iconPos="left" label="CSV"
+            (click)="dt.exportCSV()" style="margin-right: 0.5em;"></button>
         <div style="text-align: right">
             <i class="pi pi-search" style="margin:4px 4px 0 0"></i>
             <input type="text" pInputText size="50" placeholder="Global Filter"
                 (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto">
         </div>
     </ng-template>
+
+
     <ng-template pTemplate="header" let-columns>
         <tr>
+            <th style="width: 2.5em;">#</th>
             <th *ngFor="let col of columns" [pSortableColumn]="col">
                 {{col}}
                 <p-sortIcon [field]="col"></p-sortIcon>
             </th>
         </tr>
     </ng-template>
-    <ng-template pTemplate="body" let-project>
+    <ng-template pTemplate="body" let-project let-i="rowIndex">
         <tr>
+            <td>{{i+1}}</td>
             <td><a [routerLink]="['/view-edit-projects', project.project_abbr]">{{project.project_name}}</a></td>
             <td>{{project.project_abbr}}</td>
             <td>{{project.project_type}}</td>

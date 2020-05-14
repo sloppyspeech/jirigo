@@ -3,8 +3,8 @@ import { FormGroup,FormBuilder,FormControl,Validators  } from '@angular/forms';
 import { ProjectsService  } from '../../../services/projects/projects.service';
 import { UsersService  } from '../../../services/users/users.service';
 import { NgxSpinnerService  } from 'ngx-spinner';
+import { Router} from '@angular/router'; 
 
-import { AutoComplete  } from 'primeng/autocomplete';
 
 @Component({
   selector: 'app-create-project',
@@ -14,11 +14,19 @@ import { AutoComplete  } from 'primeng/autocomplete';
 export class CreateProjectComponent implements OnInit {
   createProjectFG:FormGroup;
   results:any[]=[];
+  projectType:any[]=[
+    {name:'Scrum',code:'Scrum'},
+    {name:'Kanban',code:'Kanban'},
+    {name:'ScrumBan',code:'ScrumBan'}
+  ];
+  projectList:any[]=[];
+
 
   constructor(private _formBuilder:FormBuilder,
               private _serProjects:ProjectsService,
               private _serNgxSpinner:NgxSpinnerService,
-              private _serUserService:UsersService) { }
+              private _serUserService:UsersService,
+              private _router:Router) { }
 
   ngOnInit(): void {
     this.createProjectFG=this._formBuilder.group({
@@ -28,12 +36,26 @@ export class CreateProjectComponent implements OnInit {
       fctlProjectCreatedBy:new FormControl({ value: '', disabled: false }),
       fctlProjectCreatedDate:new FormControl({ value: '', disabled: false }),
       fctlProjectModifiedBy:new FormControl({ value: '', disabled: false }),
-      fctlProjectModifiedDate:new FormControl({ value: '', disabled: false })
+      fctlProjectModifiedDate:new FormControl({ value: '', disabled: false }),
+      fctlParentProject:new FormControl({ value: '', disabled: false })
     });
     this._serNgxSpinner.show();
     setTimeout(() => {
         this._serNgxSpinner.hide();
     }, 1000);
+
+    this._serProjects.getAllProjects()
+        .subscribe(res=>{
+            console.log("$$$$$$$$$$$$$$$$$");
+            console.log(res);
+            if (res['dbQryStatus'] == "Success"){
+              res['dbQryResponse'].forEach(p => {
+                this.projectList.push({'name':p['project_name'],'project_id':p['project_id']});
+              });
+            }
+            console.log(this.projectList);
+        });
+
   }
 
   createProject(){
@@ -41,8 +63,13 @@ export class CreateProjectComponent implements OnInit {
       "project_name":this.createProjectFG.get('fctlProjectName').value,
       "project_abbr":this.createProjectFG.get('fctlProjectAbbr').value,
       "project_type":this.createProjectFG.get('fctlProjectType').value,
-      "created_by":localStorage.getItem('loggedInUserId')
+      "parent_project_id":this.createProjectFG.get('fctlParentProject').value,
+      "created_by":localStorage.getItem('loggedInUserId'),
+      "is_active":'Y'
     };
+
+    console.log(projData);
+
     this._serNgxSpinner.show();
     this._serProjects.createProject(projData)
         .subscribe(res=>{
@@ -51,32 +78,35 @@ export class CreateProjectComponent implements OnInit {
             console.log(JSON.stringify(res));
             if (res['dbQryStatus'] == "Success"){
               console.log("Inside dbQryStatus Success");
-              setTimeout(() => {
-                this.createProjectFG.reset();
-                this._serNgxSpinner.hide();
-            }, 3000);
+              
+            //   setTimeout(() => {
+            //     this.createProjectFG.reset();
+            //     this._serNgxSpinner.hide();
+            // }, 3000);
+
+              this.createProjectFG.reset();
+              this._serNgxSpinner.hide();
+              this._router.navigate(['/projects/list-projects']);
             }
         });
+
+
+  }
+
+  setProjectType(pt){
+
+    this.createProjectFG.get('fctlProjectType').setValue(pt);
+  }
+
+  setParentProject(pp){
+    console.log(pp.target.value);
+    this.createProjectFG.get('fctlParentProject').setValue(pp);
   }
 
   cancelProjectCreationForm (){
+    alert("cancelProjectCreationForm");
+    this.createProjectFG.reset();
+  }
 
-  }
-  search(event) {
-    let queryRes:any[]=[];
-      this._serUserService.getUserNamesForDropDownSearch(event.query)
-        .subscribe(data => {
-          console.log("********************");
-          console.log(data);
-          console.log(data.length);
-          console.log(this.results);
-          for(var i=0; i<data.length;i++){
-            console.log(data[i]["name"]);
-            queryRes.push(data[i]['name']);
-          }
-          this.results=queryRes;
-          console.log("=========:"+this.results);
-      });
-  }
 
 }

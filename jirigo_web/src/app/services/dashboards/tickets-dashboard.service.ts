@@ -9,7 +9,7 @@ import { map  } from 'rxjs/operators';
 })
 export class TicketsDashboardService {
   sApiBaseUrl:string=environment.apiBaseUrl;
-  sApiEndPoint:string=this.sApiBaseUrl+"dashboard-data/"
+  sApiEndPoint:string=this.sApiBaseUrl+"ticket-dashboard/"
   private sHttpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
@@ -21,16 +21,39 @@ export class TicketsDashboardService {
 
   constructor(private _httpCli:HttpClient) { }
 
-  getDashboardTicketSummary(){
+  getDashboardTicketGenericSummary(){
     console.log('@@@@getDashboardTicketSummary');
-    console.log("getTicketDetails End point :"+this.sApiEndPoint+'summaries/');
-    return this._httpCli.get<any>(this.sApiEndPoint+'summaries').pipe(
+    console.log("getTicketDetails End point :"+this.sApiEndPoint+'summaries/generic/'+localStorage.getItem('currentProjectId'));
+    return this._httpCli.get<any>(this.sApiEndPoint+'summaries/generic/'+localStorage.getItem('currentProjectId')).pipe(
       map((response) => {
         console.log(response);
         return response;
       })
     );;
       
+  }
+
+  getDashboardTicketSummaryByIssueStatus(){
+    console.log('@@@@getDashboardTicketSummaryByIssueStatus');
+    console.log("getDashboardTicketSummaryByIssueStatus End point :"+this.sApiEndPoint+'summaries/issue_type/'+localStorage.getItem('currentProjectId'));
+    return this._httpCli.get<any>(this.sApiEndPoint+'summaries/issue_status/'+localStorage.getItem('currentProjectId')).pipe(
+      map((response) => {
+        console.log(response);
+        return response;
+      })
+    );;
+      
+  
+  }
+  getDashboardTicketSummaryByIssueType(){
+    console.log('@@@@getDashboardTicketSummaryByIssueStatus');
+    console.log("getDashboardTicketSummaryByIssueStatus End point :"+this.sApiEndPoint+'summaries/issue_type/'+localStorage.getItem('currentProjectId'));
+    return this._httpCli.get<any>(this.sApiEndPoint+'summaries/issue_type/'+localStorage.getItem('currentProjectId')).pipe(
+      map((response) => {
+        console.log(response);
+        return response;
+      })
+    );
   }
 
 }

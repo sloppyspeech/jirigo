@@ -1,12 +1,12 @@
-<div class="fluid-container col-sm-4 col-md-4 col-lg-4 offset-md-4"
-    style="background-color: aliceblue; margin-bottom: 50px; border-radius: 10px;">
-    <div style="padding: 15px 15px 15px 15px;">
-        <div class="row">
-            <h2>Create User</h2>
-        </div>
+<div class="fluid-container col-sm-4 col-md-4 col-lg-4 offset-md-4 jcOneRowColumnBox">
         <form [formGroup]="createFG" (ngSubmit)="createUser()">
+            <div style="padding: 15px 15px 15px 15px;">
+                <div class="row jcOneRowColumnBoxheader" >
+                    <h3>Create User</h3>
+                </div>
             <div class="form-group row">
-                <label for="firstName">First Name</label>
+                <label for="firstName" class="col-form-label col-form-label-sm"> First Name <span
+                    class="required-field"></span></label>
                 <input type="text" formControlName="firstName" class="form-control"
                     [ngClass]="{ 'is-invalid': submitted && rf.firstName.errors }" (click)="resetErrors()" />
                 <div *ngIf="submitted && rf.firstName.errors" class="invalid-feedback">
@@ -14,7 +14,8 @@
                 </div>
             </div>
             <div class="form-group row">
-                <label for="lastName">Last Name</label>
+                <label for="lastName" class="col-form-label col-form-label-sm">Last Name <span
+                    class="required-field"></span></label>
                 <input type="text" formControlName="lastName" class="form-control"
                     [ngClass]="{ 'is-invalid': submitted && rf.lastName.errors }" />
                 <div *ngIf="submitted && rf.lastName.errors" class="invalid-feedback">
@@ -22,7 +23,8 @@
                 </div>
             </div>
             <div class="form-group row">
-                <label for="email">Email</label>
+                <label for="email" class="col-form-label col-form-label-sm">Email <span
+                    class="required-field"></span></label>
                 <input type="text" formControlName="email" class="form-control"
                     [ngClass]="{ 'is-invalid': submitted && rf.email.errors }" />
                 <div *ngIf="submitted && rf.email.errors" class="invalid-feedback">
@@ -30,22 +32,32 @@
                 </div>
             </div>
             <div class="form-group row">
-                <label for="password">Password</label>
+                <label for="password" class="col-form-label col-form-label-sm">Password <span
+                    class="required-field"></span></label>
                 <input type="password" formControlName="password" class="form-control"
-                    [ngClass]="{ 'is-invalid': submitted && rf.password.errors }" />
+                    [ngClass]="{ 'is-invalid': submitted && rf.password.errors }" #password/>
                 <div *ngIf="submitted && rf.password.errors" class="invalid-feedback">
                     <div *ngIf="rf.password.errors.required">Password is required</div>
                 </div>
             </div>
 
-            <div class="form-group row">
-                <label>Assign Projects <br><span class="text-muted" style="font-size: 12px;">First Project in the list will be default.</span></label>
+            <div class="form-group row" >
+                <label>Assign Projects &nbsp;<span class="text-muted" style="font-size: 12px;">[ First Project in the list will be default.]</span></label>
             </div>
-            <div class="form-group row">
+            <div class="form-group row"  >
                 <p-multiSelect [options]="projectList" formControlName="assignedProjects"
-                    [style]="{'width':'100%','height':'40px','border-color':'#CED3D9','border-radius':'5px','padding':'0 0 0 0'}"
-                    styleClass="form-control" ></p-multiSelect>
+                    [style]="{'width':'100%','height':'36px','border-color':'#CED3D9','border-radius':'5px'}"
+                     ></p-multiSelect>
             </div>
+            <div class="form-group row" >
+                <label>Assign Roles &nbsp;<span class="text-muted" style="font-size: 12px;">[ Select Projects Above to get Roles.]</span></label>
+            </div>
+            <div class="form-group row"  >
+                <p-multiSelect [options]="roleList" formControlName="assignedRoles"
+                    [style]="{'width':'100%','height':'36px','border-color':'#CED3D9','border-radius':'5px'}"
+                     ></p-multiSelect>
+            </div>
+
             <div class="form-group row">
                 <div class="col-md-12 col-lg-12">
                     <button [disabled]="!createFG.valid" class="btn btn-primary float-right">
@@ -59,7 +71,7 @@
                     <span class="error">{{ error }}</span>
                 </div>
             </div>
+        </div>
         </form>
-    </div>
 </div>
 <ngx-spinner [fullScreen]="true" type="ball-newton-cradle" size="medium"></ngx-spinner>

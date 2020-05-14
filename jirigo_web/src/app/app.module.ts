@@ -30,42 +30,26 @@ import { RadioButtonModule } from 'primeng/radiobutton';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { LoginComponent } from './components/login/login.component';
-import { CreateTicketComponent } from './components/tickets/create-ticket/create-ticket.component';
-import { CreateProjectComponent  } from './components/projects/create-project/create-project.component';
-import { ListTicketsComponent } from './components/tickets/list-tickets/list-tickets.component';
-import { ViewEditTicketsComponent } from './components/tickets/view-edit-tickets/view-edit-tickets.component';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
-import { IssueDetailsComponent } from './components/tickets/issue-details/issue-details.component';
-import { TicketCommentsComponent } from './components/tickets/ticket-comments/ticket-comments.component';
 import { SelectUserComponent } from './components/common/select-user/select-user.component';
-import { TicketAuditComponent } from './components/tickets/ticket-audit/ticket-audit.component';
-import { ListProjectsComponent } from './components/projects/list-projects/list-projects.component';
 import { RegisterComponent } from './components/register/register.component';
 import { LogoutComponent } from './components/logout/logout.component';
-import { ChangeProjectComponent } from './components/projects/change-project/change-project.component';
 import { MenuComponent } from './components/menu/menu.component';
+import { DebugComponent } from './components/debug/debug.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    CreateTicketComponent,
-    CreateProjectComponent,
-    ListTicketsComponent,
-    ViewEditTicketsComponent,
     HeaderComponent,
     FooterComponent,
-    IssueDetailsComponent,
-    TicketCommentsComponent,
     SelectUserComponent,
-    TicketAuditComponent,
-    ListProjectsComponent,
     RegisterComponent,
     LogoutComponent,
-    ChangeProjectComponent,
-    MenuComponent
+    MenuComponent,
+    DebugComponent
   ],
   imports: [
     BrowserModule,

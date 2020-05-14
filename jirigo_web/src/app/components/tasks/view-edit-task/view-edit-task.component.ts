@@ -5,7 +5,7 @@ import { TaskDetailsService } from '../../../services/tasks/task-details.service
 import { ActivatedRoute } from '@angular/router';
 import { NgxSpinnerService  } from 'ngx-spinner';
 import { Router  } from '@angular/router';
-import { faClone,faEdit } from '@fortawesome/free-solid-svg-icons';
+import { faClone,faEdit, faTshirt } from '@fortawesome/free-solid-svg-icons';
 import {MessageService} from 'primeng/api';
 
 @Component({
@@ -33,7 +33,8 @@ export class ViewEditTaskComponent implements OnInit {
 
 
   editorStyle = {
-    height: '200px'
+    'height': '200px',
+    'background-color':''
   };
 
   config={
@@ -159,11 +160,14 @@ export class ViewEditTaskComponent implements OnInit {
     Object.keys(this.viewModifyTaskFCList).forEach(control => {
       this.viewModifyTaskFB.get(control).disable();
     });
+    this.editorStyle["background-color"]='';
   }
   enableAllFormControls(){
+    this.editorStyle["background-color"]='white';
     Object.keys(this.viewModifyTaskFCList).forEach(control => {
       this.viewModifyTaskFB.get(control).enable();
     });
+    // this.reloadComponent();
   }
 
   setFormBackToIntialState(){

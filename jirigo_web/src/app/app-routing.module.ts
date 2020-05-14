@@ -1,15 +1,10 @@
-import { ViewEditTicketsComponent } from './components/tickets/view-edit-tickets/view-edit-tickets.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent  } from './components/login/login.component';
 import { LogoutComponent  } from './components/logout/logout.component';
-import { CreateTicketComponent  } from './components/tickets/create-ticket/create-ticket.component';
-import { ListTicketsComponent  } from './components/tickets/list-tickets/list-tickets.component';
-import { CreateProjectComponent } from './components/projects/create-project/create-project.component';
-import { ListProjectsComponent  } from './components/projects/list-projects/list-projects.component';
 import { RegisterComponent  } from './components/register/register.component';
-import { ChangeProjectComponent  } from './components/projects/change-project/change-project.component';
 import { AuthGuardService as AuthGuard } from './components/auth/auth-guard.service';
+import { DebugComponent} from './components/debug/debug.component';
 
 const routes: Routes = [
   {
@@ -25,41 +20,22 @@ const routes: Routes = [
     component:LogoutComponent
   },
   {
+    path:'debug',
+    component:DebugComponent
+  },
+  {
     path:'register',
     component:RegisterComponent
   },
+
   {
-    path:'change-project',
-    component:ChangeProjectComponent
-  },
-  {
-    path:'create-ticket',
-    component:CreateTicketComponent,
+    path:'tickets',
+    loadChildren: () => import('./components/tickets/tickets.module').then( m => m.TicketsModule),
     canActivate:[AuthGuard]
   },
   {
-    path:'list-tickets',
-    component:ListTicketsComponent,
-    canActivate:[AuthGuard]
-  },
-  {
-    path:'view-edit-tickets/:ticket_no',
-    component:ViewEditTicketsComponent,
-    canActivate:[AuthGuard]
-  },
-  {
-    path:'view-edit-ticket',
-    component:ViewEditTicketsComponent,
-    canActivate:[AuthGuard]
-  },
-  {
-    path:'list-projects',
-    component:ListProjectsComponent,
-    canActivate:[AuthGuard]
-  },
-  {
-    path:'create-project',
-    component:CreateProjectComponent,
+    path:'projects',
+    loadChildren: () => import('./components/projects/projects.module').then( m => m.ProjectsModule),
     canActivate:[AuthGuard]
   },
   {
@@ -85,6 +61,11 @@ const routes: Routes = [
   {
     path:'user-management',
     loadChildren: () => import('./components/users/users.module').then( m => m.UsersModule),
+    canActivate:[AuthGuard]
+  },
+  {
+    path:'refdata-management',
+    loadChildren: () => import('./components/references/references.module').then( m => m.ReferencesModule),
     canActivate:[AuthGuard]
   }
 ];

@@ -1,45 +1,45 @@
-<div class="container-fluid" >
+<div class="container-fluid">
   <div class="row" style="margin-bottom: 1em;">
     <div class="col-sm-6 col-lg-3 topCardLeft">
-        <div class="inner1">
-          <div class="overview-box clearfix">
-            <div class="icon">
-              <fa-icon [icon]="faCogs" class="zmdi"></fa-icon>
-            </div>
-            <div class="text">
-              <h4 class="text-align">{{openIssuesCount}}</h4>
-              <span>Open Issues</span>
-            </div>
+      <div class="inner1">
+        <div class="overview-box clearfix">
+          <div class="icon">
+            <fa-icon [icon]="faCogs" class="zmdi"></fa-icon>
           </div>
-
+          <div class="text">
+            <h4 class="text-align">{{openIssuesCount}}</h4>
+            <span>Open Issues</span>
+          </div>
         </div>
+
+      </div>
     </div>
     <div class="col-sm-6 col-lg-3 topCardMiddle">
-        <div class="inner2">
-          <div class="overview-box clearfix">
-            <div class="icon">
-              <fa-icon [icon]="faCubes" class="zmdi"></fa-icon>
-            </div>
-            <div class="text">
-              <h4 class="text-align">{{closedIssuesCount}}</h4>
-              <span>Closed Issues</span>
-            </div>
+      <div class="inner2">
+        <div class="overview-box clearfix">
+          <div class="icon">
+            <fa-icon [icon]="faCubes" class="zmdi"></fa-icon>
           </div>
-
+          <div class="text">
+            <h4 class="text-align">{{closedIssuesCount}}</h4>
+            <span>Closed Issues</span>
+          </div>
         </div>
+
+      </div>
     </div>
     <div class="col-sm-6 col-lg-3 topCardMiddle">
-        <div class="inner3">
-          <div class="overview-box clearfix">
-            <div class="icon">
-              <fa-icon [icon]="faUsers" class="zmdi"></fa-icon>
-            </div>
-            <div class="text">
-              <h4 class="text-align">{{bugsVsOthersCount}}</h4>
-              <span>Bugs Vs Others</span>
-            </div>
+      <div class="inner3">
+        <div class="overview-box clearfix">
+          <div class="icon">
+            <fa-icon [icon]="faUsers" class="zmdi"></fa-icon>
           </div>
-          <!-- <div class="overview-chart">
+          <div class="text">
+            <h4 class="text-align">{{bugsVsOthersCount}}</h4>
+            <span>Bugs Vs Others</span>
+          </div>
+        </div>
+        <!-- <div class="overview-chart">
             <div
               style="
                 position: absolute;
@@ -109,7 +109,7 @@
             ></canvas>
           </div> -->
 
-        </div>
+      </div>
     </div>
     <div class="col-sm-6 col-lg-3 topCardRight">
       <div class="inner4">
@@ -191,38 +191,37 @@
             class="chartjs-render-monitor"
           ></canvas>
         </div> -->
-     
-    </div>
+
+      </div>
     </div>
   </div>
-  <div class="row" style="height:200px;">
-    <div class="col-sm-6 col-lg-3 " >
-              <div class="overview-chart" >
-                <canvas 
-                id="id_noOfOpenIssues"
-                style="height:400px;">{{chart}}</canvas>
-          </div>
+
+  <div class="row">
+    <div class="col-lg-6 ">
+      <div class="overview-chart">
+        <canvas id="id_noOfOpenIssues" height="300">{{chart}}</canvas>
+      </div>
     </div>
-    <div class="col-sm-6 col-lg-3 ">
-              <div class="overview-chart" >
-            <canvas
-            id="id_noOfClosedIssues"
-            >{{chart}}</canvas>
-            </div>
+    <div class="col-lg-6 ">
+      <div class="overview-chart">
+        <canvas id="id_byIssuetype" height="300">{{chart2}}</canvas>
+      </div>
     </div>
-    <div class="col-sm-6 col-lg-3 " style="padding:0 10px 0 10px;">
+    <!-- <div class="col-lg-4 " style="padding:0 10px 0 10px;">
               <div class="overview-chart" >
             <canvas
             id="id_noOfBugsVsOthersIssues"
             >{{chart}}</canvas>
             </div>
-    </div>
-    <div class="col-sm-6 col-lg-3 ">
+    </div> -->
+
+    <!-- <div class="col-lg-3 ">
        <div class="overview-chart" >
             <canvas
             id="id_noOfHighSeverityIssues"
             >{{chart}}</canvas>
             </div>
-    </div>
+    </div> -->
+
   </div>
 </div>

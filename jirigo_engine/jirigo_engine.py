@@ -1,5 +1,5 @@
 from flask import Flask
-from flask import request,jsonify,make_response,Response
+from flask import request,jsonify,make_response,Response,json
 from flask_cors import CORS,cross_origin
 import pprint
 import sys
@@ -16,6 +16,7 @@ from services.dbservice.tasks.tasks_comments_service import JirigoTaskComments
 from services.dbservice.tasks.tasks_dashboard_service import JirigoTaskDashboard
 from services.dbservice.sprints.sprints_service import JirigoSprints
 from services.dbservice.boards.scrum.scrumboard_service import JirigoScrumBoard
+
 
 app=Flask(__name__)
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
@@ -379,16 +380,69 @@ def get_all_sprint_refs(project_id):
     else:
         return get_jsonified_error_response('Failure',"get_all_sprint_refs Not a GET Request")
 
+@app.route('/api/v1/ref-data-management/all-refs-for-show-and-edit',methods=['GET'])
+def get_all_refs_for_show_and_editing():
+    data={}
+    if request.method == 'GET':
+        print('In POST get_all_refs_for_show_and_editing')
+        try:
+            jdb=JirigoRefMaster({})
+            data=jdb.get_all_refs_for_show_and_editing()
+            # print("="*80)
+            # print(data)
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in get_all_refs_for_show_and_editing {error}')
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',"get_all_refs_for_show_and_editing Not a GET Request")
+
+@app.route('/api/v1/ref-data-management/create-ref',methods=['POST'])
+def insert_reference():
+    data={}
+    if request.method == 'POST':
+        print('In POST insert_reference')
+        try:
+            jdb=JirigoRefMaster(request.get_json())
+            data=jdb.insert_reference()
+            print("="*80)
+            print(data)
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in insert_reference {error}')
+            print(get_jsonified_error_response('Failure',error))
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',"insert_reference Not a POST Request")
+
+@app.route('/api/v1/ref-data-management/edit-ref',methods=['POST'])
+def update_reference():
+    data={}
+    if request.method == 'POST':
+        print('In POST update_reference')
+        try:
+            jdb=JirigoRefMaster(request.get_json())
+            data=jdb.update_reference()
+            print("="*80)
+            print(data)
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in update_reference {error}')
+            print(get_jsonified_error_response('Failure',error))
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',"update_reference Not a POST Request")
 
 
-@app.route('/api/v1/dashboard-data/summaries',methods=['GET'])
-def get_dashboard_summaries():
+
+@app.route('/api/v1/ticket-dashboard/summaries/generic/<project_id>',methods=['GET'])
+def get_ticket_dashboard_generic_summary(project_id):
     data={}
     if request.method == 'GET':
         print('In GET get_ticket_ref_status')
         try:
-            jdb=JirigoTicketDashboard()
-            data=jdb.get_ticket_summaries()
+            jdb=JirigoTicketDashboard({'project_id':project_id})
+            data=jdb.get_ticket_dashboard_generic_summary()
             print("="*80)
             print(data)
             return jsonify(data)
@@ -397,6 +451,41 @@ def get_dashboard_summaries():
             return get_jsonified_error_response('Failure',error)
     else:
         return get_jsonified_error_response('Failure',"get_dashboard_summaries Not a GET Request")
+
+@app.route('/api/v1/ticket-dashboard/summaries/issue_status/<project_id>',methods=['GET'])
+def get_ticket_summary_by_issue_status(project_id):
+    data={}
+    if request.method == 'GET':
+        print('In GET get_ticket_ref_status')
+        try:
+            jdb=JirigoTicketDashboard({'project_id':project_id})
+            data=jdb.get_ticket_summary_by_issue_status()
+            print("="*80)
+            print(data)
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in get_ticket_summary_by_issue_status {error}')
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',"get_ticket_summary_by_issue_status Not a GET Request")
+
+@app.route('/api/v1/ticket-dashboard/summaries/issue_type/<project_id>',methods=['GET'])
+def get_ticket_summary_by_issue_type(project_id):
+    data={}
+    if request.method == 'GET':
+        print('In GET get_ticket_ref_status')
+        try:
+            jdb=JirigoTicketDashboard({'project_id':project_id})
+            data=jdb.get_ticket_summary_by_issue_type()
+            print("="*80)
+            print(data)
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in get_ticket_summary_by_issue_type {error}')
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',"get_ticket_summary_by_issue_type Not a GET Request")
+
 
 @app.route('/api/v1/task-management/task',methods=['POST'])
 def create_task():
@@ -678,17 +767,33 @@ def get_all_tasks_of_sprint_for_scrum_board(sprint_id):
 
 
 def get_jsonified_error_response(status,error):
+    print("=============================")
+    print("get_jsonified_error_response called")
     error_response={}
     error_response['dbQryStatus']=status
     error_response['callingFunction']=sys._getframe(1).f_code.co_name
     error_response['dbQryResponse']={}
+    print(error_response)
+    print(error)
+    print("=============================")
     try:
         error_response['dbQryResponse']['error_code']=error.pgcode
         error_response['dbQryResponse']['error_message']=error.pgerror[:60]
+        return jsonify(error_response)
     except Exception as e:
+        print("E reached in get_jsonified_error_response")
         error_response['dbQryResponse']['error_code']="Not A DB Error"
         error_response['dbQryResponse']['error_message']=error
-    return jsonify(error_response)
+        print(error_response)
+        print("------")
+        # ret_val= app.response_class(
+        #     response=json.dumps(error_response),
+        #     status=200,
+        #     mimetype='application/json'
+        # )
+        # print(ret_val)
+        return make_response(jsonify(error_response),200)
+
 
 if __name__=='__main__':
     app.run()

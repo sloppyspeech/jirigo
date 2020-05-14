@@ -21,6 +21,11 @@ export class CreateUserComponent implements OnInit {
   projectList:any[]=[];
   assignedProjects:any[]=[];
   showProj:boolean=false;
+  roleList:any[]=[
+    {'label':'Proj-Admin','value':'Proj-Admin'},
+    {'label':'Proj-User','value':'Proj-User'},
+    {'label':'Proj-ReadOnly','value':'Proj-ReadOnly'}
+  ];
 
 
   constructor(
@@ -41,7 +46,8 @@ export class CreateUserComponent implements OnInit {
       firstName:new FormControl(null, Validators.required),
       lastName:new FormControl(null, Validators.required),
       password:new FormControl(null, Validators.required),
-      assignedProjects:new FormControl([], Validators.required)
+      assignedProjects:new FormControl([], Validators.required),
+      assignedRoles:new FormControl([], Validators.required)
     });
 
     this._serProjects.getAllProjects()

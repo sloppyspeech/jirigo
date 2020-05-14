@@ -31,7 +31,7 @@ class JirigoTicketAudit(object):
                                     to_char(created_date, 'DD-Mon-YYYY HH24:MI:SS') created_date
                               FROM htickets 
                              where ticket_no=%s
-                             order by hticket_int_id limit 15
+                             order by hticket_int_id desc limit 15
                         )
                         SELECT json_agg(t) from t;
                    """

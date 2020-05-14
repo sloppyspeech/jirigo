@@ -1,0 +1,14 @@
+.active-user{
+    padding: 0 10px 0 10px; 
+    background-color: #d9eedc;
+    font-size: 14px;
+}
+.inactive-user{
+    padding: 0 10px 0 10px; 
+    background-color: #ddacac;
+    font-size: 14px;
+}
+.edit-icon:hover{
+    cursor: pointer;
+    color:orangered
+}

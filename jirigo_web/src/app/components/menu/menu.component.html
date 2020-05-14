@@ -1,6 +1,5 @@
 <nav class="navbar navbar-expand-md navbar-dark" style="background-color: #48505a;">
     <img src="./assets/images/JirigoLogo.png" alt="" height="50" width="60" />
-    <!-- <a href="#" class="navbar-brand" style="margin-left: 25px;">JiriGo</a> -->
     <span>&nbsp;&nbsp;&nbsp;</span>
     <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
         <span class="navbar-toggler-icon"></span>
@@ -13,24 +12,21 @@
             <li class="nav-item dropdown">
                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Projects</a>
                 <div class="dropdown-menu">
-                    <a [routerLink]="['/create-project']" href="#" class="dropdown-item">Create Project</a>
-                    <a [routerLink]="['/list-projects']" href="#" class="dropdown-item">List Projects</a>
+                    <a [routerLink]="['/projects/create-project']" href="#" class="dropdown-item">Create Project</a>
+                    <a [routerLink]="['/projects/list-projects']" href="#" class="dropdown-item">List Projects</a>
                     <div class="dropdown-divider"></div>
                     <a href="#" class="dropdown-item"
                         style="color:white;background-color:blue">{{currentProjectName}}</a>
                     <div class="dropdown-divider"></div>
-                    <a [routerLink]="['/change-project']" href="#" class="dropdown-item"
+                    <a [routerLink]="['/projects/change-project']" href="#" class="dropdown-item"
                         (click)="changeProject($event)">Change Project</a>
                 </div>
             </li>
             <li class="nav-item dropdown">
                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Tickets</a>
                 <div class="dropdown-menu">
-                    <a [routerLink]="['/create-ticket']" href="#" class="dropdown-item">Create Ticket</a>
-                    <a [routerLink]="['/list-tickets']" href="#" class="dropdown-item">List Tickets</a>
-                    <!-- <a href="#" class="dropdown-item">Sent Items</a> -->
-                    <!-- <div class="dropdown-divider"></div>
-                          <a href="#"class="dropdown-item">Trash</a> -->
+                    <a [routerLink]="['/tickets/create-ticket']" href="#" class="dropdown-item">Create Ticket</a>
+                    <a [routerLink]="['/tickets/list-tickets']" href="#" class="dropdown-item">List Tickets</a>
                 </div>
             </li>
             <li class="nav-item dropdown">
@@ -45,9 +41,19 @@
                 <div class="dropdown-menu">
                     <a [routerLink]="['/sprints/create-sprint']" href="#" class="dropdown-item">Create Sprint</a>
                     <a [routerLink]="['/sprints/list-sprints']" href="#" class="dropdown-item">List Sprints</a>
-                    <!-- <a href="#" class="dropdown-item">Sent Items</a> -->
-                    <!-- <div class="dropdown-divider"></div>
-                          <a href="#"class="dropdown-item">Trash</a> -->
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Users</a>
+                <div class="dropdown-menu">
+                    <a [routerLink]="['/user-management/create-user']" href="#" class="dropdown-item">Create User</a>
+                    <a [routerLink]="['/user-management/all-users']" href="#" class="dropdown-item">List User</a>
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">References</a>
+                <div class="dropdown-menu">
+                    <a [routerLink]="['/refdata-management/show-and-edit']" href="#" class="dropdown-item">List Refernces</a>
                 </div>
             </li>
         </ul>
@@ -57,7 +63,6 @@
               loggedInUserName
             }}</a>
                 <div class="dropdown-menu dropdown-menu-right">
-                    <!-- <a href="#" class="dropdown-item">Reports</a> -->
                     <a href="#" class="dropdown-item">Profile</a>
                     <div class="dropdown-divider"></div>
                     <a [routerLink]="['/logout']" class="dropdown-item">Logout</a>
@@ -66,4 +71,3 @@
         </ul>
     </div>
 </nav>
-<!-- </div> -->

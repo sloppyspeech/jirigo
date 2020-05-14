@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgxSpinnerService  } from 'ngx-spinner';
 import { UsersService } from './../../../services/users/users.service';
+import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-users-grid',
@@ -8,6 +9,7 @@ import { UsersService } from './../../../services/users/users.service';
   styleUrls: ['./users-grid.component.css']
 })
 export class UsersGridComponent implements OnInit {
+  faPencilAlt = faPencilAlt;
   showUserGrid:boolean=false;
 
   cols:any[] = [

@@ -12,12 +12,12 @@ class JirigoTicketDashboard(object):
     def __init__(self,data={}):
         print("Initializing JirigoTicketDashboard")
         print(f'In for Create Dashboard **** :{data}')
-        # self.ticket_no = data.get('ticket_no')
+        self.project_id = data.get('project_id',0)
         self.jdb=JirigoDBConn()
         self.logger=Logger()
 
 
-    def get_ticket_summaries(self):
+    def get_ticket_dashboard_generic_summary(self):
         response_data={}
         self.logger.debug("Inside get_ticket_audit")
         query_sql="""  
@@ -63,4 +63,67 @@ class JirigoTicketDashboard(object):
         except  (Exception, psycopg2.Error) as error:
             if(self.jdb.dbConn):
                 print(f'Error While getting Ticket Audit {error}')
+                raise
+
+
+    def get_ticket_summary_by_issue_status(self):
+        response_data={}
+        self.logger.debug("Inside get_ticket_summary_by_issue_status")
+        query_sql="""  
+                        WITH t AS(
+                            SELECT issue_status,count(*) count FROM ttickets t 
+                             WHERE project_id =%s
+                            GROUP BY issue_status 
+                            order by count desc
+                            )
+                            SELECT json_agg(t)
+                            FROM t ;
+                   """
+
+        values=(self.project_id,)
+        self.logger.debug(f'Select : {query_sql} values {values}')
+        try:
+            print('-'*80)
+            cursor=self.jdb.dbConn.cursor()
+            cursor.execute(query_sql,values)
+            json_data=cursor.fetchone()[0]
+            row_count=cursor.rowcount
+            self.logger.debug(f'get_ticket_summary_by_issue_status Success with {row_count} row(s) Ticket ID {json_data}')
+            response_data['dbQryStatus']='Success'
+            response_data['dbQryResponse']=json_data
+            return response_data
+        except  (Exception, psycopg2.Error) as error:
+            if(self.jdb.dbConn):
+                print(f'Error While get_ticket_summary_by_issue_status {error}')
+                raise
+
+    def get_ticket_summary_by_issue_type(self):
+        response_data={}
+        self.logger.debug("Inside get_ticket_summary_by_issue_type")
+        query_sql="""  
+                        WITH t AS(
+                            SELECT issue_type,count(*) count FROM ttickets t 
+                             WHERE project_id =%s
+                            GROUP BY issue_type 
+                            order by count desc
+                            )
+                            SELECT json_agg(t)
+                            FROM t ;
+                   """
+
+        values=(self.project_id,)
+        self.logger.debug(f'Select : {query_sql} values {values}')
+        try:
+            print('-'*80)
+            cursor=self.jdb.dbConn.cursor()
+            cursor.execute(query_sql,values)
+            json_data=cursor.fetchone()[0]
+            row_count=cursor.rowcount
+            self.logger.debug(f'get_ticket_summary_by_issue_type Success with {row_count} row(s) Ticket ID {json_data}')
+            response_data['dbQryStatus']='Success'
+            response_data['dbQryResponse']=json_data
+            return response_data
+        except  (Exception, psycopg2.Error) as error:
+            if(self.jdb.dbConn):
+                print(f'Error While get_ticket_summary_by_issue_type {error}')
                 raise
