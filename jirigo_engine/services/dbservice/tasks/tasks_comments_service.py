@@ -52,7 +52,7 @@ class JirigoTaskComments(object):
         self.logger.debug("Inside get_all_users")
         query_sql="""  
                     WITH t AS (
-                    select comment_id,task_no,comment,get_user_name(created_by) created_by,
+                    select comment_id,task_no,comment_text,get_user_name(created_by) created_by,
 						to_char(created_date, 'DD-Mon-YYYY HH24:MI:SS') created_date
                         from ttask_comments 
                     where is_active='Y'

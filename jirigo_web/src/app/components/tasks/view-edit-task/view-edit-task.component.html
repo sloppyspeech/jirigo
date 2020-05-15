@@ -72,15 +72,17 @@
     </div>
   </div>
 
-  <br />
-  <app-task-details [parentForm]="viewModifyTaskFB"></app-task-details>
+  <div >
+    <p-selectButton [options]="tabs" formControlName="fctlTabOptions" (onChange)="tabSelected($event)"></p-selectButton>
+  </div>
+
+  <app-task-details [parentForm]="viewModifyTaskFB" *ngIf="showTaskDetails"></app-task-details>
 
   <!-- New COmments Component Start-->
-  <br />
-  <app-task-comments [parentForm]="viewModifyTaskFB"></app-task-comments>
+  <app-task-comments [parentForm]="viewModifyTaskFB" *ngIf="showTaskComments"></app-task-comments>
   <!-- New COmments Component End-->
 
-  <app-audit-task [parentForm]="viewModifyTaskFB"></app-audit-task>
+  <app-audit-task [parentForm]="viewModifyTaskFB" *ngIf="showAudit"></app-audit-task>
 
   <div class="panel">
     <!-- <div class="card-header">Audit</div> -->
@@ -99,7 +101,7 @@
           <div class="align-self-center mx-auto">
             <input
               type="submit"
-              [disabled]="!viewModifyTaskFB.valid || !viewModifyTaskFB.dirty"
+              [disabled]="!viewModifyTaskFB.valid || !viewModifyTaskFB.touched"
               value="Update"
               id="update"
               class="btn btn-primary"

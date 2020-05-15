@@ -36,6 +36,7 @@ export class AuditTaskComponent implements OnInit {
             console.log("==================");
           }
           else{
+            this._serNgxSpinner.hide();
             this.allTaskAuditData=[];
           }
         });

@@ -60,6 +60,11 @@ export class TicketCommentsComponent implements OnInit {
           this._serNgxSpinner.hide();
           console.log("==================");
         }
+        else{
+          console.log(res['dbQryResponse']);
+          this._serNgxSpinner.hide();
+          console.log("==================");
+        }
       })
     
   }

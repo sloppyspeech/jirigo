@@ -67,6 +67,10 @@ const routes: Routes = [
     path:'refdata-management',
     loadChildren: () => import('./components/references/references.module').then( m => m.ReferencesModule),
     canActivate:[AuthGuard]
+  },
+  {
+    path:'**',
+    component:LoginComponent
   }
 ];
 

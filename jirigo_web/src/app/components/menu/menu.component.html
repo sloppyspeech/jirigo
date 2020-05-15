@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-md navbar-dark" style="background-color: #48505a;">
+<nav class="navbar navbar-expand-md navbar-toggleable-md navbar-dark" style="background-color: #48505a;border-radius: 5px;">
     <img src="./assets/images/JirigoLogo.png" alt="" height="50" width="60" />
     <span>&nbsp;&nbsp;&nbsp;</span>
     <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
@@ -43,7 +43,7 @@
                     <a [routerLink]="['/sprints/list-sprints']" href="#" class="dropdown-item">List Sprints</a>
                 </div>
             </li>
-            <li class="nav-item dropdown">
+            <!-- <li class="nav-item dropdown">
                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Users</a>
                 <div class="dropdown-menu">
                     <a [routerLink]="['/user-management/create-user']" href="#" class="dropdown-item">Create User</a>
@@ -55,7 +55,32 @@
                 <div class="dropdown-menu">
                     <a [routerLink]="['/refdata-management/show-and-edit']" href="#" class="dropdown-item">List Refernces</a>
                 </div>
-            </li>
+            </li> -->
+            
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" >
+                  Administration
+                </a>
+                <ul class="dropdown-menu" > 
+                  <!-- <li><a class="dropdown-item" href="#">Action</a></li> -->
+                  <!-- <li><a class="dropdown-item" href="#">Another action</a></li> -->
+                  <li class="dropdown-submenu">
+                    <a class="dropdown-item dropdown-toggle" data-toggle="dropdown" href="#">References</a>
+                    <ul class="dropdown-menu">
+                        <a [routerLink]="['/refdata-management/show-and-edit']" href="#" class="dropdown-item">List References</a>
+                    </ul>
+                  </li>
+                  <li class="dropdown-submenu">
+                    <a class="dropdown-item dropdown-toggle" data-toggle="dropdown" href="#">Users</a>
+                    <ul class="dropdown-menu">
+                        <a [routerLink]="['/user-management/create-user']" href="#" class="dropdown-item">Create User</a>
+                        <a [routerLink]="['/user-management/all-users']" href="#" class="dropdown-item">List Users</a>
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+
+
         </ul>
         <ul class="nav navbar-nav ml-auto" *ngIf="loggedIn">
             <li class="nav-item dropdown">

@@ -21,22 +21,19 @@ export class TicketsDashboardService {
 
   constructor(private _httpCli:HttpClient) { }
 
-  getDashboardTicketGenericSummary(){
+  getDashboardTicketGenericSummary(last_n_days:number){
+    let url=this.sApiEndPoint+'summaries/generic/?project_id='+localStorage.getItem('currentProjectId')+'&last_n_days='+last_n_days;
     console.log('@@@@getDashboardTicketSummary');
-    console.log("getTicketDetails End point :"+this.sApiEndPoint+'summaries/generic/'+localStorage.getItem('currentProjectId'));
-    return this._httpCli.get<any>(this.sApiEndPoint+'summaries/generic/'+localStorage.getItem('currentProjectId')).pipe(
-      map((response) => {
-        console.log(response);
-        return response;
-      })
-    );;
+    console.log(url);
+    return this._httpCli.get(url);
       
   }
 
-  getDashboardTicketSummaryByIssueStatus(){
+  getDashboardTicketSummaryByIssueStatus(last_n_days:number){
+    let url=this.sApiEndPoint+'summaries/issue_status/?project_id='+localStorage.getItem('currentProjectId')+'&last_n_days='+last_n_days;
     console.log('@@@@getDashboardTicketSummaryByIssueStatus');
-    console.log("getDashboardTicketSummaryByIssueStatus End point :"+this.sApiEndPoint+'summaries/issue_type/'+localStorage.getItem('currentProjectId'));
-    return this._httpCli.get<any>(this.sApiEndPoint+'summaries/issue_status/'+localStorage.getItem('currentProjectId')).pipe(
+    console.log(url);
+    return this._httpCli.get<any>(url).pipe(
       map((response) => {
         console.log(response);
         return response;
@@ -45,10 +42,35 @@ export class TicketsDashboardService {
       
   
   }
-  getDashboardTicketSummaryByIssueType(){
+  getDashboardTicketSummaryByIssueType(last_n_days:number){
+    let url=this.sApiEndPoint+'summaries/issue_type/?project_id='+localStorage.getItem('currentProjectId')+'&last_n_days='+last_n_days;
     console.log('@@@@getDashboardTicketSummaryByIssueStatus');
-    console.log("getDashboardTicketSummaryByIssueStatus End point :"+this.sApiEndPoint+'summaries/issue_type/'+localStorage.getItem('currentProjectId'));
-    return this._httpCli.get<any>(this.sApiEndPoint+'summaries/issue_type/'+localStorage.getItem('currentProjectId')).pipe(
+    console.log(url);
+    return this._httpCli.get<any>(url).pipe(
+      map((response) => {
+        console.log(response);
+        return response;
+      })
+    );
+  }
+
+  getDashboardTicketsCreatedPerDayForNDays(last_n_days){
+    let url=this.sApiEndPoint+'created-by-range/?project_id='+localStorage.getItem('currentProjectId')+'&last_n_days='+last_n_days;
+    console.log('@@@@getDashboardTicketCountForLastNDays');
+    console.log("getDashboardTicketCountForLastNDays End point :"+url);
+    return this._httpCli.get<any>(url).pipe(
+      map((response) => {
+        console.log(response);
+        return response;
+      })
+    );
+  }
+
+  getDashboardTicketStillOpenInLastNDays(last_n_days){
+    let url=this.sApiEndPoint+'open-last-ndays/?project_id='+localStorage.getItem('currentProjectId')+'&last_n_days='+last_n_days;
+    console.log('@@@@getDashboardTicketStillOpenInLastNDays');
+    console.log("getDashboardTicketStillOpenInLastNDays End point :"+url);
+    return this._httpCli.get<any>(url).pipe(
       map((response) => {
         console.log(response);
         return response;

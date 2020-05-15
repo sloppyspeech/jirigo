@@ -92,6 +92,20 @@ export class ReferencesComponent implements OnInit {
     console.log("setProjectName :" + projectName);
     this.searchFields["project_name"] = projectName;
     this.filterResults();
+    this.populateRefSearchDropDownsForProject();
+  }
+
+  /*
+    Once a project has been selected, get the categories and names
+    for that project.
+  */
+  populateRefSearchDropDownsForProject(){
+    this.refCategoryList=new Set();
+    this.refNameList=new Set();
+    this.filteredRefs.forEach((p) => {
+      this.refCategoryList.add(p["ref_category"]);
+      this.refNameList.add(p["ref_name"]);
+    });
   }
 
   setRefCategory(category) {
@@ -172,7 +186,7 @@ export class ReferencesComponent implements OnInit {
           Set the project Name, to filter the grid results based on project Name
           Since the variable is bound , the grid is refereshed as well.
       */
-      this.setProjectName(localStorage.getItem("currentProjectName"));
+      this.setProjectName(this.defProjectName);
     });
 
   }

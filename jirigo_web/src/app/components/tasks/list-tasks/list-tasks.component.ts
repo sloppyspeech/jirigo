@@ -20,7 +20,8 @@ export class ListTasksComponent implements OnInit {
     {'header':'Priority','field':'priority'},
     {'header':'Environment','field':'environment'},
     {'header':'Reported By','field':'reported_by'},
-    {'header':'Reported Date','field':'reported_date'},
+    {'header':'Estimation (hrs)','field':'estimated_time'},
+    {'header':'Reported Date','field':'reported_date'}
   ];
 
   task_header_cols:string[]=[

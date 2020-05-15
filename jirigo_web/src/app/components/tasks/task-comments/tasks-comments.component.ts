@@ -60,6 +60,10 @@ export class TaskCommentsComponent implements OnInit {
           this._serNgxSpinner.hide();
           console.log("==================");
         }
+        else{
+          console.log(res['dbQryStatus']);
+          this._serNgxSpinner.hide();
+        }
       })
     
   }

@@ -77,15 +77,18 @@
     </div>
   </div>
 
-  <br />
-  <app-issue-details [parentForm]="viewModifyTicketFB"></app-issue-details>
+  <div >
+    <p-selectButton [options]="tabs" formControlName="fctlTabOptions" (onChange)="tabSelected($event)"></p-selectButton>
+  </div>
+
+  <app-issue-details [parentForm]="viewModifyTicketFB" *ngIf="showTicketDetails"></app-issue-details>
 
   <!-- New COmments Component Start-->
-  <br />
-  <app-ticket-comments [parentForm]="viewModifyTicketFB"></app-ticket-comments>
+  <app-ticket-comments [parentForm]="viewModifyTicketFB" *ngIf="showTicketComments"></app-ticket-comments>
+
   <!-- New COmments Component End-->
 
-  <app-ticket-audit [parentForm]="viewModifyTicketFB"></app-ticket-audit>
+  <app-ticket-audit [parentForm]="viewModifyTicketFB" *ngIf="showAudit"></app-ticket-audit>
 
   <div class="panel">
     <!-- <div class="card-header">Audit</div> -->

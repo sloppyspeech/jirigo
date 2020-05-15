@@ -31,8 +31,7 @@ export class ListSprintsComponent implements OnInit {
     'Project Name',
     'Status',
     'Start Date',
-    'End Date',
-    ''
+    'End Date'
   ];
   showEditSprintDialog:boolean=false;
   modifySprintFB:FormGroup;

@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { map } from 'rxjs/operators';
+import { Component, OnInit,ElementRef,ViewChild,Renderer2 } from '@angular/core';
+import { Router} from '@angular/router';
 import { faCogs, faCubes, faUsers, faLightbulb } from '@fortawesome/free-solid-svg-icons';
 import { Chart } from 'chart.js';
 import { TicketsDashboardService } from '../../services/dashboards/tickets-dashboard.service';
@@ -11,6 +13,7 @@ import { compileNgModule } from '@angular/compiler';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
+
   faCogs = faCogs;
   faCubes = faCubes;
   faUsers = faUsers;
@@ -27,48 +30,174 @@ export class DashboardComponent implements OnInit {
   ticket_smry_by_istyp_count: any[] = [];
   ticket_smry_by_istyp_label: any[] = [];
 
-  chart;
-  chart2;
+  ticket_cre_last_n_days_count: any[] = [];
+  ticket_cre_last_n_days_label: any[] = [];
+
+  ticket_stillopen_last_n_days_count: any[] = [];
+  ticket_stillopen_last_n_days_label: any[] = [];
+
+  ticketIssueStatusBarChart;
+  ticketIssueTypeBarChart;
+  ticketCreatedPerDayChart;
+  ticketOpenLastNDaysChart;
+
   weatherDates = [];
+  globalChartIntervalInDays=7;
+  lgCardsData:boolean=false;
 
+  showErrorNoDatasummaryByIssueStatus:boolean=false;
+  showErrorNoDatasummaryByIssueType:boolean=false;
+  showErrorNoDataticketCreatedPerDayInLastNdays:boolean=false;
+  showErrorNoDataticketsStillOpenLastNDays:boolean=false;
 
-  all_data = { "list": [{ "main": { "temp": 279.946, "temp_min": 279.946, "temp_max": 279.946, "pressure": 1016.76, "sea_level": 1024.45, "grnd_level": 1016.76, "humidity": 100 }, "wind": { "speed": 4.59, "deg": 163.001 }, "clouds": { "all": 92 }, "weather": [{ "id": 500, "main": "Rain", "description": "light rain", "icon": "10n" }], "rain": { "3h": 2.69 }, "dt": 1485717216 }, { "main": { "temp": 282.597, "temp_min": 282.597, "temp_max": 282.597, "pressure": 1012.12, "sea_level": 1019.71, "grnd_level": 1012.12, "humidity": 98 }, "wind": { "speed": 4.04, "deg": 226 }, "clouds": { "all": 92 }, "weather": [{ "id": 500, "main": "Rain", "description": "light rain", "icon": "10n" }], "rain": { "3h": 0.405 }, "dt": 1485745061 }, { "main": { "temp": 279.38, "pressure": 1011, "humidity": 93, "temp_min": 278.15, "temp_max": 280.15 }, "wind": { "speed": 2.6, "deg": 30 }, "clouds": { "all": 90 }, "weather": [{ "id": 701, "main": "Mist", "description": "mist", "icon": "50d" }, { "id": 741, "main": "Fog", "description": "fog", "icon": "50d" }], "dt": 1485768552 }] };
   constructor(
-    private _serTicketDashboard: TicketsDashboardService
+    private _serTicketDashboard: TicketsDashboardService,
+    private _renderer:Renderer2
   ) { }
 
   ngOnInit(): void {
+    this.loadDataAndCharts()
 
-    this._serTicketDashboard.getDashboardTicketGenericSummary()
+  }
+
+  loadDataAndCharts(){
+        
+    this.showErrorNoDatasummaryByIssueStatus=false;
+    this.showErrorNoDatasummaryByIssueType=false;
+    this.showErrorNoDataticketCreatedPerDayInLastNdays=false;
+    this.showErrorNoDataticketsStillOpenLastNDays=false;
+    this.initializeVars();
+    this._serTicketDashboard.getDashboardTicketGenericSummary(this.globalChartIntervalInDays)
       .subscribe(res => {
-        console.log(res);
-        this.openIssuesCount = res['dbQryResponse']['issueStatusOpen'];
-        this.closedIssuesCount = res['dbQryResponse']['issueStatusClosed'];
-        this.bugsVsOthersCount = res['dbQryResponse']['issueTypeBug'];
-        this.highSeverityCount = res['dbQryResponse']['SeverityHigh'] + res['dbQryResponse']['SeverityCritical'];
+        if (res['dbQryResponse']){
+          console.log(res);
+          this.openIssuesCount = res['dbQryResponse']['issueStatusOpen'];
+          this.closedIssuesCount = res['dbQryResponse']['issueStatusClosed'];
+          this.bugsVsOthersCount = res['dbQryResponse']['issueTypeBug'];
+          this.highSeverityCount = res['dbQryResponse']['SeverityHigh'] + res['dbQryResponse']['SeverityCritical'];
+          console.log(this.openIssuesCount);
+        }
+        else{
+          this.initializeVars();
+        }
+        this.lgCardsData=true;
       });
 
-    this._serTicketDashboard.getDashboardTicketSummaryByIssueStatus()
+    this._serTicketDashboard.getDashboardTicketSummaryByIssueStatus(this.globalChartIntervalInDays)
       .subscribe(res => {
         console.log("===============================");
         console.log(res['dbQryResponse']);
+          if(res['dbQryResponse']){
+            res['dbQryResponse'].forEach(e => {
+              this.ticket_smry_by_isst_count.push(e['count']);
+              this.ticket_smry_by_isst_label.push(e['issue_status']);
+            });
+            console.log("===============================");
+            console.log("=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*");
+            console.log(this.ticket_smry_by_isst_count);
+            console.log(this.ticket_smry_by_isst_label);
+            console.log("=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*");
+
+            if (this.ticketIssueStatusBarChart){
+              this.ticketIssueStatusBarChart.destroy();
+            }
+            this.ticketIssueStatusBarChart = new Chart('id_summaryByIssueStatus', {
+              type: 'horizontalBar',
+              data: {
+                labels: this.ticket_smry_by_isst_label,
+                datasets: [
+                  {
+                    data: this.ticket_smry_by_isst_count,
+                    fill: true,
+                    backgroundColor: ['#803690', '#ffce56', '#36a2eb', '#cc65fe', '#ff6384', '#949FB1', '#4D5360']
+                  }
+                ]
+              },
+              options: {
+                plugins: {
+                  colorschemes: {
+                    scheme: 'office.Parallax6'
+                  }
+                },
+                maintainAspectRatio: false,
+                responsive: true,
+                legend: {
+                  display: false
+                },
+                scales: {
+                  xAxes: [{
+                    display: true,
+                    gridLines: true,
+                    zeroLineColor:'black',
+                    ticks: {
+                      fontSize: 12,
+                      suggestedMin: 40,
+                      stepSize: 5
+                    },
+                    scaleLabel: {
+                      fontColor: "black",
+                      labelString: "Count",
+                      display: true,
+                      fontSize: 12
+                    }
+                  }],
+                  yAxes: [{
+                    display: true,
+                    gridLines: {
+                    },
+                    ticks: {
+                      fontColor: "black",
+                      fontSize: 12,
+                      padding:8
+                    },
+                    scaleLabel: {
+                      fontColor: "black",
+                      fontSize: 12,
+                      labelString: "Ticket Issue Status",
+                      display: true
+                    }
+                  }]
+                }
+              }
+            });
+          }
+          else{
+            console.log('getDashboardTicketSummaryByIssueStatus is NULL');
+            this.initializeVars();
+            this.showErrorNoDatasummaryByIssueStatus=true;
+          }
+        
+      });
+
+
+
+    this._serTicketDashboard.getDashboardTicketSummaryByIssueType(this.globalChartIntervalInDays)
+    .subscribe(res => {
+      console.log("===============================");
+      console.log(res['dbQryResponse']);
+
+      if(res['dbQryResponse']){
         res['dbQryResponse'].forEach(e => {
-          this.ticket_smry_by_isst_count.push(e['count']);
-          this.ticket_smry_by_isst_label.push(e['issue_status']);
+          this.ticket_smry_by_istyp_count.push(e['count']);
+          this.ticket_smry_by_istyp_label.push(e['issue_type']);
         });
         console.log("===============================");
         console.log("=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*");
-        console.log(this.ticket_smry_by_isst_count);
-        console.log(this.ticket_smry_by_isst_label);
+        console.log(this.ticket_smry_by_istyp_count);
+        console.log(this.ticket_smry_by_istyp_label);
         console.log("=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*");
 
-        this.chart = new Chart('id_noOfOpenIssues', {
+        if (this.ticketIssueTypeBarChart){
+          this.ticketIssueTypeBarChart.destroy();
+        }
+
+        this.ticketIssueTypeBarChart = new Chart('id_summaryByIssueType', {
           type: 'horizontalBar',
           data: {
-            labels: this.ticket_smry_by_isst_label,
+            labels: this.ticket_smry_by_istyp_label,
             datasets: [
               {
-                data: this.ticket_smry_by_isst_count,
+                data: this.ticket_smry_by_istyp_count,
                 fill: true,
                 backgroundColor: ['#803690', '#ffce56', '#36a2eb', '#cc65fe', '#ff6384', '#949FB1', '#4D5360']
               }
@@ -104,8 +233,7 @@ export class DashboardComponent implements OnInit {
               }],
               yAxes: [{
                 display: true,
-                gridLines: {
-                },
+                gridLines: {},
                 ticks: {
                   fontColor: "black",
                   fontSize: 12,
@@ -114,275 +242,261 @@ export class DashboardComponent implements OnInit {
                 scaleLabel: {
                   fontColor: "black",
                   fontSize: 12,
-                  labelString: "Issue Status",
+                  labelString: "Ticket Issue Type",
                   display: true
                 }
               }]
+            },
+            tooltips:{
+              enabled:true
             }
           }
 
         });
-      });
+      }
+    else{
+      this.initializeVars();
+      this.showErrorNoDatasummaryByIssueType=true;
+    }
+    });
 
 
-    let temp_max = this.all_data['list'].map(res => res.main.temp_max);
-    let temp_min = this.all_data['list'].map(res => res.main.temp_min);
-    let alldates = this.all_data['list'].map(res => res.dt)
-    this.weatherDates = [];
-    console.log("----------------");
-    console.log(temp_max);
-    temp_max.push(280.1);
-    temp_max.push(278.1);
-    temp_max.push(283.1);
-    temp_min.push(276.1);
-    temp_min.push(277.1);
-    temp_min.push(280.1);
-    console.log(alldates);
-    alldates.forEach((res) => {
-      let v, j;
-      console.log("================");
-      console.log(res * 1000);
-      let jsdate = new Date(res * 1000)
-      console.log(jsdate.toLocaleTimeString('en', { year: 'numeric', month: 'short', day: 'numeric' }));
-      this.weatherDates.push(jsdate.toLocaleTimeString('en', { year: 'numeric', month: 'short', day: 'numeric' }))
-    })
-    console.log(temp_max);
-    console.log(temp_min);
-    console.log(this.weatherDates);
-
-
-    this._serTicketDashboard.getDashboardTicketSummaryByIssueType()
+    this._serTicketDashboard.getDashboardTicketsCreatedPerDayForNDays(this.globalChartIntervalInDays)
     .subscribe(res => {
-      console.log("===============================");
+      console.log("===============getDashboardTicketsCreatedPerDayForNDays================");
+      console.log(res);
+
+      if(res['dbQryResponse']){
+          res['dbQryResponse'].forEach(e => {
+            this.ticket_cre_last_n_days_count.push(e['count']);
+            this.ticket_cre_last_n_days_label.push(e['created_date']);
+          });
+          console.log("===============================");
+          console.log("=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*");
+          console.log(this.ticket_cre_last_n_days_count);
+          console.log(this.ticket_cre_last_n_days_label);
+          console.log("=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*");
+
+          if (this.ticketCreatedPerDayChart){
+            this.ticketCreatedPerDayChart.destroy();
+          }
+
+          this.ticketCreatedPerDayChart = new Chart('id_ticketCreatedPerDayInLastNdays', {
+            type: 'line',
+            data: {
+              labels: this.ticket_cre_last_n_days_label,
+              datasets: [
+                {
+                  data: this.ticket_cre_last_n_days_count,
+                  fill: false,
+                  borderWidth: 2,
+                  borderColor: '#17D1EC',
+                }
+              ]
+            },
+            options: {
+              plugins: {
+                colorschemes: {
+                  scheme: 'office.Parallax6'
+                }
+              },
+              title:{
+                display:true,
+                text:'# Tickets Created Per Day'
+              },
+              maintainAspectRatio: false,
+              responsive: true,
+              legend: {
+                display: false
+              },
+              scales: {
+                xAxes: [{
+                  display: true,
+                  gridLines: true,
+                  zeroLineColor:'black',
+                  ticks: {
+                    fontSize: 12,
+                    stepSize: 5,
+                    padding:8
+                  },
+                  scaleLabel: {
+                    fontColor: "black",
+                    labelString: "Last "+this.globalChartIntervalInDays+" days",
+                    display: true,
+                    fontSize: 12
+                  },
+                  type:'time',
+                  time: {
+                    parser: 'YYYY-MM-DD',
+                    tooltipFormat: 'll HH:mm',
+                    unit: 'day',
+                    unitStepSize: 1,
+                    displayFormats: {
+                      'day': 'DD/MMM'
+                    }
+                  }
+                }],
+                yAxes: [{
+                  display: true,
+                  gridLines: {},
+                  ticks: {
+                    fontColor: "black",
+                    fontSize: 12,
+                    padding:8,
+                    max:Math.max(...this.ticket_cre_last_n_days_count) +1
+                  },
+                  scaleLabel: {
+                    fontColor: "black",
+                    fontSize: 12,
+                    labelString: "Ticket Creation Per Day",
+                    display: true
+                  }
+                }]
+              }
+            }
+
+          });
+      }
+      else{
+        this.initializeVars();
+        this.showErrorNoDataticketCreatedPerDayInLastNdays=true;
+      }
+    });
+
+
+    this._serTicketDashboard.getDashboardTicketStillOpenInLastNDays(this.globalChartIntervalInDays)
+    .subscribe(res => {
+      console.log("===============getDashboardTicketStillOpenInLastNDays================");
       console.log(res['dbQryResponse']);
-      res['dbQryResponse'].forEach(e => {
-        this.ticket_smry_by_istyp_count.push(e['count']);
-        this.ticket_smry_by_istyp_label.push(e['issue_type']);
-      });
-      console.log("===============================");
-      console.log("=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*");
-      console.log(this.ticket_smry_by_istyp_count);
-      console.log(this.ticket_smry_by_istyp_label);
-      console.log("=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*");
+      
+      if(res['dbQryResponse']){
+          res['dbQryResponse'].forEach(e => {
+            this.ticket_stillopen_last_n_days_count.push(e['count']);
+            this.ticket_stillopen_last_n_days_label.push(e['created_date']);
+          });
+          console.log("=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*");
+          console.log(this.ticket_stillopen_last_n_days_count);
+          console.log(this.ticket_stillopen_last_n_days_label);
+          console.log(Math.max(...this.ticket_stillopen_last_n_days_count));
+          console.log("=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*");
 
-      this.chart2 = new Chart('id_byIssuetype', {
-        type: 'horizontalBar',
-        data: {
-          labels: this.ticket_smry_by_istyp_label,
-          datasets: [
-            {
-              data: this.ticket_smry_by_istyp_count,
-              fill: true,
-              backgroundColor: ['#803690', '#ffce56', '#36a2eb', '#cc65fe', '#ff6384', '#949FB1', '#4D5360']
-            }
-          ]
-        },
-        options: {
-          plugins: {
-            colorschemes: {
-              scheme: 'office.Parallax6'
-            }
-          },
-          maintainAspectRatio: false,
-          responsive: true,
-          legend: {
-            display: false
-          },
-          scales: {
-            xAxes: [{
-              display: true,
-              gridLines: true,
-              zeroLineColor:'black',
-              ticks: {
-                fontSize: 12,
-                suggestedMin: 40,
-                stepSize: 5
-              },
-              scaleLabel: {
-                fontColor: "black",
-                labelString: "Count",
-                display: true,
-                fontSize: 12
-              }
-            }],
-            yAxes: [{
-              display: true,
-              gridLines: {},
-              ticks: {
-                fontColor: "black",
-                fontSize: 12,
-                padding:8
-              },
-              scaleLabel: {
-                fontColor: "black",
-                fontSize: 12,
-                labelString: "Issue Status",
-                display: true
-              }
-            }]
+          if (this.ticketOpenLastNDaysChart){
+            this.ticketOpenLastNDaysChart.destroy();
           }
-        }
 
-      });
-    });
-
-
-    // this.chart2 = new Chart('id_noOfClosedIssues', {
-    //   type: 'line',
-    //   data: {
-    //     // labels: this.weatherDates,
-    //     labels: ["", "A", "B", "C", "D", "E", "F"],
-    //     datasets: [
-    //       {
-    //         data: temp_max,
-    //         fill: false
-    //       },
-    //       {
-    //         data: temp_min,
-    //         fill: false
-    //       },
-    //     ]
-    //   },
-    //   options: {
-    //     plugins: {
-    //       colorschemes: {
-    //         scheme: 'brewer.Accent7'
-    //       }
-    //     },
-    //     legend: {
-    //       display: false
-    //     },
-    //     scales: {
-    //       xAxes: [{
-    //         display: true,
-    //         gridLines: true,
-    //         ticks: {
-    //           fontSize: 12
-
-    //         }
-    //       }],
-    //       yAxes: [{
-    //         display: true,
-    //         gridLines: true,
-    //         ticks: {
-    //           fontColor: "black",
-    //           fontSize: 12,
-    //           suggestedMin: 278,
-    //           stepSize: 110
-    //         }
-    //       }]
-    //     }
-    //   }
-    // });
-
-    this.chart = new Chart('id_noOfBugsVsOthersIssues', {
-      type: 'bar',
-      data: {
-        // labels: this.weatherDates,
-        labels: ["A", "B", "C "],
-        datasets: [
-          {
-            data: temp_max,
-            borderColor: "#3cba9f",
-            fill: true,
-            backgroundColor: ['#803690', '#ffce56', '#36a2eb', '#cc65fe', '#ff6384', '#949FB1', '#4D5360']
-          },
-          {
-            data: temp_min,
-            borderColor: "#3cba9f",
-            fill: true,
-            backgroundColor: ['#ff6384', '#949FB1', '#4D5360', '#803690', '#ffce56', '#36a2eb', '#cc65fe']
-          },
-        ]
-      },
-      options: {
-        legend: {
-          display: false
-        },
-        scales: {
-          xAxes: [{
-            display: true,
-            gridLines: true,
-            ticks: {
-              fontSize: 12
-
-            }
-          }],
-          yAxes: [{
-            display: true,
-            gridLines: true,
-            ticks: {
-              fontColor: "black",
-              fontSize: 12,
-              suggestedMin: 278,
-              stepSize: 1
-            }
-          }]
-        }
-      }
-    });
-
-    this.chart = new Chart('id_noOfHighSeverityIssues', {
-      type: "doughnut",
-      data: {
-        labels: ["Red", "Green"],
-        datasets: [{
-          label: "Gauge",
-          data: [50, 150],
-          backgroundColor: [
-            "rgb(255, 99, 102)",
-            "rgb(54, 162, 135)",
-            "rgb(255, 205, 86)"
-          ]
-        }]
-      },
-      options: {
-        circumference: Math.PI,
-        rotation: Math.PI,
-        cutoutPercentage: 60, // precent
-        plugins: {
-          datalabels: {
-            backgroundColor: 'rgba(0, 0, 0, 0.7)',
-            borderColor: '#ffffff',
-            color: function (context) {
-              return context.dataset.backgroundColor;
+          this.ticketOpenLastNDaysChart = new Chart('id_ticketsStillOpenLastNDays', {
+            type: 'line',
+            data: {
+              labels: this.ticket_stillopen_last_n_days_label,
+              datasets: [
+                {
+                  data: this.ticket_stillopen_last_n_days_count,
+                  fill: false,
+                  borderWidth: 1,
+                  borderColor: 'red'
+                }
+              ]
             },
-            font: function (context) {
-              var w = context.chart.width;
-              return {
-                size: w < 512 ? 500 : 600
+            options: {
+              plugins: {
+                colorschemes: {
+                  scheme: 'office.Parallax6'
+                }
+              },
+              title:{
+                display:true,
+                text:'# Tickets Still Open '
               }
-            },
-            align: 'start',
-            anchor: 'start',
-            offset: 10,
-            borderRadius: 4,
-            borderWidth: 1,
-            formatter: function (value, context) {
-              var i = context.dataIndex;
-              var len = context.dataset.data.length - 1;
-              if (i == len) {
-                return null;
+              ,
+              maintainAspectRatio: false,
+              responsive: true,
+              legend: {
+                display: false
+              },
+              scales: {
+                xAxes: [{
+                  display: true,
+                  gridLines: true,
+                  zeroLineColor:'black',
+                  ticks: {
+                    fontSize: 12,
+                    stepSize: 5,
+                    padding:8
+                  },
+                  scaleLabel: {
+                    fontColor: "black",
+                    labelString: "Last "+this.globalChartIntervalInDays+" days",
+                    display: true,
+                    fontSize: 12
+                  },
+                  type:'time',
+                  time: {
+                    parser: 'YYYY-MM-DD',
+                    tooltipFormat: 'll HH:mm',
+                    unit: 'day',
+                    unitStepSize: 1,
+                    displayFormats: {
+                      'day': 'DD/MMM'
+                    }
+                  }
+                }],
+                yAxes: [{
+                  display: true,
+                  gridLines: {},
+                  ticks: {
+                    fontColor: "black",
+                    fontSize: 12,
+                    padding:5,
+                    max:Math.max(...this.ticket_stillopen_last_n_days_count) +2
+                  },
+                  scaleLabel: {
+                    fontColor: "black",
+                    fontSize: 12,
+                    labelString: "Count Of Open Tickets",
+                    display: true
+                  }
+                }]
               }
-              return value + ' mph';
             }
-          }
-        },
-        legend: {
-          display: false
-        },
-        tooltips: {
-          enabled: false
-        }
-      }
-    });
 
+          });
+          
+
+        }
+        else{
+          this.initializeVars();
+          this.showErrorNoDataticketsStillOpenLastNDays=true;
+        }
+      
+    });
+    
+  
   }
 
-  ngAfterViewInit() {
-
-
+  setLastNDaysForDashBoard(lastNDays){
+    console.log('setLastNDaysForDashBoard :'+lastNDays);
+    this.globalChartIntervalInDays=lastNDays;
+    this.loadDataAndCharts();
   }
 
+  initializeVars(){
+    this.openIssuesCount= 0;
+    this.closedIssuesCount= 0;
+    this.bugsVsOthersCount = 0;
+    this.highSeverityCount = 0;
+  
+    this.ticket_smry_by_isst_count = [];
+    this.ticket_smry_by_isst_label  = [];
+  
+    this.ticket_smry_by_istyp_count = [];
+    this.ticket_smry_by_istyp_label = [];
+  
+    this.ticket_cre_last_n_days_count  = [];
+    this.ticket_cre_last_n_days_label = [];
+  
+    this.ticket_stillopen_last_n_days_count = [];
+    this.ticket_stillopen_last_n_days_label = [];
+
+  }
 
 }

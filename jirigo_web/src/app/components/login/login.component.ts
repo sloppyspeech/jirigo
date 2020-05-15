@@ -22,6 +22,8 @@ export class LoginComponent implements OnInit {
             ) { }
 
   ngOnInit(): void {
+    localStorage.clear();
+    this._router.navigate(['/login']);
     this.loginFormInvalid=false;
     this.errorsList=[];
     this.loginFB=this._formBuilder.group({

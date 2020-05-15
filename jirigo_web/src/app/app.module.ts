@@ -38,7 +38,7 @@ import { LogoutComponent } from './components/logout/logout.component';
 import { MenuComponent } from './components/menu/menu.component';
 import { DebugComponent } from './components/debug/debug.component';
 
-
+import { UtilsService  } from './services/shared/utils.service';
 @NgModule({
   declarations: [
     AppComponent,
@@ -79,7 +79,7 @@ import { DebugComponent } from './components/debug/debug.component';
     RadioButtonModule,
     FontAwesomeModule
   ],
-  providers: [],
+  providers: [UtilsService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

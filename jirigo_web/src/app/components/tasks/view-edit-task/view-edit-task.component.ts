@@ -1,3 +1,4 @@
+import { UtilsService } from './../../../services/shared/utils.service';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { StaticDataService } from '../../../services/static-data.service';
@@ -31,6 +32,14 @@ export class ViewEditTaskComponent implements OnInit {
   displayPageDirtyDialog:boolean=false;
   leaveViewEditPageUnsaved:boolean=false;
 
+  showTaskDetails:boolean=true;
+  showTaskComments:boolean=false;
+  showAudit:boolean=false;
+  tabs:any[]=[
+    {label:'Task Details',value:'Task Details'},
+    {label:'Comments',value:'Comments'},
+    {label:'Audit Log',value:'Audit Log'}
+  ];
 
   editorStyle = {
     'height': '200px',
@@ -64,7 +73,8 @@ export class ViewEditTaskComponent implements OnInit {
     private _serTaskDetails: TaskDetailsService,
     private _serNgxSpinner:NgxSpinnerService,
     private _router:Router,
-    private _toastService: MessageService) {
+    private _toastService: MessageService,
+    private _serLogMsg:UtilsService) {
 
       this.viewModifyTaskFB = this._formBuilder.group({
         fctlTaskId: new FormControl({ value: '', disabled: true }),
@@ -87,8 +97,8 @@ export class ViewEditTaskComponent implements OnInit {
         fctlReportedDate: new FormControl({ value: '', disabled: true }, Validators.required),
         fctlComment: new FormControl({ value: '', disabled: true }),
         fctlProjectName:new FormControl({ value: localStorage.getItem('currentProjectName'), disabled: true }),
-        fctlAssigneeName:new FormControl({ value: localStorage.getItem('currentProjectName'), disabled: true })
-
+        fctlAssigneeName:new FormControl({ value: localStorage.getItem('currentProjectName'), disabled: true }),
+        fctlTabOptions: new FormControl({ value: 'Task Details'})
       });
 
   }
@@ -144,6 +154,7 @@ export class ViewEditTaskComponent implements OnInit {
             this._serNgxSpinner.hide();
             this.viewModifyTaskFCList=this.viewModifyTaskFB.controls;
             this.setInitialDataFormValues();
+            this.viewModifyTaskFB.get('fctlTabOptions').setValue('Task Details');
           });
       }
       );
@@ -216,12 +227,21 @@ export class ViewEditTaskComponent implements OnInit {
             this._serNgxSpinner.show();
             this.viewModifyTaskFB.reset();
             // alert("Task Updated Successfully.");
-            this.reloadComponent();
+            // this.reloadComponent();
             this._serNgxSpinner.hide();
-
+            this._toastService.add({severity:'success', 
+            summary:res['dbQryResponse']['taskNo'],
+            detail:'Task Modification Successful'
+            });
+           setTimeout(() => {
+             this.reloadComponent();
+           }, 3000);
           }
           else{
-            alert('Task Updation Unsuccessful');
+            this._toastService.add({severity:'error', 
+            summary:res['dbQryResponse']['taskNo'],
+            detail:'Task Modification UnSuccessful,contact Administrator'
+            });
           }
         });
 
@@ -297,7 +317,7 @@ cloneTask(){
         });
        setTimeout(() => {
          this.reloadComponent();
-       }, 4000);
+       }, 2000);
     }
     else{
       this._toastService.add({severity:'error', 
@@ -306,6 +326,27 @@ cloneTask(){
       });
     }
   });
+}
+
+tabSelected(e){
+  this.showTaskDetails=false;
+  this.showTaskComments=false;
+  this.showAudit=false;
+  // alert(JSON.stringify(e.value));
+  if (e.value =='Task Details'){
+    this.showTaskDetails=true;
+  }
+  else if(e.value =='Comments'){
+    this.showTaskComments=true;
+  }
+  else if(e.value =='Audit Log'){
+    this.showAudit=true;
+  }
+  console.log(this.viewModifyTaskFB.getRawValue());
+  console.log("viewModifyTaskFB.dirty:"+this.viewModifyTaskFB.dirty);
+  console.log("viewModifyTaskFB.touched:"+this.viewModifyTaskFB.touched);
+  console.log("viewModifyTaskFB.errors:"+this.viewModifyTaskFB.errors);
+  console.log("viewModifyTaskFB.viewModifyTaskFB.valid:"+this.viewModifyTaskFB.valid);
 }
 
 }

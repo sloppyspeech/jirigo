@@ -31,6 +31,14 @@ export class ViewEditTicketsComponent implements OnInit {
   displayPageDirtyDialog:boolean=false;
   leaveViewEditPageUnsaved:boolean=false;
 
+  showTicketDetails:boolean=true;
+  showTicketComments:boolean=false;
+  showAudit:boolean=false;
+  tabs:any[]=[
+    {label:'Ticket Details',value:'Ticket Details'},
+    {label:'Comments',value:'Comments'},
+    {label:'Audit Log',value:'Audit Log'}
+  ];
 
   editorStyle = {
     height: '200px'
@@ -92,8 +100,8 @@ export class ViewEditTicketsComponent implements OnInit {
         fctlReportedDate: new FormControl({ value: '', disabled: true }, Validators.required),
         fctlComment: new FormControl({ value: '', disabled: true }),
         fctlProjectName:new FormControl({ value: localStorage.getItem('currentProjectName'), disabled: true }),
-        fctlAssigneeName:new FormControl({ value: localStorage.getItem('currentProjectName'), disabled: true })
-
+        fctlAssigneeName:new FormControl({ value: localStorage.getItem('currentProjectName'), disabled: true }),
+        fctlTabOptions: new FormControl({ value: 'Ticket Details'})
       });
 
   }
@@ -149,6 +157,7 @@ export class ViewEditTicketsComponent implements OnInit {
             this._serNgxSpinner.hide();
             this.viewModifyTicketFCList=this.viewModifyTicketFB.controls;
             this.setInitialDataFormValues();
+            this.viewModifyTicketFB.get('fctlTabOptions').setValue('Ticket Details');
           });
       }
       );
@@ -307,6 +316,28 @@ cloneTicket(){
       });
     }
   });
+}
+
+
+tabSelected(e){
+  this.showTicketDetails=false;
+  this.showTicketComments=false;
+  this.showAudit=false;
+  // alert(JSON.stringify(e.value));
+  if (e.value =='Ticket Details'){
+    this.showTicketDetails=true;
+  }
+  else if(e.value =='Comments'){
+    this.showTicketComments=true;
+  }
+  else if(e.value =='Audit Log'){
+    this.showAudit=true;
+  }
+  console.log(this.viewModifyTicketFB.getRawValue());
+  console.log("viewModifyTaskFB.dirty:"+this.viewModifyTicketFB.dirty);
+  console.log("viewModifyTaskFB.touched:"+this.viewModifyTicketFB.touched);
+  console.log("viewModifyTaskFB.errors:"+this.viewModifyTicketFB.errors);
+  console.log("viewModifyTaskFB.viewModifyTaskFB.valid:"+this.viewModifyTicketFB.valid);
 }
 
 }
