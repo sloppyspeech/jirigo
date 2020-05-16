@@ -45,6 +45,7 @@ export class DashboardComponent implements OnInit {
   globalChartIntervalInDays=7;
   lgCardsData:boolean=false;
 
+  showSummaryBlocks:boolean=false;
   showErrorNoDatasummaryByIssueStatus:boolean=false;
   showErrorNoDatasummaryByIssueType:boolean=false;
   showErrorNoDataticketCreatedPerDayInLastNdays:boolean=false;
@@ -71,16 +72,18 @@ export class DashboardComponent implements OnInit {
       .subscribe(res => {
         if (res['dbQryResponse']){
           console.log(res);
-          this.openIssuesCount = res['dbQryResponse']['issueStatusOpen'];
-          this.closedIssuesCount = res['dbQryResponse']['issueStatusClosed'];
-          this.bugsVsOthersCount = res['dbQryResponse']['issueTypeBug'];
-          this.highSeverityCount = res['dbQryResponse']['SeverityHigh'] + res['dbQryResponse']['SeverityCritical'];
+          this.openIssuesCount = res['dbQryResponse']['issueStatusOpen']?res['dbQryResponse']['issueStatusOpen']:0;
+          this.closedIssuesCount = res['dbQryResponse']['issueStatusClosed']?res['dbQryResponse']['issueStatusClosed']:0;
+          this.bugsVsOthersCount = res['dbQryResponse']['issueTypeBug']?res['dbQryResponse']['issueTypeBug']:0;
+          this.highSeverityCount = res['dbQryResponse']['SeverityHigh']?res['dbQryResponse']['SeverityHigh']:0 + 
+                                   res['dbQryResponse']['SeverityCritical']?res['dbQryResponse']['SeverityCritical']:0;
           console.log(this.openIssuesCount);
+          this.lgCardsData=true;
         }
         else{
           this.initializeVars();
+          this.lgCardsData=false;
         }
-        this.lgCardsData=true;
       });
 
     this._serTicketDashboard.getDashboardTicketSummaryByIssueStatus(this.globalChartIntervalInDays)
@@ -480,6 +483,7 @@ export class DashboardComponent implements OnInit {
   }
 
   initializeVars(){
+    this.lgCardsData=false;
     this.openIssuesCount= 0;
     this.closedIssuesCount= 0;
     this.bugsVsOthersCount = 0;
