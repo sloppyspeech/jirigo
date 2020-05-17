@@ -3,7 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { CreateTaskComponent  }  from './create-task/create-task.component';
 import { ListTasksComponent  }  from './list-tasks/list-tasks.component';
 import { ViewEditTaskComponent  }  from './view-edit-task/view-edit-task.component';
-
+import {  AuthGuardService as AuthGuard } from '../../services/authentication/auth-guard.service';
 
 const routes: Routes = [
   {
@@ -16,8 +16,13 @@ const routes: Routes = [
    },
    {
     path:'view-edit-task/:task_no',
-    component:ViewEditTaskComponent 
+    component:ViewEditTaskComponent ,
+    canActivate:[AuthGuard]
    },
+   {
+     path:'**',
+     component:ListTasksComponent
+   }
 ];
 
 @NgModule({

@@ -1,12 +1,7 @@
-
 <form [formGroup]="parentForm" #ticketCommentsComponent>
-  <ngx-spinner
-  [fullScreen]="true"
-  type="ball-newton-cradle"
-  size="medium"
-></ngx-spinner>
+  <ngx-spinner [fullScreen]="true" type="ball-newton-cradle" size="medium"></ngx-spinner>
   <div class="card">
-    <div
+    <!-- <div
       class="card-header container-fluid"
       data-toggle="collapse"
       data-target="#idComments"
@@ -17,61 +12,39 @@
         data-toggle="collapse"
         data-target="#idComments"
       ></button>
-    </div>
-    <div id="idComments" class="collapse">
-      <div class="card-body">
-        <div class="form-group">
-          <div class="row">
-            <div class="col">
-              <quill-editor
-                formControlName="fctlComment"
-                [styles]="editorStyle"
-                [modules]="config"
-                [minLength]="5"
-              ></quill-editor>
-              <br />
-              <button
-                pButton
-                type="button"
-                label="Save Comment"
-                class="ui-button-success float-right"
-                (click)="saveComment()"
-              ></button>
-            </div>
+    </div> -->
+    <!-- <div id="idComments" class="collapse"> -->
+    <div class="card-body">
+      <div class="form-group">
+        <div class="row">
+          <div class="col">
+            <quill-editor formControlName="fctlComment" [styles]="editorStyle" [modules]="config" [minLength]="5">
+            </quill-editor>
+            <br />
+            <button pButton type="button" label="Save Comment" class="ui-button-success float-right"
+              (click)="saveComment()"></button>
           </div>
         </div>
       </div>
     </div>
+    <!-- </div> -->
   </div>
 </form>
 <br />
 
-<div class="card" *ngIf="allComments">
-  <div
-    class="card-header container-fluid"
-    data-toggle="collapse"
-    data-target="#idListCommentsForTicket"
-  >
-    Comment History
-    <button
-      class="oi oi-chevron-bottom float-right"
-      data-toggle="collapse"
-      data-target="#idListCommentsForTicket"
-    ></button>
-  </div>
-  <div
-    id="idListCommentsForTicket"
-    class="card container-fluid collapse"
-    *ngFor="let comment of allComments"
-  >
-    <div class="row">
-      <div class="card-body container-fluid " style="height: 4em;">
-        <p><u><b>{{comment.created_by}}</b> commented on :  {{comment.created_date}}</u></p>
+<h5>
+  Comment History
+</h5>
+<hr>
+<div *ngIf="allComments" style="background-color:#FFFFFF;">
+  <div *ngFor="let comment of allComments">
+      <div style="height:auto; background-color:#FFFFFF;">
+        <p style="padding:0 0 0 15px; margin: 0 0 0 0;">{{comment.created_by}} commented on :
+          {{comment.created_date | date : 'dd MMM yyyy HH:MM'}}</p>
+        <quill-editor [(ngModel)]="comment.comment" [readOnly]="true" [modules]="{toolbar:false}"
+          [styles]="{'height':'auto','border':'0px','margin':'0px 0px 0px 0px'}"></quill-editor>
+        <!-- <div [innerHTML]="comment.comment"></div> -->
       </div>
-      <div class="ql-container ql-snow" style="border-width: 0; font-size: large;">
-        <div class="ql-editor" [innerHTML]="comment.comment"></div>
-      </div>
-    </div>
-    <br />
+      <hr style="margin: 0 20px 10px 15px;">
   </div>
 </div>

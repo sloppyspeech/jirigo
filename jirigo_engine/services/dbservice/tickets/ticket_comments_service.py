@@ -53,7 +53,7 @@ class JirigoTicketComments(object):
         query_sql="""  
                     WITH t AS (
                     select comment_id,ticket_no,comment,get_user_name(created_by) created_by,
-						to_char(created_date, 'DD-Mon-YYYY HH24:MI:SS') created_date
+						created_date
                         from tticket_comments 
                     where is_active='Y'
                       and ticket_no=%s

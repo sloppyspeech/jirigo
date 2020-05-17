@@ -10,7 +10,7 @@ from pprint import pprint
 class JirigoTaskComments(object):
 
     def __init__(self,data):
-        print("Initializing JirigoUsers")
+        print("Initializing JirigoTaskComments")
         pprint(data)
         self.task_no=data.get('task_no','')
         self.comment=data.get('comment','')
@@ -21,8 +21,8 @@ class JirigoTaskComments(object):
 
     def create_comment(self):
         response_data={}
-        print("Inside Create User")
-        insert_sql="""  INSERT INTO TTASK_COMMENTS(task_no,comment,created_by,created_date) 
+        print("Inside Create Comment")
+        insert_sql="""  INSERT INTO TTASK_COMMENTS(task_no,comment_text,created_by,created_date) 
                         VALUES (%s,%s,%s,%s) returning comment_id;
                     """
         values=(self.task_no,self.comment,self.created_by,datetime.datetime.today(),)

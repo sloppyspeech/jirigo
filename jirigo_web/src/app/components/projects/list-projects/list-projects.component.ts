@@ -47,7 +47,8 @@ export class ListProjectsComponent implements OnInit {
       //   // });
       // }, 1000);
 
-    });
+    }
+    );
     
   }
 

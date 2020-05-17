@@ -17,6 +17,10 @@ const routes: Routes = [
   {
     path:'list-projects',
     component:ListProjectsComponent
+  },
+  {
+    path:'view-edit-projects/:proj_abbr',
+    component:ListProjectsComponent
   }
 ];
 

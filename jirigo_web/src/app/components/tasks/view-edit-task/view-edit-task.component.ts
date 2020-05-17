@@ -106,6 +106,7 @@ export class ViewEditTaskComponent implements OnInit {
 
   ngOnInit(): void {
     console.log("NgOnInit");
+    console.log(this._activatedRoute.snapshot.routeConfig['path']);
     this.isLoaded = false;
     this.task_no = this._activatedRoute.snapshot.paramMap.get('task_no');
     console.log('Routed Task No :'+this.task_no);

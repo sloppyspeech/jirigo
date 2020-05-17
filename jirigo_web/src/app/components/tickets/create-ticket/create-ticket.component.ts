@@ -71,11 +71,11 @@ export class CreateTicketComponent implements OnInit {
               this._staticRefData.getRefTicketMaster(localStorage.getItem('currentProjectId'))
                 .then(res=>{
                             console.log(res);
-                            this.ticketEnvRef=res[0].Environments;
-                            this.ticketIssueStatusesRef=res[1].IssueStatuses;
-                            this.ticketIssueTypesRef=res[2].IssueTypes;
-                            this.ticketPrioritiesRef=res[3].Priorities;
-                            this.ticketSeveritiesRef=res[4].Severities;
+                            this.ticketEnvRef=res.Environments;
+                            this.ticketIssueStatusesRef=res.IssueStatuses;
+                            this.ticketIssueTypesRef=res.IssueTypes;
+                            this.ticketPrioritiesRef=res.Priorities;
+                            this.ticketSeveritiesRef=res.Severities;
                             console.log("here:"+JSON.stringify(this.ticketEnvRef));
                             console.log("ticketIssueStatusesRef:"+JSON.stringify(this.ticketIssueStatusesRef));
                             console.log("ticketPrioritiesRef:"+JSON.stringify(this.ticketPrioritiesRef));

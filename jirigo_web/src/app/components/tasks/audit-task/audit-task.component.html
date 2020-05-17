@@ -1,5 +1,5 @@
 <form [formGroup]="parentForm" *ngIf="allTaskAuditData" #taskAuditComponent>
-    <div class="card">
+    <!-- <div class="card">
         <div
           class="card-header container-fluid"
           data-toggle="collapse"
@@ -12,11 +12,10 @@
             data-target="#idListAuditForTask"
           ></button>
         </div>
-      </div>
+      </div> -->
     
       <div
         id="idListAuditForTask"
-        class="collapse"
         *ngFor="let comment of allTaskAuditData"
       >
           <div class=" jirigoCard container-fluid" > 
@@ -31,9 +30,10 @@
                 <i><b>{{comment.display_column_name}}</b></i> 
                 &nbsp; from &nbsp; [<b style="color:red;text-decoration: line-through;">{{comment.old_value}}</b>]
                 to  &nbsp;[<b style="color:green;">{{comment.new_value}}</b>]
-                on  &nbsp;{{ comment.created_date }}
+                on  &nbsp;{{ comment.created_date | date : 'dd MMM yyyy HH:MI'}}
               </div>
           </div>
+          <hr class="jHr">
         </div>
 
 

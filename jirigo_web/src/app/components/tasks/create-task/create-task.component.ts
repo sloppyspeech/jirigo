@@ -67,11 +67,11 @@ export class CreateTaskComponent implements OnInit {
     this._staticRefData.getRefTaskMaster(localStorage.getItem('currentProjectId'))
       .then(res => {
         console.log(res);
-        this.taskEnvRef = res[0].Environments;
-        this.taskIssueStatusesRef = res[1].IssueStatuses;
-        this.taskIssueTypesRef = res[2].IssueTypes;
-        this.taskPrioritiesRef = res[3].Priorities;
-        this.taskSeveritiesRef = res[4].Severities;
+        this.taskEnvRef = res.Environments;
+        this.taskIssueStatusesRef = res.IssueStatuses;
+        this.taskIssueTypesRef = res.IssueTypes;
+        this.taskPrioritiesRef = res.Priorities;
+        this.taskSeveritiesRef = res.Severities;
         console.log("here:" + JSON.stringify(this.taskEnvRef));
         console.log("taskIssueStatusesRef:" + JSON.stringify(this.taskIssueStatusesRef));
         console.log("taskPrioritiesRef:" + JSON.stringify(this.taskPrioritiesRef));

@@ -26,7 +26,7 @@
     <ng-template pTemplate="body" let-project let-i="rowIndex">
         <tr>
             <td>{{i+1}}</td>
-            <td><a [routerLink]="['/view-edit-projects', project.project_abbr]">{{project.project_name}}</a></td>
+            <td><a [routerLink]="['/projects/view-edit-projects', project.project_abbr]">{{project.project_name}}</a></td>
             <td>{{project.project_abbr}}</td>
             <td>{{project.project_type}}</td>
         </tr>

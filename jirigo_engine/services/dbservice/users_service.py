@@ -27,6 +27,8 @@ class JirigoUsers(object):
         self.modified_date = None
         self.is_active = data.get('is_active','')
         self.assigned_projects=data.get('assigned_projects',[])
+        self.role_id=data.get('role_id','')
+        self.current_route=data.get('current_route','')
         self.jdb=JirigoDBConn()
         self.logger=Logger()
 
@@ -356,6 +358,44 @@ class JirigoUsers(object):
         except  (Exception, psycopg2.Error) as error:
             print(f'Error While Select get_user_salt {error}')
             raise
+
+    def authenticate_route_for_user(self):
+        response_data={}
+        self.logger.debug("Inside authenticate_route_for_user")
+
+        query_sql="""  
+                 WITH t AS (
+                        SELECT * 
+                          FROM v_user_projects_role_menu vuprm 
+                         WHERE vuprm.project_id =%s
+                           AND user_id=%s
+                           AND PATH LIKE  '%s'
+                    )
+                    SELECT json_agg(t) from t;
+                   """
+
+        values=(self.project_id,self.user_id,self.current_route,)
+        self.logger.debug(f'Select : {query_sql} Values {values}')
+        try:
+            print('-'*80)
+            cursor=self.jdb.dbConn.cursor()
+            cursor.execute(query_sql,values)
+            json_data=cursor.fetchone()[0]
+            row_count=cursor.rowcount
+            self.logger.debug(f'Select authenticate_route_for_user Success with {row_count} row(s) data {json_data}')
+            if (json_data == None):
+                response_data['dbQryStatus']='Failure'
+                response_data['dbQryResponse']='Access Denied To Current Route'
+            else:
+                self.logger.debug(f'json_data[0] {json_data[0]}')
+                response_data['dbQryStatus']='Success'
+                response_data['dbQryResponse']=json_data
+
+            return response_data
+        except  (Exception, psycopg2.Error) as error:
+            if(self.jdb.dbConn):
+                print(f'Error While Select authenticate_route_for_user {error}')
+                raise
 
     @staticmethod
     def get_password_digest(p_password,salt,iterations=1000000,dklen=64):

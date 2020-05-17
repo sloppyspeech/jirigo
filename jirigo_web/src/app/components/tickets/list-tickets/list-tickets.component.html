@@ -4,7 +4,7 @@
   <h4 style="text-align:center;"><span class="oi oi-fire" style="color:orange;font-size: 100px;"></span> No Tickets For
     This Project/Error Occurred retrieving Tickets</h4>
 </div>
-<p-table #dt *ngIf="showTable" [value]="allTickets" [columns]="ticketDetailsCols" [rowHover]="true" [responsive]="true"
+<p-table #dt *ngIf="showTable" styleClass="j-class j-class-caption" [value]="allTickets" [columns]="ticketDetailsCols" [rowHover]="true" [responsive]="true"
   [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[2, 5, 10, 25, 50]" [paginator]="true"
   currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [filterDelay]="1"
   [globalFilterFields]="[
@@ -19,8 +19,8 @@
     'reported_date'
   ]">
 
-  <ng-template pTemplate="caption">
-    <div style="text-align: right">                
+  <ng-template pTemplate="caption" >
+    <div style="text-align: right" >                
         <button class="float-left" type="button" pButton icon="pi pi-file-o" iconPos="left" label="CSV" (click)="dt.exportCSV()"
         style="margin-right: 0.5em;"></button>
         <i class="pi pi-search" style="margin:4px 4px 0 0"></i>
@@ -29,7 +29,7 @@
     </div>
   </ng-template>
 
-  <ng-template pTemplate="header" let-columns>
+  <ng-template pTemplate="header" let-columns >
     <tr>
       <th style="width: 2.5em;">#</th>
       <th *ngFor="let col of columns" [pSortableColumn]="col.field">
@@ -38,7 +38,8 @@
       </th>
     </tr>
   </ng-template>
-  <ng-template pTemplate="body" let-ticket let-columns="ticketDetailsCols" let-i="rowIndex">
+
+  <ng-template pTemplate="body" let-ticket let-columns="ticketDetailsCols" let-i="rowIndex" class="j-class">
     <tr>
       <td>{{i+1}}</td>
       <td>

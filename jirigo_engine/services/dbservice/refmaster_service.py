@@ -209,7 +209,7 @@ class JirigoRefMaster(object):
         query_sql="""  
                         with t as (
                         select
-                                json_build_object( t.ref_name , json_agg( json_build_object( 'name', t.ref_value) ) ) refs
+                                t.ref_name , json_agg( json_build_object( 'name', t.ref_value) )  refs
                             from
                                 (
                                 select
@@ -234,7 +234,7 @@ class JirigoRefMaster(object):
                             group by
                                 t.ref_name 
                         )
-                        select json_build_object('rowData',json_agg(t.refs)) from t ;
+                        select json_object_agg(t.ref_name,t.refs) from t ;
                    """
         values=(self.project_id,)
         self.logger.debug(f'Select : {query_sql} values {values}')
@@ -247,7 +247,7 @@ class JirigoRefMaster(object):
             row_count=cursor.rowcount
             self.logger.debug(f'get_all_ticket_refs Select Success with {row_count} row(s) data {json_data}')
             response_data['dbQryStatus']='Success'
-            response_data['dbQryResponse']=json_data['rowData']
+            response_data['dbQryResponse']=json_data
             print(response_data)
             return response_data
         except  (Exception, psycopg2.Error) as error:
@@ -262,7 +262,7 @@ class JirigoRefMaster(object):
         query_sql="""  
                         with t as (
                         select
-                                json_build_object( t.ref_name , json_agg( json_build_object( 'name', t.ref_value) ) ) refs
+                                t.ref_name , json_agg( json_build_object( 'name', t.ref_value) )  refs
                             from
                                 (
                                 select
@@ -287,7 +287,8 @@ class JirigoRefMaster(object):
                             group by
                                 t.ref_name 
                         )
-                        select json_build_object('rowData',json_agg(t.refs)) from t ;
+                        select json_object_agg(t.ref_name,t.refs) from t ;
+                        
                    """
         values=(self.project_id,)
         self.logger.debug(f'Select : {query_sql} values {values}')
@@ -296,11 +297,13 @@ class JirigoRefMaster(object):
             cursor=self.jdb.dbConn.cursor()
             cursor.execute(query_sql,values)
             json_data=cursor.fetchone()[0]
+            print("*"*56)
             print(json_data)
+            print("*"*56)
             row_count=cursor.rowcount
             self.logger.debug(f'get_all_task_refs Select Success with {row_count} row(s) data {json_data}')
             response_data['dbQryStatus']='Success'
-            response_data['dbQryResponse']=json_data['rowData']
+            response_data['dbQryResponse']=json_data
             print(response_data)
             return response_data
         except  (Exception, psycopg2.Error) as error:
@@ -315,7 +318,7 @@ class JirigoRefMaster(object):
         query_sql="""  
                     with t as (
                     select
-                            json_build_object( t.ref_name , json_agg( json_build_object( 'name', t.ref_value) ) ) refs
+                            t.ref_name , json_agg( json_build_object( 'name', t.ref_value) )  refs
                         from
                             (
                             select
@@ -339,7 +342,7 @@ class JirigoRefMaster(object):
                         group by
                             t.ref_name 
                     )
-                    select json_build_object('rowData',json_agg(t.refs)) from t ;
+                    select json_object_agg(t.ref_name,t.refs) from t ;
                    """
         values=(self.project_id,)
         self.logger.debug(f'Select : {query_sql} values {values}')
@@ -352,7 +355,7 @@ class JirigoRefMaster(object):
             row_count=cursor.rowcount
             self.logger.debug(f'get_all_sprint_refs Select Success with {row_count} row(s) data {json_data}')
             response_data['dbQryStatus']='Success'
-            response_data['dbQryResponse']=json_data['rowData']
+            response_data['dbQryResponse']=json_data
             print(response_data)
             return response_data
         except  (Exception, psycopg2.Error) as error:

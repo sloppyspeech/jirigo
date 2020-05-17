@@ -66,3 +66,34 @@
   .alwaysVisible{
     position: relative;
   }
+
+/*
+PrimeNG Global overriding the table classes
+*/
+::ng-deep .ui-table-caption {
+    border-right: 1px !important;
+    border-left: 1px !important;
+}
+
+::ng-deep body .ui-table .ui-table-thead  > tr > th {
+    border-left: 1px;
+    border-right: 1px;
+    cursor: auto;
+}
+
+::ng-deep body .u-paginator-bottom {
+  background-color: red;
+  border-left: 1px;
+  border-right: 1px;
+  cursor: auto;
+}
+
+::ng-deep body .ui-table .ui-table-tbody  > tr > td {
+    border: 0 none !important; 
+    cursor: auto;
+}
+
+::ng-deep body .ui-table .ui-table-tbody  > tr:hover  {
+  background-color:#EBF6FF;
+  color:grey
+}

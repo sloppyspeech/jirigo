@@ -73,12 +73,13 @@ export class IssueDetailsComponent implements OnInit {
     this._staticRefData.getRefTicketMaster(localStorage.getItem('currentProjectId'))
       .then(res => {
         console.log(res);
-        this.ticketEnvRef = res[0].Environments;
-        this.ticketIssueStatusesRef = res[1].IssueStatuses;
-        this.ticketIssueTypesRef = res[2].IssueTypes;
-        this.ticketModuleRef = res[3].Modules;
-        this.ticketPrioritiesRef = res[4].Priorities;
-        this.ticketSeveritiesRef = res[5].Severities;
+        
+        this.ticketEnvRef = res.Environments;
+        this.ticketIssueStatusesRef = res.IssueStatuses;
+        this.ticketIssueTypesRef = res.IssueTypes;
+        this.ticketModuleRef = res.Modules;
+        this.ticketPrioritiesRef = res.Priorities;
+        this.ticketSeveritiesRef = res.Severities;
 
         console.log("here:" + JSON.stringify(this.ticketEnvRef));
         console.log("ticketIssueStatusesRef:" + JSON.stringify(this.ticketIssueStatusesRef));

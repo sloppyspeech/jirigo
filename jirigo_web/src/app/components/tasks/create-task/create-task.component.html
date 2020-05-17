@@ -4,56 +4,33 @@
   <div class="form-group">
     <div class="row">
       <div class="col">
-        <label
-          for="formGroupExampleInput"
-          class="col-form-label col-form-label-sm"
-          >Summary<span class="required-field"></span
-        ></label>
-        <input
-          formControlName="fctlSummary"
-          type="text"
-          placeholder=""
-          id="summary"
-          class="form-control required"
-          required
-        />
+        <label for="formGroupExampleInput" class="col-form-label col-form-label-sm">Summary<span
+            class="required-field"></span></label>
+        <input formControlName="fctlSummary" type="text" placeholder="" id="summary" class="form-control required"
+          required />
       </div>
     </div>
   </div>
   <div class="form-group">
-    <div class="card">
-      <div  class="card-header container-fluid"
-      data-toggle="collapse"
-      data-target="#idQuillEditor">
-        <!-- <label
-          for="formGroupExampleInput"
-          class="col-form-label col-form-label-sm"
-          > -->
-          Description<span class="required-field"></span>
-        <!-- </label> -->
-        <button
-        class="oi oi-chevron-bottom float-right"
-        data-toggle="collapse"
-        data-target="#idQuillEditor"
-      ></button>
+    <div class="row">
+      <div class="col">
+        <label for="formGroupExampleInput" class="col-form-label col-form-label-sm">Description<span
+            class="required-field"></span></label>
       </div>
-      
-    <div class="collapse card-body" id="idQuillEditor">
-        <quill-editor
-          formControlName="fctlDescription"
-          [styles]="editorStyle"
-          [modules]="config"
-        >
-        </quill-editor>
+    </div>
+    <div class=" " id="idQuillEditor">
+      <quill-editor formControlName="fctlDescription" [styles]="editorStyle" [modules]="config">
+      </quill-editor>
     </div>
   </div>
-
-    
+  <br />
+  <div class="row">
+    <div class="col">
+      <label for="formGroupExampleInput" class="col-form-label col-form-label-sm">Details<span
+          class="required-field"></span></label>
+    </div>
   </div>
-  <br />
-
   <app-task-details [parentForm]="createTaskFB"></app-task-details>
-  <br />
 
   <div class="panel">
     <!-- <div class="card-header">Audit</div> -->
@@ -61,22 +38,10 @@
       <div class="form-group">
         <div class="row">
           <div class="offset-md-9 offset-sm-1">
-            <input
-              type="button"
-              value="Cancel"
-              id="cancel"
-              class="btn btn-secondary"
-              (click)="cancelForm()"
-            />
+            <input type="button" value="Cancel" id="cancel" class="btn btn-secondary" (click)="cancelForm()" />
           </div>
           <div class="col-md-1 col-sm-1">
-            <input
-              type="submit"
-              [disabled]="!createTaskFB.valid"
-              value="Submit"
-              id="submit"
-              class="btn btn-primary"
-            />
+            <input type="submit" [disabled]="!createTaskFB.valid" value="Submit" id="submit" class="btn btn-primary" />
           </div>
         </div>
       </div>

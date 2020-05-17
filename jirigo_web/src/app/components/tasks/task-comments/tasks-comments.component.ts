@@ -33,9 +33,9 @@ export class TaskCommentsComponent implements OnInit {
       // [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
       // [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
       [{ 'font': [] }],
-      [{ 'align': [] }]
+      [{ 'align': [] }],
       // ['clean'],                                         // remove formatting button
-      // ['link', 'image']                         // link and image, video
+      ['link', 'image']                         // link and image, video
     ]
   };
 
@@ -86,7 +86,7 @@ export class TaskCommentsComponent implements OnInit {
       console.log(inpData);
       this._serTaskComments.createComment(inpData)
         .subscribe(res => {
-          console.log("Task Creation Status");
+          console.log("Task Comment Creation Status");
           console.log(JSON.stringify(res));
           this.parentForm.reset();
           setTimeout(() => {

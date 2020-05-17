@@ -134,7 +134,7 @@ export class DashboardComponent implements OnInit {
                     zeroLineColor:'black',
                     ticks: {
                       fontSize: 12,
-                      suggestedMin: 40,
+                      suggestedMin: 1,
                       stepSize: 5
                     },
                     scaleLabel: {

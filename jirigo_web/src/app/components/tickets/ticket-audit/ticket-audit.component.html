@@ -1,56 +1,47 @@
 <form [formGroup]="parentForm" *ngIf="allTicketAuditData" #ticketAuditComponent>
-    <div class="card">
-        <div
-          class="card-header container-fluid"
-          data-toggle="collapse"
-          data-target="#idListAuditForTicket"
-        >
-          Audit Log
-          <button
-            class="oi oi-chevron-bottom float-right"
-            data-toggle="collapse"
-            data-target="#idListAuditForTicket"
-          ></button>
-        </div>
+  <!-- <div class="card">
+    <div class="card-header container-fluid" data-toggle="collapse" data-target="#idListAuditForTicket">
+      Audit Log
+      <button class="oi oi-chevron-bottom float-right" data-toggle="collapse"
+        data-target="#idListAuditForTicket"></button>
+    </div>
+  </div> -->
+
+  <hr>
+  <div id="idListAuditForTicket" *ngFor="let auditComment of allTicketAuditData">
+    <div class="jirigoCard">
+
+      <div *ngIf="auditComment.display_column_name == 'description'" class="jirigoCardContainer">
+        <b>{{ auditComment.created_by }}</b> &nbsp; Changed &nbsp;
+        <i><b>{{auditComment.display_column_name}} &nbsp; on this ticket &nbsp; </b></i> &nbsp;
+        on &nbsp;{{ auditComment.created_date }}
       </div>
-    
-      <div
-        id="idListAuditForTicket"
-        class="collapse"
-        *ngFor="let comment of allTicketAuditData"
-      >
-          <div class=" jirigoCard container-fluid" > 
-
-              <div *ngIf="comment.display_column_name == 'description'" class="jirigoCardContainer">
-                <b>{{ comment.created_by }}</b> &nbsp; Changed &nbsp;
-                <i><b>{{comment.display_column_name}} &nbsp; on this ticket &nbsp; </b></i> &nbsp;
-                on  &nbsp;{{ comment.created_date }}
-              </div>
-              <div *ngIf="comment.display_column_name != 'description'" class="jirigoCardContainer">
-                <b>{{ comment.created_by }}</b> &nbsp; Changed &nbsp;
-                <i><b>{{comment.display_column_name}}</b></i> 
-                &nbsp; from &nbsp; [<b style="color:red;text-decoration: line-through;">{{comment.old_value}}</b>]
-                to  &nbsp;[<b style="color:green;">{{comment.new_value}}</b>]
-                on  &nbsp;{{ comment.created_date }}
-              </div>
-          </div>
-        </div>
+      <div *ngIf="auditComment.display_column_name != 'description'" class="jirigoCardContainer">
+        <b>{{ auditComment.created_by }}</b> &nbsp; Changed &nbsp;
+        <i><b>{{auditComment.display_column_name}}</b></i>
+        &nbsp; from &nbsp; [<b style="color:red;text-decoration: line-through;">{{auditComment.old_value}}</b>]
+        to &nbsp;[<b style="color:green;">{{auditComment.new_value}}</b>]
+        on &nbsp;{{ auditComment.created_date |date :'dd MMM yyyy HH:MM'}}
+      </div>
+    </div>
+    <hr class="jHr">
+  </div>
 
 
-          <!-- <div *ngFor="let comment of allTicketAuditData">
+  <!-- <div *ngFor="let auditComment of allTicketAuditData">
           <p-card [style]="{width: 'auto',height:'4em'}" styleClass="ui-card-shadow ui-card-content" >
             <div class="jirigoCard"> 
-              <div *ngIf="comment.display_column_name == 'description'" class="jirigoCardContainer">
-                <b>{{ comment.created_by }}</b> &nbsp; Changed &nbsp;
-                <i><b>{{comment.display_column_name}} &nbsp; on this ticket &nbsp; </b></i> &nbsp;
-                on  &nbsp;{{ comment.created_date }}
+              <div *ngIf="auditComment.display_column_name == 'description'" class="jirigoCardContainer">
+                <b>{{ auditComment.created_by }}</b> &nbsp; Changed &nbsp;
+                <i><b>{{auditComment.display_column_name}} &nbsp; on this ticket &nbsp; </b></i> &nbsp;
+                on  &nbsp;{{ auditComment.created_date }}
               </div>
-              <div *ngIf="comment.display_column_name != 'description'" class="jirigoCardContainer">
-                <b>{{ comment.created_by }}</b> &nbsp; Changed &nbsp;
-                <i><b>{{comment.display_column_name}}</b></i> 
-                &nbsp; from &nbsp; [<b style="color:red;text-decoration: line-through;">{{comment.old_value}}</b>]
-                to  &nbsp;[<b style="color:green;">{{comment.new_value}}</b>]
-                on  &nbsp;{{ comment.created_date }}
+              <div *ngIf="auditComment.display_column_name != 'description'" class="jirigoCardContainer">
+                <b>{{ auditComment.created_by }}</b> &nbsp; Changed &nbsp;
+                <i><b>{{auditComment.display_column_name}}</b></i> 
+                &nbsp; from &nbsp; [<b style="color:red;text-decoration: line-through;">{{auditComment.old_value}}</b>]
+                to  &nbsp;[<b style="color:green;">{{auditComment.new_value}}</b>]
+                on  &nbsp;{{ auditComment.created_date }}
               </div>
             </div>
           </div> 

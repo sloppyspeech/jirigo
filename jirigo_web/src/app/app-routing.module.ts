@@ -3,7 +3,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent  } from './components/login/login.component';
 import { LogoutComponent  } from './components/logout/logout.component';
 import { RegisterComponent  } from './components/register/register.component';
-import { AuthGuardService as AuthGuard } from './components/auth/auth-guard.service';
+import { AuthGuardService as AuthGuard } from './services/authentication/auth-guard.service';
+import { RoleGuardService as RoleGuard} from './services/authorization/role-guard.service';
 import { DebugComponent} from './components/debug/debug.component';
 
 const routes: Routes = [
@@ -21,7 +22,8 @@ const routes: Routes = [
   },
   {
     path:'debug',
-    component:DebugComponent
+    component:DebugComponent,
+    canActivate:[AuthGuard]
   },
   {
     path:'register',

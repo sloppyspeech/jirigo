@@ -73,14 +73,15 @@ export class TaskDetailsComponent implements OnInit {
     this._staticRefData.getRefTaskMaster(localStorage.getItem('currentProjectId'))
       .then(res => {
         console.log(res);
-        this.taskEnvRef = res[0].Environments;
-        this.taskIssueStatusesRef = res[1].IssueStatuses;
-        this.taskIssueTypesRef = res[2].IssueTypes;
-        this.taskPrioritiesRef = res[4].Priorities;
-        this.taskSeveritiesRef = res[5].Severities;
-        this.taskModuleRef = res[3].Modules;
 
-        console.log("here:" + JSON.stringify(this.taskEnvRef));
+        this.taskEnvRef = res.Environments;
+        this.taskIssueStatusesRef = res.IssueStatuses;
+        this.taskIssueTypesRef = res.IssueTypes;
+        this.taskPrioritiesRef = res.Priorities;
+        this.taskSeveritiesRef = res.Severities;
+        this.taskModuleRef = res.Modules;
+
+        console.log("taskEnvRef:" + JSON.stringify(this.taskEnvRef));
         console.log("taskIssueStatusesRef:" + JSON.stringify(this.taskIssueStatusesRef));
         console.log("taskPrioritiesRef:" + JSON.stringify(this.taskPrioritiesRef));
         console.log("taskSeverityRef:" + JSON.stringify(this.taskSeveritiesRef));
@@ -134,6 +135,17 @@ export class TaskDetailsComponent implements OnInit {
               this._serNgxSpinner.hide();
             });
 
+        }
+        else {
+          // Status should be Open while creating the ticket
+          console.log("------@@@@@@@@@@ In Creation of Task @@@@@@@@------");
+          console.log("ticketIssueStatusesRef:" + JSON.stringify(this.taskIssueStatusesRef));
+          this.taskIssueStatusesRef.forEach(ele => {
+            if (ele['name'].toUpperCase() === 'OPEN') {
+              this.taskIssueStatusesRef = [{ "name": ele['name'] }];
+              console.log("Only Open Status for Opening " + JSON.stringify(this.taskIssueStatusesRef));
+            }
+          });
         }
       }
       );

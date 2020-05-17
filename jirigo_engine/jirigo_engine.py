@@ -311,6 +311,23 @@ def get_user_names(user_name_substring):
     else:
         return get_jsonified_error_response('Failure',"get_user_names Not a GET Request")
 
+@app.route('/api/v1/authorization/auth-route-for-user',methods=['POST'])
+def authenticate_route_for_user():
+    data={}
+    if request.method == 'POST':
+        print('In POST auth_route_for_user')
+        try:
+            jdb=JirigoUsers(request.get_json())
+            data=jdb.update_reference()
+            print("="*80)
+            print(data)
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in auth_route_for_user {error}')
+            print(get_jsonified_error_response('Failure',error))
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',"auth_route_for_user Not a POST Request")
 
 
 @app.route('/api/v1/ref-data-management/ticket-status',methods=['GET'])

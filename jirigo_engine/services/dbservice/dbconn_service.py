@@ -1,13 +1,13 @@
 import psycopg2
 from flask import jsonify
-
+import os
 class JirigoDBConn(object):
     def __init__(self):
         self.dbConn=None
         print('JirigoDBConn Called For Intiation')
         try:
             self.dbConn = psycopg2.connect(user = "admin",
-                                        password = "Gallop",
+                                        password = os.environ['JIRIGODB_PASSWORD'],
                                         host = "127.0.0.1",
                                         port = "5432",
                                         database = "jirigo")

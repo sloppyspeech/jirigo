@@ -71,8 +71,8 @@ export class ListSprintsComponent implements OnInit {
             console.log("------------------ngAfterViewInit End-------------------------");
             this._serRefStaticData.getRefSprintMaster(localStorage.getItem('currentProjectId'))
                 .subscribe(res =>{
-                    console.log(res['dbQryResponse'][0]['SprintStatuses']);
-                    this.refSprintStatus=res['dbQryResponse'][0]['SprintStatuses'];
+                    console.log(res['dbQryResponse']['SprintStatuses']);
+                    this.refSprintStatus=res['dbQryResponse']['SprintStatuses'];
                 });
         });
   }

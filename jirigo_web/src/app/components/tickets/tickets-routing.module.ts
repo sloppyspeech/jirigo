@@ -23,6 +23,10 @@ const routes: Routes = [
   {
     path:'view-edit-ticket',
     component:ViewEditTicketsComponent
+  },
+  {
+    path:'**',
+    component:ListTicketsComponent
   }
 ];
 

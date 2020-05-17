@@ -59,13 +59,6 @@ export class MenuComponent implements OnInit,AfterViewInit {
       
   }
 
-  openNav(){
-    alert('called '+this.showMenu);
-    this.showMenu!=this.showMenu;
-  }
-
-
-
   ngOnDestroy() {
     this._serUser.isLoggedIn.unsubscribe();
     this._serUser.loggedInUserProps.unsubscribe();
