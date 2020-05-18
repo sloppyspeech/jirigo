@@ -1,7 +1,7 @@
 import { map } from 'rxjs/operators';
 import { Component, OnInit,ElementRef,ViewChild,Renderer2 } from '@angular/core';
 import { Router} from '@angular/router';
-import { faCogs, faCubes, faUsers, faLightbulb } from '@fortawesome/free-solid-svg-icons';
+import { faCogs, faCubes, faUsers, faLightbulb,faBug,faFire,faThumbsUp } from '@fortawesome/free-solid-svg-icons';
 import { Chart } from 'chart.js';
 import { TicketsDashboardService } from '../../services/dashboards/tickets-dashboard.service';
 import 'chartjs-plugin-colorschemes';
@@ -18,6 +18,9 @@ export class DashboardComponent implements OnInit {
   faCubes = faCubes;
   faUsers = faUsers;
   faLightbulb = faLightbulb;
+  faBug=faBug;
+  faFire=faFire;
+  faThumbsUp=faThumbsUp;
 
   openIssuesCount: number = 0;
   closedIssuesCount: number = 0;

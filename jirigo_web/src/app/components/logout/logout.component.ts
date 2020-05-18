@@ -23,7 +23,7 @@ export class LogoutComponent implements OnInit {
     setTimeout(() => {
       this._serNgxSpinner.hide();
       this._router.navigate(['login']);
-    }, 2000);
+    }, 1000);
   }
 
 }

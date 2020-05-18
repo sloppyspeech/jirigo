@@ -13,7 +13,6 @@ class JirigoUsers(object):
 
     def __init__(self,data):
         print("Initializing JirigoUsers")
-        pprint(data)
         self.user_id=data.get('user_id',0)
         self.first_name = data.get('first_name','')
         self.last_name = data.get('last_name','')
@@ -28,6 +27,7 @@ class JirigoUsers(object):
         self.is_active = data.get('is_active','')
         self.assigned_projects=data.get('assigned_projects',[])
         self.role_id=data.get('role_id','')
+        self.project_id=data.get('project_id','')
         self.current_route=data.get('current_route','')
         self.jdb=JirigoDBConn()
         self.logger=Logger()
@@ -254,12 +254,14 @@ class JirigoUsers(object):
             response_data['dbQryResponse']='Invalid User Id or Password'
             return response_data
 
-        print(f'User Salt is {salt} password is {self.password}')
+        print(f'User Salt is {salt}')
         query_sql="""  
                  WITH t AS (
                     SELECT  tu.user_id,get_user_name(tu.user_id) as user_name,
                             tu.email,tu.is_active,coalesce(tup.project_id,0) project_id,
-                            get_proj_name(tup.project_id) project_name
+                            get_proj_name(tup.project_id) project_name,
+                            get_role_id_for_user(tu.user_id,tup.project_id) role_id,
+                            get_role_name(get_role_id_for_user(tu.user_id,tup.project_id)) role_name
                       FROM tusers tu
                      LEFT OUTER JOIN tuser_projects tup
                         ON tu.user_id = tup.user_id 
@@ -369,18 +371,22 @@ class JirigoUsers(object):
                           FROM v_user_projects_role_menu vuprm 
                          WHERE vuprm.project_id =%s
                            AND user_id=%s
-                           AND PATH LIKE  '%s'
+                           AND role_id=%s
+                           AND ( menu_url=%s or path = %s )
                     )
                     SELECT json_agg(t) from t;
                    """
 
-        values=(self.project_id,self.user_id,self.current_route,)
+        values=(self.project_id,self.user_id,self.role_id,self.current_route,self.current_route,)
         self.logger.debug(f'Select : {query_sql} Values {values}')
         try:
             print('-'*80)
             cursor=self.jdb.dbConn.cursor()
             cursor.execute(query_sql,values)
             json_data=cursor.fetchone()[0]
+            print("=^^="*30)
+            print(json_data)
+            print("=^^="*30)
             row_count=cursor.rowcount
             self.logger.debug(f'Select authenticate_route_for_user Success with {row_count} row(s) data {json_data}')
             if (json_data == None):
@@ -389,7 +395,7 @@ class JirigoUsers(object):
             else:
                 self.logger.debug(f'json_data[0] {json_data[0]}')
                 response_data['dbQryStatus']='Success'
-                response_data['dbQryResponse']=json_data
+                response_data['dbQryResponse']='Access Granted'
 
             return response_data
         except  (Exception, psycopg2.Error) as error:
@@ -399,7 +405,7 @@ class JirigoUsers(object):
 
     @staticmethod
     def get_password_digest(p_password,salt,iterations=1000000,dklen=64):
-        print(f'{p_password}  {p_password.encode()}  {bytes(p_password,"utf-8")}')
+        # print(f'{p_password}  {p_password.encode()}  {bytes(p_password,"utf-8")}')
         return pbkdf2_hmac('sha512',p_password.encode(),salt.encode(),iterations,dklen)
 
     @staticmethod

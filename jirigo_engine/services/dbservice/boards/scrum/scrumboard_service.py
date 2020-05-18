@@ -56,7 +56,7 @@ class JirigoScrumBoard(object):
                                     AND tt.sprint_id = ts.sprint_id 
                                     AND ts.workflow_id = ts2.workflow_id 
                                     AND tm.ref_category = 'TASKS' 
-                                    AND tm.ref_name = 'STATUS' 
+                                    AND tm.ref_name = 'Status' 
                                     AND tm.ref_value = t.issue_status 
                                     AND tsts.step_id = ts2.step_id 
                                     AND tsts.status_id = tm.ref_id 

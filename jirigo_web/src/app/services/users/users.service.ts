@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient,HttpHeaders  } from '@angular/common/http';
 import { environment  } from '../../../environments/environment';
-import { map  } from 'rxjs/operators';
-import { BehaviorSubject  } from 'rxjs';
+import { map,take  } from 'rxjs/operators';
+import { BehaviorSubject,Observable ,of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -63,5 +63,10 @@ export class UsersService {
     return this._httpCli.post(this.sApiEndPoint+'create-user',inpData,this.sHttpOptions);
   }
 
-  
+  authorizeCurrentRouteForUser(inpData){
+    console.log("User Data For login "+JSON.stringify(inpData));
+    console.log("login End point :"+this.sApiEndPoint+'authorization/auth-route-for-user');
+    return this._httpCli.post(this.sApiEndPoint+'authorization/auth-route-for-user',inpData,this.sHttpOptions);
+  }
+
 }

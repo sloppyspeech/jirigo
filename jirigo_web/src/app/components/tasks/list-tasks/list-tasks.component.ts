@@ -94,7 +94,7 @@ export class ListTasksComponent implements OnInit {
   ngAfterViewInit() {
     this._serTaskDetails.getAllTasks()
     .then(res=>{
-      console.log("_serTaskDetails Output :"+JSON.stringify(res));
+      // console.log("_serTaskDetails Output :"+JSON.stringify(res));
       console.log("===================");
       console.log(res['dbQryResponse']);
       console.log("===================");
@@ -112,6 +112,8 @@ export class ListTasksComponent implements OnInit {
       //   // });
       // }, 1000);
 
+    },err=>{
+      console.log('Error while retrieving task Data from DB:'+JSON.stringify(err));
     })
     .catch(e=>{
         console.log("Error Fetching all tasks getAllTasks in list-tasks-components:"+e);

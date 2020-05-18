@@ -23,7 +23,6 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     localStorage.clear();
-    this._router.navigate(['/login']);
     this.loginFormInvalid=false;
     this.errorsList=[];
     this.loginFB=this._formBuilder.group({
@@ -64,6 +63,8 @@ export class LoginComponent implements OnInit {
               localStorage.setItem('loggedInUserName',res['dbQryResponse'][0]['user_name']);
               localStorage.setItem('currentProjectId',res['dbQryResponse'][0]['project_id']);
               localStorage.setItem('currentProjectName',res['dbQryResponse'][0]['project_name']);
+              localStorage.setItem('loggedInUserRoleId',res['dbQryResponse'][0]['role_id']);
+              localStorage.setItem('loggedInUserRoleName',res['dbQryResponse'][0]['role_name']);
               this._serUsers.isLoggedIn.next(true);
               this._serUsers.loggedInUserProps.next(res['dbQryResponse'][0]);
               this._router.navigate(['dashboard']);

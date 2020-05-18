@@ -23,7 +23,7 @@ const routes: Routes = [
   {
     path:'debug',
     component:DebugComponent,
-    canActivate:[AuthGuard]
+    canActivate:[AuthGuard,RoleGuard]
   },
   {
     path:'register',
@@ -33,42 +33,42 @@ const routes: Routes = [
   {
     path:'tickets',
     loadChildren: () => import('./components/tickets/tickets.module').then( m => m.TicketsModule),
-    canActivate:[AuthGuard]
+    canActivate:[AuthGuard,RoleGuard]
   },
   {
     path:'projects',
     loadChildren: () => import('./components/projects/projects.module').then( m => m.ProjectsModule),
-    canActivate:[AuthGuard]
+    canActivate:[AuthGuard,RoleGuard]
   },
   {
     path:'tasks',
     loadChildren: () => import('./components/tasks/tasks.module').then( m => m.TasksModule),
-    canActivate:[AuthGuard]
+    canActivate:[AuthGuard,RoleGuard]
   },
   {
     path:'boards',
     loadChildren:() => import ('./components/boards/boards.module').then(m=> m.BoardsModule),
-    canActivate:[AuthGuard]
+    canActivate:[AuthGuard,RoleGuard]
   },
   {
     path:'dashboard',
     loadChildren: () => import('./components/dashboard/dashboard.module').then( m => m.DashboardModule),
-    canActivate:[AuthGuard]
+    canActivate:[AuthGuard,RoleGuard]
   },
   {
     path:'sprints',
     loadChildren: () => import('./components/sprints/sprint.module').then( m => m.SprintModule),
-    canActivate:[AuthGuard]
+    canActivate:[AuthGuard,RoleGuard]
   },
   {
     path:'user-management',
     loadChildren: () => import('./components/users/users.module').then( m => m.UsersModule),
-    canActivate:[AuthGuard]
+    canActivate:[AuthGuard,RoleGuard]
   },
   {
     path:'refdata-management',
     loadChildren: () => import('./components/references/references.module').then( m => m.ReferencesModule),
-    canActivate:[AuthGuard]
+    canActivate:[AuthGuard,RoleGuard]
   },
   {
     path:'**',

@@ -13,6 +13,7 @@ export class MenuComponent implements OnInit,AfterViewInit {
 
   loggedIn:boolean=true;
   loggedInUserName:string;
+  loggedInUserRole:string='';
   showMenu:boolean=true;
   currentProjectName:string;
   showProjectChangeMenu:boolean=false;
@@ -47,10 +48,13 @@ export class MenuComponent implements OnInit,AfterViewInit {
       if (typeof(res['user_name']) !== 'undefined' ){
         this.loggedInUserName=res['user_name'];
         this.currentProjectName=res['project_name'];
+        this.loggedInUserRole=res['role_name'];
       }
       else{
         this.loggedInUserName=localStorage.getItem('loggedInUserName');
         this.currentProjectName=localStorage.getItem('currentProjectName');
+        this.loggedInUserRole=localStorage.getItem('loggedInUserRoleName');
+        console.log("@@@@@@@@@@@ :"+this.loggedInUserRole);
       }
     });
   }
@@ -67,7 +71,6 @@ export class MenuComponent implements OnInit,AfterViewInit {
   changeProject(e){
     console.log("Inside Change Project");
     console.log(e);
-    // this.changeProjectComponent.showProjectList();
     this.showProjectChangeMenu=true;
   }
 

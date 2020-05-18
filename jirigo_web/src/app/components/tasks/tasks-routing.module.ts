@@ -4,20 +4,23 @@ import { CreateTaskComponent  }  from './create-task/create-task.component';
 import { ListTasksComponent  }  from './list-tasks/list-tasks.component';
 import { ViewEditTaskComponent  }  from './view-edit-task/view-edit-task.component';
 import {  AuthGuardService as AuthGuard } from '../../services/authentication/auth-guard.service';
+import { RoleGuardService as RoleGuard  } from '../../services/authorization/role-guard.service';
 
 const routes: Routes = [
   {
    path:'create-task',
-   component:CreateTaskComponent 
+   component:CreateTaskComponent ,
+   canActivate:[AuthGuard,RoleGuard]
   },
   {
     path:'list-tasks',
-    component:ListTasksComponent 
+    component:ListTasksComponent ,
+    canActivate:[AuthGuard,RoleGuard]
    },
    {
     path:'view-edit-task/:task_no',
     component:ViewEditTaskComponent ,
-    canActivate:[AuthGuard]
+    canActivate:[AuthGuard,RoleGuard]
    },
    {
      path:'**',

@@ -81,3 +81,22 @@
   border-radius: 5px;
 }
 
+html {
+  height: 100%;
+}
+
+body {
+  min-height: 100%;
+  position: relative;
+}
+
+.main {
+   min-height: 100%;
+   padding-bottom: 55px;
+}
+
+:host {
+  display: flex;
+  min-height: 100%; 
+  flex-direction: column;
+}

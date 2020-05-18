@@ -24,6 +24,8 @@ class JirigoDBConn(object):
             print(error)
             print("*"*50)
             print("\n\n\n")
+            raise
+            exit(1)
         
     def close_conn(self):
         #closing database connection.

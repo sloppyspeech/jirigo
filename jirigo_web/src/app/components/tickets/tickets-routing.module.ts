@@ -6,23 +6,29 @@ import { ListTicketsComponent} from  './list-tickets/list-tickets.component';
 import { TicketAuditComponent} from  './ticket-audit/ticket-audit.component';
 import { TicketCommentsComponent} from  './ticket-comments/ticket-comments.component';
 import { ViewEditTicketsComponent} from  './view-edit-tickets/view-edit-tickets.component';
+import { AuthGuardService as AuthGuard  } from '../../services/authentication/auth-guard.service';
+import { RoleGuardService as RoleGuard  } from '../../services/authorization/role-guard.service';
 
 const routes: Routes = [
   {
     path:'create-ticket',
-    component:CreateTicketComponent
+    component:CreateTicketComponent,
+    canActivate:[AuthGuard,RoleGuard]
   },
   {
     path:'list-tickets',
-    component:ListTicketsComponent
+    component:ListTicketsComponent,
+    canActivate:[AuthGuard,RoleGuard]
   },
   {
     path:'view-edit-tickets/:ticket_no',
-    component:ViewEditTicketsComponent
+    component:ViewEditTicketsComponent,
+    canActivate:[AuthGuard,RoleGuard]
   },
   {
     path:'view-edit-ticket',
-    component:ViewEditTicketsComponent
+    component:ViewEditTicketsComponent,
+    canActivate:[AuthGuard,RoleGuard]
   },
   {
     path:'**',
