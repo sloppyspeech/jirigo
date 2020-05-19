@@ -5,7 +5,7 @@ import { TicketDetailsService } from '../../../services/tickets/ticket-details.s
 import { ActivatedRoute } from '@angular/router';
 import { NgxSpinnerService  } from 'ngx-spinner';
 import { Router  } from '@angular/router';
-import { faClone,faEdit } from '@fortawesome/free-solid-svg-icons';
+import { faClone,faEdit,faLink } from '@fortawesome/free-solid-svg-icons';
 import {MessageService} from 'primeng/api';
 
 @Component({
@@ -17,6 +17,7 @@ import {MessageService} from 'primeng/api';
 export class ViewEditTicketsComponent implements OnInit {
   faClone=faClone;
   faEdit=faEdit;
+  faLink=faLink;
   isLoaded: boolean = false;
   viewEditFormEditBtnEnabled:boolean=true;
   viewModifyTicketFB: FormGroup;
@@ -30,18 +31,30 @@ export class ViewEditTicketsComponent implements OnInit {
   viewModifyTicketFCList;
   displayPageDirtyDialog:boolean=false;
   leaveViewEditPageUnsaved:boolean=false;
+  buttonGroupOptions:any={
+    showTaskDetails:false,
+    showTaskComments:false,
+    showAudit:false,
+    showDependsOn:false,
+    showRelatedTo:false,
+    showDuplicatedBy:false
+  };
+  
+  showLinkTaskModal:boolean=false;
 
   showTicketDetails:boolean=true;
   showTicketComments:boolean=false;
   showAudit:boolean=false;
+
   tabs:any[]=[
-    {label:'Ticket Details',value:'Ticket Details'},
-    {label:'Comments',value:'Comments'},
-    {label:'Audit Log',value:'Audit Log'}
+    {label:'Ticket Details',value:'showTicketDetails'},
+    {label:'Comments',value:'showTicketComments'},
+    {label:'Audit Log',value:'showAudit'}
   ];
 
   editorStyle = {
-    height: '200px'
+    height: '200px',
+    'background-color':'white'
   };
 
   config={
@@ -141,16 +154,6 @@ export class ViewEditTicketsComponent implements OnInit {
             this.viewModifyTicketFB.get('fctlTicketNo').setValue(this.ticket_data.ticket_no);
             this.viewModifyTicketFB.get('fctlSummary').setValue(this.ticket_data.summary);
             this.viewModifyTicketFB.get('fctlDescription').setValue(this.ticket_data.description);
-            // this.viewModifyTicketFB.get('fctlIssueType').setValue(this.ticket_data.issue_type);
-            // this.viewModifyTicketFB.get('fctlIssueStatus').setValue(this.ticket_data.issue_status);
-            // this.viewModifyTicketFB.get('fctlSeverity').setValue(this.ticket_data.severity);
-            // this.viewModifyTicketFB.get('fctlPriority').setValue(this.ticket_data.priority);
-            // this.viewModifyTicketFB.get('fctlEnvironment').setValue(this.ticket_data.environment);
-            // this.viewModifyTicketFB.get('fctlCreatedDate').setValue(this.ticket_data.created_date);
-            // this.viewModifyTicketFB.get('fctlCreatedBy').setValue(this.ticket_data.created_by);
-            // this.viewModifyTicketFB.get('fctlReportedDate').setValue(this.ticket_data.reported_date);
-            // this.viewModifyTicketFB.get('fctlReportedBy').setValue(this.ticket_data.reported_by);
-            // this.viewModifyTicketFB.get('fctlAssigneeName').setValue(this.ticket_data.assignee_name);
             console.log('------@@@@fctlReportedDate@@@--------');
             console.log(this.viewModifyTicketFB.get('fctlReportedDate').value);
             this.isLoaded = true;
@@ -172,7 +175,9 @@ export class ViewEditTicketsComponent implements OnInit {
   }
   disableAllFormControls(){
     Object.keys(this.viewModifyTicketFCList).forEach(control => {
-      this.viewModifyTicketFB.get(control).disable();
+      if (control != 'fctlTabOptions'){
+        this.viewModifyTicketFB.get(control).disable();
+      }
     });
   }
   enableAllFormControls(){
@@ -320,18 +325,13 @@ cloneTicket(){
 
 
 tabSelected(e){
-  this.showTicketDetails=false;
-  this.showTicketComments=false;
-  this.showAudit=false;
-  // alert(JSON.stringify(e.value));
-  if (e.value =='Ticket Details'){
-    this.showTicketDetails=true;
-  }
-  else if(e.value =='Comments'){
-    this.showTicketComments=true;
-  }
-  else if(e.value =='Audit Log'){
-    this.showAudit=true;
+  console.log(this.buttonGroupOptions);
+  for (let key in this.buttonGroupOptions){
+    if(key == e.value)
+      this.buttonGroupOptions[key]=true;
+    else{
+      this.buttonGroupOptions[key]=false;
+    }
   }
   console.log(this.viewModifyTicketFB.getRawValue());
   console.log("viewModifyTaskFB.dirty:"+this.viewModifyTicketFB.dirty);

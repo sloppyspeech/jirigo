@@ -77,18 +77,12 @@
     </div>
   </div>
 
-  <div >
+  <div class="jSelectButtonContainer">
     <p-selectButton [options]="tabs" formControlName="fctlTabOptions" (onChange)="tabSelected($event)"></p-selectButton>
   </div>
-
-  <app-issue-details [parentForm]="viewModifyTicketFB" *ngIf="showTicketDetails"></app-issue-details>
-
-  <!-- New COmments Component Start-->
-  <app-ticket-comments [parentForm]="viewModifyTicketFB" *ngIf="showTicketComments"></app-ticket-comments>
-
-  <!-- New COmments Component End-->
-
-  <app-ticket-audit [parentForm]="viewModifyTicketFB" *ngIf="showAudit"></app-ticket-audit>
+  <app-issue-details [parentForm]="viewModifyTicketFB" *ngIf="buttonGroupOptions.showTicketDetails"></app-issue-details>
+  <app-ticket-comments [parentForm]="viewModifyTicketFB" *ngIf="buttonGroupOptions.showTicketComments"></app-ticket-comments>
+  <app-ticket-audit [parentForm]="viewModifyTicketFB" *ngIf="buttonGroupOptions.showAudit"></app-ticket-audit>
 
   <div class="panel">
     <!-- <div class="card-header">Audit</div> -->

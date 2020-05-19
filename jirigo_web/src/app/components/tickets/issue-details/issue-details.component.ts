@@ -42,6 +42,7 @@ export class IssueDetailsComponent implements OnInit {
   retUserNameVal = [];
   retUserNameArr = [];
 
+  currentDate:any;
 
   constructor(private _staticRefData: StaticDataService,
     private _serNgxSpinner: NgxSpinnerService,
@@ -54,6 +55,7 @@ export class IssueDetailsComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.currentDate = new Date().toISOString().substring(0, 10);
     var tempDate = [];
     // New Entry
     console.log("NgOnInit Issue Details Component");
@@ -142,9 +144,13 @@ export class IssueDetailsComponent implements OnInit {
           this.ticketIssueStatusesRef.forEach(ele => {
             if (ele['name'].toUpperCase() === 'OPEN') {
               this.ticketIssueStatusesRef = [{ "name": ele['name'] }];
+              this.parentForm.get('fctlIssueStatus').setValue(ele['name']);
               console.log("Only Open Status for Opening " + JSON.stringify(this.ticketIssueStatusesRef));
             }
           });
+          this.parentForm.get('fctlReportedBy').setValue(localStorage.getItem('loggedInUserName'));
+          this.parentForm.get('fctlAssigneeName').setValue(localStorage.getItem('loggedInUserName'));
+          this.parentForm.get('fctlReportedDate').setValue(this._serUtils.parseDateAsYYYYMMDD(this.currentDate));
         }
       }
       );

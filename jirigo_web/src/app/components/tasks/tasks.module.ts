@@ -1,3 +1,4 @@
+import { MultiSelectModule } from 'primeng/multiselect';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule,ReactiveFormsModule } from '@angular/forms';
@@ -13,6 +14,8 @@ import { AutoCompleteModule  } from 'primeng/autocomplete';
 import { DialogModule } from "primeng/dialog";
 import { CardModule  } from 'primeng/card';
 import { ToastModule  } from 'primeng/toast';
+import {DropdownModule} from 'primeng/dropdown';
+
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
@@ -25,6 +28,10 @@ import { ViewEditTaskComponent  }  from './view-edit-task/view-edit-task.compone
 import { TaskDetailsComponent  } from './task-details/task-details.component';
 import { TaskCommentsComponent } from './task-comments/tasks-comments.component';
 import { AuditTaskComponent  } from './audit-task/audit-task.component';
+import { TicketAndTaskLinksComponent } from '../common/ticket-and-task-links/ticket-and-task-links.component';
+import { DependsOnComponent } from './relationships/depends-on/depends-on.component';
+import { RelatedToComponent } from './relationships/related-to/related-to.component';
+import { DuplicatedByComponent } from './relationships/duplicated-by/duplicated-by.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +40,11 @@ import { AuditTaskComponent  } from './audit-task/audit-task.component';
     ViewEditTaskComponent,
     TaskDetailsComponent,
     TaskCommentsComponent,
-    AuditTaskComponent
+    AuditTaskComponent,
+    TicketAndTaskLinksComponent,
+    DependsOnComponent,
+    RelatedToComponent,
+    DuplicatedByComponent
   ],
   imports: [
     CommonModule,
@@ -52,6 +63,8 @@ import { AuditTaskComponent  } from './audit-task/audit-task.component';
     DialogModule,
     CardModule,
     ToastModule,
+    DropdownModule,
+    MultiSelectModule,
     FontAwesomeModule
   ]
 })

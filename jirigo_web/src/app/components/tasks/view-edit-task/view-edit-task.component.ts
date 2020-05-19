@@ -1,13 +1,13 @@
 import { UtilsService } from './../../../services/shared/utils.service';
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { NgModule, Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { StaticDataService } from '../../../services/static-data.service';
 import { TaskDetailsService } from '../../../services/tasks/task-details.service';
 import { ActivatedRoute } from '@angular/router';
 import { NgxSpinnerService  } from 'ngx-spinner';
 import { Router  } from '@angular/router';
-import { faClone,faEdit, faTshirt } from '@fortawesome/free-solid-svg-icons';
-import {MessageService} from 'primeng/api';
+import { faClone,faEdit, faTshirt,faLink } from '@fortawesome/free-solid-svg-icons';
+import { MessageService} from 'primeng/api';
 
 @Component({
   selector: 'app-view-edit-task',
@@ -15,9 +15,11 @@ import {MessageService} from 'primeng/api';
   styleUrls: ['./view-edit-task.component.css'],
   providers:[MessageService]
 })
+
 export class ViewEditTaskComponent implements OnInit {
   faClone=faClone;
   faEdit=faEdit;
+  faLink=faLink;
   isLoaded: boolean = false;
   viewEditFormEditBtnEnabled:boolean=true;
   viewModifyTaskFB: FormGroup;
@@ -31,19 +33,29 @@ export class ViewEditTaskComponent implements OnInit {
   viewModifyTaskFCList;
   displayPageDirtyDialog:boolean=false;
   leaveViewEditPageUnsaved:boolean=false;
+  buttonGroupOptions:any={
+    showTaskDetails:false,
+    showTaskComments:false,
+    showAudit:false,
+    showDependsOn:false,
+    showRelatedTo:false,
+    showDuplicatedBy:false
+  };
 
-  showTaskDetails:boolean=true;
-  showTaskComments:boolean=false;
-  showAudit:boolean=false;
+  showLinkTaskModal:boolean=false;
+
   tabs:any[]=[
-    {label:'Task Details',value:'Task Details'},
-    {label:'Comments',value:'Comments'},
-    {label:'Audit Log',value:'Audit Log'}
+    {label:'Task Details',value:'showTaskDetails'},
+    {label:'Comments',value:'showTaskComments'},
+    {label:'Audit Log',value:'showAudit'},
+    {label:'Depends On',value:'showDependsOn'},
+    {label:'Related To',value:'showRelatedTo'},
+    {label:'Duplicated By',value:'showDuplicatedBy'}
   ];
 
   editorStyle = {
     'height': '200px',
-    'background-color':''
+    'background-color':'white'
   };
 
   config={
@@ -139,16 +151,6 @@ export class ViewEditTaskComponent implements OnInit {
             this.viewModifyTaskFB.get('fctlTaskNo').setValue(this.task_data.task_no);
             this.viewModifyTaskFB.get('fctlSummary').setValue(this.task_data.summary);
             this.viewModifyTaskFB.get('fctlDescription').setValue(this.task_data.description);
-            // this.viewModifyTaskFB.get('fctlIssueType').setValue(this.task_data.issue_type);
-            // this.viewModifyTaskFB.get('fctlIssueStatus').setValue(this.task_data.issue_status);
-            // this.viewModifyTaskFB.get('fctlSeverity').setValue(this.task_data.severity);
-            // this.viewModifyTaskFB.get('fctlPriority').setValue(this.task_data.priority);
-            // this.viewModifyTaskFB.get('fctlEnvironment').setValue(this.task_data.environment);
-            // this.viewModifyTaskFB.get('fctlCreatedDate').setValue(this.task_data.created_date);
-            // this.viewModifyTaskFB.get('fctlCreatedBy').setValue(this.task_data.created_by);
-            // this.viewModifyTaskFB.get('fctlReportedDate').setValue(this.task_data.reported_date);
-            // this.viewModifyTaskFB.get('fctlReportedBy').setValue(this.task_data.reported_by);
-            // this.viewModifyTaskFB.get('fctlAssigneeName').setValue(this.task_data.assignee_name);
             console.log('------@@@@fctlReportedDate@@@--------');
             console.log(this.viewModifyTaskFB.get('fctlReportedDate').value);
             this.isLoaded = true;
@@ -170,9 +172,11 @@ export class ViewEditTaskComponent implements OnInit {
   }
   disableAllFormControls(){
     Object.keys(this.viewModifyTaskFCList).forEach(control => {
-      this.viewModifyTaskFB.get(control).disable();
+      if (control != 'fctlTabOptions'){
+        this.viewModifyTaskFB.get(control).disable();
+      }
     });
-    this.editorStyle["background-color"]='';
+    this.editorStyle["background-color"]='red';
   }
   enableAllFormControls(){
     this.editorStyle["background-color"]='white';
@@ -330,19 +334,15 @@ cloneTask(){
 }
 
 tabSelected(e){
-  this.showTaskDetails=false;
-  this.showTaskComments=false;
-  this.showAudit=false;
-  // alert(JSON.stringify(e.value));
-  if (e.value =='Task Details'){
-    this.showTaskDetails=true;
+  console.log(this.buttonGroupOptions);
+  for (let key in this.buttonGroupOptions){
+    if(key == e.value)
+      this.buttonGroupOptions[key]=true;
+    else{
+      this.buttonGroupOptions[key]=false;
+    }
   }
-  else if(e.value =='Comments'){
-    this.showTaskComments=true;
-  }
-  else if(e.value =='Audit Log'){
-    this.showAudit=true;
-  }
+  console.log(this.buttonGroupOptions);
   console.log(this.viewModifyTaskFB.getRawValue());
   console.log("viewModifyTaskFB.dirty:"+this.viewModifyTaskFB.dirty);
   console.log("viewModifyTaskFB.touched:"+this.viewModifyTaskFB.touched);
@@ -350,4 +350,11 @@ tabSelected(e){
   console.log("viewModifyTaskFB.viewModifyTaskFB.valid:"+this.viewModifyTaskFB.valid);
 }
 
+showLinksModal(event){
+  this.showLinkTaskModal=true;
+}
+disableShowLinksModal(){
+  this.showLinkTaskModal=false;
+  this.reloadComponent();
+}
 }

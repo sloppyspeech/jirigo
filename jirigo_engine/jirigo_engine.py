@@ -16,7 +16,7 @@ from services.dbservice.tasks.tasks_comments_service import JirigoTaskComments
 from services.dbservice.tasks.tasks_dashboard_service import JirigoTaskDashboard
 from services.dbservice.sprints.sprints_service import JirigoSprints
 from services.dbservice.boards.scrum.scrumboard_service import JirigoScrumBoard
-
+from services.dbservice.link_tasks_tickets.link_task_ticket import JirigoLinkTaskTicket
 
 app=Flask(__name__)
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
@@ -34,7 +34,7 @@ def create_ticket():
             jdb=JirigoTicket.for_create_update_ticket(request.get_json())
             data=jdb.create_ticket()
             print('*'*40)
-            print(data['dbQryResponse'])
+            # print(data['dbQryResponse'])
             return jsonify(data)
         except Exception as error:
             print(f'Error in create_ticket {error}')
@@ -321,7 +321,7 @@ def authenticate_route_for_user():
             jdb=JirigoUsers(request.get_json())
             data=jdb.authenticate_route_for_user()
             print("="*80)
-            print(data)
+            # print(data)
             return jsonify(data)
         except Exception as error:
             print(f'Error in authenticate_route_for_user {error}')
@@ -355,7 +355,7 @@ def get_all_ticket_refs(project_id):
             jdb=JirigoRefMaster({'project_id':project_id})
             data=jdb.get_all_ticket_refs()
             print("="*80)
-            print(data)
+            # print(data)
             return jsonify(data)
         except Exception as error:
             print(f'Error in get_all_ticket_refs {error}')
@@ -372,7 +372,7 @@ def get_all_task_refs(project_id):
             jdb=JirigoRefMaster({'project_id':project_id})
             data=jdb.get_all_task_refs()
             print("="*80)
-            print(data)
+            # print(data)
             return jsonify(data)
         except Exception as error:
             print(f'Error in get_all_task_refs {error}')
@@ -390,7 +390,7 @@ def get_all_sprint_refs(project_id):
             jdb=JirigoRefMaster({'project_id':project_id})
             data=jdb.get_all_sprint_refs()
             print("="*80)
-            print(data)
+            # print(data)
             return jsonify(data)
         except Exception as error:
             print(f'Error in get_all_sprint_refs {error}')
@@ -424,7 +424,7 @@ def insert_reference():
             jdb=JirigoRefMaster(request.get_json())
             data=jdb.insert_reference()
             print("="*80)
-            print(data)
+            # print(data)
             return jsonify(data)
         except Exception as error:
             print(f'Error in insert_reference {error}')
@@ -442,7 +442,7 @@ def update_reference():
             jdb=JirigoRefMaster(request.get_json())
             data=jdb.update_reference()
             print("="*80)
-            print(data)
+            # print(data)
             return jsonify(data)
         except Exception as error:
             print(f'Error in update_reference {error}')
@@ -451,6 +451,24 @@ def update_reference():
     else:
         return get_jsonified_error_response('Failure',"update_reference Not a POST Request")
 
+
+@app.route('/api/v1/ref-data-management/task-ticket-link-refs/<project_id>',methods=['GET'])
+def get_all_task_ticket_link_references(project_id):
+    data={}
+    if request.method == 'GET':
+        print('In GET get_all_task_ticket_link_references')
+        try:
+            jdb=JirigoRefMaster({'project_id':project_id})
+            data=jdb.get_all_task_ticket_link_references()
+            print("="*80)
+            # print(data)
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in get_all_task_ticket_link_references {error}')
+            print(get_jsonified_error_response('Failure',error))
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',"get_all_task_ticket_link_references Not a POST Request")
 
 
 @app.route('/api/v1/ticket-dashboard/summaries/generic/',methods=['GET'])
@@ -466,7 +484,7 @@ def get_ticket_dashboard_generic_summary():
             jdb=JirigoTicketDashboard({'last_n_days':last_n_days,'project_id':project_id})
             data=jdb.get_ticket_dashboard_generic_summary()
             print("="*80)
-            print(data)
+            # print(data)
             return jsonify(data)
         except Exception as error:
             print(f'Error in get_ticket_dashboard_generic_summary {error}')
@@ -487,7 +505,7 @@ def get_ticket_summary_by_issue_status():
             jdb=JirigoTicketDashboard({'last_n_days':last_n_days,'project_id':project_id})
             data=jdb.get_ticket_summary_by_issue_status()
             print("="*80)
-            print(data)
+            # print(data)
             return jsonify(data)
         except Exception as error:
             print(f'Error in get_ticket_summary_by_issue_status {error}')
@@ -508,7 +526,7 @@ def get_ticket_summary_by_issue_type():
             jdb=JirigoTicketDashboard({'last_n_days':last_n_days,'project_id':project_id})
             data=jdb.get_ticket_summary_by_issue_type()
             print("="*80)
-            print(data)
+            # print(data)
             return jsonify(data)
         except Exception as error:
             print(f'Error in get_ticket_summary_by_issue_type {error}')
@@ -532,7 +550,7 @@ def get_tickets_created_by_range():
             jdb=JirigoTicketDashboard({'last_n_days':last_n_days,'project_id':project_id})
             data=jdb.get_tickets_created_by_range()
             print("="*80)
-            print(data)
+            # print(data)
             return jsonify(data)
         except Exception as error:
             print(f'Error in get_tickets_created_by_range {error}')
@@ -555,7 +573,7 @@ def get_tickets_still_open_last_n_days():
             jdb=JirigoTicketDashboard({'last_n_days':last_n_days,'project_id':project_id})
             data=jdb.get_tickets_still_open_last_n_days()
             print("="*80)
-            print(data)
+            # print(data)
             return jsonify(data)
         except Exception as error:
             print(f'Error in get_tickets_still_open_last_n_days {error}')
@@ -610,7 +628,7 @@ def update_task():
             jdb=JirigoTask(request.get_json())
             data=jdb.update_task()
             print('*'*40)
-            print(data['dbQryResponse'])
+            # print(data['dbQryResponse'])
             return jsonify(data)
         except Exception as error:
             print(f'Error in update_task {error}')
@@ -841,6 +859,113 @@ def get_all_tasks_of_sprint_for_scrum_board(sprint_id):
             return get_jsonified_error_response('Failure',error)
     else:
         return get_jsonified_error_response('Failure',"get_all_tasks_of_sprint_for_scrum_board Not a GET Request")
+
+
+@app.route('/api/v1/link-tasks-tickets/search',methods=['GET'])
+def get_tasks_tickets_for_multiselect_drop_down():
+    data={}
+    if request.method == 'GET':
+        print('In GET get_tasks_tickets_for_multiselect_drop_down')
+        try:
+            # print("======$$$$+++++++")
+            # print(request.args)
+            search_term=request.args.get('search_term','')
+            project_id=request.args.get('project_id',0)
+            jdb=JirigoLinkTaskTicket({'project_id':project_id,'search_term':search_term})
+            data=jdb.get_tasks_tickets_for_multiselect_drop_down()
+            # print("="*80)
+            # print(data)
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in get_tasks_tickets_for_multiselect_drop_down {error}')
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',"get_tasks_tickets_for_multiselect_drop_down Not a GET Request")
+
+@app.route('/api/v1/link-tasks-tickets/task-ticket/depends-on',methods=['GET'])
+def get_task_or_ticket_depends_on():
+    data={}
+    if request.method == 'GET':
+        print('In GET get_task_or_ticket_depends_on')
+        try:
+            # print("======$$$$+++++++")
+            print(request.args)
+            item_no=request.args.get('item_no','')
+            project_id=request.args.get('project_id',0)
+            jdb=JirigoLinkTaskTicket({'project_id':project_id,'item_no':item_no})
+            data=jdb.get_task_or_ticket_depends_on()
+            # print("="*80)
+            # print(data)
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in get_task_or_ticket_depends_on {error}')
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',"get_task_or_ticket_depends_on Not a GET Request")
+
+@app.route('/api/v1/link-tasks-tickets/task-ticket/related-to',methods=['GET'])
+def get_task_or_ticket_related_to():
+    data={}
+    if request.method == 'GET':
+        print('In GET get_task_or_ticket_related_to')
+        try:
+            # print("======$$$$+++++++")
+            # print(request.args)
+            item_no=request.args.get('item_no','')
+            project_id=request.args.get('project_id',0)
+            jdb=JirigoLinkTaskTicket({'project_id':project_id,'item_no':item_no})
+            data=jdb.get_task_or_ticket_related_to()
+            # print("="*80)
+            # print(data)
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in get_task_or_ticket_related_to {error}')
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',"get_task_or_ticket_related_to Not a GET Request")
+
+@app.route('/api/v1/link-tasks-tickets/task-ticket/duplicated-by',methods=['GET'])
+def get_task_or_ticket_duplicted_by():
+    data={}
+    if request.method == 'GET':
+        print('In GET get_task_or_ticket_duplicted_by')
+        try:
+            # print("======$$$$+++++++")
+            # print(request.args)
+            item_no=request.args.get('item_no','')
+            project_id=request.args.get('project_id',0)
+            jdb=JirigoLinkTaskTicket({'project_id':project_id,'item_no':item_no})
+            data=jdb.get_task_or_ticket_duplicted_by()
+            # print("="*80)
+            # print(data)
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in get_task_or_ticket_depends_on {error}')
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',"get_task_or_ticket_duplicted_by Not a GET Request")
+
+
+
+@app.route('/api/v1/link-tasks-tickets/create-task-ticket-links',methods=['POST'])
+def create_tasks_tickets_links():
+    data={}
+    if request.method == 'POST':
+        print('In POST get_tasks_tickets_for_multiselect_drop_down')
+        try:
+            # print("======$$$$+++++++")
+            print(request.get_json())
+            jdb=JirigoLinkTaskTicket(request.get_json())
+            data=jdb.create_tasks_tickets_links();
+            # data=jdb.get_tasks_tickets_for_multiselect_drop_down()
+            # print("="*80)
+            # print(data)
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in get_tasks_tickets_for_multiselect_drop_down {error}')
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',"get_tasks_tickets_for_multiselect_drop_down Not a GET Request")
 
 
 def get_jsonified_error_response(status,error):

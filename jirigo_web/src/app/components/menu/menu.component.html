@@ -15,8 +15,8 @@
                     <a [routerLink]="['/projects/create-project']" href="#" class="dropdown-item">Create Project</a>
                     <a [routerLink]="['/projects/list-projects']" href="#" class="dropdown-item">List Projects</a>
                     <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item"
-                        style="color:white;background-color:blue">{{currentProjectName}}</a>
+                    <div class="dropdown-item"
+                        style="color:white;background-color:blue">{{currentProjectName}}</div>
                     <div class="dropdown-divider"></div>
                     <a [routerLink]="['/projects/change-project']" href="#" class="dropdown-item"
                         (click)="changeProject($event)">Change Project</a>

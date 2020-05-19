@@ -1,0 +1,78 @@
+<p>ticket-and-task-links works!</p>
+<p-dialog
+  #pDialog
+  [(visible)]="showLinkTaskModal"
+  [modal]="true"
+  [style]="{ width: '35vw' }"
+  [draggable]="false"
+  [responsive]="true"
+>
+  <p-header> Create Links Between Tasks/Tickets</p-header>
+
+  <div class="p-grid" style="height: 380px;padding:'0 0 0 15px';">
+      <div class="p-col-12">
+        <h6>Ticket/Task</h6>
+      </div>
+      <div class="p-col-12">
+        <h4>{{ currentItemNo }}</h4>
+      </div>
+      <div class="p-col-4" style="margin-top: 1.5em;">
+        <label for="">Relationship Type</label>
+      </div>
+      <div class="p-col-8">
+        <p-dropdown
+          [(ngModel)]="relationShipType"
+          [options]="linkReferenceValues"
+          appendTo="body"
+          [style]="{ width: '50%', padding: '0 0 0 2px' }"
+        ></p-dropdown>
+      </div>
+
+      <div class="p-col-4" style="margin-top: 1.8em;">
+        <label for="">Ticket/Task Number(s)</label>
+      </div>
+      <div class="p-col-8">
+        <p-autoComplete
+          [(ngModel)]="selectedTaskTickets"
+          [suggestions]="filteredTaskTickets"
+          (completeMethod)="searchTaskTickets($event)"
+          [minLength]="3"
+          placeholder="Search For Tasks/Tickets"
+          [size]="300"
+          field="code"
+          multiple="true"
+          [style]="{ width: '100%' }"
+          [inputStyle]="{ width: '100%' }"
+        >
+          <ng-template let-group pTemplate="item">
+            <div
+              class="ui-helper-clearfix"
+              style="border-bottom: 1px solid #d5d5d5;"
+            >
+              <div style="font-size: 14px; margin: 10px 10px 0 0;">
+                {{ group.name }}
+              </div>
+            </div>
+          </ng-template>
+        </p-autoComplete>
+      </div>
+  </div>
+  <p-footer>
+    <button
+      type="button"
+      pButton
+      icon="pi pi-check"
+      (click)="createLinks()"
+      label="Create"
+      class="ui-button-primary"
+    ></button>
+    <button
+      type="button"
+      pButton
+      icon="pi pi-times"
+      (click)="closeDialog()"
+      label="Cancel"
+      class="ui-button-warning"
+    ></button>
+  </p-footer>
+</p-dialog>

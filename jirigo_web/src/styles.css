@@ -42,6 +42,20 @@
 .btn-outline-purple-secondary {
   color: #8D47E0;
   border-color: #8D47E0;
+  background-attachment: white;
+
+}
+
+.btn-electricpurple {
+  background-color: #bf00ff;
+  color:white;
+  border-color: #bf00ff;
+}
+
+.btn-outline-lightmagenta-secondary {
+  color: #CD98CA;
+  border-color: #CD98CA;
+  background-attachment: white;
 }
 
 .form-control-plain {
@@ -99,4 +113,23 @@ body {
   display: flex;
   min-height: 100%; 
   flex-direction: column;
+}
+
+
+select:disabled{
+  color:#A7A7A7
+}
+
+.jSelectButtonContainer .ui-buttonset:not(.ui-splitbutton) .ui-button {
+  /* border-top-left-radius: .3em;
+  border-top-right-radius: .3em;
+  border-bottom-left-radius: .3em;
+  border-bottom-right-radius: .3em; */
+  border-left: solid #cccccc .07em;
+  border-right: solid #cccccc .07em;
+  background: white;
+}
+
+.jSelectButtonContainer .ui-buttonset:not(.ui-splitbutton)  .ui-state-active {
+  background-color: #007BFC !important;
 }

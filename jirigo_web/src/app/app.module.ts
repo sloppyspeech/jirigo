@@ -27,6 +27,7 @@ import { DragDropModule  } from 'primeng/dragdrop';
 import { PanelModule  } from 'primeng/panel';
 import { DynamicDialogModule  } from 'primeng/dynamicdialog';
 import { RadioButtonModule } from 'primeng/radiobutton';
+import { DropdownModule} from 'primeng/dropdown'
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { LoginComponent } from './components/login/login.component';
@@ -37,7 +38,6 @@ import { RegisterComponent } from './components/register/register.component';
 import { LogoutComponent } from './components/logout/logout.component';
 import { MenuComponent } from './components/menu/menu.component';
 import { DebugComponent } from './components/debug/debug.component';
-
 import { UtilsService  } from './services/shared/utils.service';
 @NgModule({
   declarations: [
@@ -49,7 +49,7 @@ import { UtilsService  } from './services/shared/utils.service';
     RegisterComponent,
     LogoutComponent,
     MenuComponent,
-    DebugComponent
+    DebugComponent    
   ],
   imports: [
     BrowserModule,
@@ -77,6 +77,7 @@ import { UtilsService  } from './services/shared/utils.service';
     PanelModule,
     DynamicDialogModule,
     RadioButtonModule,
+    DropdownModule,
     FontAwesomeModule
   ],
   providers: [UtilsService],

@@ -1,0 +1,87 @@
+<div class="container-fluid" style="background-color: white; ">
+    <div *ngFor="let rel of listRelatedTo">
+        <div class="row" style="border-bottom-style: solid; border-bottom-color: #E6E6E6; border-bottom-width: 1px;">
+            <div class="col-lg-12">
+                <div class="row" style="padding:10px 0 0 0;">
+                    <div class="col-lg-12 col-md-12">
+                        <span class="item-no-text" >
+                            {{rel.item_no}}
+                        </span>
+                        <span class="summary-text" >
+                            {{rel.summary}}
+                        </span>
+                    </div>
+                </div>
+                <div class="row" style="padding:8px 0 15px 0;">
+                    <div class="col-lg-1 col-md-1 bottom-detail-right-border item-details-text" >
+                        {{rel.item_type}}
+                    </div>
+                    <div class="col-lg-1 col-md-1 bottom-detail-right-border item-details-text">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="row">
+                                    <div class="col-12">
+                                    {{rel.issue_type}}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 ">
+                                        <span class="item-details-labels">Type</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-1 col-md-1 bottom-detail-right-border item-details-text">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="row">
+                                    <div class="col-12">
+                                    {{rel.issue_status}}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 ">
+                                        <span class="item-details-labels">Status</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-1 col-md-1 bottom-detail-right-border item-details-text">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="row">
+                                    <div class="col-12">
+                                    {{rel.severity}}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 ">
+                                        <span class="item-details-labels">Severity</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-1 col-md-1 bottom-detail-right-border item-details-text">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="row">
+                                    <div class="col-12">
+                                    {{rel.priority}}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 ">
+                                        <span class="item-details-labels">Priority</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

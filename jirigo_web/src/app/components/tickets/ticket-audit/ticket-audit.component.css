@@ -20,3 +20,32 @@
     padding : 0px 0 0px 0;
     color: #DFE5EB;
   }
+
+  .bottom-detail-right-border{
+    border-right-style: solid; 
+    border-right-color: #E6E6E6; 
+    border-right-width: 1px;
+}
+.summary-text{
+    padding-left: 15px;
+    color: #628cB5;
+}
+.item-no-text{
+    color: #313437;
+}
+.item-details-text{
+    color: #ABACAE;
+}
+
+.item-details-text-overflow{
+  color: #ABACAE;
+  text-overflow: ellipsis;
+  overflow: hidden; 
+  white-space: nowrap; 
+}
+
+.item-details-labels{
+    color: #ABACAE;
+    font-size:12px;
+    padding:0 10px 0 0;
+}

@@ -41,4 +41,7 @@ export class StaticDataService {
     return this._httpCli.get<any>(this.apiEndPoint+"/all-sprint-refs/"+project_id);
   }
 
+  getRefForTaskTicketLinks(project_id){
+    return this._httpCli.get<any>(this.apiEndPoint+"/task-ticket-link-refs/"+project_id);
+  }
 }

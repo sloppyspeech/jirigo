@@ -12,6 +12,8 @@ import { NgxSpinnerService } from "ngx-spinner";
 
 import { Observable, of } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, map, tap, switchMap } from 'rxjs/operators';
+// import { faCalendar} from '@fortawesome/free-solid-svg-icons';
+import { faCalendar} from  '@fortawesome/free-regular-svg-icons';
 
 @Component({
   selector: 'app-task-details',
@@ -39,6 +41,8 @@ export class TaskDetailsComponent implements OnInit {
   retUserNameVal = [];
   retUserNameArr = [];
 
+  faCalendar=faCalendar;
+  currentDate:any;
 
   constructor(private _staticRefData: StaticDataService,
     private _serNgxSpinner: NgxSpinnerService,
@@ -51,8 +55,7 @@ export class TaskDetailsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
-
+    this.currentDate = new Date().toISOString().substring(0, 10);
   }
 
   ngAfterViewInit() {
@@ -137,15 +140,21 @@ export class TaskDetailsComponent implements OnInit {
 
         }
         else {
+          //Set Defaults While Creating tasks
           // Status should be Open while creating the ticket
           console.log("------@@@@@@@@@@ In Creation of Task @@@@@@@@------");
           console.log("ticketIssueStatusesRef:" + JSON.stringify(this.taskIssueStatusesRef));
+          console.log(this.currentDate);
           this.taskIssueStatusesRef.forEach(ele => {
             if (ele['name'].toUpperCase() === 'OPEN') {
-              this.taskIssueStatusesRef = [{ "name": ele['name'] }];
               console.log("Only Open Status for Opening " + JSON.stringify(this.taskIssueStatusesRef));
+              this.taskIssueStatusesRef = [{ "name": ele['name'] }];
+              this.parentForm.get('fctlIssueStatus').setValue(ele['name']);
             }
           });
+          this.parentForm.get('fctlReportedBy').setValue(localStorage.getItem('loggedInUserName'));
+          this.parentForm.get('fctlAssigneeName').setValue(localStorage.getItem('loggedInUserName'));
+          this.parentForm.get('fctlReportedDate').setValue(this._serUtils.parseDateAsYYYYMMDD(this.currentDate));
         }
       }
       );

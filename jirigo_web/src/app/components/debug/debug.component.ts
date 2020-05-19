@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, FormControl, Validators} from '@angular/forms';
 import {Router,ActivatedRoute} from '@angular/router';
+import {TaskTicketLinkService} from '../../services/task-ticket-links/task-ticket-link.service';
 @Component({
   selector: 'app-debug',
   templateUrl: './debug.component.html',
@@ -20,11 +21,13 @@ export class DebugComponent implements OnInit {
     {name: 'Kanban', code: 'Kanban'},
     {name: 'ScrumBan', code: 'ScrumBan'}
   ];
-
+  filteredTaskTickets:any=[];
+  selectedTaskTickets:any=[];
 
   debugFG: FormGroup;
 
-  constructor(private _formBuilder: FormBuilder,private _router:Router) {
+  constructor(private _formBuilder: FormBuilder,private _router:Router,
+              private _taskTicketLinkSer:TaskTicketLinkService) {
   }
 
   ngOnInit(): void {
@@ -50,5 +53,20 @@ export class DebugComponent implements OnInit {
     console.log(pp.target.value);
     this.debugFG.get('fctlParentProject').setValue(pp);
   }
-
+  searchTaskTickets(event){
+    let queryRes:any[]=[];
+    console.log(event);
+    let query = event.query;
+    this._taskTicketLinkSer.getTasksTicketsForLinkDropDown({'project_id':'4','search_term':query})
+        .subscribe(res=>{
+          if(res['dbQryStatus']=="Success"){
+            res['dbQryResponse'].forEach(item => {
+              //}
+              queryRes.push({name:item['item_no']+' : ' + item['summary'],code:item['item_no']});
+            });
+          }
+          this.filteredTaskTickets=queryRes;
+          console.log(this.filteredTaskTickets)
+        });
+  }
 }

@@ -297,9 +297,9 @@ class JirigoRefMaster(object):
             cursor=self.jdb.dbConn.cursor()
             cursor.execute(query_sql,values)
             json_data=cursor.fetchone()[0]
-            print("*"*56)
-            print(json_data)
-            print("*"*56)
+            # print("*"*56)
+            # print(json_data)
+            # print("*"*56)
             row_count=cursor.rowcount
             self.logger.debug(f'get_all_task_refs Select Success with {row_count} row(s) data {json_data}')
             response_data['dbQryStatus']='Success'
@@ -521,4 +521,40 @@ class JirigoRefMaster(object):
             return response_data
         except  (Exception, psycopg2.Error) as error:
                 print(f'Error While Updating update_reference  {error}')
+                raise
+    
+    def get_all_task_ticket_link_references(self):
+        response_data={}
+        self.logger.debug("Inside get_all_task_ticket_link_references")
+        query_sql="""  
+                    WITH t AS (
+                            SELECT
+                                ref_id,ref_category,ref_name,ref_value
+                            FROM 
+                                tref_master
+                            WHERE project_id=coalesce(%s,project_id)
+                              AND ref_category='GENERAL'
+                              AND ref_name='Task Ticket Links'
+                              AND is_active='Y'
+                            ORDER BY order_id
+                        )
+                        SELECT json_agg(t) from t;
+                   """
+        self.project_id = None if self.project_id == '' else self.project_id
+
+        values=(self.project_id,)
+        self.logger.debug(f'Select : {query_sql} values {values}')
+        try:
+            print('-'*80)
+            cursor=self.jdb.dbConn.cursor()
+            cursor.execute(query_sql,values)
+            json_data=cursor.fetchone()[0]
+            row_count=cursor.rowcount
+            self.logger.debug(f'get_all_task_ticket_link_references Success with {row_count} row(s) data {json_data}')
+            response_data['dbQryStatus']='Success'
+            response_data['dbQryResponse']=json_data
+            return response_data
+        except  (Exception, psycopg2.Error) as error:
+            if(self.jdb.dbConn):
+                print(f'Error In get_all_task_ticket_link_references {error}')
                 raise
