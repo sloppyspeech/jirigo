@@ -1,0 +1,122 @@
+<p>timelog works!</p>
+<div class="container-fluid" style="background-color: white; ">
+    <div *ngFor="let logentry of listTimeLogEntries">
+        <div class="row" style="border-bottom-style: solid; border-bottom-color: #E6E6E6; border-bottom-width: 1px;">
+            <div class="col-lg-12">
+                <!-- <div class="row" style="padding:10px 0 0 0;">
+                    <div class="col-lg-12 col-md-12">
+                        <span class="item-no-text" >
+                            {{logentry.task_no}}
+                        </span>
+                        <span class="summary-text" >
+                            {{logentry.task_no}}
+                        </span>
+                    </div>
+                </div> -->
+
+
+                <div class="row" style="padding:8px 0 15px 0;">
+                    <div class="col-lg-1 col-md-1 bottom-detail-right-border item-details-text">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="row">
+                                    <div class="col-12">
+                                    {{logentry.time_spent_by}}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 ">
+                                        <span class="item-details-labels">Who?</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="col-lg-1 col-md-1 bottom-detail-right-border item-details-text" >
+                        {{logentry.activity}}
+                    </div> -->
+                    <div class="col-lg-1 col-md-1 bottom-detail-right-border item-details-text">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="row">
+                                    <div class="col-12">
+                                    {{logentry.actual_time_spent | numToHHMI}}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 ">
+                                        <span class="item-details-labels">How Much?</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-1 col-md-1 bottom-detail-right-border item-details-text">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="row">
+                                    <div class="col-12">
+                                        {{logentry.activity}}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 ">
+                                        <span class="item-details-labels">On?</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-1 col-md-1 bottom-detail-right-border item-details-text">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="row">
+                                    <div class="col-12">
+                                    {{logentry.actual_date | date : 'dd MMM yyyy'}}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 ">
+                                        <span class="item-details-labels">When?</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="logentry.activity =='Other Activity'" class="col-lg-2 col-md-2 bottom-detail-right-border item-details-text">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="row">
+                                    <div class="col-12">
+                                    {{logentry.activity_comment}}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 ">
+                                        <span class="item-details-labels">Other Activity Comment</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div> 
+                    <div class="col-lg-3 col-md-3 bottom-detail-right-border item-details-text">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="row">
+                                    <div class="col-12">
+                                    {{logentry.timelog_comment}}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 ">
+                                        <span class="item-details-labels">Comment</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

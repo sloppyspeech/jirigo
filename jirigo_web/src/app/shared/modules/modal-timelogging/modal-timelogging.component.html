@@ -1,0 +1,123 @@
+<form [formGroup]="modTimeLogFG">
+  <div class="modal fade in" id="idLogTime" role="dialog" style="display: block;"
+    [style.display]="showTimeLoggerModal ? 'block' : 'none'">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="logTimeHeader">{{modalTitle}}</h5>
+        </div>
+        <div class="modal-body">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-md-12">
+
+                <div class="row">
+                  <div class="form-group col-md-12">
+                    <label for="">Time Spent <span class="required-field"></span></label>
+                    <div class="row">
+                      <div class="col-lg-12">
+                        <div class="row">
+                          <div class="col-lg-8 input-group ">
+                            <input #inpHours formControlName="fctlHours" type="number" class="form-control col-lg-3" name="" id=""
+                              aria-describedby="helpId" placeholder="HH" min="0" max="23" maxlength="2"
+                              required />
+                            <div  class="col-lg-2 text-muted" style="padding:6px 0 0 5px; font-size:18px;">Hrs</div>
+                            <input #inpMinutes formControlName="fctlMinutes" type="number" class="form-control  col-lg-3" name="" id=""
+                              aria-describedby="helpId" placeholder="MI" maxlength="2"
+                              step="15" min="0" max="59" required />
+                              <div  class="col-lg-2 text-muted" style="padding:6px 0 0 5px; font-size:18px;">Mins</div>
+
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                    <!-- <small id="helpId" class="form-text text-muted">Enter time in HH:MM format e.g 02:30
+                      for 2 hrs 30 mins</small> -->
+                    <small *ngIf="modTimeLogFG.get('fctlHours').hasError('required') && ( modTimeLogFG.get('fctlHours').dirty || modTimeLogFG.get('fctlHours').touched) " style="color:red">{{errorMessages['hoursValid']}}<br></small>
+                    <small *ngIf="modTimeLogFG.get('fctlMinutes').hasError('required') && ( modTimeLogFG.get('fctlMinutes').dirty || modTimeLogFG.get('fctlMinutes').dirty) " style="color:red">{{errorMessages['minutesValid']}}<br></small>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="form-group col-md-6 col-lg-6">
+                    <label class="col-form-label">Activity Date<span class="required-field"></span></label>
+                    <div class="input-group ">
+                      <input #inpActualDate formControlName="fctlActivityDate" class="form-control " placeholder="yyyy-mm-dd" name="md" ngbDatepicker
+                        #md="ngbDatepicker" (click)="md.toggle()" 
+                         required />
+                      <div class="input-group-append">
+                        <span (click)="md.toggle()" class="oi oi-calendar"
+                          style="font-size: 2.25em;padding: 3px 0 0 0; margin: 0 0 0 5px;"></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="form-group col-md-8">
+                    <label for="" class="col-form-label">Activity <span class="required-field"></span></label>
+                    <select #inpSelectedActivity formControlName="fctlActivity" class="form-control" name="" id=""
+                      >
+                      <option value="" selected >Choose Activity...</option>
+                      <option *ngFor="let activity of activityList">{{activity}}</option>
+                      <option value="Other Activity">Other Activity</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="row" *ngIf="modTimeLogFG.get('fctlActivity').value =='Other Activity'">
+                  <div class="form-group col-md-8">
+                    <label for="" class="col-form-label">Other Activity Comment</label>
+                    <input #inpOtherActivityComment formControlName="fctlOtherActivityComment" type="text" class="form-control" name="" id=""
+                      aria-describedby="helpId" placeholder="Other...."
+                      />
+
+                  </div>
+                </div>
+                <div>
+                  <!-- <small>{{modTimeLogFG.get('fctlHours').hasError('required') }}:</small>
+                  <small>{{modTimeLogFG.get('fctlHours').dirty }}:</small>
+                  <small>{{modTimeLogFG.get('fctlHours').touched }}:</small>
+                  <small>{{modTimeLogFG.get('fctlHours').valid }}:</small>
+                  <small>{{modTimeLogFG.get('fctlHours').invalid }}:</small>
+                  <br>
+                  <small>{{modTimeLogFG.get('fctlMinutes').hasError('required') }}:</small>
+                  <small>{{modTimeLogFG.get('fctlMinutes').dirty }}:</small>
+                  <small>{{modTimeLogFG.get('fctlMinutes').touched }}:</small>
+                  <small>{{modTimeLogFG.get('fctlMinutes').valid }}:</small>
+                  <small>{{modTimeLogFG.get('fctlMinutes').invalid }}:</small>
+                  <br>
+                  <small>{{modTimeLogFG.get('fctlActivityDate').hasError('required') }}:</small>
+                  <small>{{modTimeLogFG.get('fctlActivityDate').dirty }}:</small>
+                  <small>{{modTimeLogFG.get('fctlActivityDate').touched }}:</small>
+                  <small>{{modTimeLogFG.get('fctlActivityDate').valid }}:</small>
+                  <small>{{modTimeLogFG.get('fctlActivityDate').invalid }}:</small>
+                  <br>-->
+                  <h6>{{modTimeLogFG.valid }}:</h6> 
+
+                </div>
+                <div class="row">
+                                <div class="form-group col-lg-12">
+                                    <label for="" class="col-form-label">Comment <small id="helpId"
+                                            class=" text-muted">(If any)</small></label>
+                                    <textarea formControlName="fctlActivityComment" class="form-control" name="" id="" rows="3"
+                                        ></textarea>
+                                </div>
+                            </div>
+                <small *ngFor="let error of errorList" style="color:red">{{error}}<br></small>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="cancelTimeLog()">
+            {{cancelLabel}}
+          </button>
+          <button type="button" class="btn btn-primary" (click)="confirmTimeLog()">{{confirmLabel}}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+<button id="openModal" #openModal [hidden]="true" data-toggle="modal" data-target="#idLogTime"></button>

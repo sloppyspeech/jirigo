@@ -6,28 +6,35 @@
     <div class="row " *ngIf="viewEditFormEditBtnEnabled">
       <div class="col-md-6 col-sm-12 col-lg-6 ">
         <div class="row">
-        <div class="col-md-3 col-lg-3 ">
-          <button type="button" label="Modify Task" class="btn btn-warning" (click)="markFormEditable()"
-            style="margin-right: 10px; color:white;">
-            <fa-icon [icon]="faEdit" style="padding-right: 3px; color: white;"></fa-icon>Modify Task
-          </button>
-        </div>
-        <div class="col-md-3 col-lg-3">
-          <button type="button" label="Clone Task" class="btn btn-purple" (click)="cloneTask()">
-            <fa-icon [icon]="faClone" style="color: white;"></fa-icon>&nbsp;
-            Clone Task
-          </button>
-        </div>
-        <div class="col-md-3 col-lg-3">
-          <button type="button" label="Clone Task" class="btn btn-electricpurple" (click)="showLinksModal($event)">
-            <fa-icon [icon]="faLink" style="color: white;"></fa-icon>&nbsp;
-            Link Task
-          </button>
+          <div class="col-md-3 col-lg-3 ">
+            <button type="button" label="Modify Task" class="btn btn-warning" (click)="markFormEditable()"
+              style="margin-right: 10px; color:white;">
+              <fa-icon [icon]="faEdit" style="padding-right: 3px; color: white;"></fa-icon>Modify Task
+            </button>
+          </div>
+          <div class="col-md-3 col-lg-3">
+            <button type="button" label="Clone Task" class="btn btn-purple" (click)="cloneTask()">
+              <fa-icon [icon]="faClone" style="color: white;"></fa-icon>&nbsp;
+              Clone Task
+            </button>
+          </div>
+          <div class="col-md-3 col-lg-3">
+            <button type="button" label="Clone Task" class="btn btn-electricpurple" (click)="showLinksModal($event)">
+              <fa-icon [icon]="faLink" style="color: white;"></fa-icon>&nbsp;
+              Link Task
+            </button>
+          </div>
+          <div class="col-md-3 col-lg-3">
+            <button type="button" label="Clone Task" class="btn btn-blandviolet" (click)="mtl.openMod()"
+              >
+              <fa-icon [icon]="faClock" style="color: white;"></fa-icon>&nbsp;
+              Log Time
+            </button>
+          </div>
         </div>
       </div>
     </div>
-    </div>
-    
+
     <br />
     <div class="card">
       <div class="card-header" style="width: auto;">
@@ -56,12 +63,13 @@
   <div class="jSelectButtonContainer">
     <p-selectButton [options]="tabs" formControlName="fctlTabOptions" (onChange)="tabSelected($event)"></p-selectButton>
   </div>
-  <app-task-details [parentForm]="viewModifyTaskFB" *ngIf="buttonGroupOptions.showTaskDetails"></app-task-details>
+  <app-task-details [parentForm]="viewModifyTaskFB" *ngIf="buttonGroupOptions.showTaskDetails" ></app-task-details>
   <app-task-comments [parentForm]="viewModifyTaskFB" *ngIf="buttonGroupOptions.showTaskComments"></app-task-comments>
   <app-audit-task [parentForm]="viewModifyTaskFB" *ngIf="buttonGroupOptions.showAudit"></app-audit-task>
   <app-depends-on [currentTaskTicketNo]="task_no" *ngIf="buttonGroupOptions.showDependsOn"></app-depends-on>
   <app-related-to [currentTaskTicketNo]="task_no" *ngIf="buttonGroupOptions.showRelatedTo"></app-related-to>
   <app-duplicated-by [currentTaskTicketNo]="task_no" *ngIf="buttonGroupOptions.showDuplicatedBy"></app-duplicated-by>
+  <app-timelog [currentTaskNo]="task_no" *ngIf="buttonGroupOptions.showTimeLog"></app-timelog>
 
   <div class="panel">
     <!-- <div class="card-header">Audit</div> -->
@@ -69,7 +77,7 @@
       <div class="form-group">
         <div class="row container-fluid">
           <div class="align-self-end ml-auto">
-            <input type="button" value="Cancel" id="summary" class="btn btn-secondary" (click)="cancelViewEditForm()" />
+            <input type="button" value="Cancel" id="id_cancelViewEdit" class="btn btn-secondary" (click)="cancelViewEditForm()" />
           </div>
           <div class="align-self-center mx-auto">
             <input type="submit" [disabled]="!viewModifyTaskFB.valid || !viewModifyTaskFB.touched" value="Update"
@@ -80,9 +88,10 @@
     </div>
   </div>
 
-  <p-dialog header="Unsaved Data Alert" [(visible)]="displayPageDirtyDialog" [style]="{ width: '50vw' }"
-    [baseZIndex]="10000">
-    There are unsaved Items on this page. Do you want to leave without saving ?
+  <p-dialog header="Unsaved Data Alert" [(visible)]="displayPageDirtyDialog" [style]="{ width: '35vw' }">
+    <div style="height: 40px;padding-top:10px;">
+      There are unsaved Items on this page. Do you want to leave without saving ?
+    </div>
     <p-footer>
       <button type="button" pButton icon="pi pi-check" (click)="showDirtyPageDialog(true)" label="Yes"></button>
       <button type="button" pButton icon="pi pi-times" (click)="showDirtyPageDialog(false)" label="No"
@@ -91,9 +100,16 @@
   </p-dialog>
 </form>
 
-  <app-ticket-and-task-links
-    *ngIf="showLinkTaskModal"
-    [currentItemNo]="task_no"
-    (linkModalClosed)="disableShowLinksModal()"
-  >
-  </app-ticket-and-task-links>
+<app-ticket-and-task-links *ngIf="showLinkTaskModal" [currentItemNo]="task_no"
+  (linkModalClosed)="disableShowLinksModal()">
+</app-ticket-and-task-links>
+
+<m-modal-timelogging  #mtl 
+  [show-time-logger]="showMod2" 
+  [activity-list]="activitiesToLogTime" 
+  [cancel-label]="'Discard'"
+  (cancelled)="timeLoggerCancelled();"
+  (confirmed)="timeLoggerConfirmed($event);"
+>
+
+</m-modal-timelogging>

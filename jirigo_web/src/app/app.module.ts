@@ -49,7 +49,7 @@ import { UtilsService  } from './services/shared/utils.service';
     RegisterComponent,
     LogoutComponent,
     MenuComponent,
-    DebugComponent    
+    DebugComponent
   ],
   imports: [
     BrowserModule,

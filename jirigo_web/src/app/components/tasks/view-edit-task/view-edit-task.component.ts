@@ -1,12 +1,14 @@
+import { Subscription } from 'rxjs';
 import { UtilsService } from './../../../services/shared/utils.service';
 import { NgModule, Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { StaticDataService } from '../../../services/static-data.service';
 import { TaskDetailsService } from '../../../services/tasks/task-details.service';
+import { TaskLogtimeService} from '../../../services/tasks/task-logtime.service';
 import { ActivatedRoute } from '@angular/router';
 import { NgxSpinnerService  } from 'ngx-spinner';
 import { Router  } from '@angular/router';
-import { faClone,faEdit, faTshirt,faLink } from '@fortawesome/free-solid-svg-icons';
+import { faClone,faEdit, faTshirt,faLink,faClock } from '@fortawesome/free-solid-svg-icons';
 import { MessageService} from 'primeng/api';
 
 @Component({
@@ -20,6 +22,7 @@ export class ViewEditTaskComponent implements OnInit {
   faClone=faClone;
   faEdit=faEdit;
   faLink=faLink;
+  faClock=faClock;
   isLoaded: boolean = false;
   viewEditFormEditBtnEnabled:boolean=true;
   viewModifyTaskFB: FormGroup;
@@ -39,10 +42,12 @@ export class ViewEditTaskComponent implements OnInit {
     showAudit:false,
     showDependsOn:false,
     showRelatedTo:false,
-    showDuplicatedBy:false
+    showDuplicatedBy:false,
+    showTimeLog:false
   };
-
+  showMod2:boolean=false;
   showLinkTaskModal:boolean=false;
+  activitiesToLogTime:any[]=[];
 
   tabs:any[]=[
     {label:'Task Details',value:'showTaskDetails'},
@@ -50,7 +55,8 @@ export class ViewEditTaskComponent implements OnInit {
     {label:'Audit Log',value:'showAudit'},
     {label:'Depends On',value:'showDependsOn'},
     {label:'Related To',value:'showRelatedTo'},
-    {label:'Duplicated By',value:'showDuplicatedBy'}
+    {label:'Duplicated By',value:'showDuplicatedBy'},
+    {label:'Time Logged',value:'showTimeLog'}
   ];
 
   editorStyle = {
@@ -86,7 +92,8 @@ export class ViewEditTaskComponent implements OnInit {
     private _serNgxSpinner:NgxSpinnerService,
     private _router:Router,
     private _toastService: MessageService,
-    private _serLogMsg:UtilsService) {
+    private _serTaskLogTime:TaskLogtimeService,
+    private _serUtils:UtilsService) {
 
       this.viewModifyTaskFB = this._formBuilder.group({
         fctlTaskId: new FormControl({ value: '', disabled: true }),
@@ -127,40 +134,40 @@ export class ViewEditTaskComponent implements OnInit {
     this._staticRefData.getRefTaskMaster(localStorage.getItem('currentProjectId'))
       .then(res => {
         console.log(res);
-        
         console.log('Activated Route check');
         console.log(this.task_no);
-        
-        this._serTaskDetails.getTaskDetails(this.task_no)
-          .then(res => {
-            console.log("Inside Response this._serTaskDetails.getRefMaster");
-            console.log('------------')
-            console.log(res);
-            console.log(res['dbQryResponse']);
-            console.log(res['dbQryStatus']);
-            this.task_data = {
-              "dbQryResponse": res['dbQryResponse'][0],
-              "dbQryStatus": res['dbQryStatus']
-            };
-            console.log('------*******--------');
-            console.log(this.task_data['dbQryResponse']);
-            console.log('------@@@@@@@--------');
-            console.log(this.task_data.dbQryResponse);
-            this.task_data = this.task_data.dbQryResponse;
-            this.task_no=this.task_data.task_no;
-            this.viewModifyTaskFB.get('fctlTaskNo').setValue(this.task_data.task_no);
-            this.viewModifyTaskFB.get('fctlSummary').setValue(this.task_data.summary);
-            this.viewModifyTaskFB.get('fctlDescription').setValue(this.task_data.description);
-            console.log('------@@@@fctlReportedDate@@@--------');
-            console.log(this.viewModifyTaskFB.get('fctlReportedDate').value);
-            this.isLoaded = true;
-            this._serNgxSpinner.hide();
-            this.viewModifyTaskFCList=this.viewModifyTaskFB.controls;
-            this.setInitialDataFormValues();
-            this.viewModifyTaskFB.get('fctlTabOptions').setValue('Task Details');
-          });
-      }
-      );
+        this.activitiesToLogTime = res.IssueStatuses;
+
+      });
+      
+      this._serTaskDetails.getTaskDetails(this.task_no)
+        .then(res => {
+          console.log("Inside Response this._serTaskDetails.getRefMaster");
+          console.log('------------')
+          console.log(res);
+          console.log(res['dbQryResponse']);
+          console.log(res['dbQryStatus']);
+          this.task_data = {
+            "dbQryResponse": res['dbQryResponse'][0],
+            "dbQryStatus": res['dbQryStatus']
+          };
+          console.log('------*******--------');
+          console.log(this.task_data['dbQryResponse']);
+          console.log('------@@@@@@@--------');
+          console.log(this.task_data.dbQryResponse);
+          this.task_data = this.task_data.dbQryResponse;
+          this.task_no=this.task_data.task_no;
+          this.viewModifyTaskFB.get('fctlTaskNo').setValue(this.task_data.task_no);
+          this.viewModifyTaskFB.get('fctlSummary').setValue(this.task_data.summary);
+          this.viewModifyTaskFB.get('fctlDescription').setValue(this.task_data.description);
+          console.log('------@@@@fctlReportedDate@@@--------');
+          console.log(this.viewModifyTaskFB.get('fctlReportedDate').value);
+          this.isLoaded = true;
+          this._serNgxSpinner.hide();
+          this.viewModifyTaskFCList=this.viewModifyTaskFB.controls;
+          this.setInitialDataFormValues();
+          this.viewModifyTaskFB.get('fctlTabOptions').setValue('Task Details');
+        });
   }
 
   setInitialDataFormValues(){
@@ -357,4 +364,30 @@ disableShowLinksModal(){
   this.showLinkTaskModal=false;
   this.reloadComponent();
 }
+
+timeLoggerCancelled(){
+  console.log('timeLoggerCancelled called ');
+}
+
+timeLoggerConfirmed(data){
+  console.log('timeLoggerConfirmed called ');
+  console.log(data);
+  let adate=new Date(data['actualDate']['year'],data['actualDate']['month']-1,data['actualDate']['day']);
+  console.log(adate);
+  let inpData={
+    task_no:this.task_no,
+    activity:data['selectedActivity'],
+    actual_time_spent:data['loggedTime'],
+    other_activity_comment:data['otherActivity'],
+    timelog_comment:data['comment'],
+    time_spent_by:localStorage.getItem('loggedInUserId'),
+    actual_date: adate
+  }
+console.log(inpData);
+  this._serTaskLogTime.createTimeLog(inpData)
+      .subscribe(res=>{
+        console.log(res);
+      });
+}
+
 }

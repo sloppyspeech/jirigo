@@ -82,13 +82,15 @@
 
 
         </ul>
+        
         <ul class="nav navbar-nav ml-auto" *ngIf="loggedIn">
             <li class="nav-item dropdown">
-                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">{{
-              loggedInUserName
-            }}</a>
+                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">
+                    <img src="http://localhost:9001/api/v1/image-management/get-image/4?val=3" alt="MyImage" sizes="" srcset="" style="width:40px;height:40px;border-radius: 50%; margin: 0 10px 0 0;">
+                    {{loggedInUserName}}
+                </a>
                 <div class="dropdown-menu dropdown-menu-right">
-                    <a href="#" class="dropdown-item">Profile</a>
+                    <!-- <a href="#" class="dropdown-item">Profile</a> -->
                     <div class="dropdown-divider"></div>
                     <a [routerLink]="['/logout']" class="dropdown-item">Logout</a>
                 </div>

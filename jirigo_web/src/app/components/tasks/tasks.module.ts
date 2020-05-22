@@ -32,7 +32,9 @@ import { TicketAndTaskLinksComponent } from '../common/ticket-and-task-links/tic
 import { DependsOnComponent } from './relationships/depends-on/depends-on.component';
 import { RelatedToComponent } from './relationships/related-to/related-to.component';
 import { DuplicatedByComponent } from './relationships/duplicated-by/duplicated-by.component';
-
+import { ModalTimeloggingModule} from '../../shared/modules/modal-timelogging/modal-timelogging.module';
+import { TimelogComponent } from './timelog/timelog.component';
+import { NumToHhmiPipe} from '../../shared/pipes/num-to-hhmi.pipe';
 @NgModule({
   declarations: [
     CreateTaskComponent,
@@ -44,7 +46,9 @@ import { DuplicatedByComponent } from './relationships/duplicated-by/duplicated-
     TicketAndTaskLinksComponent,
     DependsOnComponent,
     RelatedToComponent,
-    DuplicatedByComponent
+    DuplicatedByComponent,
+    TimelogComponent,
+    NumToHhmiPipe
   ],
   imports: [
     CommonModule,
@@ -65,7 +69,8 @@ import { DuplicatedByComponent } from './relationships/duplicated-by/duplicated-
     ToastModule,
     DropdownModule,
     MultiSelectModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    ModalTimeloggingModule
   ]
 })
 export class TasksModule { }

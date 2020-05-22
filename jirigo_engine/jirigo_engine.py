@@ -1,8 +1,10 @@
 from flask import Flask
-from flask import request,jsonify,make_response,Response,json
+from flask import request,jsonify,make_response,Response,json,send_from_directory,send_file
 from flask_cors import CORS,cross_origin
 import pprint
 import sys
+import os
+import uuid
 from services.dbservice.tickets.tickets_service import JirigoTicket
 from services.dbservice.projects_service import JirigoProjects
 from services.dbservice.users_service import JirigoUsers
@@ -17,9 +19,20 @@ from services.dbservice.tasks.tasks_dashboard_service import JirigoTaskDashboard
 from services.dbservice.sprints.sprints_service import JirigoSprints
 from services.dbservice.boards.scrum.scrumboard_service import JirigoScrumBoard
 from services.dbservice.link_tasks_tickets.link_task_ticket import JirigoLinkTaskTicket
+from services.dbservice.tasks.tasks_timelogging_service import JirigoTasksLogTime
+from services.dbservice.images.image_service import JirigoImages
+
+#-------------------
+UPLOAD_FOLDER='./uploaded_files'
+UPLOAD_IMAGE_FOLDER='images'
+UPLOAD_FILE_FOLDER='files'
+ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
+#-------------------
 
 app=Flask(__name__)
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
+print(os.path.abspath(UPLOAD_FOLDER))
+app.config['UPLOAD_FOLDER']=os.path.abspath(UPLOAD_FOLDER)
 
 @app.route('/api/v1/')
 def def_route(methods=['GET']):
@@ -967,6 +980,116 @@ def create_tasks_tickets_links():
     else:
         return get_jsonified_error_response('Failure',"get_tasks_tickets_for_multiselect_drop_down Not a GET Request")
 
+@app.route('/api/v1/timelogger/log-time',methods=['POST'])
+def create_timelog_entry():
+    data={}
+    if request.method == 'POST':
+        print('In POST create_timelog_entry')
+        try:
+            # print("======$$$$+++++++")
+            print(request.get_json())
+            jdb=JirigoTasksLogTime(request.get_json())
+            data=jdb.create_timelog_entry();
+            # data=jdb.get_tasks_tickets_for_multiselect_drop_down()
+            # print("="*80)
+            # print(data)
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in create_timelog_entry {error}')
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',"create_timelog_entry Not a GET Request")
+
+
+@app.route('/api/v1/timelogger/get-task-timelog/<task_no>',methods=['GET'])
+def get_timelog_entries_for_task(task_no):
+    data={}
+    if request.method == 'GET':
+        print('In GET get_timelog_entries_for_task')
+        try:
+            jdb=JirigoTasksLogTime({'task_no':task_no})
+            data=jdb.get_timelog_entries_for_task()
+            # print("="*80)
+            # print(data)
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in get_task_or_ticket_depends_on {error}')
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',"get_timelog_entries_for_task Not a GET Request")
+
+
+@app.route('/api/v1/image-manager/image',methods=['POST'])
+def save_image():
+    data={}
+    print('@'*80)
+    if request.method == 'POST':
+        try:
+            if 'file' not in request.files:
+                print('No file part')
+                return app.response_class(response=json.dumps({'retval':"No File Name present"}),
+                                  status=500,
+                                  mimetype='application/json')
+            else:
+                print('file is present')
+
+            print('In POST save_image')
+            print(request.form)
+            print(request.files)
+            file=request.files['file']
+            file_name=file.filename
+            created_by=request.form['created_by']
+            print(file_name)
+            print(created_by)
+            fname,extension=file_name.split('.')
+            image_uuid=uuid.uuid4()
+            new_file_name=f'{image_uuid}.{extension}'
+            print(new_file_name)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], new_file_name))
+            jdb=JirigoImages({'image_name':new_file_name,'image_display_name':file_name,'image_uuid':image_uuid,'created_by':created_by})
+            data=jdb.save_image_metadata_to_db()
+            response = app.response_class(
+                            response=json.dumps({
+                                    'retval':"ImageUpload Successful",
+                                    'image_url':os.path.join(app.config['UPLOAD_FOLDER'], new_file_name)
+                                    }),
+                            status=200,
+                             mimetype='application/json'
+                        )
+            return response
+            # return send_from_directory(app.config['UPLOAD_FOLDER'],new_file_name, as_attachment=True)
+            # return response
+        except Exception as error:
+            print(f'Error in save_image {error}')
+            return get_jsonified_error_response('Failure',error)
+    else:
+        print("here in the error")
+        return get_jsonified_error_response('Failure',"save_image Not a POST Request")
+
+
+@app.route('/api/v1/image-management/get-image/<image_id>',methods=['GET'])
+def get_image_to_display(image_id):
+    print('In GET get_image_to_display '+image_id)
+    data={}
+    if request.method == 'GET':
+        print('In GET get_image_to_display')
+        try:
+            # jdb=JirigoTasksLogTime({'task_no':task_no})
+            # data=jdb.get_timelog_entries_for_task()
+            # print("="*80)
+            # print(data)
+            # return jsonify(data)
+            #  return send_file(os.path.join(app.config['UPLOAD_FOLDER'],'5ed8b759-fdad-4e8d-b3e7-962c5f4a7c6f.png'), mimetype='image/png')
+            #  return send_from_directory(app.config['UPLOAD_FOLDER'],'5ed8b759-fdad-4e8d-b3e7-962c5f4a7c6f.png', as_attachment=True)
+            print(app.config['UPLOAD_FOLDER'])
+            return send_from_directory(app.config['UPLOAD_FOLDER']+'/avatars','6716423.png', as_attachment=True)
+        except Exception as error:
+            print(f'Error in get_task_or_ticket_depends_on {error}')
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',"get_image_to_display Not a GET Request")
+
+
 
 def get_jsonified_error_response(status,error):
     print("=============================")
@@ -978,6 +1101,7 @@ def get_jsonified_error_response(status,error):
     print(error_response)
     print(error)
     print("=============================")
+    fileDetails
     try:
         error_response['dbQryResponse']['error_code']=error.pgcode
         error_response['dbQryResponse']['error_message']=error.pgerror[:60]

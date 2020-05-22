@@ -1,36 +1,11 @@
 <p>debug works!</p>
-<!-- <form [formGroup]="debugFG" (ngSubmit)="createDebug()">
-    <div class="fluid-dcontainer">
+<!doctype html>
+<title>Upload new File</title>
+<h1>Upload new File</h1>
+<img src="http://localhost:9001/api/v1/image-management/get-image/4?val=3" alt="MyImage" sizes="" srcset=""
+style="width:40px;height:40px;border-radius: 50%;"
+>
+<form action=''  enctype="multipart/form-data">
+  <input type="file" accept='image/*' name="file" (change)="onFileChanged($event) ">
 
-    </div>
-
-</form> -->
-
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-lg-4 col-md-4">
-<p-autoComplete [(ngModel)]="selectedTaskTickets" 
-    [suggestions]="filteredTaskTickets" 
-    (completeMethod)="searchTaskTickets($event)" 
-    [minLength]="3"
-    placeholder="Search For Tasks/Tickets"  
-    [size]="300" 
-    field="code"
-    multiple="true"
-    [style]="{'width':'100%'}" 
-    [inputStyle]="{'width':'100%'}"
-    >
-    <!-- <ng-template let-group pTemplate="item">
-        <div class="ui-helper-clearfix" style="border-bottom:1px solid #D5D5D5">
-            <div style="font-size:14px;margin:10px 10px 0 0">{{group.name}}</div> -->
-            <!-- <div style="font-size:10px;margin:10px 10px 0 0">{{group.groupDescription}}</div> -->
-        <!-- </div>
-    </ng-template>  -->
-</p-autoComplete>
-
-<ul>
-    <li *ngFor="let c of filteredTaskTickets">{{c.name}}</li>
-</ul>
-</div>
-</div>
-</div>
+</form>

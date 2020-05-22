@@ -45,12 +45,19 @@
   background-attachment: white;
 
 }
-
+/* #6632FB #CC99CC #8B8CE8 #8E8EEB */
 .btn-electricpurple {
   background-color: #bf00ff;
   color:white;
   border-color: #bf00ff;
 }
+
+.btn-blandviolet {
+  background-color: #6632FB;
+  color:white;
+  border-color: #6632FB;
+}
+
 
 .btn-outline-lightmagenta-secondary {
   color: #CD98CA;

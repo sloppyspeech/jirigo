@@ -32,12 +32,9 @@ export class ViewEditTicketsComponent implements OnInit {
   displayPageDirtyDialog:boolean=false;
   leaveViewEditPageUnsaved:boolean=false;
   buttonGroupOptions:any={
-    showTaskDetails:false,
-    showTaskComments:false,
-    showAudit:false,
-    showDependsOn:false,
-    showRelatedTo:false,
-    showDuplicatedBy:false
+    showTicketDetails:false,
+    showTicketComments:false,
+    showAudit:false
   };
   
   showLinkTaskModal:boolean=false;
