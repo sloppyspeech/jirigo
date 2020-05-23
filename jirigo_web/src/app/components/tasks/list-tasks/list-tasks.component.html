@@ -3,7 +3,8 @@
 
 <p-table #dt *ngIf="showTable" [value]="allTasks" [columns]="taskDetailsCols" [rowHover]="true" [responsive]="true"
     [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[2,5,10,25,50]" [paginator]="true"
-    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [filterDelay]="1"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [filterDelay]="1" 
+    [(contextMenuSelection)]="ctxSelectedRow" [contextMenu]="taskCtxMenu"
     [globalFilterFields]="['task_no','summary','reported_by','issue_status','priority','environment','severity','issue_type']">
 
     <ng-template pTemplate="caption">
@@ -26,7 +27,7 @@
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-task let-columns="taskDetailsCols" let-i="rowIndex">
-        <tr>
+        <tr [pContextMenuRow]="task">
             <td>{{i+1}}</td>
             <td><a [routerLink]="['/tasks/view-edit-task', task.task_no]">{{task.task_no}}</a></td>
             <td>{{task.summary}}</td>
@@ -35,10 +36,14 @@
             <td>{{task.severity}}</td>
             <td>{{task.priority}}</td>
             <td>{{task.environment}}</td>
-            <td>{{task.reported_by}}</td>
             <td>{{task.estimated_time}}</td>
+            <td>{{task.reported_by}}</td>
+            <!-- <td><input class=" text-wrap" size="10" type="text" name="" id="" value="{{task.reported_by}}"></td> -->
             <td>{{task.reported_date | date:'d-MMM-y h:mm:ss a'}}</td>
+            <td>{{task.assigned_to}}</td>
 
         </tr>
     </ng-template>
 </p-table>
+
+<p-contextMenu #taskCtxMenu [model]="ctxItems"></p-contextMenu>

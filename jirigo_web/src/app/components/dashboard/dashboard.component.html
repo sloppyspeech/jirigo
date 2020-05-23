@@ -1,14 +1,33 @@
 <div class="container-fluid">
 
   <div class="row" >
-    <div class="col-md-5 col-lg-5" style="padding:0 0 0 0;">
-      <div class="btn-group" role="group" >
+    <!-- <div class="col-md-5 col-lg-5" style="padding:0 0 0 0;">
+      <div class="btn-group btn-group-toggle" role="group"  data-toggle="buttons">
         <button type="button" class="btn btn-outline-success" (click)="setLastNDaysForDashBoard(1)">Today</button>
         <button type="button" class="btn btn-outline-primary" (click)="setLastNDaysForDashBoard(7)">Last 7 days</button>
         <button type="button" class="btn btn-outline-secondary" (click)="setLastNDaysForDashBoard(30)">Last 30 days</button>
         <button type="button" class="btn btn-outline-info" (click)="setLastNDaysForDashBoard(60)">Last 60 days</button>
         <button type="button" class="btn btn-outline-success" (click)="setLastNDaysForDashBoard(90)">Last 90 days</button>
       </div>
+    </div> -->
+    <div class="col-md-5 col-lg-5" style="padding:0 0 0 0;">
+        <div class="btn-group btn-group-toggle" data-toggle="buttons">
+          <label class="btn btn-outline-success active">
+            <input type="radio" name="options" id="option1" autocomplete="off" checked (click)="setLastNDaysForDashBoard(1)"> Today
+          </label>
+          <label class="btn btn-outline-primary ">
+            <input type="radio" name="options" id="option1" autocomplete="off" checked (click)="setLastNDaysForDashBoard(7)"> Last 7 days
+          </label>
+          <label class="btn btn-outline-secondary ">
+            <input type="radio" name="options" id="option1" autocomplete="off" checked (click)="setLastNDaysForDashBoard(30)"> Last 30 days
+          </label>
+          <label class="btn btn-outline-info ">
+            <input type="radio" name="options" id="option1" autocomplete="off" checked (click)="setLastNDaysForDashBoard(60)"> Last 60 days
+          </label>
+          <label class="btn btn-outline-success ">
+            <input type="radio" name="options" id="option1" autocomplete="off" checked (click)="setLastNDaysForDashBoard(90)"> Last 90 days
+          </label>
+        </div>
     </div>
     <div class="col-md-4 col-lg-4 ">
         <h4 style="vertical-align:middle;"> Ticket DashBoard</h4>
@@ -20,10 +39,10 @@
       <div class="inner1">
         <div class="overview-box clearfix">
           <div class="icon">
-            <fa-icon [icon]="faCogs" class="zmdi"></fa-icon>
+            <fa-icon [icon]="faFolderOpen" class="zmdi"></fa-icon>
           </div>
           <div class="text">
-            <span>Open Issues</span>
+            <span style="font-weight: 600;">Open Issues</span>
             <h4 class="text-align" *ngIf="lgCardsData">{{openIssuesCount}}</h4>
           </div>
         </div>
@@ -37,7 +56,7 @@
             <fa-icon [icon]="faThumbsUp" class="zmdi"></fa-icon>
           </div>
           <div class="text">
-            <span>Closed Issues</span>
+            <span style="font-weight: 600;">Closed Issues</span>
             <h4 class="text-align" *ngIf="lgCardsData">{{closedIssuesCount}}</h4>
           </div>
         </div>
@@ -51,7 +70,7 @@
             <fa-icon [icon]="faBug" class="zmdi"></fa-icon>
           </div>
           <div class="text">
-            <span>Bugs Vs Others</span>
+            <span style="font-weight: 600;">Bugs Vs Others</span>
             <h4 class="text-align" *ngIf="lgCardsData">{{bugsVsOthersCount}}</h4>
           </div>
         </div>
@@ -66,7 +85,7 @@
             <fa-icon [icon]="faFire" class="zmdi"></fa-icon>
           </div>
           <div class="text">
-            <span>High Severity</span>
+            <span style="font-weight: 600;">Critical & High Severity</span>
             <h4 class="text-align"  *ngIf="lgCardsData">{{highSeverityCount}}</h4>
           </div>
         </div>

@@ -13,6 +13,7 @@ import { SelectButtonModule  } from 'primeng/selectbutton';
 import { QuillModule  } from 'ngx-quill';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CalendarModule  } from 'primeng/calendar';
+import { ContextMenuModule  } from 'primeng/contextmenu';
 
 import { NgxSpinnerModule  } from 'ngx-spinner';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -49,7 +50,8 @@ import { ViewEditTicketsComponent} from  './view-edit-tickets/view-edit-tickets.
     ButtonModule,
     SelectButtonModule,
     CalendarModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    ContextMenuModule
   ]
 })
 export class TicketsModule { }

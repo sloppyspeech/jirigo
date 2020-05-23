@@ -1,5 +1,10 @@
 <p>debug works!</p>
 <!doctype html>
+
+<button type="button" class="btn btn-primary" data-toggle="button" aria-pressed="false">
+  Single toggle
+</button>
+
 <title>Upload new File</title>
 <h1>Upload new File</h1>
 <img src="http://localhost:9001/api/v1/image-management/get-image/4?val=3" alt="MyImage" sizes="" srcset=""
@@ -9,3 +14,16 @@ style="width:40px;height:40px;border-radius: 50%;"
   <input type="file" accept='image/*' name="file" (change)="onFileChanged($event) ">
 
 </form>
+
+<br>
+<div class="btn-group btn-group-toggle" data-toggle="buttons">
+  <label class="btn btn-outline-secondary active">
+    <input type="radio" name="options" id="option1" autocomplete="off" checked> My Tickets
+  </label>
+  <label class="btn btn-outline-secondary" style="margin: 0 0 0 10px;">
+    <input type="radio" name="options" id="option2" autocomplete="off"> Created By Me
+  </label>
+  <label class="btn btn-outline-secondary" style="margin: 0 0 0 10px;">
+    <input type="radio" name="options" id="option3" autocomplete="off"> Modified By Me
+  </label>
+</div>

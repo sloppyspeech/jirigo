@@ -123,6 +123,44 @@ def get_all_tickets(project_id):
     else:
         return get_jsonified_error_response('Failure',"Not a GET Request")
 
+@app.route('/api/v1/ticket-management/all-tickets-by-criterion',methods=['GET'])
+def get_all_tickets_by_criterion():
+    data={}
+    if request.method == 'GET':
+        print('In GET get_all_tickets_by_criterion')
+        try:
+            project_id=request.args.get('project_id')
+            assignee_id=request.args.get('assignee_id')
+            created_by=request.args.get('created_by')
+            modified_by=request.args.get('modified_by')
+            jdb=JirigoTicket({'project_id':project_id,'assignee_id':assignee_id,'created_by':created_by,'modified_by':modified_by})
+            data=jdb.get_all_tickets()
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in get_all_tickets_by_criterion {error}')
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',"Not a GET Request")
+
+
+@app.route('/api/v1/ticket-management/update-assignee',methods=['POST'])
+def update_ticket_assignee():
+    if request.method == 'POST':
+        print('In Post update_ticket_assignee')
+        pprint.pprint(request.get_json())
+        print('-'*80)
+        try:
+            jdb=JirigoTicket(request.get_json())
+            data=jdb.update_ticket_assignee()
+            print('*'*40)
+            print(data['dbQryResponse'])
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in update_ticket_assignee {error}')
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',"Not a POST Request")
+
 
 @app.route('/api/v1/ticket-management/comments/<ticket_no>',methods=['GET'])
 def get_tickets_all_comments(ticket_no):
@@ -595,6 +633,7 @@ def get_tickets_still_open_last_n_days():
         return get_jsonified_error_response('Failure',"get_tickets_still_open_last_n_days Not a GET Request")
 
 
+
 @app.route('/api/v1/task-management/task',methods=['POST'])
 def create_task():
     if request.method == 'POST':
@@ -609,6 +648,25 @@ def create_task():
             return jsonify(data)
         except Exception as error:
             print(f'Error in create_task {error}')
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',"Not a POST Request")
+
+
+@app.route('/api/v1/task-management/update-assignee',methods=['POST'])
+def update_task_assignee():
+    if request.method == 'POST':
+        print('In Post update_task_assignee')
+        pprint.pprint(request.get_json())
+        print('-'*80)
+        try:
+            jdb=JirigoTask(request.get_json())
+            data=jdb.update_task_assignee()
+            print('*'*40)
+            print(data['dbQryResponse'])
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in update_task_assignee {error}')
             return get_jsonified_error_response('Failure',error)
     else:
         return get_jsonified_error_response('Failure',"Not a POST Request")
@@ -679,6 +737,25 @@ def get_all_tasks(project_id):
             return jsonify(data)
         except Exception as error:
             print(f'Error in get_task_details {error}')
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',"Not a GET Request")
+
+@app.route('/api/v1/task-management/all-tasks-by-criterion',methods=['GET'])
+def get_all_tasks_by_criterion():
+    data={}
+    if request.method == 'GET':
+        print('In GET get_all_tasks_by_criterion')
+        try:
+            project_id=request.args.get('project_id')
+            assignee_id=request.args.get('assignee_id')
+            created_by=request.args.get('created_by')
+            modified_by=request.args.get('modified_by')
+            jdb=JirigoTask({'project_id':project_id,'assignee_id':assignee_id,'created_by':created_by,'modified_by':modified_by})
+            data=jdb.get_all_tasks()
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in get_all_tasks_by_criterion {error}')
             return get_jsonified_error_response('Failure',error)
     else:
         return get_jsonified_error_response('Failure',"Not a GET Request")
@@ -1082,7 +1159,7 @@ def get_image_to_display(image_id):
             #  return send_file(os.path.join(app.config['UPLOAD_FOLDER'],'5ed8b759-fdad-4e8d-b3e7-962c5f4a7c6f.png'), mimetype='image/png')
             #  return send_from_directory(app.config['UPLOAD_FOLDER'],'5ed8b759-fdad-4e8d-b3e7-962c5f4a7c6f.png', as_attachment=True)
             print(app.config['UPLOAD_FOLDER'])
-            return send_from_directory(app.config['UPLOAD_FOLDER']+'/avatars','6716423.png', as_attachment=True)
+            return send_from_directory(app.config['UPLOAD_FOLDER']+'/images/avatars','1.png', as_attachment=True)
         except Exception as error:
             print(f'Error in get_task_or_ticket_depends_on {error}')
             return get_jsonified_error_response('Failure',error)

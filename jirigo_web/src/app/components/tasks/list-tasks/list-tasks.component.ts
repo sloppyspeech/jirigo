@@ -19,11 +19,13 @@ export class ListTasksComponent implements OnInit {
     {'header':'Severity','field':'severity'},
     {'header':'Priority','field':'priority'},
     {'header':'Environment','field':'environment'},
-    {'header':'Reported By','field':'reported_by'},
     {'header':'Estimation (hrs)','field':'estimated_time'},
-    {'header':'Reported Date','field':'reported_date'}
+    {'header':'Reported By','field':'reported_by'},
+    {'header':'Reported Date','field':'reported_date'},
+    {'header':'Assigned To','field':'assigned_to'}
   ];
-
+  ctxItems=[];
+  ctxSelectedRow:any;
   task_header_cols:string[]=[
     // 'task_int_id',
     'Task No',
@@ -77,6 +79,10 @@ export class ListTasksComponent implements OnInit {
               private _serNgxSpinner:NgxSpinnerService) { }
 
   ngOnInit(): void {
+    this.ctxItems = [
+      { label: 'Assign To Me', icon: 'pi pi-check', command: (event) => this.assignToggle(this.ctxSelectedRow,'assign') },
+      { label: 'Unassign Task', icon: 'pi pi-minus-circle', command: (event) => this.assignToggle(this.ctxSelectedRow,'unassign') }
+  ];
     this.allTasks=[];
     this.showTable=false;
     // this._serNgxSpinner.show();
@@ -90,7 +96,44 @@ export class ListTasksComponent implements OnInit {
 
 
   }
+  
+  assignToggle(dataRow,action){
+    console.log(dataRow);
+    let inpData={};
+    let assignee_id='';
+    if (action=='assign'){
+      inpData={
+        'task_no':dataRow['task_no'],
+        'assignee_id':localStorage.getItem('loggedInUserId'),
+        'modified_by':localStorage.getItem('loggedInUserId')
+      }
+    }
+    else{
+      inpData={
+        'task_no':dataRow['task_no'],
+        'modified_by':localStorage.getItem('loggedInUserId')
+      }
+    }
 
+    console.log(dataRow);
+    console.log(action);
+    console.log(inpData);
+    this._serTaskDetails.updateTaskAssignee(inpData)
+        .subscribe(res=>{
+          console.log(res);
+          if(res['dbQryStatus'] == "Success"){
+            alert('Action Successful');
+            this.reloadComponent();
+          }
+        });
+  }
+  reloadComponent() {
+    console.log("===============reloadComponent=================");
+    console.log(this._router.url);
+    this._router.routeReuseStrategy.shouldReuseRoute = () => false;
+    this._router.onSameUrlNavigation = 'reload';
+    this._router.navigate([this._router.url]);
+}
   ngAfterViewInit() {
     this._serTaskDetails.getAllTasks()
     .then(res=>{

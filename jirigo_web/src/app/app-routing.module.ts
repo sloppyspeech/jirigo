@@ -71,6 +71,11 @@ const routes: Routes = [
     canActivate:[AuthGuard,RoleGuard]
   },
   {
+    path:'my-items',
+    loadChildren: () => import('./shared/modules/my-tasks-tickets/my-tasks-tickets.module').then( m => m.MyTasksTicketsModule),
+    canActivate:[AuthGuard,RoleGuard]
+  },
+  {
     path:'**',
     component:LoginComponent
   }

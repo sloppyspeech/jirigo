@@ -1,0 +1,72 @@
+<div class="row " *ngIf="true">
+    <div class="col-md-9 col-sm-12 col-lg-9">
+      <div class="row">
+        <div class="col-md-2 col-lg-3"  >
+          <button type="button" label="Modify item" class="btn btn-warning"
+           (click)="ListItems('AssignedToMe')"
+            >
+            <fa-icon [icon]="faBookmark" style="padding: 0 9px 0 0; color: white;"></fa-icon>My {{myItemType}}
+          </button>
+        </div>
+        <div class="col-md-2 col-lg-3" >
+          <button type="button" label="Clone item" class="btn btn-purple" (click)="ListItems('CreatedByMe')">
+            <fa-icon [icon]="faCubes" style="color: white;"></fa-icon>&nbsp;
+            Created By Me
+          </button>
+        </div>
+        <div class="col-md-2 col-lg-3 text-nowrap"  >
+          <button type="button" label="Clone item" class="btn btn-electricpurple"  (click)="ListItems('ModifiedByMe')">
+            <fa-icon [icon]="faCube" style="color: white;"></fa-icon>&nbsp;
+            Modified By Me
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="row" style="margin:20px 0 0 0;">
+    <ngx-spinner [fullScreen]="true" type="ball-newton-cradle"></ngx-spinner>
+    
+    <p-table #dt *ngIf="showTable" [value]="myItemList" [columns]="itemDetailsCols" [rowHover]="true" [responsive]="true"
+        [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[2,5,10,25,50]" [paginator]="true"
+        currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [filterDelay]="1"
+        [globalFilterFields]="['item_no','summary','reported_by','issue_status','priority','environment','severity','issue_type']">
+    
+        <ng-template pTemplate="caption">
+                <div style="text-align: right">                
+                    <button class="float-left" type="button" pButton icon="pi pi-file-o" iconPos="left" label="CSV" (click)="dt.exportCSV()"
+                    style="margin-right: 0.5em;"></button>
+                    <i class="pi pi-search" style="margin:4px 4px 0 0"></i>
+                    <input type="text" pInputText size="50" placeholder="Global Filter"
+                        (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto">
+                </div>
+        </ng-template>
+        
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="width: 2.5em;">#</th>
+                <th *ngFor="let col of itemDetailsCols" [pSortableColumn]="col.field">
+                    {{col.header}}
+                    <p-sortIcon [field]="col.field"></p-sortIcon>
+                </th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-item let-columns="itemDetailsCols" let-i="rowIndex">
+            <tr>
+                <td>{{i+1}}</td>
+                <td><a [routerLink]="[item.url, item.item_no]">{{item.item_no}}</a></td>
+                <!-- <td><a (click)="viewEditTask(item.url, item.item_no)">{{item.item_no}}</a></td> -->
+                <td>{{item.summary}}</td>
+                <td>{{item.issue_status}}</td>
+                <td>{{item.issue_type}}</td>
+                <td>{{item.severity}}</td>
+                <td>{{item.priority}}</td>
+                <td>{{item.environment}}</td>
+                <td>{{item.reported_by}}</td>
+                <td>{{item.estimated_time}}</td>
+                <td>{{item.reported_date | date:'d-MMM-y h:mm:ss a'}}</td>
+    
+            </tr>
+        </ng-template>
+    </p-table>
+  </div>

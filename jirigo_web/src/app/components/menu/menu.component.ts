@@ -17,10 +17,15 @@ export class MenuComponent implements OnInit,AfterViewInit {
   showMenu:boolean=true;
   currentProjectName:string;
   showProjectChangeMenu:boolean=false;
+  random_avatar_png_no=1;
 
   constructor(private _serUser:UsersService) { }
 
   ngOnInit(): void {
+    let date = new Date;
+    let seconds = date.getSeconds();
+    this.random_avatar_png_no = seconds%30;
+
     this._serUser.isLoggedIn.subscribe(res=>{
       console.log("App Component Init");
       console.log(res);

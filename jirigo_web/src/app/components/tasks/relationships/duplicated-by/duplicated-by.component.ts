@@ -26,7 +26,7 @@ export class DuplicatedByComponent implements OnInit {
         .subscribe(res=>{
           console.log(res);
           if(res['dbQryStatus']=="Success"){
-            res['dbQryResponse'].forEach(item=>{
+            res['dbQryResponse']?.forEach(item=>{
               this.listDuplicatedBy.push(item);
             });
           }

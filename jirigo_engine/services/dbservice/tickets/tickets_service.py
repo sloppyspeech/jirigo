@@ -14,25 +14,27 @@ class JirigoTicket(object):
         print(f'In for Create/Update Ticket **** :{data}')
         self.ticket_int_id = data.get('ticket_int_id')
         self.jdb=JirigoDBConn()
-        self.summary = data.get('summary')
-        self.description = data.get('description')
-        self.severity = data.get('severity')
-        self.priority = data.get('priority')
-        self.issue_type = data.get('issue_type')
-        self.issue_status = data.get('issue_status')
+        self.summary = data.get('summary','')
+        self.description = data.get('description','')
+        self.severity = data.get('severity','')
+        self.priority = data.get('priority','')
+        self.issue_type = data.get('issue_type','')
+        self.issue_status = data.get('issue_status','')
         self.is_blocking = data.get('is_blocking','N')
-        self.environment = data.get('environment')
-        self.created_by = data.get('created_by')
+        self.environment = data.get('environment','')
+        self.created_by = data.get('created_by','')
         self.created_date = datetime.datetime.now()
-        self.modified_by = data.get('modified_by')
+        self.modified_by = data.get('modified_by','')
         self.modified_date = datetime.datetime.now()
-        self.reported_by = data.get('reported_by')
-        self.reported_date = data.get('reported_date')
+        self.reported_by = data.get('reported_by','')
+        self.reported_date = data.get('reported_date',datetime.datetime.now())
         self.ticket_no=data.get('ticket_no','-')
         self.project_name=data.get('project_name','')
         self.project_id=data.get('project_id','')
         self.assignee_name=data.get('assignee_name','')
         self.module=data.get('module','')
+        self.assignee_id = data.get('assignee_id','')
+
         self.logger=Logger()
 
     @classmethod
@@ -96,20 +98,32 @@ class JirigoTicket(object):
                                     get_user_name(modified_by) modified_by,
                                     to_char(created_date, 'DD-Mon-YYYY HH24:MI:SS') modified_date,
                                     get_user_name(reported_by) reported_by,
-                                    to_char(created_date, 'DD-Mon-YYYY HH24:MI:SS') reported_date
+                                    to_char(created_date, 'DD-Mon-YYYY HH24:MI:SS') reported_date,
+                                    get_user_name(assignee_id) assigned_to
                               FROM ttickets 
-                             WHERE project_id=%s
+                             WHERE 
+                                    project_id=COALESCE(%s,project_id) AND
+                                    (
+                                        created_by=COALESCE(%s,created_by) AND
+                                        COALESCE(assignee_id,-1)=COALESCE(%s,COALESCE(assignee_id,-1)) AND
+                                        COALESCE(modified_by,-1)=COALESCE(%s,COALESCE(modified_by,-1))
+                                    )
                              order by ticket_int_id
                         )
                         SELECT json_agg(t) from t;
                    """
-        values=(self.project_id,)
+        self.project_id = None if self.project_id == '' else self.project_id
+        self.assignee_id = None if self.assignee_id == '' else self.assignee_id
+        self.created_by = None if self.created_by == '' else self.created_by
+        self.modified_by = None if self.modified_by == '' else self.modified_by
+
+        values=(self.project_id,self.created_by,self.assignee_id,self.modified_by,)
         self.logger.debug(f'Select : {query_sql} values {values}')
 
         try:
             print('-'*80)
             cursor=self.jdb.dbConn.cursor()
-            cursor.execute(query_sql,self.project_id)
+            cursor.execute(query_sql,values)
             json_data=cursor.fetchone()[0]
             row_count=cursor.rowcount
             self.logger.debug(f'Select Success with {row_count} row(s) Ticket List {json_data}')
@@ -122,7 +136,7 @@ class JirigoTicket(object):
             return response_data
         except  (Exception, psycopg2.Error) as error:
             if(self.jdb.dbConn):
-                print(f'Error While Creating Ticket {error}')
+                print(f'Error While Getting All Tickets {error}')
                 raise
     
  
@@ -270,4 +284,30 @@ class JirigoTicket(object):
                 raise
 
 
- 
+    def update_ticket_assignee(self):
+        response_data={}
+        self.logger.debug("Inside  update_ticket_assignee")
+        update_sql="""
+                        UPDATE TTICKETS 
+                           SET  assignee_id=%s,
+                                modified_by=%s,
+                                modified_date=%s
+                         WHERE ticket_no=%s;
+                    """
+        values=(self.assignee_id,self.modified_by,self.modified_date,self.ticket_no,)
+
+        self.logger.debug(f'Update : {update_sql}  {values}')
+
+        try:
+            print('-'*80)
+            print(type(self.jdb.dbConn))
+            cursor=self.jdb.dbConn.cursor()
+            cursor.execute(update_sql,values)
+            self.jdb.dbConn.commit()
+            response_data['dbQryStatus']='Success'
+            response_data['dbQryResponse']={"taskNo":self.ticket_no,"rowCount":1}
+            return response_data
+        except  (Exception, psycopg2.Error) as error:
+            if(self.jdb.dbConn):
+                print(f'Error While update_ticket_assignee  {error}')
+                raise

@@ -30,6 +30,7 @@ export class TicketDetailsService {
       });
   }
 
+
   getAllTickets(projectId) {
     console.log('@@@@getAllTickets :');
     console.log("getTicketDetails End point :" + this.sApiEndPoint + 'proj-all-tickets/'+projectId);
@@ -41,6 +42,19 @@ export class TicketDetailsService {
       });
   }
 
+  getAllTicketsByCriterion(searchCriteria:{project_id:string,'assignee_id':string,created_by:string,modified_by:string}) {
+    let qryParams="";
+    qryParams="project_id="+searchCriteria.project_id+"&";
+    qryParams=qryParams + "assignee_id="+searchCriteria.assignee_id+"&";
+    qryParams=qryParams + "created_by="+searchCriteria.created_by+"&";
+    qryParams=qryParams + "modified_by="+searchCriteria.modified_by;
+
+    let url=this.sApiEndPoint + 'all-tickets-by-criterion?'+qryParams;
+    console.log('@@@@getAllTicketsByCriterion :');
+    console.log(url);
+    return this._httpCli.get<any>(url);
+
+  }
 
   creTicket(inpData) {
     console.log("@@@@@ CreTicket @@@@@@@");
@@ -59,4 +73,13 @@ export class TicketDetailsService {
     console.log(inpData);
     return this._httpCli.post(this.sApiEndPoint + 'clone-ticket', inpData, this.sHttpOptions);
   }
+
+
+  updateTicketAssignee(inpData){
+    console.log("***Inside updateTicketAssignee***");
+    console.log(inpData);
+    return this._httpCli.post(this.sApiEndPoint + 'update-assignee', inpData, this.sHttpOptions);
+  }
+
+
 }

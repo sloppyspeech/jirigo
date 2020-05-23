@@ -24,8 +24,11 @@ export class ListTicketsComponent implements OnInit {
     {'header':'Blocking','field':'blocking'},
     {'header':'Reported By','field':'reported_by'},
     {'header':'Reported Date','field':'reported_date'},
-  ];
+    {'header':'Assigned To','field':'assigned_to'},
 
+  ];
+  ctxItems=[];
+  ctxSelectedRow:any;
 
   ticket_header_cols:string[]=[
     // 'ticket_int_id',
@@ -83,6 +86,10 @@ export class ListTicketsComponent implements OnInit {
     this.showNoTicketsRetrieved=false;
     this.allTickets=[];
     this.showTable=false;
+    this.ctxItems = [
+      { label: 'Assign To Me', icon: 'pi pi-check', command: (event) => this.assignToggle(this.ctxSelectedRow,'assign') },
+      { label: 'Unassign Ticket', icon: 'pi pi-minus-circle', command: (event) => this.assignToggle(this.ctxSelectedRow,'unassign') }
+  ];
     // this._serNgxSpinner.show();
     this.dtOptions = {
       // pagingType: 'full_numbers',
@@ -147,5 +154,42 @@ export class ListTicketsComponent implements OnInit {
     this._router.navigate(['/view-edit-tickets', { id: "heroId", foo: 'foo' }]);
   }
 
+  assignToggle(dataRow,action){
+    console.log(dataRow);
+    let inpData={};
+    let assignee_id='';
+    if (action=='assign'){
+      inpData={
+        'ticket_no':dataRow['ticket_no'],
+        'assignee_id':localStorage.getItem('loggedInUserId'),
+        'modified_by':localStorage.getItem('loggedInUserId')
+      }
+    }
+    else{
+      inpData={
+        'ticket_no':dataRow['ticket_no'],
+        'modified_by':localStorage.getItem('loggedInUserId')
+      }
+    }
+
+    console.log(dataRow);
+    console.log(action);
+    console.log(inpData);
+    this._serTicketDetails.updateTicketAssignee(inpData)
+        .subscribe(res=>{
+          console.log(res);
+          if(res['dbQryStatus'] == "Success"){
+            alert('Action Successful');
+            this.reloadComponent();
+          }
+        });
+  }
+  reloadComponent() {
+    console.log("===============reloadComponent=================");
+    console.log(this._router.url);
+    this._router.routeReuseStrategy.shouldReuseRoute = () => false;
+    this._router.onSameUrlNavigation = 'reload';
+    this._router.navigate([this._router.url]);
+}
 
 }

@@ -40,7 +40,19 @@ export class TaskDetailsService {
         return res;
       });
   }
+  getAllTasksByCriterion(searchCriteria:{project_id:string,'assignee_id':string,created_by:string,modified_by:string}) {
+    let qryParams="";
+    qryParams="project_id="+searchCriteria.project_id+"&";
+    qryParams=qryParams + "assignee_id="+searchCriteria.assignee_id+"&";
+    qryParams=qryParams + "created_by="+searchCriteria.created_by+"&";
+    qryParams=qryParams + "modified_by="+searchCriteria.modified_by;
 
+    let url=this.sApiEndPoint + 'all-tasks-by-criterion?'+qryParams;
+    console.log('@@@@getAllTasksByCriterion :');
+    console.log(url);
+    return this._httpCli.get<any>(url);
+
+  }
   creTask(inpData) {
     console.log("@@@@@ CreTask @@@@@@@");
     console.log(inpData)
@@ -59,6 +71,11 @@ export class TaskDetailsService {
     return this._httpCli.post(this.sApiEndPoint + 'clone-task', inpData, this.sHttpOptions);
   }
 
+  updateTaskAssignee(inpData){
+    console.log("***Inside updateTaskAssignee***");
+    console.log(inpData);
+    return this._httpCli.post(this.sApiEndPoint + 'update-assignee', inpData, this.sHttpOptions);
+  }
 
 
 }

@@ -5,7 +5,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class NumToHhmiPipe implements PipeTransform {
 
-  transform(value: number): unknown {
+  transform(value: number): string {
     return Math.floor(value/60)+'h '+Math.floor(value%60)+'m';
   }
 

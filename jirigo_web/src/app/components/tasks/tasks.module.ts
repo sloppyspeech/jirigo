@@ -14,8 +14,8 @@ import { AutoCompleteModule  } from 'primeng/autocomplete';
 import { DialogModule } from "primeng/dialog";
 import { CardModule  } from 'primeng/card';
 import { ToastModule  } from 'primeng/toast';
-import {DropdownModule} from 'primeng/dropdown';
-
+import { DropdownModule } from 'primeng/dropdown';
+import { ContextMenuModule } from 'primeng/contextmenu';
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
@@ -70,7 +70,8 @@ import { NumToHhmiPipe} from '../../shared/pipes/num-to-hhmi.pipe';
     DropdownModule,
     MultiSelectModule,
     FontAwesomeModule,
-    ModalTimeloggingModule
+    ModalTimeloggingModule,
+    ContextMenuModule
   ]
 })
 export class TasksModule { }

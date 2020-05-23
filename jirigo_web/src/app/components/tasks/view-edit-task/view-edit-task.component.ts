@@ -8,7 +8,7 @@ import { TaskLogtimeService} from '../../../services/tasks/task-logtime.service'
 import { ActivatedRoute } from '@angular/router';
 import { NgxSpinnerService  } from 'ngx-spinner';
 import { Router  } from '@angular/router';
-import { faClone,faEdit, faTshirt,faLink,faClock } from '@fortawesome/free-solid-svg-icons';
+import { faClone,faEdit, faTshirt,faLink,faClock,faPaperclip } from '@fortawesome/free-solid-svg-icons';
 import { MessageService} from 'primeng/api';
 
 @Component({
@@ -23,6 +23,7 @@ export class ViewEditTaskComponent implements OnInit {
   faEdit=faEdit;
   faLink=faLink;
   faClock=faClock;
+  faPaperclip=faPaperclip;
   isLoaded: boolean = false;
   viewEditFormEditBtnEnabled:boolean=true;
   viewModifyTaskFB: FormGroup;
