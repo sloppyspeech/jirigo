@@ -12,17 +12,17 @@ export class ListTasksComponent implements OnInit {
   allTasks=[];
   showTable:boolean=false;
   taskDetailsCols=[
-    {'header':'Task No','field':'task_no'},
-    {'header':'Summary','field':'summary'},
-    {'header':'Issue Status','field':'issue_status'},
-    {'header':'Issue Type','field':'issue_type'},
-    {'header':'Severity','field':'severity'},
-    {'header':'Priority','field':'priority'},
-    {'header':'Environment','field':'environment'},
-    {'header':'Estimation (hrs)','field':'estimated_time'},
-    {'header':'Reported By','field':'reported_by'},
-    {'header':'Reported Date','field':'reported_date'},
-    {'header':'Assigned To','field':'assigned_to'}
+    {'header':'Task No','field':'task_no','width':'8%'},
+    {'header':'Summary','field':'summary','width':'28%'},
+    {'header':'Status','field':'issue_status','width':'9%'},
+    {'header':'Type','field':'issue_type','width':'9%'},
+    {'header':'Severity','field':'severity','width':'8%'},
+    {'header':'Priority','field':'priority','width':'8%'},
+    // {'header':'Environment','field':'environment','width':'7%'},
+    // {'header':'Estimation (hrs)','field':'estimated_time','width':'7%'},
+    {'header':'Reported By','field':'reported_by','width':'10%'},
+    {'header':'Reported Date','field':'reported_date','width':'12%'},
+    {'header':'Assigned To','field':'assigned_to','width':'10%'}
   ];
   ctxItems=[];
   ctxSelectedRow:any;

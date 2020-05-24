@@ -40,10 +40,15 @@ export class DashboardComponent implements OnInit {
   ticket_stillopen_last_n_days_count: any[] = [];
   ticket_stillopen_last_n_days_label: any[] = [];
 
+  ticket_stillopen_bymodule_last_n_days_count: any[] = [];
+  ticket_stillopen_bymodule_last_n_days_label: any[] = [];
+
+
   ticketIssueStatusBarChart;
   ticketIssueTypeBarChart;
   ticketCreatedPerDayChart;
   ticketOpenLastNDaysChart;
+  ticketOpenByModuleLastNDaysChart;
 
   weatherDates = [];
   globalChartIntervalInDays=7;
@@ -54,6 +59,7 @@ export class DashboardComponent implements OnInit {
   showErrorNoDatasummaryByIssueType:boolean=false;
   showErrorNoDataticketCreatedPerDayInLastNdays:boolean=false;
   showErrorNoDataticketsStillOpenLastNDays:boolean=false;
+  showErrorNoDataticketsOpenByModuleLastNDays:boolean=false;
 
   constructor(
     private _serTicketDashboard: TicketsDashboardService,
@@ -477,7 +483,92 @@ export class DashboardComponent implements OnInit {
       
     });
     
-  
+  this._serTicketDashboard.getDashboardTicketOpenByModuleInLastNDays(this.globalChartIntervalInDays)
+    .subscribe(res => {
+      console.log("===============getDashboardTicketOpenByModuleInLastNDays================");
+      console.log(res['dbQryResponse']);
+        if(res['dbQryResponse']){
+          res['dbQryResponse'].forEach(e => {
+            this.ticket_stillopen_bymodule_last_n_days_count.push(e['count']);
+            this.ticket_stillopen_bymodule_last_n_days_label.push(e['module']);
+          });
+          console.log("===============================");
+          console.log("=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*");
+          console.log(this.ticket_stillopen_bymodule_last_n_days_count);
+          console.log(this.ticket_stillopen_bymodule_last_n_days_label);
+          console.log("=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*");
+
+          if (this.ticketOpenByModuleLastNDaysChart){
+            this.ticketOpenByModuleLastNDaysChart.destroy();
+          }
+          this.ticketOpenByModuleLastNDaysChart = new Chart('id_openByModuleLastNDays', {
+            type: 'horizontalBar',
+            data: {
+              labels: this.ticket_stillopen_bymodule_last_n_days_label,
+              datasets: [
+                {
+                  data: this.ticket_stillopen_bymodule_last_n_days_count,
+                  fill: true,
+                  backgroundColor: ['#803690', '#ffce56', '#36a2eb', '#cc65fe', '#ff6384', '#949FB1', '#4D5360']
+                }
+              ]
+            },
+            options: {
+              plugins: {
+                colorschemes: {
+                  scheme: 'office.Parallax6'
+                }
+              },
+              maintainAspectRatio: false,
+              responsive: true,
+              legend: {
+                display: false
+              },
+              scales: {
+                xAxes: [{
+                  display: true,
+                  gridLines: true,
+                  zeroLineColor:'black',
+                  ticks: {
+                    fontSize: 12,
+                    suggestedMin: 1,
+                    stepSize: 5
+                  },
+                  scaleLabel: {
+                    fontColor: "black",
+                    labelString: "Count For Last " +this.globalChartIntervalInDays+" days",
+                    display: true,
+                    fontSize: 12
+                  }
+                }],
+                yAxes: [{
+                  display: true,
+                  gridLines: {
+                  },
+                  ticks: {
+                    fontColor: "black",
+                    fontSize: 12,
+                    padding:8
+                  },
+                  scaleLabel: {
+                    fontColor: "black",
+                    fontSize: 12,
+                    labelString: "Open By Module",
+                    display: true
+                  }
+                }]
+              }
+            }
+          });
+        }
+        else{
+          console.log('getDashboardTicketOpenByModuleInLastNDays is NULL');
+          this.initializeVars();
+          this.showErrorNoDataticketsOpenByModuleLastNDays=true;
+        }
+      
+    });
+
   }
 
   setLastNDaysForDashBoard(lastNDays){
@@ -504,6 +595,9 @@ export class DashboardComponent implements OnInit {
   
     this.ticket_stillopen_last_n_days_count = [];
     this.ticket_stillopen_last_n_days_label = [];
+
+    this.ticket_stillopen_bymodule_last_n_days_count=[];
+    this.ticket_stillopen_bymodule_last_n_days_label=[];
 
   }
 

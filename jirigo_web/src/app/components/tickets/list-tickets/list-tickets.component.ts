@@ -14,19 +14,20 @@ export class ListTicketsComponent implements OnInit {
   showNoTicketsRetrieved:boolean=false;
 
   ticketDetailsCols=[
-    {'header':'Ticket No','field':'ticket_no'},
-    {'header':'Summary','field':'summary'},
-    {'header':'Issue Status','field':'issue_status'},
-    {'header':'Issue Type','field':'issue_type'},
-    {'header':'Severity','field':'severity'},
-    {'header':'Priority','field':'priority'},
-    {'header':'Environment','field':'environment'},
-    {'header':'Blocking','field':'blocking'},
-    {'header':'Reported By','field':'reported_by'},
-    {'header':'Reported Date','field':'reported_date'},
-    {'header':'Assigned To','field':'assigned_to'},
-
+    {'header':'Ticket No','field':'ticket_no','width':'5%'},
+    {'header':'Summary','field':'summary','width':'28%'},
+    {'header':'Status','field':'issue_status','width':'7%'},
+    {'header':'Type','field':'issue_type','width':'7%'},
+    {'header':'Severity','field':'severity','width':'8%'},
+    {'header':'Priority','field':'priority','width':'7%'},
+    // {'header':'Environment','field':'environment','width':'7%'},
+    {'header':'Blocking','field':'blocking','width':'6%'},
+    {'header':'Reported By','field':'reported_by','width':'9%'},
+    {'header':'Reported Date','field':'reported_date','width':'10%'},
+    {'header':'Assigned To','field':'assigned_to','width':'9%'}
   ];
+
+
   ctxItems=[];
   ctxSelectedRow:any;
 

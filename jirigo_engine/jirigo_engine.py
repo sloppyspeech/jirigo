@@ -522,7 +522,7 @@ def get_all_task_ticket_link_references(project_id):
         return get_jsonified_error_response('Failure',"get_all_task_ticket_link_references Not a POST Request")
 
 
-@app.route('/api/v1/ticket-dashboard/summaries/generic/',methods=['GET'])
+@app.route('/api/v1/ticket-dashboard/summaries/generic',methods=['GET'])
 def get_ticket_dashboard_generic_summary():
     data={}
     if request.method == 'GET':
@@ -543,7 +543,7 @@ def get_ticket_dashboard_generic_summary():
     else:
         return get_jsonified_error_response('Failure',"get_ticket_dashboard_generic_summary Not a GET Request")
 
-@app.route('/api/v1/ticket-dashboard/summaries/issue_status/',methods=['GET'])
+@app.route('/api/v1/ticket-dashboard/summaries/issue_status',methods=['GET'])
 def get_ticket_summary_by_issue_status():
     data={}
     if request.method == 'GET':
@@ -564,7 +564,7 @@ def get_ticket_summary_by_issue_status():
     else:
         return get_jsonified_error_response('Failure',"get_ticket_summary_by_issue_status Not a GET Request")
 
-@app.route('/api/v1/ticket-dashboard/summaries/issue_type/',methods=['GET'])
+@app.route('/api/v1/ticket-dashboard/summaries/issue_type',methods=['GET'])
 def get_ticket_summary_by_issue_type():
     data={}
     if request.method == 'GET':
@@ -586,7 +586,7 @@ def get_ticket_summary_by_issue_type():
         return get_jsonified_error_response('Failure',"get_ticket_summary_by_issue_type Not a GET Request")
 
 
-@app.route('/api/v1/ticket-dashboard/created-by-range/',methods=['GET'])
+@app.route('/api/v1/ticket-dashboard/created-by-range',methods=['GET'])
 def get_tickets_created_by_range():
     data={}
     last_n_days=0
@@ -609,7 +609,7 @@ def get_tickets_created_by_range():
     else:
         return get_jsonified_error_response('Failure',"get_tickets_created_by_range Not a GET Request")
 
-@app.route('/api/v1/ticket-dashboard/open-last-ndays/',methods=['GET'])
+@app.route('/api/v1/ticket-dashboard/open-last-ndays',methods=['GET'])
 def get_tickets_still_open_last_n_days():
     data={}
     last_n_days=0
@@ -631,6 +631,30 @@ def get_tickets_still_open_last_n_days():
             return get_jsonified_error_response('Failure',error)
     else:
         return get_jsonified_error_response('Failure',"get_tickets_still_open_last_n_days Not a GET Request")
+
+
+@app.route('/api/v1/ticket-dashboard/open-tickets-by-module-last-ndays',methods=['GET'])
+def get_tickets_open_by_module_last_n_days():
+    data={}
+    last_n_days=0
+    project_id=0
+    if request.method == 'GET':
+        print('In GET get_tickets_open_by_module_last_n_days')
+        try:
+            print("======$$$$+++++++")
+            print(request.args)
+            last_n_days=request.args.get('last_n_days',0)
+            project_id=request.args.get('project_id',0)
+            jdb=JirigoTicketDashboard({'last_n_days':last_n_days,'project_id':project_id})
+            data=jdb.get_tickets_open_by_module_last_n_days()
+            print("="*80)
+            # print(data)
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in get_tickets_open_by_module_last_n_days {error}')
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',"get_tickets_open_by_module_last_n_days Not a GET Request")
 
 
 

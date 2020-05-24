@@ -45,7 +45,8 @@
         <ng-template pTemplate="header">
             <tr>
                 <th style="width: 2.5em;">#</th>
-                <th *ngFor="let col of itemDetailsCols" [pSortableColumn]="col.field">
+                <th *ngFor="let col of itemDetailsCols" [pSortableColumn]="col.field"
+                [ngStyle]="{'width': col.width}">
                     {{col.header}}
                     <p-sortIcon [field]="col.field"></p-sortIcon>
                 </th>
@@ -61,10 +62,10 @@
                 <td>{{item.issue_type}}</td>
                 <td>{{item.severity}}</td>
                 <td>{{item.priority}}</td>
-                <td>{{item.environment}}</td>
+                <!-- <td>{{item.environment}}</td> -->
                 <td>{{item.reported_by}}</td>
-                <td>{{item.estimated_time}}</td>
-                <td>{{item.reported_date | date:'d-MMM-y h:mm:ss a'}}</td>
+                <!-- <td>{{item.estimated_time}}</td> -->
+                <td>{{item.reported_date | date : 'dd MMM yyyy HH:MM'}}</td>
     
             </tr>
         </ng-template>

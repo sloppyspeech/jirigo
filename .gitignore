@@ -15,6 +15,7 @@ log.txt
 npm-debug.log*
 
 **/uploaded_files
+**/*adhoc*
 **/.idea
 **/.ionic
 **/.sass-cache

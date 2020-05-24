@@ -217,3 +217,37 @@ class JirigoTicketDashboard(object):
             if(self.jdb.dbConn):
                 print(f'Error While get_tickets_still_open_last_n_days {error}')
                 raise
+    
+    def get_tickets_open_by_module_last_n_days(self):
+        response_data={}
+        self.logger.debug("Inside get_tickets_open_by_module_last_n_days")
+        query_sql="""  
+                        WITH t AS(
+                                SELECT  module,count(*)
+                                FROM  ttickets
+                                WHERE  created_date >= now() - INTERVAL %s
+                                AND  issue_status='Open'
+                                AND  project_id=%s
+                                GROUP BY module
+                                ORDER BY 2 desc
+                            )
+                        SELECT json_agg(t)
+                            FROM t ;
+                   """
+
+        values=(f'{self.last_n_days} days',self.project_id,)
+        self.logger.debug(f'Select : {query_sql} values {values}')
+        try:
+            print('-'*80)
+            cursor=self.jdb.dbConn.cursor()
+            cursor.execute(query_sql,values)
+            json_data=cursor.fetchone()[0]
+            row_count=cursor.rowcount
+            self.logger.debug(f'get_tickets_open_by_module_last_n_days Success with {row_count} row(s) Ticket ID {json_data}')
+            response_data['dbQryStatus']='Success'
+            response_data['dbQryResponse']=json_data
+            return response_data
+        except  (Exception, psycopg2.Error) as error:
+            if(self.jdb.dbConn):
+                print(f'Error While get_tickets_open_by_module_last_n_days {error}')
+                raise

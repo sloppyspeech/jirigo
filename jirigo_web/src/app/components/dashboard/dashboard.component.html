@@ -12,10 +12,10 @@
     </div> -->
     <div class="col-md-5 col-lg-5" style="padding:0 0 0 0;">
         <div class="btn-group btn-group-toggle" data-toggle="buttons">
-          <label class="btn btn-outline-success active">
+          <label class="btn btn-outline-success ">
             <input type="radio" name="options" id="option1" autocomplete="off" checked (click)="setLastNDaysForDashBoard(1)"> Today
           </label>
-          <label class="btn btn-outline-primary ">
+          <label class="btn btn-outline-primary active">
             <input type="radio" name="options" id="option1" autocomplete="off" checked (click)="setLastNDaysForDashBoard(7)"> Last 7 days
           </label>
           <label class="btn btn-outline-secondary ">
@@ -30,7 +30,7 @@
         </div>
     </div>
     <div class="col-md-4 col-lg-4 ">
-        <h4 style="vertical-align:middle;"> Ticket DashBoard</h4>
+        <h4 style="vertical-align:middle;"> Ticket Dashboard</h4>
     </div>
   </div>
   <hr>
@@ -131,6 +131,26 @@
         <h6 > Stale Chart, Not REFRESHED ,No Data Found for Said Time Range</h6>
       </div>
     </div>
+  </div>
+
+  <div class="row" style="margin-top: 20px;" >
+    <div class="col-lg-6 ">
+      <div class="overview-chart ">
+        <canvas id="id_openByModuleLastNDays" height="300">{{ticketOpenByModuleLastNDaysChart}}</canvas>
+      </div>
+      <div class="noChartData " *ngIf="showErrorNoDataticketsOpenByModuleLastNDays">
+        <h6 > Stale Chart, Not REFRESHED ,No Data Found for Said Time Range</h6>
+      </div>
+    </div>
+
+    <!-- <div class="col-lg-6 " >
+      <div class="overview-chart "  >
+        <canvas id="id_summaryByIssueType" height="300">{{ticketIssueTypeBarChart}}</canvas>
+      </div>
+      <div class="noChartData " *ngIf="showErrorNoDatasummaryByIssueType">
+        <h6 > Stale Chart, Not REFRESHED ,No Data Found for Said Time Range</h6>
+      </div>
+    </div> -->
   </div>
 
 </div>

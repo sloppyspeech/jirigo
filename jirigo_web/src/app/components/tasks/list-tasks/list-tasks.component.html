@@ -5,6 +5,7 @@
     [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[2,5,10,25,50]" [paginator]="true"
     currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [filterDelay]="1" 
     [(contextMenuSelection)]="ctxSelectedRow" [contextMenu]="taskCtxMenu"
+    [resizableColumns]="true" columnResizeMode="expand"
     [globalFilterFields]="['task_no','summary','reported_by','issue_status','priority','environment','severity','issue_type']">
 
     <ng-template pTemplate="caption">
@@ -20,7 +21,8 @@
     <ng-template pTemplate="header">
         <tr>
             <th style="width: 2.5em;">#</th>
-            <th *ngFor="let col of taskDetailsCols" [pSortableColumn]="col.field">
+            <th *ngFor="let col of taskDetailsCols" [pSortableColumn]="col.field"
+             [ngStyle]="{'width': col.width}">
                 {{col.header}}
                 <p-sortIcon [field]="col.field"></p-sortIcon>
             </th>
@@ -30,16 +32,16 @@
         <tr [pContextMenuRow]="task">
             <td>{{i+1}}</td>
             <td><a [routerLink]="['/tasks/view-edit-task', task.task_no]">{{task.task_no}}</a></td>
-            <td>{{task.summary}}</td>
+            <td >{{task.summary}}</td>
             <td>{{task.issue_status}}</td>
             <td>{{task.issue_type}}</td>
             <td>{{task.severity}}</td>
             <td>{{task.priority}}</td>
-            <td>{{task.environment}}</td>
-            <td>{{task.estimated_time}}</td>
+            <!-- <td>{{task.environment}}</td> -->
+            <!-- <td>{{task.estimated_time}}</td> -->
             <td>{{task.reported_by}}</td>
             <!-- <td><input class=" text-wrap" size="10" type="text" name="" id="" value="{{task.reported_by}}"></td> -->
-            <td>{{task.reported_date | date:'d-MMM-y h:mm:ss a'}}</td>
+            <td>{{task.reported_date  | date : 'dd MMM yyyy HH:MM'}}</td>
             <td>{{task.assigned_to}}</td>
 
         </tr>
