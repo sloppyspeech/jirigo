@@ -1,0 +1,103 @@
+<div class="container-fluid">
+  <h5>Create Workflow</h5>
+  <hr />
+  <form #form="ngForm" (ngSubmit)="submitForm(form);" *ngIf="showForm">
+    <div class="row">
+      <div class="col-lg-3">
+          <div class="input-group">
+        <select class="form-control " name="projectName" id="" [(ngModel)]="fprojectName"
+        (change)=setProjectName($event)>
+          <option value="-1" selected>Choose Project name</option>
+          <option *ngFor="let proj of allProjects" value="{{proj.project_id}}">{{proj.project_name}}</option>
+        </select>
+        <span class="required-field"></span>
+        </div>
+      </div>
+      <div class="col-lg-3">
+        <div class="form-group input-group">
+          <input
+            type="text"
+            class="form-control form-control-plain"
+            name="workflowName"
+            id=""
+            placeholder="Workflow Name"
+            [(ngModel)]="fworkflowName"
+            required
+          />
+          <span class="required-field"></span>
+        </div>
+      </div>
+      <div class="col-lg-3">
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Create Workflow</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="row" style="margin-left:0px;margin-top:20px; ">
+      <div class="col-lg-8">
+        <table class="table table-sm table-stripped">
+          <thead>
+            <tr class="row">
+              <td scope="col" class="col-lg-2">
+                <div style="font-size: medium;">
+                    Next Statuses 
+                <fa-icon [icon]="faArrowRight" style="padding-left: 2px;"></fa-icon>
+                </div>  
+                <div style="font-size: medium; margin: 10px 0 0 0;">
+                    Current status
+                    <fa-icon [icon]="faArrowDown" ></fa-icon>
+                </div>
+              </td>
+
+              <th
+                scope="col"
+                *ngFor="let colHdr of projStatuses"
+                class="col-lg-1"
+              >
+                {{ colHdr }}
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let row of statusGrid; let rowidx = index" class="row">
+              <th scope="row" class="col-lg-2">{{ row.status }}</th>
+              <td
+                *ngFor="let col of row.nextStatuses; let colidx = index"
+                class="col-lg-1"
+              >
+                <div class="custom-control custom-checkbox text-lg-center">
+                  <input
+                    type="checkbox"
+                    class="custom-control-input"
+                    id="inp_{{ rowidx }}{{ colidx }}"
+                    [(ngModel)]="
+                      statusGrid[rowidx].nextStatuses[colidx].allowed
+                    "
+                    name="name_{{ rowidx }}{{ colidx }}"
+                    disabled="{{row.status == statusGrid[rowidx].nextStatuses[colidx].name}}"
+                  />
+                  <label
+                    class="custom-control-label"
+                    for="inp_{{ rowidx }}{{ colidx }}"
+                  ></label>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <hr>
+
+  </form>
+  <div class="row" style="margin-left:0px; ">
+    <div class="col-lg-7" style="border-width: 1px;border-style:dashed;border-radius: 3px ;background-color:oldlace;">
+        <fa-icon [icon]="faInfoCircle" style="padding-right:10px;color:#33a7ff"></fa-icon>
+        <span class="text-muted-sm" style="font-size: smaller; ">
+            Based on the current status, choose the next status(es) allowed.
+            E.g. if current status is "Open", next allowed statuses could be "Analysis,Testing etc.."
+        </span>
+    </div>
+</div>
+</div>

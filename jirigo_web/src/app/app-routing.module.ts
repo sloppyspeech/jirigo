@@ -76,6 +76,16 @@ const routes: Routes = [
     canActivate:[AuthGuard,RoleGuard]
   },
   {
+    path:'workflow-management',
+    loadChildren: () => import('./components/workflows/workflows.module').then( m => m.WorkflowsModule),
+    canActivate:[AuthGuard,RoleGuard]
+  },
+  {
+    path:'role-management',
+    loadChildren: () => import('./components/roles/roles.module').then( m => m.RolesModule),
+    canActivate:[AuthGuard,RoleGuard]
+  },
+  {
     path:'**',
     component:LoginComponent
   }

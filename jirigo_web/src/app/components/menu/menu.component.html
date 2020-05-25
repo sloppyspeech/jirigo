@@ -72,6 +72,7 @@
                         <a [routerLink]="['/refdata-management/show-and-edit']" href="#" class="dropdown-item">List References</a>
                     </ul>
                   </li>
+                  
                   <li class="dropdown-submenu">
                     <a class="dropdown-item dropdown-toggle" data-toggle="dropdown" href="#">Users</a>
                     <ul class="dropdown-menu">
@@ -79,6 +80,22 @@
                         <a [routerLink]="['/user-management/all-users']" href="#" class="dropdown-item">List Users</a>
                     </ul>
                   </li>
+
+                  <li class="dropdown-submenu">
+                    <a class="dropdown-item dropdown-toggle" data-toggle="dropdown" href="#">Workflows</a>
+                    <ul class="dropdown-menu">
+                        <a [routerLink]="['/workflow-management/create-workflow']" href="#" class="dropdown-item">Create Workflow</a>
+                        <a [routerLink]="['/workflow-management/edit-workflow']" href="#" class="dropdown-item">Edit Workflow</a>
+                        <a [routerLink]="['/workflow-management/assign-workflow']" href="#" class="dropdown-item">Assign Workflow</a>
+                    </ul>
+                  </li>
+                  <li class="dropdown-submenu">
+                    <a class="dropdown-item dropdown-toggle" data-toggle="dropdown" href="#">Roles</a>
+                    <ul class="dropdown-menu">
+                        <a [routerLink]="['/role-management/crud-roles']" href="#" class="dropdown-item">Manage Roles</a>
+                        <a [routerLink]="['/role-management/assign-roles']" href="#" class="dropdown-item">Assign Roles</a>
+                    </ul>
+                  </li>  
                 </ul>
               </li>
 

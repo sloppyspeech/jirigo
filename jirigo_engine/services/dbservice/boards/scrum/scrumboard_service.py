@@ -47,9 +47,9 @@ class JirigoScrumBoard(object):
                                     ttasks t, 
                                     tsprint_tasks tt, 
                                     tsprints ts, 
-                                    tworkflow_steps ts2, 
+                                    tboard_workflow_steps ts2, 
                                     tref_master tm, 
-                                    tworkflow_steps_to_status tsts 
+                                    tboard_workflow_steps_to_status tsts 
                                 WHERE 
                                     t.task_no = tt.task_no 
                                     AND tt.sprint_id = %s

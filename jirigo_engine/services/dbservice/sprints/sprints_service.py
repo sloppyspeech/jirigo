@@ -90,7 +90,7 @@ class JirigoSprints(object):
             ret_sprint_id=cursor.fetchone()[0]
             print(f'sprint_tasks {self.sprint_tasks}')
             
-            cursor.execute('select get_first_step_id_for_workflow(%s)',(self.project_name,))
+            cursor.execute('select get_first_step_id_for_board_workflow(%s)',(self.project_name,))
             first_step_id=cursor.fetchone()[0]
             print(f'First Step id is {first_step_id}')
             task_vals=[(ret_sprint_id,task ,self.created_by,first_step_id) for task in self.sprint_tasks]

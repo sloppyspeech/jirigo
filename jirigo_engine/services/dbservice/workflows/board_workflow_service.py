@@ -7,7 +7,7 @@ import datetime
 
 from pprint import pprint
 
-class JirigoWorkflow(object):
+class JirigoBoardWorkflow(object):
 
     def __init__(self,data={}):
         print("Initializing JirigoWorkflow")
@@ -27,7 +27,7 @@ class JirigoWorkflow(object):
         query_sql="""  
                     with t as (
                     select step_id,step_name,workflow_id
-                      from tworkflow_steps tws
+                      from tboard_workflow_steps tws
                      where tws.workflow_id=%s
                     )
                     select json_build_object('rowData',json_agg(t.refs)) from t ;
@@ -58,7 +58,7 @@ class JirigoWorkflow(object):
         query_sql="""  
                     with t as (
                     SELECT workflow_id,workflow_name,workflow_type,
-                      from tworkflow_master
+                      from tboard_workflow_master
                     )
                     select json_build_object('rowData',json_agg(t.refs)) from t ;
                    """

@@ -1,4 +1,36 @@
-<p>debug works!</p>
+<div class="container-fluid">
+<div class="row">
+<div class="col-lg-8">
+<table class="table ">
+  <thead>
+    <tr class="row">
+      <th scope="col" class="col-lg-1">#</th>
+      <th scope="col" *ngFor="let colHdr of projStatuses" class="col-lg-1">{{colHdr}}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let row of statusGrid ; let rowidx=index" class="row">
+      <th scope="row" class="col-lg-1">{{row.status}}</th>
+      <td *ngFor="let col of row.nextStatuses; let colidx=index" class="col-lg-1">
+            <div class="custom-control custom-checkbox text-lg-center">
+              <input type="checkbox" class="custom-control-input" id="inp_{{rowidx}}{{colidx}}" 
+               [(ngModel)]="statusGrid[rowidx].nextStatuses[colidx].allowed">
+              <label class="custom-control-label" for="inp_{{rowidx}}{{colidx}}"></label>
+            </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<div *ngFor="let row of statusGrid">
+  <hr>
+  {{row |json}} 
+</div>
+
+
+<!-- <p>debug works!</p>
 <!doctype html>
 
 <button type="button" class="btn btn-primary" data-toggle="button" aria-pressed="false">
@@ -26,4 +58,4 @@ style="width:40px;height:40px;border-radius: 50%;"
   <label class="btn btn-outline-secondary" style="margin: 0 0 0 10px;">
     <input type="radio" name="options" id="option3" autocomplete="off"> Modified By Me
   </label>
-</div>
+</div> -->

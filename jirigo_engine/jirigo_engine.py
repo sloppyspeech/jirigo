@@ -21,6 +21,8 @@ from services.dbservice.boards.scrum.scrumboard_service import JirigoScrumBoard
 from services.dbservice.link_tasks_tickets.link_task_ticket import JirigoLinkTaskTicket
 from services.dbservice.tasks.tasks_timelogging_service import JirigoTasksLogTime
 from services.dbservice.images.image_service import JirigoImages
+from services.dbservice.workflows.project_workflow_service import JirigoProjectWorkflow
+from services.dbservice.roles.role_service import JirigoRoles
 
 #-------------------
 UPLOAD_FOLDER='./uploaded_files'
@@ -1190,6 +1192,130 @@ def get_image_to_display(image_id):
     else:
         return get_jsonified_error_response('Failure',"get_image_to_display Not a GET Request")
 
+@app.route('/api/v1/workflows-management/create-project-workflow',methods=['POST'])
+def create_project_workflow():
+    data=''
+    if request.method == 'POST':
+        print('In Post create_project_workflow')
+        pprint.pprint(request.get_json())
+        try:
+            jdb=JirigoProjectWorkflow(request.get_json())
+            data=jdb.create_project_workflow()
+            print('*'*40)
+            print(data['dbQryResponse'])
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in create_project_workflow {error}')
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',"create_project_workflow Not a POST Request")
+
+
+@app.route('/api/v1/role-management/all-active',methods=['GET'])
+def get_all_active_roles():
+    data={}
+    if request.method == 'GET':
+        print('In GET get_timelog_entries_for_task')
+        try:
+            jdb=JirigoRoles()
+            data=jdb.get_all_active_roles()
+            # print("="*80)
+            # print(data)
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in get_all_active_roles {error}')
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',"get_all_active_roles Not a GET Request")
+
+
+@app.route('/api/v1/role-management/all-roles-active-for-projects',methods=['GET'])
+def get_roles_active_for_allprojects():
+    data={}
+    if request.method == 'GET':
+        print('In GET get_active_project_roles')
+        try:
+            jdb=JirigoRoles()
+            data=jdb.get_roles_active_for_allprojects()
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in get_roles_active_for_allprojects {error}')
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',"get_roles_active_for_allprojects Not a GET Request")
+
+@app.route('/api/v1/role-management/project-role',methods=['POST'])
+def add_project_role():
+    data=''
+    if request.method == 'POST':
+        print('In Post add_project_role')
+        pprint.pprint(request.get_json())
+        try:
+            jdb=JirigoRoles(request.get_json())
+            data=jdb.add_project_role()
+            print('*'*40)
+            print(data['dbQryResponse'])
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in add_project_role {error}')
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',"add_project_role Not a POST Request")
+
+@app.route('/api/v1/role-management/update-role',methods=['PUT'])
+def update_role():
+    data=''
+    if request.method == 'PUT':
+        print('In PUT update_role')
+        pprint.pprint(request.get_json())
+        try:
+            jdb=JirigoRoles(request.get_json())
+            data=jdb.update_role()
+            print('*'*40)
+            print(data['dbQryResponse'])
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in update_role {error}')
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',"update_role Not a POST Request")
+
+@app.route('/api/v1/role-management/add-role',methods=['POST'])
+def add_role():
+    data=''
+    if request.method == 'POST':
+        print('In Post add_role')
+        pprint.pprint(request.get_json())
+        try:
+            jdb=JirigoRoles(request.get_json())
+            data=jdb.add_role()
+            print('*'*40)
+            print(data['dbQryResponse'])
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in add_role {error}')
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',"add_role Not a POST Request")
+
+
+@app.route('/api/v1/role-management/project-role',methods=['DELETE'])
+def remove_project_role():
+    data=''
+    if request.method == 'DELETE':
+        print('In Post remove_project_role')
+        pprint.pprint(request.get_json())
+        try:
+            jdb=JirigoProjectWorkflow(request.get_json())
+            data=jdb.remove_project_role()
+            print('*'*40)
+            print(data['dbQryResponse'])
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in remove_project_role {error}')
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',"remove_project_role Not a POST Request")
 
 
 def get_jsonified_error_response(status,error):
@@ -1202,7 +1328,6 @@ def get_jsonified_error_response(status,error):
     print(error_response)
     print(error)
     print("=============================")
-    fileDetails
     try:
         error_response['dbQryResponse']['error_code']=error.pgcode
         error_response['dbQryResponse']['error_message']=error.pgerror[:60]
