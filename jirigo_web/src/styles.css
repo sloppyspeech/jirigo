@@ -70,11 +70,19 @@
   border-color: #00B8D4;
 }
 
+.btn-coolgreen {
+  background-color: #00c853;
+  color:white;
+  border-color: #00c853;
+}
+
 .btn-outline-lightmagenta-secondary {
   color: #CD98CA;
   border-color: #CD98CA;
   background-attachment: white;
 }
+
+
 
 .form-control-plain {
   display: block;

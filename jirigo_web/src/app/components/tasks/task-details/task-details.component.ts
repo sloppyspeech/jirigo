@@ -6,6 +6,7 @@ import { StaticDataService } from '../../../services/static-data.service';
 import { TaskDetailsService } from '../../../services/tasks/task-details.service';
 import { UsersService } from '../../../services/users/users.service';
 import { UtilsService } from '../../../services/shared/utils.service';
+import { ProjectWorkflowsService } from './../../../services/workflows/project-workflows.service';
 
 import { NgbDateStruct, NgbCalendar } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerService } from "ngx-spinner";
@@ -25,7 +26,7 @@ export class TaskDetailsComponent implements OnInit {
 
   dataPipe = new DatePipe('en-US');
   taskEnvRef: [any];
-  taskIssueStatusesRef: [any];
+  taskIssueStatusesRef:any[]=[];
   taskPrioritiesRef: [any];
   taskSeveritiesRef: [any];
   taskIssueTypesRef: [any];
@@ -37,6 +38,7 @@ export class TaskDetailsComponent implements OnInit {
   searching = false;
   searchFailed = false;
   userListForDropDown:any[]=[];
+  workflowNextSteps:any[]=[];
 
   retUserNameVal = [];
   retUserNameArr = [];
@@ -44,18 +46,27 @@ export class TaskDetailsComponent implements OnInit {
   faCalendar=faCalendar;
   currentDate:any;
 
+  workFlowNextStatusQryParams={
+    'project_id':localStorage.getItem('currentProjectId'),
+    'role_id':localStorage.getItem('loggedInUserRoleId'),
+    'current_status':''
+  };
+
   constructor(private _staticRefData: StaticDataService,
     private _serNgxSpinner: NgxSpinnerService,
     private _serUsers: UsersService,
     private _serTaskDetails: TaskDetailsService,
-    private _serUtils: UtilsService) {
+    private _serUtils: UtilsService,
+    private _serProjectWorkflows : ProjectWorkflowsService) {
 
     console.log("Constructor for New Child Issue Details Component");
 
   }
 
   ngOnInit(): void {
+
     this.currentDate = new Date().toISOString().substring(0, 10);
+
   }
 
   ngAfterViewInit() {
@@ -114,6 +125,20 @@ export class TaskDetailsComponent implements OnInit {
               console.log(this.task_data.dbQryResponse);
               this.task_data = this.task_data.dbQryResponse;
 
+              /** 
+                 * Based on the current status, fetch the next allowed status of the workflow.
+                 * e.g. if current status is 'Open', next allowed status could be
+                 * 'WIP','Development','On Hold' etc.
+              **/
+              this.workFlowNextStatusQryParams.current_status=this.task_data.issue_status;
+              this._serProjectWorkflows.getNextAllowedStepsForProjectRoleCurrStatus(this.workFlowNextStatusQryParams)
+              .subscribe(res=>{
+                this.taskIssueStatusesRef=[];
+                res['dbQryResponse'].forEach(ele => {
+                    this.taskIssueStatusesRef.push({'name':ele});
+                });
+              });
+
               this.parentForm.get('fctlTaskNo').setValue(this.task_data.task_no);
               this.parentForm.get('fctlSummary').setValue(this.task_data.summary);
               this.parentForm.get('fctlDescription').setValue(this.task_data.description);
@@ -135,6 +160,7 @@ export class TaskDetailsComponent implements OnInit {
               console.log(this.parentForm.get('fctlReportedDate').value);
               this.parentForm.get('fctlReportedDate').setValue(this._serUtils.parseDateAsYYYYMMDD(this.task_data.reported_date));
               this.isLoaded = true;
+
               this._serNgxSpinner.hide();
             });
 

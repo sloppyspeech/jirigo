@@ -36,19 +36,23 @@
   <hr>
   <div class="row" style="margin-top: 20px;" >
     <div class="col-sm-6 col-lg-3 topCardLeft">
-      <div class="inner1">
-        <div class="overview-box clearfix">
-          <div class="icon">
-            <fa-icon [icon]="faFolderOpen" class="zmdi"></fa-icon>
-          </div>
-          <div class="text">
-            <span style="font-weight: 600;">Open Issues</span>
-            <h4 class="text-align" *ngIf="lgCardsData">{{openIssuesCount}}</h4>
-          </div>
-        </div>
+            <div class="inner1">
+              <div class="overview-box clearfix">
+                <div class="icon">
+                  <fa-icon [icon]="faFolderOpen" class="zmdi"></fa-icon>
+                </div>
+                <div class="text">
+                  <span style="font-weight: 600;">Open Issues</span>
+                  <h4 class="text-align" *ngIf="lgCardsData">{{openIssuesCount}}</h4>
+                </div>
 
-      </div>
+              </div>
+            </div>
+        <!-- <div class="col-lg-3">
+            <p-chart type="line" [data]="data" width="70px" height="40px" [options]="options" ></p-chart>
+        </div> -->
     </div>
+
     <div class="col-sm-6 col-lg-3 topCardMiddle">
       <div class="inner2">
         <div class="overview-box clearfix">
@@ -143,14 +147,14 @@
       </div>
     </div>
 
-    <!-- <div class="col-lg-6 " >
-      <div class="overview-chart "  >
-        <canvas id="id_summaryByIssueType" height="300">{{ticketIssueTypeBarChart}}</canvas>
+    <div class="col-lg-6 ">
+      <div class="overview-chart " >
+        <canvas id="id_ticketsStillOpenLastNDaysTest" height="80px;" width="100px;">{{ticketOpenLastNDaysChartTest}}</canvas>
       </div>
-      <div class="noChartData " *ngIf="showErrorNoDatasummaryByIssueType">
+      <div class="noChartData " *ngIf="showErrorNoDataticketsStillOpenLastNDays">
         <h6 > Stale Chart, Not REFRESHED ,No Data Found for Said Time Range</h6>
       </div>
-    </div> -->
+    </div>
   </div>
 
 </div>

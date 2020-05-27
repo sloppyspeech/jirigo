@@ -14,6 +14,7 @@ class JirigoRoles(object):
         self.project_id=data.get('project_id','')
         self.project_name=data.get('project_name','')
         self.role_id=data.get('role_id','')
+        self.workflow_id=data.get('workflow_id','')
         self.role_name=data.get('role_name','')
         self.is_active=data.get('is_active','')
         self.project_name=data.get('project_name','')
@@ -63,11 +64,21 @@ class JirigoRoles(object):
         self.logger.debug("Inside get_active_project_roles")
         query_sql="""  
                         WITH t AS (
-                             SELECT  tr.role_id,tr.role_name,tr.is_active,
-		                             tpr.project_id ,get_proj_name(tpr.project_id ) project_name
-                                FROM troles tr,tproject_roles tpr
-                               WHERE tr.role_id=tpr.role_id
-                                 and tr.is_active='Y'
+                                    SELECT
+                                        tr.role_id,
+                                        tr.role_name,
+                                        tr.is_active,
+                                        tpr.project_id ,
+                                        get_proj_name(tpr.project_id) project_name,
+                                        get_workflow_name (tprw.workflow_id ) workflow_name
+                                FROM troles tr
+                                INNER JOIN tproject_roles tpr ON
+                                    tr.role_id = tpr.role_id
+                                LEFT OUTER JOIN tproj_role_workflow tprw ON
+                                    tr.role_id = tprw.role_id
+                                WHERE
+                                    tr.is_active = 'Y'
+                                order by tr.role_id 
                         )
                         SELECT json_agg(t) from t;
                    """
@@ -92,7 +103,7 @@ class JirigoRoles(object):
 
     def add_project_role(self):
         response_data={}
-        self.logger.debug("remove_project_role ")
+        self.logger.debug("add_project_role ")
         insert_proj_role_sql="""INSERT
 	                             INTO  tproject_roles
                                        (project_id, role_id, 
@@ -108,6 +119,7 @@ class JirigoRoles(object):
             cursor=self.jdb.dbConn.cursor()
             cursor.execute(insert_proj_role_sql,values_create_workflow)
             row_count=cursor.rowcount
+            self.jdb.dbConn.commit()
             self.logger.debug(f'Insert Success with {row_count} row(s)')
 
             response_data['dbQryStatus']='Success'
@@ -122,19 +134,20 @@ class JirigoRoles(object):
     def remove_project_role(self):
         response_data={}
         self.logger.debug("remove_project_role ")
-        del_proj_role="""DELETE FROM tproject_roles 
+        del_proj_role="""DELETE   FROM tproject_roles 
                                  WHERE project_id=%s
                                    AND role_id=%s
                             """
         
-        values=(self.project_id,self.role_id,self.created_by,self.created_date,)
+        values=(self.project_id,self.role_id,)
         self.logger.debug(f'{del_proj_role}  values  {values}')
         try:
             print('#'*80)
             cursor=self.jdb.dbConn.cursor()
             cursor.execute(del_proj_role,values)
             row_count=cursor.rowcount
-            self.logger.debug(f'Insert Success with {row_count} row(s)')
+            self.jdb.dbConn.commit()
+            self.logger.debug(f'Delete Success with {row_count} row(s)')
 
             response_data['dbQryStatus']='Success'
             response_data['dbQryResponse']={"rowCount":row_count}
@@ -238,3 +251,31 @@ class JirigoRoles(object):
             if(self.jdb.dbConn):
                 print(f'Error While del_role  {error}')
                 raise
+    
+    def assign_workflow_to_role(self):
+        response_data={}
+        self.logger.debug("assign_workflow_to_role ")
+        assign_wf_to_role_sql=""" INSERT 
+                             INTO tproj_role_workflow
+                                  (project_id,role_id,workflow_id,created_by,created_date)
+                            VALUES (%s,%s,%s,%s,%s )
+                            """
+        
+        values=(self.project_id,self.role_id,self.workflow_id,self.created_by,self.created_date,)
+        self.logger.debug(f'{assign_wf_to_role_sql}  values  {values}')
+        try:
+            print('#'*80)
+            cursor=self.jdb.dbConn.cursor()
+            cursor.execute(assign_wf_to_role_sql,values)
+            row_count=cursor.rowcount
+            self.jdb.dbConn.commit()
+            self.logger.debug(f'Insert Success with {row_count} row(s) ')
+
+            response_data['dbQryStatus']='Success'
+            response_data['dbQryResponse']={"rowCount":row_count}
+            return response_data
+
+        except  (Exception, psycopg2.Error) as error:
+            if(self.jdb.dbConn):
+                print(f'Error While assign_workflow_to_role  {error}')
+                raise 

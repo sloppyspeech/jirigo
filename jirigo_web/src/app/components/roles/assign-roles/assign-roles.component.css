@@ -1,0 +1,20 @@
+.deleteRole:hover {
+  cursor: pointer;
+}
+
+.assignWorkflow:hover {
+  cursor: pointer;
+}
+
+.deleteRole {
+    padding: 0 20px 0 0;
+    color: red;
+    font-size: larger;
+  }
+  
+  .assignWorkflow {
+    padding: 0 20px 0 5px;
+    color: #00a4eb;
+    font-size: larger;
+  }
+  

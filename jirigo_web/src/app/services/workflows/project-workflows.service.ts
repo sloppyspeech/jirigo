@@ -26,6 +26,32 @@ export class ProjectWorkflowsService {
     console.log(url);
     return this._httpCli.post(url, inpWorkflowData, this.sHttpOptions);
   }
+
+  getNextAllowedStepsForProjectRoleCurrStatus(inpData){
+    let url=this.sApiEndPoint+'next-steps-allowed';
+    let params=`?project_id=${inpData['project_id']}&role_id=${inpData['role_id']}&current_status=${inpData['current_status']}`;
+    url=url+params;
+    console.log(url)
+    return this._httpCli.get(url);
+
+  }
+
+  getAllStatusesForWorkflows(inpData){
+    let url=this.sApiEndPoint+'all-statuses';
+    let params=`?project_id=${inpData['project_id']}&ref_category=${inpData['ref_category']}`;
+    url=url+params;
+    console.log(url)
+    return this._httpCli.get(url);
+  }
+
+  getUnAllocatedWorkflowsOfProjects(inpData){
+    let url=this.sApiEndPoint+'not-allocated-to-role';
+    let params=`?project_id=${inpData['project_id']}&role_id=${inpData['role_id']}`;
+    url=url+params;
+    console.log(url)
+    return this._httpCli.get(url);
+  }
+
 }
 
 export interface infWorkflow {

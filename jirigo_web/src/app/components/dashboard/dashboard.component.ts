@@ -13,7 +13,69 @@ import { compileNgModule } from '@angular/compiler';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
+/** sparkle line test***/
+ 
+data = {
+  labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+  datasets: [
+      
+      {
+          label: 'Second Dataset',
+          data: [28, 48, 40, 19, 86, 27, 90],
+          fill: false,
+          borderColor: '#565656'
+      }
+  ]
+};
 
+options = {
+title: {
+    display: false,
+    text: 'My Title',
+    fontSize: 2
+},
+legend: {
+    display:false,
+    position: 'bottom'
+},
+            scales: {
+              xAxes: [{
+                display: true,
+                gridLines: true,
+                zeroLineColor:'white',
+                ticks: {
+                  fontSize: 2,
+                  stepSize: 5,
+                  padding:8,
+                  fontColor:'white'
+                },
+                scaleLabel: {
+                  fontColor: "black",
+                  labelString: "Last "+" days",
+                  display: false,
+                  fontSize: 2
+                }
+              }],
+              yAxes: [{
+                display: false,
+                gridLines: {},
+                ticks: {
+                  fontColor: "black",
+                  fontSize: 2,
+                  padding:15,
+                },
+                scaleLabel: {
+                  fontColor: "white",
+                  fontSize: 2,
+                  labelString: "Count Of Open Tickets",
+                  display: false
+                }
+              }]
+            }
+};
+  
+  
+ /****/
   faCogs = faCogs;
   faCubes = faCubes;
   faUsers = faUsers;
@@ -49,6 +111,8 @@ export class DashboardComponent implements OnInit {
   ticketCreatedPerDayChart;
   ticketOpenLastNDaysChart;
   ticketOpenByModuleLastNDaysChart;
+  
+  ticketOpenLastNDaysChartTest;
 
   weatherDates = [];
   globalChartIntervalInDays=7;
@@ -565,6 +629,116 @@ export class DashboardComponent implements OnInit {
           console.log('getDashboardTicketOpenByModuleInLastNDays is NULL');
           this.initializeVars();
           this.showErrorNoDataticketsOpenByModuleLastNDays=true;
+        }
+      
+    });
+
+
+    //----------
+    this._serTicketDashboard.getDashboardTicketStillOpenInLastNDays(this.globalChartIntervalInDays)
+    .subscribe(res => {
+      console.log("===============getDashboardTicketStillOpenInLastNDays================");
+      console.log(res['dbQryResponse']);
+      this.ticket_stillopen_last_n_days_count=[];
+      this.ticket_stillopen_last_n_days_label=[];
+      if(res['dbQryResponse']){
+          res['dbQryResponse'].forEach(e => {
+            this.ticket_stillopen_last_n_days_count.push(e['count']);
+            this.ticket_stillopen_last_n_days_label.push(e['created_date']);
+          });
+          console.log("=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*");
+          console.log(this.ticket_stillopen_last_n_days_count);
+          console.log(this.ticket_stillopen_last_n_days_label);
+          console.log(Math.max(...this.ticket_stillopen_last_n_days_count));
+          console.log("=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*");
+
+          if (this.ticketOpenLastNDaysChartTest){
+            this.ticketOpenLastNDaysChartTest.destroy();
+          }
+
+          this.ticketOpenLastNDaysChartTest = new Chart('id_ticketsStillOpenLastNDaysTest', {
+            type: 'line',
+            data: {
+              labels: this.ticket_stillopen_last_n_days_label,
+              datasets: [
+                {
+                  data: this.ticket_stillopen_last_n_days_count,
+                  fill: false,
+                  borderWidth: 2,
+                  borderColor: 'yellow'
+                }
+              ]
+            },
+            options: {
+              plugins: {
+                colorschemes: {
+                  scheme: 'office.Parallax6'
+                }
+              },
+              title:{
+                display:false,
+                text:'# Tickets Still Open '
+              }
+              ,
+              maintainAspectRatio: true,
+              responsive: false,
+              legend: {
+                display: false
+              },
+              scales: {
+                xAxes: [{
+                  display: true,
+                  gridLines: true,
+                  zeroLineColor:'white',
+                  ticks: {
+                    fontSize: 2,
+                    stepSize: 5,
+                    padding:8,
+                    fontColor:'white'
+                  },
+                  scaleLabel: {
+                    fontColor: "black",
+                    labelString: "Last "+this.globalChartIntervalInDays+" days",
+                    display: false,
+                    fontSize: 2
+                  },
+                  type:'time',
+                  time: {
+                    parser: 'YYYY-MM-DD',
+                    tooltipFormat: 'll HH:mm',
+                    unit: 'day',
+                    unitStepSize: 1,
+                    displayFormats: {
+                      'day': 'DD/MMM'
+                    }
+                  }
+                }],
+                yAxes: [{
+                  display: false,
+                  gridLines: {},
+                  ticks: {
+                    fontColor: "black",
+                    fontSize: 2,
+                    padding:15,
+                    max:Math.max(...this.ticket_stillopen_last_n_days_count) +2
+                  },
+                  scaleLabel: {
+                    fontColor: "white",
+                    fontSize: 2,
+                    labelString: "Count Of Open Tickets",
+                    display: false
+                  }
+                }]
+              }
+            }
+
+          });
+          
+
+        }
+        else{
+          this.initializeVars();
+          this.showErrorNoDataticketsStillOpenLastNDays=true;
         }
       
     });

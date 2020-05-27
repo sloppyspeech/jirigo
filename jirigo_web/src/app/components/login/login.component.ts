@@ -22,6 +22,11 @@ export class LoginComponent implements OnInit {
             ) { }
 
   ngOnInit(): void {
+    console.log('LoginComponent ')
+    console.log(localStorage.getItem('loggedInUserId'));
+    console.log(localStorage.getItem('loggedInUserName'));
+    console.log(localStorage.getItem('currentProjectName'));
+    console.log('-------------');
     localStorage.clear();
     this.loginFormInvalid=false;
     this.errorsList=[];

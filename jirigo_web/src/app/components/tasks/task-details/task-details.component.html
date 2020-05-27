@@ -65,8 +65,10 @@
               <select class="form-control-plain" id="exampleFormControlSelect1" formControlName="fctlIssueStatus"
                 (change)="setReportedBy($event)">
                 <option value=""  disabled>Choose..</option>
-                <option *ngFor="let issueStatus of taskIssueStatusesRef" [ngValue]="issueStatus.name">
-                  {{ issueStatus.name }}</option>
+                <option *ngFor="let issueStatus of taskIssueStatusesRef" [ngValue]="issueStatus.name"
+                >
+                  {{ issueStatus.name }}
+                </option>
               </select>
             </div>
 

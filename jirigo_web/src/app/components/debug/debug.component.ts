@@ -30,6 +30,65 @@ export class DebugComponent implements OnInit {
   ];
   qtd:any[] = [{
   }];
+  
+  data = {
+    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+    datasets: [
+        
+        {
+            label: 'Second Dataset',
+            data: [28, 48, 40, 19, 86, 27, 90],
+            fill: false,
+            borderColor: '#565656'
+        }
+    ]
+};
+
+options = {
+  title: {
+      display: false,
+      text: 'My Title',
+      fontSize: 2
+  },
+  legend: {
+      display:false,
+      position: 'bottom'
+  },
+              scales: {
+                xAxes: [{
+                  display: true,
+                  gridLines: true,
+                  zeroLineColor:'white',
+                  ticks: {
+                    fontSize: 2,
+                    stepSize: 5,
+                    padding:8,
+                    fontColor:'white'
+                  },
+                  scaleLabel: {
+                    fontColor: "black",
+                    labelString: "Last "+" days",
+                    display: false,
+                    fontSize: 2
+                  }
+                }],
+                yAxes: [{
+                  display: false,
+                  gridLines: {},
+                  ticks: {
+                    fontColor: "black",
+                    fontSize: 2,
+                    padding:15,
+                  },
+                  scaleLabel: {
+                    fontColor: "white",
+                    fontSize: 2,
+                    labelString: "Count Of Open Tickets",
+                    display: false
+                  }
+                }]
+              }
+};
 
   filteredTaskTickets:any=[];
   selectedTaskTickets:any=[];

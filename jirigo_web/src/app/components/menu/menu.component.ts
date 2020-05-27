@@ -11,7 +11,7 @@ import { ChangeProjectComponent  } from '../projects/change-project/change-proje
 export class MenuComponent implements OnInit,AfterViewInit {
   @ViewChild('ChangeProjectComponent') changeProjectComponent:ChangeProjectComponent;
 
-  loggedIn:boolean=true;
+  loggedIn:boolean=false;
   loggedInUserName:string;
   loggedInUserRole:string='';
   showMenu:boolean=true;
@@ -22,12 +22,13 @@ export class MenuComponent implements OnInit,AfterViewInit {
   constructor(private _serUser:UsersService) { }
 
   ngOnInit(): void {
+    console.log('MenuComponent Init :loggedIn:'+this.loggedIn);
     let date = new Date;
     let seconds = date.getSeconds();
     this.random_avatar_png_no = seconds%30;
-
+    this.loggedIn=false;
     this._serUser.isLoggedIn.subscribe(res=>{
-      console.log("App Component Init");
+      console.log("Menu Component Init :"+this.loggedIn);
       console.log(res);
       console.log(localStorage.getItem('loggedInUserId'));
       console.log(localStorage.getItem('loggedInUserName'));
@@ -41,7 +42,11 @@ export class MenuComponent implements OnInit,AfterViewInit {
         if (localStorage.getItem('loggedInUserId') == null){
           this.loggedIn=false;
         }
+        else{
+          this.loggedIn=true;
+        }
       }
+      console.log("End Menu Component Init :"+this.loggedIn);
     });
  
     this._serUser.loggedInUserProps.subscribe(res =>{

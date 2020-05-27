@@ -55,7 +55,7 @@ def create_ticket():
             print(f'Error in create_ticket {error}')
             return get_jsonified_error_response('Failure',error)
     else:
-        return get_jsonified_error_response('Failure',"Not a POST Request")
+        return get_jsonified_error_response('Failure',get_errmsg('NAPR'))
 
 @app.route('/api/v1/ticket-management/clone-ticket',methods=['POST'])
 def clone_ticket():
@@ -72,7 +72,7 @@ def clone_ticket():
             print(f'Error in clone_ticket {error}')
             return get_jsonified_error_response('Failure',error)
     else:
-        return get_jsonified_error_response('Failure',"clone_ticket Not a POST Request")
+        return get_jsonified_error_response('Failure',"clone_ticket "+get_errmsg('NAPR'))
 
 @app.route('/api/v1/ticket-management/ticket',methods=['PUT'])
 def update_ticket():
@@ -89,12 +89,11 @@ def update_ticket():
             print(f'Error in update_ticket {error}')
             return get_jsonified_error_response('Failure',error)
     else:
-        return get_jsonified_error_response('Failure',"Not a PUT Request")
+        return get_jsonified_error_response('Failure',get_errmsg('NAPUR'))
 
 
 @app.route('/api/v1/ticket-management/tickets/<ticket_no>',methods=['GET'])
 def get_ticket_details(ticket_no):
-    error_response={}
     data={}
 
     if request.method == 'GET':
@@ -107,7 +106,7 @@ def get_ticket_details(ticket_no):
             print(f'Error in get_ticket_details {error}')
             return get_jsonified_error_response('Failure',error)
     else:
-        return get_jsonified_error_response('Failure',"Not a GET Request")
+        return get_jsonified_error_response('Failure',get_errmsg('NAGR'))
 
 
 @app.route('/api/v1/ticket-management/proj-all-tickets/<project_id>',methods=['GET'])
@@ -123,7 +122,7 @@ def get_all_tickets(project_id):
             print(f'Error in get_ticket_details {error}')
             return get_jsonified_error_response('Failure',error)
     else:
-        return get_jsonified_error_response('Failure',"Not a GET Request")
+        return get_jsonified_error_response('Failure',get_errmsg('NAGR'))
 
 @app.route('/api/v1/ticket-management/all-tickets-by-criterion',methods=['GET'])
 def get_all_tickets_by_criterion():
@@ -142,7 +141,7 @@ def get_all_tickets_by_criterion():
             print(f'Error in get_all_tickets_by_criterion {error}')
             return get_jsonified_error_response('Failure',error)
     else:
-        return get_jsonified_error_response('Failure',"Not a GET Request")
+        return get_jsonified_error_response('Failure',get_errmsg('NAGR'))
 
 
 @app.route('/api/v1/ticket-management/update-assignee',methods=['POST'])
@@ -161,12 +160,11 @@ def update_ticket_assignee():
             print(f'Error in update_ticket_assignee {error}')
             return get_jsonified_error_response('Failure',error)
     else:
-        return get_jsonified_error_response('Failure',"Not a POST Request")
+        return get_jsonified_error_response('Failure',get_errmsg('NAPR'))
 
 
 @app.route('/api/v1/ticket-management/comments/<ticket_no>',methods=['GET'])
 def get_tickets_all_comments(ticket_no):
-    error_response={}
     data={}
 
     if request.method == 'GET':
@@ -179,7 +177,7 @@ def get_tickets_all_comments(ticket_no):
             print(f'Error in get_tickets_all_comments {error}')
             return get_jsonified_error_response('Failure',error)
     else:
-        return get_jsonified_error_response('Failure',"get_tickets_all_comments Not a GET Request")
+        return get_jsonified_error_response('Failure',"get_tickets_all_comments " + get_errmsg('NAGR'))
 
 
 @app.route('/api/v1/ticket-management/comments/comment',methods=['POST'])
@@ -196,12 +194,11 @@ def create_ticket_comment():
             return get_jsonified_error_response('Failure',error)
         return jsonify(request.get_json())
     else:
-        return get_jsonified_error_response('Failure',"create_ticket_comment Not a POST Request")
+        return get_jsonified_error_response('Failure',"create_ticket_comment " + get_errmsg('NAPR'))
 
 
 @app.route('/api/v1/ticket-management/audit/<ticket_no>',methods=['GET'])
 def get_ticket_audit(ticket_no):
-    error_response={}
     data={}
 
     if request.method == 'GET':
@@ -214,7 +211,7 @@ def get_ticket_audit(ticket_no):
             print(f'Error in get_ticket_audit {error}')
             return get_jsonified_error_response('Failure',error)
     else:
-        return get_jsonified_error_response('Failure',"get_ticket_audit Not a GET Request")
+        return get_jsonified_error_response('Failure',"get_ticket_audit " + get_errmsg('NAGR'))
 
 
 @app.route('/api/v1/project-management/create-project',methods=['POST'])
@@ -231,7 +228,7 @@ def create_project():
             return get_jsonified_error_response('Failure',error)
         return jsonify(request.get_json())
     else:
-        return get_jsonified_error_response('Failure',"Not a POST Request")
+        return get_jsonified_error_response('Failure',get_errmsg('NAPR'))
 
 @app.route('/api/v1/project-management/projects',methods=['GET'])
 def get_all_projects():
@@ -245,7 +242,7 @@ def get_all_projects():
             print(f'Error in get_all_projects {error}')
             return get_jsonified_error_response('Failure',error)
     else:
-        return get_jsonified_error_response('Failure',"get_all_projects Not a GET Request")
+        return get_jsonified_error_response('Failure',"get_all_projects " + get_errmsg('NAGR'))
 
 @app.route('/api/v1/project-management/projects/user-projects/<user_id>',methods=['GET'])
 def get_all_projects_for_user(user_id):
@@ -259,7 +256,7 @@ def get_all_projects_for_user(user_id):
             print(f'Error in get_all_projects_for_user {error}')
             return get_jsonified_error_response('Failure',error)
     else:
-        return get_jsonified_error_response('Failure',"get_all_projects_for_user Not a GET Request")
+        return get_jsonified_error_response('Failure',"get_all_projects_for_user " + get_errmsg('NAGR'))
 
 @app.route('/api/v1/user-management/register-user',methods=['POST'])
 def register_user():
@@ -274,7 +271,7 @@ def register_user():
             print(f'Error in register_user {error}')
             return get_jsonified_error_response('Failure',error)
     else:
-        return get_jsonified_error_response('Failure',"Not a POST Request in register_user")
+        return get_jsonified_error_response('Failure',"register_user "+get_errmsg('NAPR'))
 
 @app.route('/api/v1/user-management/create-user',methods=['POST'])
 def create_user():
@@ -289,13 +286,12 @@ def create_user():
             print(f'Error in create_user {error}')
             return get_jsonified_error_response('Failure',error)
     else:
-        return get_jsonified_error_response('Failure',"Not a POST Request in create_user")
+        return get_jsonified_error_response('Failure',"create_user "+get_errmsg('NAPR'))
 
 @app.route('/api/v1/user-management/login',methods=['POST'])
 def validate_userid_password():
     if request.method == 'POST':
         print('In Post validate_userid_password')
-        # print(request.get_json())
         try:
             jdb=JirigoUsers(request.get_json())
             data=jdb.validate_userid_password()
@@ -304,7 +300,7 @@ def validate_userid_password():
             print(f'Error in validate_userid_password {error}')
             return get_jsonified_error_response('Failure validate_userid_password',error)
     else:
-        return get_jsonified_error_response('Failure validate_userid_password',"Not a POST Request")
+        return get_jsonified_error_response('Failure ',"validate_userid_password "+get_errmsg('NAPR'))
 
 @app.route('/api/v1/user-management/set-password',methods=['POST'])
 def set_user_password():
@@ -319,7 +315,7 @@ def set_user_password():
             print(f'Error in set_user_password {error}')
             return get_jsonified_error_response('Failure set_user_password',error)
     else:
-        return get_jsonified_error_response('Failure set_user_password',"Not a POST Request")
+        return get_jsonified_error_response('Failure', "set_user_password " + get_errmsg('NAPR'))
 
 
 @app.route('/api/v1/user-management/all-users',methods=['GET'])
@@ -334,7 +330,7 @@ def get_all_users():
             print(f'Error in get_all_users {error}')
             return get_jsonified_error_response('Failure',error)
     else:
-        return get_jsonified_error_response('Failure',"get_all_users Not a GET Request")
+        return get_jsonified_error_response('Failure',"get_all_users " + get_errmsg('NAGR'))
 
 @app.route('/api/v1/user-management/user-details/<user_id>',methods=['GET'])
 def get_user_details(user_id):
@@ -348,7 +344,7 @@ def get_user_details(user_id):
             print(f'Error in get_user_details {error}')
             return get_jsonified_error_response('Failure',error)
     else:
-        return get_jsonified_error_response('Failure',"get_user_details Not a GET Request")
+        return get_jsonified_error_response('Failure',"get_user_details " + get_errmsg('NAGR'))
 
 @app.route('/api/v1/user-management/user-names/<user_name_substring>',methods=['GET'])
 def get_user_names(user_name_substring):
@@ -362,7 +358,7 @@ def get_user_names(user_name_substring):
             print(f'Error in get_user_names {error}')
             return get_jsonified_error_response('Failure',error)
     else:
-        return get_jsonified_error_response('Failure',"get_user_names Not a GET Request")
+        return get_jsonified_error_response('Failure',"get_user_names " + get_errmsg('NAGR'))
 
 @app.route('/api/v1/user-management/authorization/auth-route-for-user',methods=['POST'])
 def authenticate_route_for_user():
@@ -374,14 +370,13 @@ def authenticate_route_for_user():
             jdb=JirigoUsers(request.get_json())
             data=jdb.authenticate_route_for_user()
             print("="*80)
-            # print(data)
             return jsonify(data)
         except Exception as error:
             print(f'Error in authenticate_route_for_user {error}')
             print(get_jsonified_error_response('Failure',error))
             return get_jsonified_error_response('Failure',error)
     else:
-        return get_jsonified_error_response('Failure',"authenticate_route_for_user Not a POST Request")
+        return get_jsonified_error_response('Failure',"authenticate_route_for_user " +get_errmsg('NAPR'))
 
 
 @app.route('/api/v1/ref-data-management/ticket-status',methods=['GET'])
@@ -397,24 +392,23 @@ def get_ticket_ref_status():
             print(f'Error in get_ticket_ref_status {error}')
             return get_jsonified_error_response('Failure',error)
     else:
-        return get_jsonified_error_response('Failure',"Not a GET Request")
+        return get_jsonified_error_response('Failure',get_errmsg('NAGR'))
 
 @app.route('/api/v1/ref-data-management/all-ticket-refs/<project_id>',methods=['GET'])
 def get_all_ticket_refs(project_id):
     data={}
     if request.method == 'GET':
-        print('In GET get_ticket_ref_status')
+        print('In GET get_all_ticket_refs')
         try:
             jdb=JirigoRefMaster({'project_id':project_id})
             data=jdb.get_all_ticket_refs()
             print("="*80)
-            # print(data)
             return jsonify(data)
         except Exception as error:
             print(f'Error in get_all_ticket_refs {error}')
             return get_jsonified_error_response('Failure',error)
     else:
-        return get_jsonified_error_response('Failure',"Not a GET Request")
+        return get_jsonified_error_response('Failure',get_errmsg('NAGR'))
 
 @app.route('/api/v1/ref-data-management/all-task-refs/<project_id>',methods=['GET'])
 def get_all_task_refs(project_id):
@@ -425,13 +419,12 @@ def get_all_task_refs(project_id):
             jdb=JirigoRefMaster({'project_id':project_id})
             data=jdb.get_all_task_refs()
             print("="*80)
-            # print(data)
             return jsonify(data)
         except Exception as error:
             print(f'Error in get_all_task_refs {error}')
             return get_jsonified_error_response('Failure',error)
     else:
-        return get_jsonified_error_response('Failure',"get_all_task_refs Not a GET Request")
+        return get_jsonified_error_response('Failure',"get_all_task_refs " + get_errmsg('NAGR'))
 
 
 @app.route('/api/v1/ref-data-management/all-sprint-refs/<project_id>',methods=['GET'])
@@ -443,13 +436,12 @@ def get_all_sprint_refs(project_id):
             jdb=JirigoRefMaster({'project_id':project_id})
             data=jdb.get_all_sprint_refs()
             print("="*80)
-            # print(data)
             return jsonify(data)
         except Exception as error:
             print(f'Error in get_all_sprint_refs {error}')
             return get_jsonified_error_response('Failure',error)
     else:
-        return get_jsonified_error_response('Failure',"get_all_sprint_refs Not a GET Request")
+        return get_jsonified_error_response('Failure',"get_all_sprint_refs " + get_errmsg('NAGR'))
 
 @app.route('/api/v1/ref-data-management/all-refs-for-show-and-edit',methods=['GET'])
 def get_all_refs_for_show_and_editing():
@@ -459,14 +451,12 @@ def get_all_refs_for_show_and_editing():
         try:
             jdb=JirigoRefMaster({})
             data=jdb.get_all_refs_for_show_and_editing()
-            # print("="*80)
-            # print(data)
             return jsonify(data)
         except Exception as error:
             print(f'Error in get_all_refs_for_show_and_editing {error}')
             return get_jsonified_error_response('Failure',error)
     else:
-        return get_jsonified_error_response('Failure',"get_all_refs_for_show_and_editing Not a GET Request")
+        return get_jsonified_error_response('Failure',"get_all_refs_for_show_and_editing " + get_errmsg('NAGR'))
 
 @app.route('/api/v1/ref-data-management/create-ref',methods=['POST'])
 def insert_reference():
@@ -477,14 +467,13 @@ def insert_reference():
             jdb=JirigoRefMaster(request.get_json())
             data=jdb.insert_reference()
             print("="*80)
-            # print(data)
             return jsonify(data)
         except Exception as error:
             print(f'Error in insert_reference {error}')
             print(get_jsonified_error_response('Failure',error))
             return get_jsonified_error_response('Failure',error)
     else:
-        return get_jsonified_error_response('Failure',"insert_reference Not a POST Request")
+        return get_jsonified_error_response('Failure',"insert_reference " + get_errmsg('NAPR'))
 
 @app.route('/api/v1/ref-data-management/edit-ref',methods=['POST'])
 def update_reference():
@@ -495,14 +484,13 @@ def update_reference():
             jdb=JirigoRefMaster(request.get_json())
             data=jdb.update_reference()
             print("="*80)
-            # print(data)
             return jsonify(data)
         except Exception as error:
             print(f'Error in update_reference {error}')
             print(get_jsonified_error_response('Failure',error))
             return get_jsonified_error_response('Failure',error)
     else:
-        return get_jsonified_error_response('Failure',"update_reference Not a POST Request")
+        return get_jsonified_error_response('Failure',"update_reference " + get_errmsg('NAPR'))
 
 
 @app.route('/api/v1/ref-data-management/task-ticket-link-refs/<project_id>',methods=['GET'])
@@ -514,78 +502,71 @@ def get_all_task_ticket_link_references(project_id):
             jdb=JirigoRefMaster({'project_id':project_id})
             data=jdb.get_all_task_ticket_link_references()
             print("="*80)
-            # print(data)
             return jsonify(data)
         except Exception as error:
             print(f'Error in get_all_task_ticket_link_references {error}')
             print(get_jsonified_error_response('Failure',error))
             return get_jsonified_error_response('Failure',error)
     else:
-        return get_jsonified_error_response('Failure',"get_all_task_ticket_link_references Not a POST Request")
+        return get_jsonified_error_response('Failure',"get_all_task_ticket_link_references" + get_errmsg('NAPR'))
 
 
 @app.route('/api/v1/ticket-dashboard/summaries/generic',methods=['GET'])
 def get_ticket_dashboard_generic_summary():
     data={}
     if request.method == 'GET':
-        print('In GET get_ticket_ref_status')
+        print('In GET get_ticket_dashboard_generic_summary')
         try:
-            print("======$$$$+++++++")
             print(request.args)
             last_n_days=request.args.get('last_n_days',0)
             project_id=request.args.get('project_id',0)
             jdb=JirigoTicketDashboard({'last_n_days':last_n_days,'project_id':project_id})
             data=jdb.get_ticket_dashboard_generic_summary()
             print("="*80)
-            # print(data)
             return jsonify(data)
         except Exception as error:
             print(f'Error in get_ticket_dashboard_generic_summary {error}')
             return get_jsonified_error_response('Failure',error)
     else:
-        return get_jsonified_error_response('Failure',"get_ticket_dashboard_generic_summary Not a GET Request")
+        return get_jsonified_error_response('Failure',"get_ticket_dashboard_generic_summary "+get_errmsg('NAGR'))
 
 @app.route('/api/v1/ticket-dashboard/summaries/issue_status',methods=['GET'])
 def get_ticket_summary_by_issue_status():
     data={}
     if request.method == 'GET':
-        print('In GET get_ticket_ref_status')
+        print('In GET get_ticket_summary_by_issue_status')
         try:
-            print("======$$$$+++++++")
             print(request.args)
             last_n_days=request.args.get('last_n_days',0)
             project_id=request.args.get('project_id',0)
             jdb=JirigoTicketDashboard({'last_n_days':last_n_days,'project_id':project_id})
             data=jdb.get_ticket_summary_by_issue_status()
             print("="*80)
-            # print(data)
             return jsonify(data)
         except Exception as error:
             print(f'Error in get_ticket_summary_by_issue_status {error}')
             return get_jsonified_error_response('Failure',error)
     else:
-        return get_jsonified_error_response('Failure',"get_ticket_summary_by_issue_status Not a GET Request")
+        return get_jsonified_error_response('Failure',"get_ticket_summary_by_issue_status " + get_errmsg('NAGR'))
 
 @app.route('/api/v1/ticket-dashboard/summaries/issue_type',methods=['GET'])
 def get_ticket_summary_by_issue_type():
     data={}
     if request.method == 'GET':
-        print('In GET get_ticket_ref_status')
+        print('In GET get_ticket_summary_by_issue_type')
         try:
-            print("======$$$$+++++++")
             print(request.args)
             last_n_days=request.args.get('last_n_days',0)
             project_id=request.args.get('project_id',0)
             jdb=JirigoTicketDashboard({'last_n_days':last_n_days,'project_id':project_id})
             data=jdb.get_ticket_summary_by_issue_type()
             print("="*80)
-            # print(data)
             return jsonify(data)
         except Exception as error:
             print(f'Error in get_ticket_summary_by_issue_type {error}')
             return get_jsonified_error_response('Failure',error)
     else:
-        return get_jsonified_error_response('Failure',"get_ticket_summary_by_issue_type Not a GET Request")
+        return get_jsonified_error_response('Failure',"get_ticket_summary_by_issue_type " + get_errmsg('NAGR'))
 
 
 @app.route('/api/v1/ticket-dashboard/created-by-range',methods=['GET'])
@@ -596,20 +577,19 @@ def get_tickets_created_by_range():
     if request.method == 'GET':
         print('In GET get_tickets_created_by_range')
         try:
-            print("======$$$$+++++++")
+
             print(request.args)
             last_n_days=request.args.get('last_n_days',0)
             project_id=request.args.get('project_id',0)
             jdb=JirigoTicketDashboard({'last_n_days':last_n_days,'project_id':project_id})
             data=jdb.get_tickets_created_by_range()
             print("="*80)
-            # print(data)
             return jsonify(data)
         except Exception as error:
             print(f'Error in get_tickets_created_by_range {error}')
             return get_jsonified_error_response('Failure',error)
     else:
-        return get_jsonified_error_response('Failure',"get_tickets_created_by_range Not a GET Request")
+        return get_jsonified_error_response('Failure',"get_tickets_created_by_range " + get_errmsg('NAGR'))
 
 @app.route('/api/v1/ticket-dashboard/open-last-ndays',methods=['GET'])
 def get_tickets_still_open_last_n_days():
@@ -619,20 +599,18 @@ def get_tickets_still_open_last_n_days():
     if request.method == 'GET':
         print('In GET get_tickets_still_open_last_n_days')
         try:
-            print("======$$$$+++++++")
             print(request.args)
             last_n_days=request.args.get('last_n_days',0)
             project_id=request.args.get('project_id',0)
             jdb=JirigoTicketDashboard({'last_n_days':last_n_days,'project_id':project_id})
             data=jdb.get_tickets_still_open_last_n_days()
             print("="*80)
-            # print(data)
             return jsonify(data)
         except Exception as error:
             print(f'Error in get_tickets_still_open_last_n_days {error}')
             return get_jsonified_error_response('Failure',error)
     else:
-        return get_jsonified_error_response('Failure',"get_tickets_still_open_last_n_days Not a GET Request")
+        return get_jsonified_error_response('Failure',"get_tickets_still_open_last_n_days  "+ get_errmsg('NAGR'))
 
 
 @app.route('/api/v1/ticket-dashboard/open-tickets-by-module-last-ndays',methods=['GET'])
@@ -643,20 +621,18 @@ def get_tickets_open_by_module_last_n_days():
     if request.method == 'GET':
         print('In GET get_tickets_open_by_module_last_n_days')
         try:
-            print("======$$$$+++++++")
             print(request.args)
             last_n_days=request.args.get('last_n_days',0)
             project_id=request.args.get('project_id',0)
             jdb=JirigoTicketDashboard({'last_n_days':last_n_days,'project_id':project_id})
             data=jdb.get_tickets_open_by_module_last_n_days()
             print("="*80)
-            # print(data)
             return jsonify(data)
         except Exception as error:
             print(f'Error in get_tickets_open_by_module_last_n_days {error}')
             return get_jsonified_error_response('Failure',error)
     else:
-        return get_jsonified_error_response('Failure',"get_tickets_open_by_module_last_n_days Not a GET Request")
+        return get_jsonified_error_response('Failure',"get_tickets_open_by_module_last_n_days "+ get_errmsg('NAGR'))
 
 
 
@@ -676,7 +652,7 @@ def create_task():
             print(f'Error in create_task {error}')
             return get_jsonified_error_response('Failure',error)
     else:
-        return get_jsonified_error_response('Failure',"Not a POST Request")
+        return get_jsonified_error_response('Failure',get_errmsg('NAPR'))
 
 
 @app.route('/api/v1/task-management/update-assignee',methods=['POST'])
@@ -695,7 +671,7 @@ def update_task_assignee():
             print(f'Error in update_task_assignee {error}')
             return get_jsonified_error_response('Failure',error)
     else:
-        return get_jsonified_error_response('Failure',"Not a POST Request")
+        return get_jsonified_error_response('Failure',get_errmsg('NAPR'))
 
 
 
@@ -714,7 +690,7 @@ def clone_task():
             print(f'Error in clone_task {error}')
             return get_jsonified_error_response('Failure',error)
     else:
-        return get_jsonified_error_response('Failure',"clone_task Not a POST Request")
+        return get_jsonified_error_response('Failure',"clone_task " + get_errmsg('NAPR'))
 
 @app.route('/api/v1/task-management/task',methods=['PUT'])
 def update_task():
@@ -725,18 +701,16 @@ def update_task():
             jdb=JirigoTask(request.get_json())
             data=jdb.update_task()
             print('*'*40)
-            # print(data['dbQryResponse'])
             return jsonify(data)
         except Exception as error:
             print(f'Error in update_task {error}')
             return get_jsonified_error_response('Failure',error)
     else:
-        return get_jsonified_error_response('Failure',"Not a PUT Request")
+        return get_jsonified_error_response('Failure',get_errmsg('NAPUR'))
 
 
 @app.route('/api/v1/task-management/tasks/<task_no>',methods=['GET'])
 def get_task_details(task_no):
-    error_response={}
     data={}
 
     if request.method == 'GET':
@@ -749,7 +723,7 @@ def get_task_details(task_no):
             print(f'Error in get_task_details {error}')
             return get_jsonified_error_response('Failure',error)
     else:
-        return get_jsonified_error_response('Failure',"Not a GET Request")
+        return get_jsonified_error_response('Failure',get_errmsg('NAGR'))
 
 
 @app.route('/api/v1/task-management/all-tasks/<project_id>',methods=['GET'])
@@ -765,7 +739,7 @@ def get_all_tasks(project_id):
             print(f'Error in get_task_details {error}')
             return get_jsonified_error_response('Failure',error)
     else:
-        return get_jsonified_error_response('Failure',"Not a GET Request")
+        return get_jsonified_error_response('Failure',get_errmsg('NAGR'))
 
 @app.route('/api/v1/task-management/all-tasks-by-criterion',methods=['GET'])
 def get_all_tasks_by_criterion():
@@ -784,12 +758,11 @@ def get_all_tasks_by_criterion():
             print(f'Error in get_all_tasks_by_criterion {error}')
             return get_jsonified_error_response('Failure',error)
     else:
-        return get_jsonified_error_response('Failure',"Not a GET Request")
+        return get_jsonified_error_response('Failure',get_errmsg('NAGR'))
 
 
 @app.route('/api/v1/task-management/comments/<task_no>',methods=['GET'])
 def get_tasks_all_comments(task_no):
-    error_response={}
     data={}
 
     if request.method == 'GET':
@@ -802,7 +775,7 @@ def get_tasks_all_comments(task_no):
             print(f'Error in get_tasks_all_comments {error}')
             return get_jsonified_error_response('Failure',error)
     else:
-        return get_jsonified_error_response('Failure',"get_tasks_all_comments Not a GET Request")
+        return get_jsonified_error_response('Failure',"get_tasks_all_comments " + get_errmsg('NAGR'))
 
 
 @app.route('/api/v1/task-management/comments/comment',methods=['POST'])
@@ -819,12 +792,11 @@ def create_task_comment():
             return get_jsonified_error_response('Failure',error)
         return jsonify(request.get_json())
     else:
-        return get_jsonified_error_response('Failure',"create_task_comment Not a POST Request")
+        return get_jsonified_error_response('Failure',"create_task_comment " + get_errmsg('NAPR'))
 
 
 @app.route('/api/v1/task-management/audit/<task_no>',methods=['GET'])
 def get_task_audit(task_no):
-    error_response={}
     data={}
 
     if request.method == 'GET':
@@ -837,12 +809,11 @@ def get_task_audit(task_no):
             print(f'Error in get_task_audit {error}')
             return get_jsonified_error_response('Failure',error)
     else:
-        return get_jsonified_error_response('Failure',"get_task_audit Not a GET Request")
+        return get_jsonified_error_response('Failure',"get_task_audit " + get_errmsg('NAGR'))
 
 
 @app.route('/api/v1/sprint-management/tasks-not-closed/<project_name>',methods=['GET'])
 def get_all_not_closed_tasks_byproj_for_sprint(project_name):
-    error_response={}
     data={}
 
     if request.method == 'GET':
@@ -855,11 +826,10 @@ def get_all_not_closed_tasks_byproj_for_sprint(project_name):
             print(f'Error in get_all_not_closed_tasks_byproj_for_sprint {error}')
             return get_jsonified_error_response('Failure',error)
     else:
-        return get_jsonified_error_response('Failure',"get_all_not_closed_tasks_byproj_for_sprint Not a GET Request")
+        return get_jsonified_error_response('Failure',"get_all_not_closed_tasks_byproj_for_sprint " + get_errmsg('NAGR'))
 
 @app.route('/api/v1/sprint-management/tasks-for-sprint/<sprint_id>',methods=['GET'])
 def get_all_tasks_of_sprint(sprint_id):
-    error_response={}
     data={}
 
     if request.method == 'GET':
@@ -872,12 +842,11 @@ def get_all_tasks_of_sprint(sprint_id):
             print(f'Error in get_all_tasks_of_sprint {error}')
             return get_jsonified_error_response('Failure',error)
     else:
-        return get_jsonified_error_response('Failure',"get_all_tasks_of_sprint Not a GET Request")
+        return get_jsonified_error_response('Failure',"get_all_tasks_of_sprint " + get_errmsg('NAGR'))
 
 
 @app.route('/api/v1/sprint-management/sprints-for-project/<project_name>',methods=['GET'])
 def get_all_sprints_for_proj(project_name):
-    error_response={}
     data={}
 
     if request.method == 'GET':
@@ -890,11 +859,10 @@ def get_all_sprints_for_proj(project_name):
             print(f'Error in get_all_sprints_for_proj {error}')
             return get_jsonified_error_response('Failure',error)
     else:
-        return get_jsonified_error_response('Failure',"get_all_sprints_for_proj Not a GET Request")
+        return get_jsonified_error_response('Failure',"get_all_sprints_for_proj " + get_errmsg('NAGR'))
 
 @app.route('/api/v1/sprint-management/tasks-for-sprint/<sprint_id>',methods=['GET'])
 def get_all_tasks_for_sprint(sprint_id):
-    error_response={}
     data={}
 
     if request.method == 'GET':
@@ -907,7 +875,7 @@ def get_all_tasks_for_sprint(sprint_id):
             print(f'Error in get_all_tasks_for_sprint {error}')
             return get_jsonified_error_response('Failure',error)
     else:
-        return get_jsonified_error_response('Failure',"get_all_tasks_for_sprint Not a GET Request")
+        return get_jsonified_error_response('Failure',"get_all_tasks_for_sprint " + get_errmsg('NAGR'))
 
 
 @app.route('/api/v1/sprint-management/create-sprint',methods=['POST'])
@@ -924,7 +892,7 @@ def create_sprint_with_tasks():
             return get_jsonified_error_response('Failure',error)
         return jsonify(request.get_json())
     else:
-        return get_jsonified_error_response('Failure',"create_sprint_with_tasks Not a POST Request")
+        return get_jsonified_error_response('Failure',"create_sprint_with_tasks " + get_errmsg('NAGR'))
 
 @app.route('/api/v1/sprint-management/sprint-details',methods=['PUT'])
 def update_sprint_details():
@@ -940,7 +908,7 @@ def update_sprint_details():
             return get_jsonified_error_response('Failure',error)
         return jsonify(request.get_json())
     else:
-        return get_jsonified_error_response('Failure',"update_sprint_details Not a PUT Request")
+        return get_jsonified_error_response('Failure',"update_sprint_details " + get_errmsg('NAGR'))
 
 @app.route('/api/v1/sprint-management/sprint-tasks',methods=['PUT'])
 def update_sprint_tasks():
@@ -956,12 +924,11 @@ def update_sprint_tasks():
             return get_jsonified_error_response('Failure',error)
         return jsonify(request.get_json())
     else:
-        return get_jsonified_error_response('Failure',"update_sprint_tasks Not a PUT Request")
+        return get_jsonified_error_response('Failure',"update_sprint_tasks " + get_errmsg('NAGR'))
 
 
 @app.route('/api/v1/boards-management/scrum/<sprint_id>',methods=['GET'])
 def get_all_tasks_of_sprint_for_scrum_board(sprint_id):
-    error_response={}
     data={}
 
     if request.method == 'GET':
@@ -974,7 +941,7 @@ def get_all_tasks_of_sprint_for_scrum_board(sprint_id):
             print(f'Error in get_all_tasks_of_sprint_for_scrum_board {error}')
             return get_jsonified_error_response('Failure',error)
     else:
-        return get_jsonified_error_response('Failure',"get_all_tasks_of_sprint_for_scrum_board Not a GET Request")
+        return get_jsonified_error_response('Failure',"get_all_tasks_of_sprint_for_scrum_board " + get_errmsg('NAGR'))
 
 
 @app.route('/api/v1/link-tasks-tickets/search',methods=['GET'])
@@ -983,20 +950,16 @@ def get_tasks_tickets_for_multiselect_drop_down():
     if request.method == 'GET':
         print('In GET get_tasks_tickets_for_multiselect_drop_down')
         try:
-            # print("======$$$$+++++++")
-            # print(request.args)
             search_term=request.args.get('search_term','')
             project_id=request.args.get('project_id',0)
             jdb=JirigoLinkTaskTicket({'project_id':project_id,'search_term':search_term})
             data=jdb.get_tasks_tickets_for_multiselect_drop_down()
-            # print("="*80)
-            # print(data)
             return jsonify(data)
         except Exception as error:
             print(f'Error in get_tasks_tickets_for_multiselect_drop_down {error}')
             return get_jsonified_error_response('Failure',error)
     else:
-        return get_jsonified_error_response('Failure',"get_tasks_tickets_for_multiselect_drop_down Not a GET Request")
+        return get_jsonified_error_response('Failure',"get_tasks_tickets_for_multiselect_drop_down " + get_errmsg('NAGR'))
 
 @app.route('/api/v1/link-tasks-tickets/task-ticket/depends-on',methods=['GET'])
 def get_task_or_ticket_depends_on():
@@ -1004,20 +967,17 @@ def get_task_or_ticket_depends_on():
     if request.method == 'GET':
         print('In GET get_task_or_ticket_depends_on')
         try:
-            # print("======$$$$+++++++")
             print(request.args)
             item_no=request.args.get('item_no','')
             project_id=request.args.get('project_id',0)
             jdb=JirigoLinkTaskTicket({'project_id':project_id,'item_no':item_no})
             data=jdb.get_task_or_ticket_depends_on()
-            # print("="*80)
-            # print(data)
             return jsonify(data)
         except Exception as error:
             print(f'Error in get_task_or_ticket_depends_on {error}')
             return get_jsonified_error_response('Failure',error)
     else:
-        return get_jsonified_error_response('Failure',"get_task_or_ticket_depends_on Not a GET Request")
+        return get_jsonified_error_response('Failure',"get_task_or_ticket_depends_on " + get_errmsg('NAGR'))
 
 @app.route('/api/v1/link-tasks-tickets/task-ticket/related-to',methods=['GET'])
 def get_task_or_ticket_related_to():
@@ -1025,20 +985,16 @@ def get_task_or_ticket_related_to():
     if request.method == 'GET':
         print('In GET get_task_or_ticket_related_to')
         try:
-            # print("======$$$$+++++++")
-            # print(request.args)
             item_no=request.args.get('item_no','')
             project_id=request.args.get('project_id',0)
             jdb=JirigoLinkTaskTicket({'project_id':project_id,'item_no':item_no})
             data=jdb.get_task_or_ticket_related_to()
-            # print("="*80)
-            # print(data)
             return jsonify(data)
         except Exception as error:
             print(f'Error in get_task_or_ticket_related_to {error}')
             return get_jsonified_error_response('Failure',error)
     else:
-        return get_jsonified_error_response('Failure',"get_task_or_ticket_related_to Not a GET Request")
+        return get_jsonified_error_response('Failure',"get_task_or_ticket_related_to " + get_errmsg('NAGR'))
 
 @app.route('/api/v1/link-tasks-tickets/task-ticket/duplicated-by',methods=['GET'])
 def get_task_or_ticket_duplicted_by():
@@ -1046,20 +1002,16 @@ def get_task_or_ticket_duplicted_by():
     if request.method == 'GET':
         print('In GET get_task_or_ticket_duplicted_by')
         try:
-            # print("======$$$$+++++++")
-            # print(request.args)
             item_no=request.args.get('item_no','')
             project_id=request.args.get('project_id',0)
             jdb=JirigoLinkTaskTicket({'project_id':project_id,'item_no':item_no})
             data=jdb.get_task_or_ticket_duplicted_by()
-            # print("="*80)
-            # print(data)
             return jsonify(data)
         except Exception as error:
             print(f'Error in get_task_or_ticket_depends_on {error}')
             return get_jsonified_error_response('Failure',error)
     else:
-        return get_jsonified_error_response('Failure',"get_task_or_ticket_duplicted_by Not a GET Request")
+        return get_jsonified_error_response('Failure',"get_task_or_ticket_duplicted_by " + get_errmsg('NAGR'))
 
 
 
@@ -1069,19 +1021,15 @@ def create_tasks_tickets_links():
     if request.method == 'POST':
         print('In POST get_tasks_tickets_for_multiselect_drop_down')
         try:
-            # print("======$$$$+++++++")
             print(request.get_json())
             jdb=JirigoLinkTaskTicket(request.get_json())
             data=jdb.create_tasks_tickets_links();
-            # data=jdb.get_tasks_tickets_for_multiselect_drop_down()
-            # print("="*80)
-            # print(data)
             return jsonify(data)
         except Exception as error:
             print(f'Error in get_tasks_tickets_for_multiselect_drop_down {error}')
             return get_jsonified_error_response('Failure',error)
     else:
-        return get_jsonified_error_response('Failure',"get_tasks_tickets_for_multiselect_drop_down Not a GET Request")
+        return get_jsonified_error_response('Failure',"get_tasks_tickets_for_multiselect_drop_down " + get_errmsg('NAGR'))
 
 @app.route('/api/v1/timelogger/log-time',methods=['POST'])
 def create_timelog_entry():
@@ -1089,19 +1037,15 @@ def create_timelog_entry():
     if request.method == 'POST':
         print('In POST create_timelog_entry')
         try:
-            # print("======$$$$+++++++")
             print(request.get_json())
             jdb=JirigoTasksLogTime(request.get_json())
             data=jdb.create_timelog_entry();
-            # data=jdb.get_tasks_tickets_for_multiselect_drop_down()
-            # print("="*80)
-            # print(data)
             return jsonify(data)
         except Exception as error:
             print(f'Error in create_timelog_entry {error}')
             return get_jsonified_error_response('Failure',error)
     else:
-        return get_jsonified_error_response('Failure',"create_timelog_entry Not a GET Request")
+        return get_jsonified_error_response('Failure',"create_timelog_entry " + get_errmsg('NAGR'))
 
 
 @app.route('/api/v1/timelogger/get-task-timelog/<task_no>',methods=['GET'])
@@ -1112,14 +1056,12 @@ def get_timelog_entries_for_task(task_no):
         try:
             jdb=JirigoTasksLogTime({'task_no':task_no})
             data=jdb.get_timelog_entries_for_task()
-            # print("="*80)
-            # print(data)
             return jsonify(data)
         except Exception as error:
             print(f'Error in get_task_or_ticket_depends_on {error}')
             return get_jsonified_error_response('Failure',error)
     else:
-        return get_jsonified_error_response('Failure',"get_timelog_entries_for_task Not a GET Request")
+        return get_jsonified_error_response('Failure',"get_timelog_entries_for_task " + get_errmsg('NAGR'))
 
 
 @app.route('/api/v1/image-manager/image',methods=['POST'])
@@ -1167,7 +1109,7 @@ def save_image():
             return get_jsonified_error_response('Failure',error)
     else:
         print("here in the error")
-        return get_jsonified_error_response('Failure',"save_image Not a POST Request")
+        return get_jsonified_error_response('Failure',"save_image " + get_errmsg('NAPR'))
 
 
 @app.route('/api/v1/image-management/get-image/<image_id>',methods=['GET'])
@@ -1177,20 +1119,13 @@ def get_image_to_display(image_id):
     if request.method == 'GET':
         print('In GET get_image_to_display')
         try:
-            # jdb=JirigoTasksLogTime({'task_no':task_no})
-            # data=jdb.get_timelog_entries_for_task()
-            # print("="*80)
-            # print(data)
-            # return jsonify(data)
-            #  return send_file(os.path.join(app.config['UPLOAD_FOLDER'],'5ed8b759-fdad-4e8d-b3e7-962c5f4a7c6f.png'), mimetype='image/png')
-            #  return send_from_directory(app.config['UPLOAD_FOLDER'],'5ed8b759-fdad-4e8d-b3e7-962c5f4a7c6f.png', as_attachment=True)
             print(app.config['UPLOAD_FOLDER'])
             return send_from_directory(app.config['UPLOAD_FOLDER']+'/images/avatars','1.png', as_attachment=True)
         except Exception as error:
             print(f'Error in get_task_or_ticket_depends_on {error}')
             return get_jsonified_error_response('Failure',error)
     else:
-        return get_jsonified_error_response('Failure',"get_image_to_display Not a GET Request")
+        return get_jsonified_error_response('Failure',"get_image_to_display " + get_errmsg('NAGR'))
 
 @app.route('/api/v1/workflows-management/create-project-workflow',methods=['POST'])
 def create_project_workflow():
@@ -1208,7 +1143,61 @@ def create_project_workflow():
             print(f'Error in create_project_workflow {error}')
             return get_jsonified_error_response('Failure',error)
     else:
-        return get_jsonified_error_response('Failure',"create_project_workflow Not a POST Request")
+        return get_jsonified_error_response('Failure',"create_project_workflow " + get_errmsg('NAPR'))
+
+@app.route('/api/v1/workflows-management/next-steps-allowed',methods=['GET'])
+def get_next_allowed_workflow_statuses():
+    data=''
+    if request.method == 'GET':
+        print('In GET get_next_allowed_workflow_statuses')
+        try:
+            project_id=request.args.get('project_id')
+            role_id=request.args.get('role_id')
+            current_status=request.args.get('current_status')
+            jdb=JirigoProjectWorkflow({'project_id':project_id,'role_id':role_id,'current_status':current_status})
+            data=jdb.get_next_allowed_workflow_statuses()
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in get_next_allowed_workflow_statuses {error}')
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',"get_next_allowed_workflow_statuses " + get_errmsg('NAGR'))
+
+@app.route('/api/v1/workflows-management/all-statuses',methods=['GET'])
+def get_all_statuses_for_workflow():
+    data=''
+    if request.method == 'GET':
+        print('In GET get_all_statuses_for_workflow')
+        try:
+            project_id=request.args.get('project_id')
+            ref_category=request.args.get('ref_category')
+            jdb=JirigoProjectWorkflow({'project_id':project_id,'ref_category':ref_category})
+            data=jdb.get_all_statuses_for_workflow()
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in get_all_statuses_for_workflow {error}')
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',"get_all_statuses_for_workflow " + get_errmsg('NAGR'))
+
+@app.route('/api/v1/workflows-management/not-allocated-to-role',methods=['GET'])
+def get_workflows_not_assigned_to_project_role():
+    data=''
+    if request.method == 'GET':
+        print('In GET get_workflows_not_assigned_to_project_role')
+        try:
+            project_id=request.args.get('project_id')
+            role_id=request.args.get('role_id')
+            jdb=JirigoProjectWorkflow({'project_id':project_id,'role_id':role_id})
+            data=jdb.get_workflows_not_assigned_to_project_role()
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in get_workflows_not_assigned_to_project_role {error}')
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',"get_workflows_not_assigned_to_project_role " + get_errmsg('NAGR'))
+
+
 
 
 @app.route('/api/v1/role-management/all-active',methods=['GET'])
@@ -1219,17 +1208,15 @@ def get_all_active_roles():
         try:
             jdb=JirigoRoles()
             data=jdb.get_all_active_roles()
-            # print("="*80)
-            # print(data)
             return jsonify(data)
         except Exception as error:
             print(f'Error in get_all_active_roles {error}')
             return get_jsonified_error_response('Failure',error)
     else:
-        return get_jsonified_error_response('Failure',"get_all_active_roles Not a GET Request")
+        return get_jsonified_error_response('Failure',"get_all_active_roles " + get_errmsg('NAGR'))
 
 
-@app.route('/api/v1/role-management/all-roles-active-for-projects',methods=['GET'])
+@app.route('/api/v1/role-management/roles-active-for-all-projects',methods=['GET'])
 def get_roles_active_for_allprojects():
     data={}
     if request.method == 'GET':
@@ -1242,7 +1229,8 @@ def get_roles_active_for_allprojects():
             print(f'Error in get_roles_active_for_allprojects {error}')
             return get_jsonified_error_response('Failure',error)
     else:
-        return get_jsonified_error_response('Failure',"get_roles_active_for_allprojects Not a GET Request")
+        return get_jsonified_error_response('Failure',"get_roles_active_for_allprojects" + get_errmsg('NAGR'))
+
 
 @app.route('/api/v1/role-management/project-role',methods=['POST'])
 def add_project_role():
@@ -1260,7 +1248,28 @@ def add_project_role():
             print(f'Error in add_project_role {error}')
             return get_jsonified_error_response('Failure',error)
     else:
-        return get_jsonified_error_response('Failure',"add_project_role Not a POST Request")
+        return get_jsonified_error_response('Failure',"add_project_role " + get_errmsg('NAPR'))
+
+
+@app.route('/api/v1/role-management/assign-workflow-to-role',methods=['POST'])
+def assign_workflow_to_role():
+    data=''
+    if request.method == 'POST':
+        print('In Post assign_workflow_to_role')
+        pprint.pprint(request.get_json())
+        try:
+            jdb=JirigoRoles(request.get_json())
+            data=jdb.assign_workflow_to_role()
+            print('*'*40)
+            print(data['dbQryResponse'])
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in assign_workflow_to_role {error}')
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',"assign_workflow_to_role " + get_errmsg('NAPR'))
+
+
 
 @app.route('/api/v1/role-management/update-role',methods=['PUT'])
 def update_role():
@@ -1278,7 +1287,7 @@ def update_role():
             print(f'Error in update_role {error}')
             return get_jsonified_error_response('Failure',error)
     else:
-        return get_jsonified_error_response('Failure',"update_role Not a POST Request")
+        return get_jsonified_error_response('Failure',"update_role " + get_errmsg('NAPR'))
 
 @app.route('/api/v1/role-management/add-role',methods=['POST'])
 def add_role():
@@ -1296,7 +1305,7 @@ def add_role():
             print(f'Error in add_role {error}')
             return get_jsonified_error_response('Failure',error)
     else:
-        return get_jsonified_error_response('Failure',"add_role Not a POST Request")
+        return get_jsonified_error_response('Failure',"add_role " + get_errmsg('NAPR'))
 
 
 @app.route('/api/v1/role-management/project-role',methods=['DELETE'])
@@ -1306,7 +1315,7 @@ def remove_project_role():
         print('In Post remove_project_role')
         pprint.pprint(request.get_json())
         try:
-            jdb=JirigoProjectWorkflow(request.get_json())
+            jdb=JirigoRoles(request.get_json())
             data=jdb.remove_project_role()
             print('*'*40)
             print(data['dbQryResponse'])
@@ -1315,8 +1324,18 @@ def remove_project_role():
             print(f'Error in remove_project_role {error}')
             return get_jsonified_error_response('Failure',error)
     else:
-        return get_jsonified_error_response('Failure',"remove_project_role Not a POST Request")
+        return get_jsonified_error_response('Failure',"remove_project_role " + get_errmsg('NADR'))
 
+
+def get_errmsg(mesg_code) :
+    error_messages={
+        "NAPR":"Not a POST Request",
+        "NAGR":"Not a GET Request",
+        "NAPUR":"Not a PUT Request",
+        "NAPAR":"Not a PATCH Request",
+        "NADR":"Not a DELETE Request"
+    }
+    return error_messages.get(mesg_code,'Not a Valid HTTP Request')
 
 def get_jsonified_error_response(status,error):
     print("=============================")
@@ -1335,15 +1354,9 @@ def get_jsonified_error_response(status,error):
     except Exception as e:
         print("E reached in get_jsonified_error_response")
         error_response['dbQryResponse']['error_code']="Not A DB Error"
-        error_response['dbQryResponse']['error_message']=error
+        error_response['dbQryResponse']['error_message']=error+':'+e
         print(error_response)
         print("------")
-        # ret_val= app.response_class(
-        #     response=json.dumps(error_response),
-        #     status=200,
-        #     mimetype='application/json'
-        # )
-        # print(ret_val)
         return make_response(jsonify(error_response),200)
 
 

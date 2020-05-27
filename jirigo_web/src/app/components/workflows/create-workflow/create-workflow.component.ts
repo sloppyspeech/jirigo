@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ProjectWorkflowsService,infWorkflow } from './../../../services/workflows/project-workflows.service';
 import { ProjectsService } from '../../../services/projects/projects.service';
+import { StaticDataService } from './../../../services/static-data.service';
 import { faLongArrowAltRight,faArrowDown,faArrowRight,faInfoCircle,faInfo} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
@@ -14,10 +15,12 @@ export class CreateWorkflowComponent implements OnInit {
   faArrowDown=faArrowDown;
   faInfo=faInfo;
   faInfoCircle=faInfoCircle;
-  fprojectName:string="-1";
+  fprojectId:number=-1;
+  fWorkflowType:string='-1';
   allProjects:any[]=[];
   fworkflowName:string;
   showForm:boolean=false;
+  enableWorkflowTypeDropDown:boolean=false;
 
   statusGrid:Array< {
     status:string ,
@@ -28,13 +31,16 @@ export class CreateWorkflowComponent implements OnInit {
   }>=[];
 
 // projStatuses=['Open','Analysis','Dev'];
-projStatuses=['Open','Analysis','Dev','Code Review','QA Testing','UAT','Release','Closed'];
+  // projStatuses=['Open','Analysis','Dev','Code Review','QA Testing','UAT','Released','Closed'];
+  projStatuses:any[]=[];
 
   constructor(private _serProjectWorkflows:ProjectWorkflowsService,
-              private _serProjectService:ProjectsService) { }
+              private _serProjectService:ProjectsService,
+              private _serStaticData:StaticDataService) { }
 
   ngOnInit(): void {
-
+    this.projStatuses=[];
+    this.enableWorkflowTypeDropDown=false;
     this._serProjectService.getAllProjectsForUser(localStorage.getItem('loggedInUserId'))
         .subscribe(res=>{
             console.log(res);
@@ -44,6 +50,11 @@ projStatuses=['Open','Analysis','Dev','Code Review','QA Testing','UAT','Release'
             this.showForm=true;
         });
 
+        this.setStatusGrid();
+  }
+
+  setStatusGrid(){
+    this.statusGrid=[];
     this.projStatuses.forEach(ps=>{
       let s:any[]=[];
       this.projStatuses.forEach(nxtSts=>{
@@ -61,7 +72,6 @@ projStatuses=['Open','Analysis','Dev','Code Review','QA Testing','UAT','Release'
   });
   console.log(this.statusGrid);
   }
-
   submitForm(form:any){
     let inpData:infWorkflow;
     let nextAllowedStatuses:any[]=[];
@@ -75,26 +85,50 @@ projStatuses=['Open','Analysis','Dev','Code Review','QA Testing','UAT','Release'
             s.push(ns.name);
           }
         })
-        nextAllowedStatuses.push({status:e.status,nextSteps:s});
+        nextAllowedStatuses.push({status:e.status,nextStatuses:s});
     });
     inpData={
       workflow_name:form.value.workflowName,
-      project_id: parseInt(this.fprojectName),
+      project_id: this.fprojectId,
+      workflow_type:this.fWorkflowType,
       next_allowed_statuses:nextAllowedStatuses,
       step_full_details:this.statusGrid,
       created_by:parseInt(localStorage.getItem('loggedInUserId'))
     }
     console.log(inpData);
 
-    // this._serProjectWorkflows.createProjectWorkflow(inpData)
-    //     .subscribe(res=>{
-    //       console.log(res);
-    //     });
+    this._serProjectWorkflows.createProjectWorkflow(inpData)
+        .subscribe(res=>{
+          console.log(res);
+          this.statusGrid=[];
+          this.fWorkflowType="-1";
+          this.fprojectId=-1;
+        });
 
     }
 
     setProjectName(e){
+      this.enableWorkflowTypeDropDown = this.fprojectId != -1 ? true :false;
+      this.fWorkflowType="-1";
       console.log("------------------");
       console.log(e);
+    }
+
+    setWorkFlowType(e){
+      let inpData={
+        'project_id':this.fprojectId,
+        'ref_category':this.fWorkflowType
+      }
+      this.projStatuses=[];
+      console.log(this.fWorkflowType);
+      console.log('here int ickets');
+        this._serProjectWorkflows.getAllStatusesForWorkflows (inpData)
+            .subscribe(res =>{
+              console.log(res);
+              res['dbQryResponse'].forEach(element => {
+                this.projStatuses.push(element['ref_value']);
+              });
+              this.setStatusGrid();
+            });
     }
 }

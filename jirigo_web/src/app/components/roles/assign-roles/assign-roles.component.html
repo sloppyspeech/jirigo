@@ -1,91 +1,103 @@
 <div class="container-fluid">
-    <div class="row">
-      <div
-        class="col-lg-8"
-        style="
-          background-color: #bfc8c1;
-          padding: 10px 0px 10px 0px;
-          border-radius: 3px;
-        "
-      >
-        <div class="row">
-          <div class="col-lg-9">
-            <h5 style="color: white; padding: 4px 0 0 10px;">Roles Assigned to Projects</h5>
-          </div>
-          <div class="col-lg-3">
-            <button
-              type="button"
-              class="btn btn-primary float-right"
-              style="background-color: #00C853; border-width: 0; margin-right:10px;"
-              data-toggle="modal"
-              data-target="#assignRolesToProjectsModal"
-            >
-              <span>
-                <fa-icon
-                  [icon]="faPlusSquare"
-                  style="padding: 0 5px 0 0;"
-                ></fa-icon>
-              </span>
-              Assign Role
-            </button>
-          </div>
+  <div class="row">
+    <div
+      class="col-lg-8"
+      style="
+        background-color: #bfc8c1;
+        padding: 10px 0px 10px 0px;
+        border-radius: 3px;
+      "
+    >
+      <div class="row">
+        <div class="col-lg-9">
+          <h5 style="color: white; padding: 4px 0 0 10px;">
+            Roles Assigned to Projects
+          </h5>
+        </div>
+        <div class="col-lg-3">
+          <button
+            type="button"
+            class="btn btn-coolgreen float-right"
+            style="margin-right: 10px;"
+            data-toggle="modal"
+            data-target="#assignRolesToProjectsModal"
+          >
+            <span>
+              <fa-icon
+                [icon]="faPlusSquare"
+                style="padding: 0 5px 0 0;"
+              ></fa-icon>
+            </span>
+            Assign Role
+          </button>
         </div>
       </div>
     </div>
-    <br />
+  </div>
+  <br />
 
-    <div class="row">
-      <div class="col-lg-8">
-        <table class="table table-stripped table-sm">
-          <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Role Name</th>
-              <th scope="col">Project Name</th>
-              <th scope="col">Active</th>
-              <th scope="col">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let role of allActiveRolesForProjects; let idx = index">
-              <th scope="row">{{ idx + 1 }}</th>
-              <td>{{ role.role_name }}</td>
-              <td>{{ role.project_name }}</td>
-              <td>{{ role.is_active }}</td>
-              <td>
-  
-                  <span>
-                    <fa-icon
-                      [icon]="faTrashAlt"
-                      style="padding: 0 20px 0 0; color: red; font-size: larger;"
-  
-                    >
-                    </fa-icon>
-                  </span>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+  <div class="row">
+    <div class="col-lg-8">
+      <table class="table table-stripped table-sm">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Project Name</th>
+            <th scope="col">Role Name</th>
+            <th scope="col">Active</th>
+            <th scope="col">Workflow Name</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let role of allActiveRolesForProjects; let idx = index">
+            <th scope="row">{{ idx + 1 }}</th>
+            <td>{{ role.project_name }}</td>
+            <td>{{ role.role_name }}</td>
+            <td>{{ role.is_active }}</td>
+            <td>{{ role.workflow_name }}</td>
+            <td>
+              <span>
+                <fa-icon
+                  [icon]="faTrashAlt"
+                  class="deleteRole"
+                  (click)="removeRoleFromProject(role)"
+                >
+                </fa-icon>
+              </span>
+              <span>
+                <fa-icon
+                  [icon]="faSitemap"
+                  class="assignWorkflow"
+                  data-toggle="modal"
+                  data-target="#assignWorkflowsToRolesModal"
+                  (click)="getWorkflowDetails(role)"
+                >
+                </fa-icon>
+              </span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
-  
+</div>
 
-
-
-  <div
-    class="modal fade"
-    id="assignRolesToProjectsModal"
-    tabindex="-1"
-    role="dialog"
-    aria-labelledby="assignRolesToProjectsModalLabel"
-    aria-hidden="true"
-  >
+<div
+  class="modal fade"
+  id="assignRolesToProjectsModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="assignRolesToProjectsModalLabel"
+  aria-hidden="true"
+>
   <form [formGroup]="assignRoleToProjFG">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="assignRolesToProjectsModalLabel">Edit Role</h5>
+          <h5 class="modal-title" id="assignRolesToProjectsModalLabel">
+            Assign Role to Project
+          </h5>
           <button
             type="button"
             class="close"
@@ -97,31 +109,113 @@
         </div>
         <div class="modal-body">
           <div class="row">
-              <div class="col-lg-3">
-                  <div class="form-group">
-                    <label for="">Role Id</label>
-                    <input type="text" class="form-control" name="" id="" class="form-control" formControlName="fctlRoleName" aria-describedby="helpId" placeholder="">
+            <div class="col-lg-6">
+              <div class="form-group">
+                <div class="form-group">
+                  <label for="">Role Name</label>
+                  <select class="form-control" name="" id="" formControlName="fctlRoleName">
+                    <option value="">Choose Role</option>
+                    <option *ngFor="let role of allActiveRoles" value="{{role.role_id}}">{{role.role_name}}</option>
+                  </select>
+                </div>
+
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <div class="form-group">
+                    <label for="">Project Name</label>
+                    <select class="form-control" name="" id="" formControlName="fctlProjectName">
+                      <option value="">Choose Project</option>
+                      <option *ngFor="let role of allActiveProjects" value="{{role.project_id}}">{{role.project_name}}</option>
+                    </select>
                   </div>
               </div>
-              <div class="col-lg-6">
-                  <div class="form-group">
-                      <label for="">Role Name</label>
-                      <input type="text" class="form-control" name="" id="" class="form-control" formControlName="fctlProjectName" aria-describedby="helpId" placeholder="">
-                    </div>
-              </div>
-              <div class="col-lg-2">
-                      <label for="">Active</label><br>
-                      <input type="checkbox" style="width:1.2rem;height:1.2rem;vertical-align: middle;" name="" id=""  formControlName="fctlRoleIsActive"  placeholder="">
-              </div>
+            </div>
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal" >
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="reset()">
             Cancel
           </button>
-          <button type="button" class="btn btn-primary" data-dismiss="modal" >Confirm</button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="addRoleToProject()">
+            Confirm
+          </button>
         </div>
       </div>
     </div>
   </form>
-  </div> 
+</div>
+
+
+<div
+  class="modal fade"
+  id="assignWorkflowsToRolesModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="assignWorkflowsToRolesModal"
+  aria-hidden="true"
+>
+  <form [formGroup]="assignWorkflowToRoleFG">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="assignRolesToProjectsModalLabel">
+            Assign Workflow To Role
+          </h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+
+            <div class="col-lg-6">
+              <div class="form-group">
+                <div class="form-group">
+                    <label for="">Project Name</label>
+                    <input class="form-control" formControlName="fctlWfToRoleName" type="text" name="" id="" >
+                  </div>
+              </div>
+            </div>
+
+            <div class="col-lg-6">
+              <div class="form-group">
+                <div class="form-group">
+                  <label for="">Role Name</label>
+                  <input class="form-control" formControlName="fctlWfToProjectName" type="text" name="" id="" >
+                </div>
+
+              </div>
+            </div>
+
+            <div class="col-lg-6">
+              <div class="form-group">
+                <div class="form-group">
+                    <label for="">Workflow To Assign</label>
+                    <select class="form-control" name="" id="" formControlName="fctlWfToWorkflowId">
+                      <option value="0" disabled>Choose Workflow</option>
+                      <option *ngFor="let wf of allUnallocatedWorkflowsForRoles" value="{{wf.workflow_id}}">{{wf.workflow_name}}</option>
+                    </select>
+                  </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="resetWofklowAllocation()">
+            Cancel
+          </button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="assignWorkflowToRole()">
+            Confirm
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

@@ -28,7 +28,9 @@ import { PanelModule  } from 'primeng/panel';
 import { DynamicDialogModule  } from 'primeng/dynamicdialog';
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { DropdownModule} from 'primeng/dropdown'
+import { ChartModule} from 'primeng/chart';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+
 
 import { LoginComponent } from './components/login/login.component';
 import { HeaderComponent } from './components/header/header.component';
@@ -78,7 +80,8 @@ import { UtilsService  } from './services/shared/utils.service';
     DynamicDialogModule,
     RadioButtonModule,
     DropdownModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    ChartModule
   ],
   providers: [UtilsService],
   bootstrap: [AppComponent]

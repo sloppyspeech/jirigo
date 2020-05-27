@@ -15,6 +15,7 @@ export class RolesService {
       "Access-Control-Allow-Methods": "GET,PUT,OPTIONS,DELETE,POST",
       "Access-Control-Allow-Headers": "Content-Type",
     }),
+    body:{}
   };
 
   constructor(private _httpCli: HttpClient) {}
@@ -38,11 +39,33 @@ export class RolesService {
   }
 
   getRolesActiveForAllProjects(){
-    let url = this.sApiEndPoint +'all-roles-active-for-projects';
+    let url = this.sApiEndPoint +'roles-active-for-all-projects';
     console.log(url);
     return this._httpCli.get(url);
-        
   }
+
+  addRoleToProject(inpData){
+    let url = this.sApiEndPoint +'project-role';
+    console.log(url);
+    return this._httpCli.post(url, inpData, this.sHttpOptions);
+  }
+
+  removeRoleFromProject(inpData){
+    let url = this.sApiEndPoint +'project-role';
+    console.log(url);
+    this.sHttpOptions.body ={
+      'role_id':inpData['role_id'],
+      'project_id':inpData['project_id']
+    };
+    return this._httpCli.delete(url, this.sHttpOptions);
+  }
+
+  assignWorkflowToRole(inpData){
+    let url = this.sApiEndPoint +'assign-workflow-to-role';
+    console.log(url);
+    return this._httpCli.post(url, inpData, this.sHttpOptions);
+  }
+
 
 }
 

@@ -338,7 +338,6 @@ class JirigoUsers(object):
             raise
 
     def get_user_salt(self):
-        response_data={}
         self.logger.debug("Inside get_user_names")
         query_sql="""
                     select salt
@@ -410,4 +409,4 @@ class JirigoUsers(object):
 
     @staticmethod
     def generate_salt(salt_len=20):
-        return  ''.join([random.choice(string.ascii_letters+string.digits+string.punctuation) for x in range(salt_len)])
+        return  ''.join([random.choice(string.ascii_letters+string.digits+string.punctuation) for _ in range(salt_len)])
