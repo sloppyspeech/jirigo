@@ -28,6 +28,14 @@ export class CreateTaskComponent implements OnInit {
   taskPrioritiesRef: [any];
   taskSeveritiesRef: [any];
   taskIssueTypesRef: [any];
+  newTaskNo:string='';
+
+  showAlert:boolean=false;
+  alertContent:string='';
+  alertType:string='info';
+  alertTitle:string='Tasks';
+  alertCancelButtonTest='';
+  alertConfirmButtonText='';
 
   editorStyle = {
     'height': '200px'
@@ -159,17 +167,24 @@ export class CreateTaskComponent implements OnInit {
         console.log("Create Task Output :" + JSON.stringify(res));
         console.log("Create Task Output :" + res['dbQryStatus']);
         console.log("Create Task Output :" + res['dbQryResponse']);
+        this.newTaskNo=res['dbQryResponse']['taskNo'];
         if (res['dbQryStatus'] == 'Success') {
           this.createTaskFB.reset();
-          alert(res['dbQryResponse']['taskNo']+" Created Successfully.");
+          this.alertType='success';
+          this.alertContent=this.newTaskNo+" Created Successfully.";
+          this.alertCancelButtonTest='';
+          this.alertConfirmButtonText='Ok';
+          this.showAlert=true;
+          // this._router.navigate(['/tasks/view-edit-task/'+res['dbQryResponse']['taskNo']]);
           this._NgxSpinner.hide();
         }
         else {
-          alert('Task Creation Unsuccessful');
+          this.alertType='danger';
+          this.alertContent='Task Creation Unsuccessful';
+          this.showAlert=true;
         }
       })
 
-    // alert("submitted");
   }
 
   get creTickForm() {
@@ -177,36 +192,20 @@ export class CreateTaskComponent implements OnInit {
   }
 
   setEnvironment1(e) {
-    // alert("Alert Called");
-    // console.log("Set Environment Called");
     console.log(e.target.value);
-    // console.log(envSelected);
-    // this.createTaskFB.controls.fctlIssueType.setValue(envSelected);
 
   }
 
   setEnvironment(e, f) {
-    // alert("Alert Called");
-    // console.log("Set Environment Called");
     console.log(e);
-    // console.log(envSelected);
-    // this.createTaskFB.controls.fctlIssueType.setValue(envSelected);
 
   }
   setIssueType(e, issueTypeSelected) {
-    // alert("Alert Called");
     console.log("setIssueType Called");
     console.log(issueTypeSelected);
     this.createTaskFB.get('fctlIssueType').setValue(issueTypeSelected);
     this.createTaskFB.controls.fctlIssueType.setValue(issueTypeSelected);
-    // this.issueTypeO.emit(issueTypeSelected);
   }
-
-  // markCellToEdit(e, formControl) {
-  //   console.log(e);
-  //   console.log(formControl);
-  //   this.createTaskFB.get(formControl).enable();
-  // }
 
   showSpinner() {
     console.log('Show Spinner Called');
@@ -218,12 +217,21 @@ export class CreateTaskComponent implements OnInit {
 
   cancelForm() {
     if (this.createTaskFB.dirty) {
-      alert('Task Creation Has Unsaved Data');
+      this.alertType='danger';
+      this.alertCancelButtonTest='Leave';
+      this.alertConfirmButtonText='Stay';
+      this.alertContent='Unsaved Data on the page.Click Stay to not lose unsaved data.';
+      this.showAlert=true;
     }
-    this.createTaskFB.reset();
   }
 
-
-
+  dialogAction(param){
+    this.showAlert=false;
+    this.alertType='info';
+    this.alertContent='';
+    if(param != 'confirmed'){
+      this.createTaskFB.reset();
+    }
+  }
 
 }

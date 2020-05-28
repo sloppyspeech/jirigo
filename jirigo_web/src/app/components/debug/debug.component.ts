@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit,ViewChild,ElementRef,Renderer2} from '@angular/core';
 import {FormBuilder, FormGroup, FormControl, Validators} from '@angular/forms';
 import {Router,ActivatedRoute} from '@angular/router';
 import {TaskTicketLinkService} from '../../services/task-ticket-links/task-ticket-link.service';
@@ -13,6 +13,9 @@ import { environment  } from '../../../environments/environment';
   styleUrls: ['./debug.component.css']
 })
 export class DebugComponent implements OnInit {
+  launchIt:boolean=false;
+  newModalContent:string='';
+  newModalContent2:string="";
   sApiBaseUrl:string=environment.apiBaseUrl;
   sApiEndPoint:string=this.sApiBaseUrl+"image-manager"
   private sHttpOptions = {
@@ -23,6 +26,12 @@ export class DebugComponent implements OnInit {
     })
   };
 
+  @ViewChild('myModal') myModal:ElementRef;
+  constructor(private _formBuilder: FormBuilder,private _router:Router,
+    private _taskTicketLinkSer:TaskTicketLinkService,
+    private _httpCli:HttpClient,
+    private _ren2:Renderer2) {
+}
   projectType: any[] = [
     {name: 'Scrum', code: 'Scrum'},
     {name: 'Kanban', code: 'Kanban'},
@@ -105,10 +114,7 @@ options = {
   // projStatuses=['Open','Analysis','Dev'];
   projStatuses=['Open','Analysis','Dev','Code Review','QA Testing','UAT','Release','Closed'];
 
-  constructor(private _formBuilder: FormBuilder,private _router:Router,
-              private _taskTicketLinkSer:TaskTicketLinkService,
-              private _httpCli:HttpClient) {
-  }
+ 
  
   onFileChanged(event) {
     this.selectedFile = event.target.files[0]
@@ -145,7 +151,33 @@ options = {
     });
     console.log(this.statusGrid);
 
+  //   setTimeout(() => {
+  //       this.launchIt=true;
+  //   }, 1000);
+
+  //   setTimeout(() => {
+  //     this.launchIt=false;
+  // }, 4000);
+
   }
 
+  openModal(){
+    
+    this._ren2.removeClass(this.myModal.nativeElement, 'hide');
+    this._ren2.addClass(this.myModal.nativeElement, "show");
+  }
+
+  closeModal(){
+    console.log('closemodal Called');
+    this._ren2.removeClass(this.myModal.nativeElement, 'show');
+    this._ren2.addClass(this.myModal.nativeElement, "hide");
+  }
+
+  testLaunch(){
+    this.launchIt=!this.launchIt;
+    console.log('openModal');
+    this.newModalContent='HEHEREdsfdsfsdRE';
+    this.newModalContent2="Helllsdweoiuweldkslmfdlsfsd";
+  }
 
 }

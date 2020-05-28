@@ -41,6 +41,8 @@ import { LogoutComponent } from './components/logout/logout.component';
 import { MenuComponent } from './components/menu/menu.component';
 import { DebugComponent } from './components/debug/debug.component';
 import { UtilsService  } from './services/shared/utils.service';
+
+import { ModalConfirmModule} from './shared/modules/modal-confirm/modal-confirm.module'
 @NgModule({
   declarations: [
     AppComponent,
@@ -81,7 +83,8 @@ import { UtilsService  } from './services/shared/utils.service';
     RadioButtonModule,
     DropdownModule,
     FontAwesomeModule,
-    ChartModule
+    ChartModule,
+    ModalConfirmModule
   ],
   providers: [UtilsService],
   bootstrap: [AppComponent]

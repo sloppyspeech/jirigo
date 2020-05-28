@@ -48,3 +48,16 @@
     </div>
   </div>
 </form>
+
+<app-modal-confirm 
+  [showModal]="showAlert" 
+  [modalType]="alertType" 
+  [title]="alertTitle"
+  [modalContent]="alertContent" 
+  [cancelButtonLabel]="alertCancelButtonTest" 
+  [confirmButtonLabel]="alertConfirmButtonText" 
+  (dialogCanceled)="dialogAction('canceled')"
+  (dialogConfirmed)="dialogAction('confirmed')"
+  (dialogClosed)="dialogAction('closed')"
+>
+</app-modal-confirm>

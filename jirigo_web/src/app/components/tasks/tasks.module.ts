@@ -1,3 +1,4 @@
+import { ModalConfirmModule } from './../../shared/modules/modal-confirm/modal-confirm.module';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -35,6 +36,7 @@ import { DuplicatedByComponent } from './relationships/duplicated-by/duplicated-
 import { ModalTimeloggingModule} from '../../shared/modules/modal-timelogging/modal-timelogging.module';
 import { TimelogComponent } from './timelog/timelog.component';
 import { NumToHhmiPipe} from '../../shared/pipes/num-to-hhmi.pipe';
+
 @NgModule({
   declarations: [
     CreateTaskComponent,
@@ -71,7 +73,8 @@ import { NumToHhmiPipe} from '../../shared/pipes/num-to-hhmi.pipe';
     MultiSelectModule,
     FontAwesomeModule,
     ModalTimeloggingModule,
-    ContextMenuModule
+    ContextMenuModule,
+    ModalConfirmModule
   ]
 })
 export class TasksModule { }

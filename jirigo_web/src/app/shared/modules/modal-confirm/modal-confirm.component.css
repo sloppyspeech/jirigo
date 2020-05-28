@@ -1,0 +1,22 @@
+.showModal {
+    display: block;
+    z-index: 1140  !important;
+    opacity: 1;
+}
+
+.hideModal{
+    display: none;
+}
+
+.blurModalBackGround{
+    position:fixed;
+    top : 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #424242;
+    content:"";
+    pointer-events: none;
+    opacity: 0.6;
+    z-index: 10;
+}
