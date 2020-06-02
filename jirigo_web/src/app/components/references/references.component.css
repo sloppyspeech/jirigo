@@ -1,4 +1,28 @@
+.edit-icon{
+    padding: 5px 10px 5px 20px;
+    color: lightsalmon;
+    font-size: larger;
+}
+
 .edit-icon:hover{
-cursor: pointer;
-color:orangered
+    cursor: pointer;
+}
+
+.j-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.j-dropdown:hover {
+    cursor: pointer;
+    border-radius:5px;
+    border-style: solid;
+    border-color: #3884ff;
+    border-width: 2px;
+    color:#666;
+}
+
+.j-dropdown-item {
+    background-color: white;
+    color: #575252;
 }

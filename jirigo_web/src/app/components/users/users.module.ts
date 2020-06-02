@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UsersGridComponent  } from './users-grid/users-grid.component';
 import { CreateUserComponent  } from './create-user/create-user.component';
+import { ModalConfirmModule } from './../../shared/modules/modal-confirm/modal-confirm.module';
 import { FormsModule,ReactiveFormsModule} from '@angular/forms';
 
 import { ButtonModule } from 'primeng/button';
@@ -26,7 +27,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     DialogModule,
     ButtonModule,
     FontAwesomeModule,
-    NgxSpinnerModule
+    NgxSpinnerModule,
+    ModalConfirmModule
   ]
 })
 export class UsersModule { }

@@ -69,4 +69,16 @@ export class UsersService {
     return this._httpCli.post(this.sApiEndPoint+'authorization/auth-route-for-user',inpData,this.sHttpOptions);
   }
 
+  activateInactivateUser(inpData){
+    let url=this.sApiEndPoint+'user-activate-inactivate';
+    console.log("User Data For activateInactivateUser "+JSON.stringify(inpData));
+    console.log("login End point :"+url);
+    return this._httpCli.put(url,inpData,this.sHttpOptions);
+  }
+
+  setPassword(inpData){
+    let url=this.sApiEndPoint+'set-password';
+    console.log("login End point :"+url);
+    return this._httpCli.post(url,inpData,this.sHttpOptions);
+  }
 }

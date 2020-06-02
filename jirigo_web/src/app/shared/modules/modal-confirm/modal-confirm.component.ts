@@ -19,6 +19,7 @@ export class ModalConfirmComponent implements OnInit {
   @Input() set showModal(value: boolean) {
     if (value) {
       this._showModal = true;
+      this.setModalClasses();
     }
     else {
       this._showModal = false;
@@ -36,7 +37,6 @@ export class ModalConfirmComponent implements OnInit {
   @Input('modalType')
   set modalType(value: string) {
     this._modalType = value;
-    this.setModalClasses();
   }
   get modalType() {
     return this._modalType;
@@ -68,6 +68,7 @@ export class ModalConfirmComponent implements OnInit {
     let classTypeToAdd = this.modalTypeBSClasses[this.modalType.toLowerCase()] ? this.modalTypeBSClasses[this.modalType.toLowerCase()] : this.modalTypeBSClasses['info']
     this._renderer2.addClass(this.modalHeader.nativeElement, classTypeToAdd);
   }
+
   closeModal(action) {
     if (action === 'close') {
       this.dialogClosed.emit(true);

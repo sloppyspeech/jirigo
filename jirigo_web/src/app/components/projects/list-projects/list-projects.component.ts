@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router,ActivatedRoute,ParamMap  } from '@angular/router';
 import { ProjectsService  } from '../../../services/projects/projects.service';
 import { NgxSpinnerComponent, NgxSpinnerService } from 'ngx-spinner';
-
+import { ErrorMessageService} from '../../../services/error_messages/error-message.service';
 
 @Component({
   selector: 'app-list-projects',
@@ -19,11 +19,12 @@ export class ListProjectsComponent implements OnInit {
   ];
   constructor(private _router:Router,
               private _serProjectDetails:ProjectsService,
-              private _serNgxSpinner:NgxSpinnerService){ }
+              private _serNgxSpinner:NgxSpinnerService,
+              private _serErrorMessages:ErrorMessageService){ }
 
   ngOnInit(): void {
     this.allProjects=[];
-
+    console.log(this._serErrorMessages.allErrorMessages); 
   }
   ngAfterViewInit() {
     this.allProjects=[];

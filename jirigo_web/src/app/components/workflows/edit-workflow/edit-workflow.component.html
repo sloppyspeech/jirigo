@@ -1,1 +1,140 @@
-<p>edit-workflow works!</p>
+<form>
+<div class="row">
+    <div class="col-lg-3">
+      <div class="input-group">
+        <select
+          class="form-control"
+          name="projectName"
+          id="id_ProjectName"
+          style="border-radius: 3px;"
+          [(ngModel)]="fProjectId"
+          (change)="populateRolesDD($event)"
+        >
+          <option value="-1" selected>Choose Project</option>
+          <option
+            *ngFor="let proj of allProjects"
+            value="{{ proj.project_id }}"
+            >{{ proj.project_name }}</option
+          >
+        </select>
+        <span class="required-field"></span>
+      </div>
+    </div>
+    <div class="col-lg-3">
+      <div class="input-group">
+        <select
+          class="form-control browser-default"
+          name="roleName"
+          id="id_roleName"
+          style="border-radius: 3px;"
+          [(ngModel)]="fRoleId"
+          disabled="{{ !enableRoleDropdown }}"
+          (change)="populateWorkflowDD()"
+        >
+          <option value="-1" selected>Choose Role</option>
+          <option
+            *ngFor="let role of allRolesForSelectedProject"
+            value="{{ role.role_id }}"
+            >{{ role.role_name }}</option
+          >
+        </select>
+        <span class="required-field"></span>
+      </div>
+    </div>
+    <div class="col-lg-3">
+      <div class="form-group input-group">
+        <select
+          class="form-control browser-default"
+          name="workFlowName"
+          id="id_workFlowName"
+          style="border-radius: 3px;"
+          [(ngModel)]="fWorkflowId"
+          disabled="{{ !enableWFDropdown }}"
+          (change)="getWorkflowDetails()"
+        >
+          <option value="-1" selected>Choose Workflow</option>
+          <option
+            *ngFor="let workflow of allWorkflowsForProjectAndRole"
+            value="{{ workflow.workflow_id }}"
+            >{{ workflow.workflow_name }}</option
+          >
+        </select>
+        <span class="required-field"></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="row" style="margin-left: 0px; margin-top: 20px;" *ngIf="statusGrid.length>0">
+    <div class="col">
+      <table class="table table-sm table-bordered ">
+        <thead>
+          <tr class="row">
+            <td scope="col" class="col-lg-1">
+              <div style="font-size:x-small;">
+                Next Statuses
+                <fa-icon
+                  [icon]="faArrowRight"
+                  style="padding-left: 2px;"
+                ></fa-icon>
+              </div>
+              <div style="font-size: x-small; margin: 10px 0 0 0;">
+                Current status
+                <fa-icon [icon]="faArrowDown"></fa-icon>
+              </div>
+            </td>
+
+            <th
+              scope="col"
+              class="col"
+              *ngFor="let colHdr of statusGrid"
+              style="font-size:smaller" 
+            >
+              {{ colHdr.status }}
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of statusGrid; let rowidx = index" class="row">
+            <th scope="row" class="col-lg-1" style="font-size:smaller">{{ row.status }}</th>
+            <td
+              *ngFor="let col of row.nextStatuses; let colidx = index"
+              class="col"
+            >
+              <div class="custom-control custom-checkbox text-md-center">
+                <input
+                  type="checkbox"
+                  class="custom-control-input"
+                  id="inp_r{{ rowidx }}_c{{ colidx }}"
+                  [(ngModel)]="
+                    statusGrid[rowidx].nextStatuses[colidx].allowed
+                  "
+                  name="name_{{ rowidx }}{{ colidx }}"
+                  disabled="{{
+                    row.status == statusGrid[rowidx].nextStatuses[colidx].name
+                  }}"
+                />
+                <label
+                  class="custom-control-label"
+                  for="inp_r{{ rowidx }}_c{{ colidx }}"
+                ></label>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-4 offset-lg-8">
+        <div class="row">
+            <div class="offset-lg-4"></div>
+            <div class="col-lg-2 mr-2" *ngIf="statusGrid.length>0">
+                <button type="submit" class="btn btn-dark" (click)="cancelWorkflowUpdate()">Cancel</button>
+            </div>
+            <div class="col-lg-5 mr-0 pr-0" *ngIf="statusGrid.length>0">
+                <button type="submit" class="btn btn-primary" (click)="updateWorkflow()">Update Workflow</button>
+            </div>
+        </div>
+    </div>
+</div>
+</form>

@@ -9,12 +9,12 @@
       <div class="form-group">
         <!-- <label class="col-form-label">Project</label> -->
         <select
-          class="form-control"
+          class="form-control  j-dropdown"
           [(ngModel)]="defProjectName"
           (change)="setProjectName($event.target.value)"
         >
-          <option value="" selected>Choose Project Name</option>
-          <option
+          <option class= "j-dropdown-item"  value="" selected>Choose Project Name</option>
+          <option class= "j-dropdown-item" 
             *ngFor="let project of projectList"
             [value]="project"
           >
@@ -27,11 +27,11 @@
       <div class="form-group">
         <!-- <label class="col-form-label">Reference Category</label> -->
         <select
-          class="form-control"
+          class="form-control j-dropdown"
           (change)="setRefCategory($event.target.value)"
         >
-          <option value="" selected>Choose Reference Category</option>
-          <option *ngFor="let refCat of refCategoryList" [value]="refCat">
+          <option class= "j-dropdown-item" value="" selected>Choose Reference Category</option>
+          <option class= "j-dropdown-item" *ngFor="let refCat of refCategoryList" [value]="refCat">
             {{ refCat }}
           </option>
         </select>
@@ -40,14 +40,15 @@
     <div class="col-lg-3">
       <div class="form-group">
         <!-- <label class="col-form-label">Reference Name</label> -->
-        <select class="form-control" (change)="setRefName($event.target.value)">
-          <option value="" selected>Choose Reference Name</option>
-          <option *ngFor="let refName of refNameList" [value]="refName">
+        <select class="form-control  j-dropdown" (change)="setRefName($event.target.value)">
+          <option class= "j-dropdown-item" value="" selected>Choose Reference Name</option>
+          <option class= "j-dropdown-item" *ngFor="let refName of refNameList" [value]="refName">
             {{ refName }}
           </option>
         </select>
       </div>
     </div>
+    
   </div>
 </div>
 <hr />
@@ -103,12 +104,13 @@
 
   <ng-template pTemplate="header" let-columns>
     <tr>
-      <th style="width: 2.5em;">#</th>
-      <th *ngFor="let col of columns" [pSortableColumn]="col">
+      <th [ngStyle]="{'width':'3%'}">#</th>
+      <th *ngFor="let col of columns" [pSortableColumn]="col"
+      [ngStyle]="{'width':col.width}">
         {{ col.header }}
         <p-sortIcon [field]="col"></p-sortIcon>
       </th>
-      <th style="width: 2.5em;"></th>
+      <th [ngStyle]="{'width':'10%'}">Action</th>
     </tr>
   </ng-template>
   <ng-template pTemplate="body" let-ref let-i="rowIndex">
@@ -120,7 +122,7 @@
       <td>{{ ref.is_active }}</td>
       <td>{{ ref.order_id }}</td>
       <td (click)="editReference(ref)" class="edit-icon">
-        <span> <fa-icon [icon]="faPencilAlt"></fa-icon></span>
+        <span class="edit-icon"> <fa-icon [icon]="faEdit"></fa-icon></span>
       </td>
     </tr>
   </ng-template>

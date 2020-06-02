@@ -22,9 +22,8 @@ class JirigoUsers(object):
         self.password = data.get('password','')
         self.created_by = data.get('created_by','')
         self.created_date = datetime.datetime.now()
-        self.modified_by = None
-        self.modified_date = None
-        self.is_active = data.get('is_active','')
+        self.modified_by = data.get('modified_by',0)
+        self.modified_date = datetime.datetime.now()
         self.assigned_projects=data.get('assigned_projects',[])
         self.role_id=data.get('role_id','')
         self.project_id=data.get('project_id','')
@@ -401,6 +400,35 @@ class JirigoUsers(object):
             if(self.jdb.dbConn):
                 print(f'Error While Select authenticate_route_for_user {error}')
                 raise
+
+
+    def update_toggle_active_status(self):
+        response_data={}
+        self.logger.debug("Inside update_toggle_active_status")
+
+        update_sql="""
+                        UPDATE TUSERS 
+                           SET  is_active=%s,
+                                modified_by=%s,
+                                modified_date=%s
+                         WHERE  user_id=%s;
+                    """
+        values=(self.is_active,self.modified_by,self.modified_date,self.user_id,)
+        self.logger.debug(f'update_toggle_active_status : {update_sql}  {values}')
+        try:
+            print('-'*80)
+            print(type(self.jdb.dbConn))
+            cursor=self.jdb.dbConn.cursor()
+            cursor.execute(update_sql,values)
+            self.jdb.dbConn.commit()
+            response_data['dbQryStatus']='Success'
+            response_data['dbQryResponse']={"rowUpdateCount":1}
+            return response_data
+        except  (Exception, psycopg2.Error) as error:
+            if(self.jdb.dbConn):
+                print(f'Error While Updating User {error}')
+                raise
+    
 
     @staticmethod
     def get_password_digest(p_password,salt,iterations=1000000,dklen=64):

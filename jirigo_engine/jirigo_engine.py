@@ -230,6 +230,7 @@ def create_project():
     else:
         return get_jsonified_error_response('Failure',get_errmsg('NAPR'))
 
+
 @app.route('/api/v1/project-management/projects',methods=['GET'])
 def get_all_projects():
     if request.method == 'GET':
@@ -244,6 +245,7 @@ def get_all_projects():
     else:
         return get_jsonified_error_response('Failure',"get_all_projects " + get_errmsg('NAGR'))
 
+
 @app.route('/api/v1/project-management/projects/user-projects/<user_id>',methods=['GET'])
 def get_all_projects_for_user(user_id):
     if request.method == 'GET':
@@ -257,6 +259,7 @@ def get_all_projects_for_user(user_id):
             return get_jsonified_error_response('Failure',error)
     else:
         return get_jsonified_error_response('Failure',"get_all_projects_for_user " + get_errmsg('NAGR'))
+
 
 @app.route('/api/v1/user-management/register-user',methods=['POST'])
 def register_user():
@@ -273,6 +276,7 @@ def register_user():
     else:
         return get_jsonified_error_response('Failure',"register_user "+get_errmsg('NAPR'))
 
+
 @app.route('/api/v1/user-management/create-user',methods=['POST'])
 def create_user():
     if request.method == 'POST':
@@ -287,6 +291,23 @@ def create_user():
             return get_jsonified_error_response('Failure',error)
     else:
         return get_jsonified_error_response('Failure',"create_user "+get_errmsg('NAPR'))
+
+
+@app.route('/api/v1/user-management/user-activate-inactivate',methods=['PUT'])
+def update_toggle_active_status():
+    if request.method == 'PUT':
+        print('In PUT update_toggle_active_status')
+        print(request.get_json())
+        try:
+            jdb=JirigoUsers(request.get_json())
+            data=jdb.update_toggle_active_status()
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in update_toggle_active_status {error}')
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',"update_toggle_active_status "+get_errmsg('NAPUR'))
+
 
 @app.route('/api/v1/user-management/login',methods=['POST'])
 def validate_userid_password():
@@ -1145,6 +1166,24 @@ def create_project_workflow():
     else:
         return get_jsonified_error_response('Failure',"create_project_workflow " + get_errmsg('NAPR'))
 
+@app.route('/api/v1/workflows-management/update-project-workflow',methods=['PUT'])
+def update_project_workflow():
+    data=''
+    if request.method == 'PUT':
+        print('In Post update_project_workflow')
+        pprint.pprint(request.get_json())
+        try:
+            jdb=JirigoProjectWorkflow(request.get_json())
+            data=jdb.update_project_workflow()
+            print('*'*40)
+            print(data['dbQryResponse'])
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in update_project_workflow {error}')
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',"update_project_workflow " + get_errmsg('NAPUR'))
+
 @app.route('/api/v1/workflows-management/next-steps-allowed',methods=['GET'])
 def get_next_allowed_workflow_statuses():
     data=''
@@ -1197,6 +1236,40 @@ def get_workflows_not_assigned_to_project_role():
     else:
         return get_jsonified_error_response('Failure',"get_workflows_not_assigned_to_project_role " + get_errmsg('NAGR'))
 
+@app.route('/api/v1/workflows-management/projects-roles-workflows',methods=['GET'])
+def get_project_role_workflow_list_for_update():
+    data=''
+    if request.method == 'GET':
+        print('In GET get_project_role_workflow_list_for_update')
+        try:
+            project_id=request.args.get('project_id')
+            role_id=request.args.get('role_id')
+            jdb=JirigoProjectWorkflow({'project_id':project_id,'role_id':role_id})
+            data=jdb.get_project_role_workflow_list_for_update()
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in get_project_role_workflow_list_for_update {error}')
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',"get_project_role_workflow_list_for_update " + get_errmsg('NAGR'))
+
+@app.route('/api/v1/workflows-management/workflow-details-for-update',methods=['GET'])
+def get_workflow_details_for_update():
+    data=''
+    if request.method == 'GET':
+        print('In GET get_workflow_details_for_update')
+        try:
+            project_id=request.args.get('project_id')
+            role_id=request.args.get('role_id')
+            workflow_id=request.args.get('workflow_id')
+            jdb=JirigoProjectWorkflow({'project_id':project_id,'role_id':role_id,'workflow_id':workflow_id})
+            data=jdb.get_workflow_details_for_update()
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in get_workflow_details_for_update {error}')
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',"get_workflow_details_for_update " + get_errmsg('NAGR'))
 
 
 

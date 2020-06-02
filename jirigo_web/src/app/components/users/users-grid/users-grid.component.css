@@ -1,14 +1,40 @@
 .active-user{
-    padding: 0 10px 0 10px; 
-    background-color: #d9eedc;
+    padding: 5px 10px 5px 10px; 
+    background-color: #B1EB00;
     font-size: 14px;
+    font-weight: 550;
+    color:green;
+}
+.active-user:hover{
+    cursor: pointer;
 }
 .inactive-user{
-    padding: 0 10px 0 10px; 
-    background-color: #ddacac;
+    padding: 5px 10px 5px 10px; 
+    background-color: #ff432e;
     font-size: 14px;
+    font-weight: 500;
+    color:white
 }
+.inactive-user:hover{
+    cursor: pointer;
+}
+.edit-icon{
+    background-image: url("/assets/images/svgs/password-05.svg");
+    padding: 5px 35px 5px 5px;
+    color: lightsalmon;
+    font-size: 20px;
+}
+
 .edit-icon:hover{
     cursor: pointer;
-    color:orangered
+}
+
+.role-icon{
+    padding: 0px 2px 7px 15px;
+    color: #D500F9;
+    font-size: 20px;
+}
+
+.role-icon:hover{
+    cursor: pointer;
 }

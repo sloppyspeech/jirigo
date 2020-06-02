@@ -105,20 +105,26 @@
 }
 
 .jcOneRowColumnBox{
-  background-color:aliceblue; 
+  background-color:#fff; 
+  /* background-color:aliceblue;  */
   margin-bottom: 50px; 
   border-radius: 10px; 
-  border-color:dodgerblue; 
-  border-style: solid; 
-  border-width: 1px;
+  border-radius: 1px;
+  /* border-color:dodgerblue;  */
+  /* border-style: solid;  */
+  /* border-width: 1px; */
+  box-shadow: 2px 2px #eee;
 }
 .jcOneRowColumnBoxheader{
-  color:dimgray ;
+  color:555 ;
   /* background-color: #BDE4FF;  */
-  background-color: #BDE4FF; 
-  padding:2px 0 0 4px;
+  /* background-color: #BDE4FF;  */
+  padding:2px 0 20px 4px;
   vertical-align:middle; 
   border-radius: 5px;
+}
+.jcFormContainer{
+  padding: 20px 20px 20px 20px ;
 }
 
 html {

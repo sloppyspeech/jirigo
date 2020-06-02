@@ -9,19 +9,20 @@
             style="margin-right: 0.5em;"></button>
         <div style="text-align: right;">
           <i class="pi pi-search" style="margin: 4px 4px 0 0;"></i>
-          <input type="text" pInputText size="50" placeholder="Global Filter"
+          <input type="text" class="ui-inputtext ui-corner-all" pInputText size="50" placeholder="Global Filter"
             (input)="ut.filterGlobal($event.target.value, 'contains')" style="width: auto;" />
         </div>
       </ng-template>
 
       <ng-template pTemplate="header">
         <tr>
-          <th style="width: 2.5em;">#</th>
-          <th *ngFor="let col of cols" [pSortableColumn]="col.field">
+          <th [ngStyle]="{'width': '2%'}">#</th>
+          <th *ngFor="let col of cols" [pSortableColumn]="col.field"
+          [ngStyle]="{'width': col.width}">
             {{ col.header }}
             <p-sortIcon [field]="col.field"></p-sortIcon>
           </th>
-          <th style="width: 2.5em;"></th>
+          <th [ngStyle]="{'width': '12%'}">Action</th>
         </tr>
       </ng-template>
 
@@ -33,22 +34,62 @@
           <td>{{ user.email }}</td>
           <td>
             <h6 *ngIf="user.is_active == 'Y'" style="margin: 2px 0 0 0;">
-              <span class="label active-user">Active</span>
+              <span class="label active-user" (click)="toggleUserActiveStatus(user)">Active</span>
             </h6>
             <h6 *ngIf="user.is_active == 'N'" style="margin: 2px 0 0 0;">
-              <span class="label inactive-user">In Active</span>
+              <span class="label inactive-user"
+              (click)=toggleUserActiveStatus(user)>In Active</span>
             </h6>
           </td>
-          <td>{{ user.password_change_date | date : 'dd MMM yyyy HH:MM'}}</td>
-          <!-- <td>
-            <i class="pi pi-pencil" style="color: orange; display: flex; justify-content: center;"
-              pReorderableRowHandle></i>
-          </td> -->
-          <td class="edit-icon">
-            <span> <fa-icon [icon]="faPencilAlt"></fa-icon></span>
+          <td>{{ user.password_change_date | date : 'dd MMM yyyy HH:mm' :'UTC'}}</td>
+          <td >
+            <span class="edit-icon"
+            data-toggle="modal" data-target="#id_editUser" 
+            (click)="openChangePasswordModal(user)" 
+            > 
+              <!-- <fa-icon [icon]="faCogs"  
+  
+            ></fa-icon> -->
+          </span>
+            <span class="role-icon"> 
+              <fa-icon [icon]="faRegistered"  
+              data-toggle="modal" data-target="#id_editUser" 
+              (click)="openChangePasswordModal(user)"   
+              ></fa-icon>
+          </span>
           </td>
         </tr>
       </ng-template>
     </p-table>
+  </div>
+</div>
+
+
+<div class="modal fade" id="id_editUser" tabindex="-1" role="dialog" aria-labelledby="editUser" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Reset Password</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group row">
+          <div class="col-lg-10 offset-lg-1">
+            <label>{{userEmailForPwdChange}}</label>
+            <input type="password" [(ngModel)]="newPassword" class="form-control" id="inputEmail3" placeholder="New Password">
+          </div>
+        </div>
+        <div class="form-group row">
+          <div class="col-lg-10 offset-lg-1">
+          </div>
+        </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" >Close</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="changePassword()">Save Password</button>
+      </div>
+    </div>
   </div>
 </div>

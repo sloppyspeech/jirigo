@@ -1,6 +1,37 @@
+<h2>Drag and Drop demo</h2>
+<div  id="div1" 
+      (drop)="drop($event)" 
+      (dragover)="allowDrop($event)">
+
+      <img 
+      src="https://images.pexels.com/photos/658687/pexels-photo-658687.jpeg?auto=compress&cs=tinysrgb&h=350" 
+      draggable="true" 
+      (dragstart)="drag($event)" 
+      id="drag1"
+      width="88" 
+      height="41">
+</div>
+
+<div id="div2" 
+  (drop)="drop($event)" 
+  (dragover)="allowDrop($event)">
+</div>
 
 
-<app-modal-confirm 
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <app-modal-confirm 
 [showModal]="launchIt" 
 [title]="'From The caller'" 
 [modalType]="'primary'" 
@@ -8,7 +39,7 @@
 [modalContent]="newModalContent"
 >
 </app-modal-confirm>
-<button type="button" (click)="testLaunch()">Toggle Modal</button>
+<button type="button" (click)="testLaunch()">Toggle Modal</button> -->
 
 <!-- <button type="button" (click)="openModal()">Open Modal</button>
 <button type="button" (click)="closeModal()">Close Modal</button>

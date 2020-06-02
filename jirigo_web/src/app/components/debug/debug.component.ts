@@ -5,7 +5,7 @@ import {TaskTicketLinkService} from '../../services/task-ticket-links/task-ticke
 import { Injectable } from '@angular/core';
 import { HttpClient,HttpHeaders  } from '@angular/common/http';
 import { environment  } from '../../../environments/environment';
-
+import { ErrorMessageService } from '../../services/error_messages/error-message.service';
 
 @Component({
   selector: 'app-debug',
@@ -27,10 +27,13 @@ export class DebugComponent implements OnInit {
   };
 
   @ViewChild('myModal') myModal:ElementRef;
+
   constructor(private _formBuilder: FormBuilder,private _router:Router,
     private _taskTicketLinkSer:TaskTicketLinkService,
     private _httpCli:HttpClient,
-    private _ren2:Renderer2) {
+    private _ren2:Renderer2,
+    private _errSer:ErrorMessageService 
+    ) {
 }
   projectType: any[] = [
     {name: 'Scrum', code: 'Scrum'},
@@ -114,7 +117,51 @@ options = {
   // projStatuses=['Open','Analysis','Dev'];
   projStatuses=['Open','Analysis','Dev','Code Review','QA Testing','UAT','Release','Closed'];
 
- 
+  ngOnInit(): void {
+    // this._errSer.getErrorMessage('TASK')
+    //     .subscribe(res=>{
+    //       console.log('Error Message here here ');
+    //       console.log(res);
+    //       console.log(res.CRE_OK.text);
+    //       // this.launchIt=true;
+    //       // this.newModalContent=res.CRE_OK.text;
+    //     })
+
+    // this.projStatuses.forEach(ps=>{
+    //     let s:any[]=[];
+    //     this.projStatuses.forEach(nxtSts=>{
+    //       if(ps === nxtSts){
+    //         s.push({name:nxtSts,allowed:true})
+    //       }
+    //       else{
+    //         s.push({name:nxtSts,allowed:false})
+    //       }
+    //     });
+    //     this.statusGrid.push({status:ps,nextStatuses:s});
+    // });
+
+
+  }
+
+  drop(ev) {
+    ev.preventDefault();
+    var data = ev.dataTransfer.getData("text");
+    ev.target.appendChild(document.getElementById(data));
+  }
+
+  allowDrop(ev) {
+    ev.preventDefault();
+  }
+
+  drag(ev) {
+    ev.dataTransfer.setData("text", ev.target.id);
+  }
+
+
+
+
+
+
  
   onFileChanged(event) {
     this.selectedFile = event.target.files[0]
@@ -135,31 +182,7 @@ options = {
         })
   }
 
-  ngOnInit(): void {
 
-    this.projStatuses.forEach(ps=>{
-        let s:any[]=[];
-        this.projStatuses.forEach(nxtSts=>{
-          if(ps === nxtSts){
-            s.push({name:nxtSts,allowed:true})
-          }
-          else{
-            s.push({name:nxtSts,allowed:false})
-          }
-        });
-        this.statusGrid.push({status:ps,nextStatuses:s});
-    });
-    console.log(this.statusGrid);
-
-  //   setTimeout(() => {
-  //       this.launchIt=true;
-  //   }, 1000);
-
-  //   setTimeout(() => {
-  //     this.launchIt=false;
-  // }, 4000);
-
-  }
 
   openModal(){
     

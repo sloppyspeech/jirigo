@@ -1,0 +1,13 @@
+.task {
+    border-radius: 1px;
+    background-color: #CCFF90 ; 
+    padding:10px 0 20px 0;
+}
+
+.task-badge{
+    margin:0 10px 0 0;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 6px 8px 6px 8px; 
+    border-radius: 20px;
+}

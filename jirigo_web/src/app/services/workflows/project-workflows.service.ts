@@ -26,7 +26,12 @@ export class ProjectWorkflowsService {
     console.log(url);
     return this._httpCli.post(url, inpWorkflowData, this.sHttpOptions);
   }
-
+  
+  updateProjectWorkflow(inpWorkflowData:any) {
+    let url = this.sApiEndPoint + "update-project-workflow";
+    console.log(url);
+    return this._httpCli.put(url, inpWorkflowData, this.sHttpOptions);
+  }
   getNextAllowedStepsForProjectRoleCurrStatus(inpData){
     let url=this.sApiEndPoint+'next-steps-allowed';
     let params=`?project_id=${inpData['project_id']}&role_id=${inpData['role_id']}&current_status=${inpData['current_status']}`;
@@ -47,6 +52,21 @@ export class ProjectWorkflowsService {
   getUnAllocatedWorkflowsOfProjects(inpData){
     let url=this.sApiEndPoint+'not-allocated-to-role';
     let params=`?project_id=${inpData['project_id']}&role_id=${inpData['role_id']}`;
+    url=url+params;
+    console.log(url)
+    return this._httpCli.get(url);
+  }
+
+  getProjectRoleWorkflowListForUpdate(){
+    let url=this.sApiEndPoint+'projects-roles-workflows';
+    url=url;
+    console.log(url)
+    return this._httpCli.get(url);
+  }
+
+  getWorkflowDetailsForUpdate(inpData){
+    let url=this.sApiEndPoint+'workflow-details-for-update';
+    let params=`?project_id=${inpData['project_id']}&role_id=${inpData['role_id']}&workflow_id=${inpData['workflow_id']}`;
     url=url+params;
     console.log(url)
     return this._httpCli.get(url);

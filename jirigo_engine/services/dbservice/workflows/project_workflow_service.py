@@ -12,6 +12,7 @@ class JirigoProjectWorkflow(object):
     def __init__(self,data={}):
         print("Initializing JirigoSprints")
         self.workflow_name=data.get('workflow_name','')
+        self.workflow_id=data.get('workflow_id',0)
         self.project_id=data.get('project_id','')
         self.role_id=data.get('role_id','')
         self.current_status=data.get('current_status','')
@@ -71,21 +72,28 @@ class JirigoProjectWorkflow(object):
                 print(f'Error While get_next_allowed_workflow_statuses {error}')
                 raise
 
-    def get_workflow_all_activesteps_list(self):
+    def get_workflow_details_for_update(self):
+        print("HERER JERERERERERERERERERERERER")
         response_data={}
-        self.logger.debug("Inside get_all_not_closed_tickets")
+        self.logger.debug("Inside get_workflow_details_for_update")
         query_sql="""  
                         WITH t AS (
-                             SELECT step_full_details
-                               FROM tproj_workflow_master tpwm,
-                                    tproj_role_workflow tprw
-                              WHERE tpwm.project_id=tprw.project_id
-                                and tpwm.project_id=%s
-                                and tprw.workflow_id=%s
+                             SELECT
+                                    tws.step_full_details 
+                                FROM
+                                    tproj_workflow_master tpwm,
+                                    tproj_role_workflow tprw,
+                                    tproj_workflow_steps tws 
+                                WHERE
+                                    tpwm.project_id = tprw.project_id
+                                    AND tpwm.project_id =%s
+                                    AND tprw.workflow_id =%s
+                                    AND tws.workflow_id =tprw.workflow_id 
+	                                AND tprw.role_id =%s
                         )
                         SELECT json_agg(t) from t;
                    """
-        values=(self.project_id,self.workflow_id,)
+        values=(self.project_id,self.workflow_id,self.role_id,)
         self.logger.debug(f'Select : {query_sql} values {values}')
         try:
             print('-'*80)
@@ -93,13 +101,14 @@ class JirigoProjectWorkflow(object):
             cursor.execute(query_sql,values)
             json_data=cursor.fetchone()[0]
             row_count=cursor.rowcount
-            self.logger.debug(f'Select Success with {row_count} row(s) Ticket ID {json_data}')
+            pprint(json_data)
+            self.logger.debug(f'Select Success with {row_count} row(s)  {json_data}')
             response_data['dbQryStatus']='Success'
             response_data['dbQryResponse']=json_data
             return response_data
         except  (Exception, psycopg2.Error) as error:
             if(self.jdb.dbConn):
-                print(f'Error While get_project_workflow_list {error}')
+                print(f'Error While get_workflow_details_for_update {error}')
                 raise
 
     def create_project_workflow(self):
@@ -214,4 +223,75 @@ class JirigoProjectWorkflow(object):
         except  (Exception, psycopg2.Error) as error:
             if(self.jdb.dbConn):
                 print(f'Error While get_workflows_not_assigned_to_project_role {error}')
+                raise
+
+
+    def get_project_role_workflow_list_for_update(self):
+        response_data={}
+        self.logger.debug("Inside get_project_role_workflow_list_for_update")
+        query_sql="""  
+                        WITH t AS (
+                                    SELECT
+                                            tr.role_id,
+                                            tr.role_name,
+                                            tr.is_active,
+                                            tpr.project_id ,
+                                            get_proj_name(tpr.project_id) project_name,
+                                            tprw.workflow_id ,
+                                            get_workflow_name (tprw.workflow_id ) workflow_name
+                                    FROM troles tr
+                                    INNER JOIN tproject_roles tpr ON
+                                        tr.role_id = tpr.role_id
+                                    LEFT OUTER JOIN tproj_role_workflow tprw ON
+                                        tr.role_id = tprw.role_id
+                                    WHERE
+                                        tr.is_active = 'Y'
+                        )
+                        SELECT json_agg(t) from t;
+                   """
+        self.logger.debug(f'Select : {query_sql} ')
+        try:
+            print('-'*80)
+            cursor=self.jdb.dbConn.cursor()
+            cursor.execute(query_sql)
+            json_data=cursor.fetchone()[0]
+            row_count=cursor.rowcount
+            response_data['dbQryStatus']='Success'
+            response_data['dbQryResponse']=json_data
+            return response_data
+        except  (Exception, psycopg2.Error) as error:
+            if(self.jdb.dbConn):
+                print(f'Error While get_project_role_workflow_list_for_update {error}')
+                raise
+
+    def update_project_workflow(self):
+        response_data={}
+        self.logger.debug("create_workflow ")
+
+        update_workflow_steps_sql = """
+                            UPDATE tproj_workflow_steps
+                                    SET 
+                                        next_allowed_statuses=%s,
+                                        step_full_details=%s,
+                                        modified_by=%s,
+                                        modified_date=%s
+                             WHERE workflow_id=%s
+                            """
+        try:
+            print('@'*80)
+            values_update_workflow_steps=(Json(self.next_allowed_statuses),Json(self.step_full_details),self.modified_by,self.modified_date,self.workflow_id,)
+            self.logger.debug(f'{update_workflow_steps_sql}  values  {values_update_workflow_steps}')
+            cursor=self.jdb.dbConn.cursor()
+            row_count=cursor.rowcount
+            cursor.execute(update_workflow_steps_sql,values_update_workflow_steps)
+            self.jdb.dbConn.commit()
+            self.logger.debug(f'Update Success with {row_count} row(s) Worflow Id {self.workflow_id}')
+
+            response_data['dbQryStatus']='Success'
+            response_data['dbQryResponse']={"ret_workflow_id":self.workflow_id,"rowCount":row_count}
+            return response_data
+
+        except  (Exception, psycopg2.Error) as error:
+            if(self.jdb.dbConn):
+                print(f'Error While Updating Project Workflow Tasks {error}')
                 raise

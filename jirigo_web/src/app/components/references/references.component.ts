@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 
 import { ReferencesService } from "./../../services/references/references.service";
-import { faPencilAlt } from "@fortawesome/free-solid-svg-icons";
+import { faPencilAlt,faEdit } from "@fortawesome/free-solid-svg-icons";
 import { FormControl, FormBuilder, FormGroup, Validator } from "@angular/forms";
 
 @Component({
@@ -11,6 +11,7 @@ import { FormControl, FormBuilder, FormGroup, Validator } from "@angular/forms";
 })
 export class ReferencesComponent implements OnInit {
   faPencilAlt = faPencilAlt;
+  faEdit=faEdit;
   showTable = true;
   showAddRefModal = true;
   showAddRefTemplate = false;
@@ -27,18 +28,19 @@ export class ReferencesComponent implements OnInit {
 
   addReferenceFG: FormGroup;
   refValuesToEdit:any[]=[];
-
   //------ p-table
   allRefs: any[] = [];
   filteredRefs: any[] = [];
+  
+  testButtonVal:string="Choose A Value";
 
-  refColHeaders: { header: string; name: string }[] = [
+  refColHeaders: { header: string; name: string,width:string }[] = [
     // {'header':'Project','name':'project_id'},  §
-    { header: "Ref Category", name: "ref_category" },
-    { header: "Ref Name", name: "ref_name" },
-    { header: "Ref Value", name: "ref_value" },
-    { header: "Active", name: "is_active" },
-    { header: "Order", name: "order_id" },
+    { header: "Ref Category", name: "ref_category",width:'10%' },
+    { header: "Ref Name", name: "ref_name" ,width:'10%' },
+    { header: "Ref Value", name: "ref_value" ,width:'20%' },
+    { header: "Active", name: "is_active" ,width:'5%' },
+    { header: "Order", name: "order_id" ,width:'5%' },
   ];
 
   constructor(
@@ -60,7 +62,6 @@ export class ReferencesComponent implements OnInit {
     this.refColHeaders.forEach((e) => {
       this.searchFields[e["name"]] = "";
     });
-    this.searchFields["project_name"] = "";
     console.log(this.searchFields);
 
     this._serReferences.getAllRefsForShowAndEdit().subscribe((res) => {
@@ -138,7 +139,7 @@ export class ReferencesComponent implements OnInit {
         ];
       }
     });
-    console.log(this.filteredRefs);
+    // console.log(this.filteredRefs);
   }
   
   addReference() {
@@ -189,5 +190,9 @@ export class ReferencesComponent implements OnInit {
       this.setProjectName(this.defProjectName);
     });
 
+  }
+
+  setTestBtnVal(e){
+    this.testButtonVal=e;
   }
 }

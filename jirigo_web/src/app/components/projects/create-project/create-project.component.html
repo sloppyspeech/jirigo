@@ -4,7 +4,7 @@
     >
     <ngx-spinner [fullScreen]="true" type="ball-newton-cradle" size="medium"></ngx-spinner>
     <form [formGroup]="createProjectFG" (ngSubmit)="createProject()">
-    <div class="form-group" style="padding: 15px 15px 15px 15px;">
+    <div class="jcFormContainer">
       <div class="row jcOneRowColumnBoxheader">
         <h3>Create Project</h3>
       </div>
@@ -54,7 +54,7 @@
 
       <br>
       <div class="row">
-        <div class="offset-md-3 ">
+        <div class="offset-lg-4 ">
           <button type="button" value="Cancel" id="cancel" class="btn btn-dark"
             (click)="cancelProjectCreationForm()">Cancel</button>
         </div>
