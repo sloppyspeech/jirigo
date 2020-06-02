@@ -48,31 +48,14 @@
   <app-issue-details [parentForm]="createTicketFB"></app-issue-details>
   <br />
 
-  <div class="panel">
-    <!-- <div class="card-header">Audit</div> -->
-    <div class="card-body">
-      <div class="form-group">
-        <div class="row">
-          <div class="offset-md-9 offset-sm-1">
-            <input
-              type="button"
-              value="Cancel"
-              id="cancel"
-              class="btn btn-secondary"
-              (click)="cancelForm()"
-            />
-          </div>
-          <div class="col-md-1 col-sm-1">
-            <input
-              type="submit"
-              [disabled]="!createTicketFB.valid"
-              value="Submit"
-              id="submit"
-              class="btn btn-primary"
-            />
-          </div>
-        </div>
+
+  <div class="row " style="margin-top:40px;">
+    <div class="col offset-lg-5">
+        <button type="button"  (click)="cancelForm()" class="btn btn-secondary mr-4">Cancel</button>
+        <button type="submit" 
+        [disabled]="!createTicketFB.valid || !createTicketFB.dirty" 
+        class="btn btn-primary">Submit</button>
       </div>
-    </div>
   </div>
+
 </form>

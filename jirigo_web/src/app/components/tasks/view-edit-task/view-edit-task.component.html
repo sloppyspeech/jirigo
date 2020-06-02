@@ -3,35 +3,35 @@
 <form [formGroup]="viewModifyTaskFB" (ngSubmit)="updateTask()" *ngIf="isLoaded">
   <div class="form-group">
 
-    <div class="row " *ngIf="viewEditFormEditBtnEnabled">
-      <div class="col-md-8 col-sm-12 col-lg-10 ">
-        <div class="row">
-          <div class="col-md-2 col-lg-2">
+    <div class="row"  *ngIf="viewEditFormEditBtnEnabled">
+      <div class="col-lg-8" >
+        <div class="row" style="margin-left: 2px;">
+          <div class="btn-sm">
             <button type="button" label="Modify Task" class="btn btn-warning" (click)="markFormEditable()"
-              style="margin-right: 10px; color:white;">
+              >
               <fa-icon [icon]="faEdit" style="padding-right: 6px; color: white;"></fa-icon>Modify Task
             </button>
           </div>
-          <div class="col-md-2 col-lg-2">
+          <div class="btn-sm">
             <button type="button" label="Clone Task" class="btn btn-purple" (click)="cloneTask()">
               <fa-icon [icon]="faClone" style="color: white;"></fa-icon>&nbsp;
               Clone Task
             </button>
           </div>
-          <div class="col-md-2 col-lg-2">
+          <div class="btn-sm">
             <button type="button" label="Clone Task" class="btn btn-electricpurple" (click)="showLinksModal($event)">
               <fa-icon [icon]="faLink" style="color: white;"></fa-icon>&nbsp;
               Link Task
             </button>
           </div>
-          <div class="col-md-2 col-lg-2">
+          <div class="btn-sm">
             <button type="button" label="Clone Task" class="btn btn-blandviolet" (click)="mtl.openMod()"
               >
               <fa-icon [icon]="faClock" style="color: white;"></fa-icon>&nbsp;
               Log Time
             </button>
           </div>
-          <div class="col-md-2 col-lg-2">
+          <div class="btn-sm">
             <button type="button" label="Clone Task" class="btn btn-cyan-a700" (click)="mtl.openMod()"
               >
               <fa-icon [icon]="faPaperclip" style="color: white;"></fa-icon>&nbsp;
@@ -41,22 +41,7 @@
         </div>
       </div>
     </div>
-<!-- <br> -->
-    <!-- <div class="row">
-      <div class="col">
-      <div class="btn-group btn-group-toggle" data-toggle="buttons">
-        <label class="btn btn-outline-secondary ">
-          <input type="radio" name="options" id="option1" autocomplete="off" checked> My Tickets
-        </label>
-        <label class="btn btn-blandviolet" style="margin: 0 0 0 10px;">
-          <input type="radio" name="options" id="option2" autocomplete="off"> Created By Me
-        </label>
-        <label class="btn btn-cyan-a700" style="margin: 0 0 0 10px;">
-          <input type="radio" name="options" id="option3" autocomplete="off"> Modified By Me
-        </label>
-      </div>
-    </div>
-    </div> -->
+
 
     <br />
     <div class="card">
@@ -94,34 +79,16 @@
   <app-duplicated-by [currentTaskTicketNo]="task_no" *ngIf="buttonGroupOptions.showDuplicatedBy"></app-duplicated-by>
   <app-timelog [currentTaskNo]="task_no" *ngIf="buttonGroupOptions.showTimeLog"></app-timelog>
 
-  <div class="panel">
-    <!-- <div class="card-header">Audit</div> -->
-    <div class="card-body">
-      <div class="form-group">
-        <div class="row container-fluid">
-          <div class="align-self-end ml-auto">
-            <input type="button" value="Cancel" id="id_cancelViewEdit" class="btn btn-secondary" (click)="cancelViewEditForm()" />
-          </div>
-          <div class="align-self-center mx-auto">
-            <input type="submit" [disabled]="!viewModifyTaskFB.valid || !viewModifyTaskFB.touched" value="Update"
-              id="update" class="btn btn-primary" />
-          </div>
-        </div>
+
+  <div class="row " style="margin-top:40px;">
+    <div class="col offset-lg-5">
+        <button type="button"  (click)="cancelViewEditForm()" class="btn btn-secondary mr-4">Cancel</button>
+        <button type="submit" 
+        [disabled]="!viewModifyTaskFB.valid || !viewModifyTaskFB.dirty || !viewModifyTaskFB.touched"  
+        class="btn btn-primary">Submit</button>
       </div>
-    </div>
   </div>
 
-  <p-dialog header="Unsaved Data Alert" [(visible)]="displayPageDirtyDialog" [style]="{ width: '35vw' }">
-    <div style="height: 40px;padding-top:10px;">
-      There are unsaved Items on this page. Do you want to leave without saving ?
-    </div>
-    <p-footer>
-      <button type="button" pButton icon="pi pi-check" (click)="showDirtyPageDialog(true)" label="Yes"></button>
-      <button type="button" pButton icon="pi pi-times" (click)="showDirtyPageDialog(false)" label="No"
-        class="ui-button-secondary"></button>
-
-    </p-footer>
-  </p-dialog>
 </form>
 
 <app-ticket-and-task-links *ngIf="showLinkTaskModal" [currentItemNo]="task_no"
@@ -135,5 +102,17 @@
   (cancelled)="timeLoggerCancelled();"
   (confirmed)="timeLoggerConfirmed($event);"
 >
-
 </m-modal-timelogging>
+
+<app-modal-confirm
+  [modalType]="modalAlertConfig.modalType"
+  [showModal]="modalAlertConfig.showModal"
+  [title]="modalAlertConfig.title"
+  [modalContent]="modalAlertConfig.modalContent"
+  [cancelButtonLabel]="modalAlertConfig.cancelButtonLabel"
+  [confirmButtonLabel]="modalAlertConfig.confirmButtonLabel"
+  (dialogCanceled)="modalAlertAction(modalAlertConfig.dialogCanceled)"
+  (dialogConfirmed)="modalAlertAction(modalAlertConfig.dialogConfirmed)"
+  (dialogClosed)="modalAlertAction(modalAlertConfig.dialogClosed)"
+>
+</app-modal-confirm>

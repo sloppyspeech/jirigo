@@ -3,17 +3,21 @@
   type="ball-newton-cradle"
   size="medium"
 ></ngx-spinner>
-<p-toast [style]="{marginTop: '10px'}" position="top-right"></p-toast>
-<form [formGroup]="viewModifyTicketFB" (ngSubmit)="updateTicket()" *ngIf="isLoaded">
+<p-toast [style]="{ marginTop: '10px' }" position="top-right"></p-toast>
+<form
+  [formGroup]="viewModifyTicketFB"
+  (ngSubmit)="updateTicket()"
+  *ngIf="isLoaded"
+>
   <div class="form-group">
     <div class="row" *ngIf="viewEditFormEditBtnEnabled">
-      <div class="col-md-3 col-sm-6 col-lg-3 ">
+      <div class="col-md-3 col-sm-6 col-lg-3">
         <button
           type="button"
           label="Modify Task"
           class="btn btn-warning"
           (click)="markFormEditable()"
-          style="margin-right: 10px; color:white;"
+          style="margin-right: 10px; color: white;"
         >
           <fa-icon
             [icon]="faEdit"
@@ -28,11 +32,10 @@
           class="btn btn-purple"
           (click)="cloneTicket()"
         >
-          <fa-icon [icon]="faClone" style="color: white;"></fa-icon>&nbsp;
-          Clone Ticket
+          <fa-icon [icon]="faClone" style="color: white;"></fa-icon>&nbsp; Clone
+          Ticket
         </button>
       </div>
-
     </div>
     <br />
     <div class="card">
@@ -40,12 +43,10 @@
         <h4>{{ ticket_no }}</h4>
       </div>
     </div>
-<br>
+    <br />
     <div class="row">
       <div class="col">
-        <label
-          for="formGroupExampleInput"
-          class="col-form-label-md"
+        <label for="formGroupExampleInput" class="col-form-label-md"
           >Summary</label
         >
         <input
@@ -62,9 +63,7 @@
   <div class="form-group">
     <div class="row">
       <div class="col">
-        <label
-          for="formGroupExampleInput"
-          class="col-form-label-md"
+        <label for="formGroupExampleInput" class="col-form-label-md"
           >Description</label
         >
         <quill-editor
@@ -78,47 +77,54 @@
   </div>
 
   <div class="jSelectButtonContainer">
-    <p-selectButton [options]="tabs" formControlName="fctlTabOptions" (onChange)="tabSelected($event)"></p-selectButton>
+    <p-selectButton
+      [options]="tabs"
+      formControlName="fctlTabOptions"
+      (onChange)="tabSelected($event)"
+    ></p-selectButton>
   </div>
-  <app-issue-details [parentForm]="viewModifyTicketFB" *ngIf="buttonGroupOptions.showTicketDetails"></app-issue-details>
-  <app-ticket-comments [parentForm]="viewModifyTicketFB" *ngIf="buttonGroupOptions.showTicketComments"></app-ticket-comments>
-  <app-ticket-audit [parentForm]="viewModifyTicketFB" *ngIf="buttonGroupOptions.showAudit"></app-ticket-audit>
+  <app-issue-details
+    [parentForm]="viewModifyTicketFB"
+    *ngIf="buttonGroupOptions.showTicketDetails"
+  ></app-issue-details>
+  <app-ticket-comments
+    [parentForm]="viewModifyTicketFB"
+    *ngIf="buttonGroupOptions.showTicketComments"
+  ></app-ticket-comments>
+  <app-ticket-audit
+    [parentForm]="viewModifyTicketFB"
+    *ngIf="buttonGroupOptions.showAudit"
+  ></app-ticket-audit>
 
-  <div class="panel">
-    <!-- <div class="card-header">Audit</div> -->
-    <div class="card-body">
-      <div class="form-group">
-        <div class="row container-fluid">
-          <div class="align-self-end ml-auto">
-            <input
-              type="button"
-              value="Cancel"
-              id="summary"
-              class="btn btn-secondary"
-              (click)="cancelViewEditForm()"
-            />
-          </div>
-          <div class="align-self-center mx-auto">
-            <input
-              type="submit"
-              [disabled]="
-                !viewModifyTicketFB.valid || !viewModifyTicketFB.dirty
-              "
-              value="Update"
-              id="update"
-              class="btn btn-primary"
-            />
-          </div>
-        </div>
-      </div>
+  <div class="row" style="margin-top: 40px;">
+    <div class="col offset-lg-5">
+      <button
+        type="button"
+        (click)="cancelViewEditForm()"
+        class="btn btn-secondary mr-4"
+      >
+        Cancel
+      </button>
+      <button
+        type="submit"
+        [disabled]="!viewModifyTicketFB.valid || !viewModifyTicketFB.dirty"
+        class="btn btn-primary"
+      >
+        Submit
+      </button>
     </div>
   </div>
-
-<p-dialog header="Unsaved Data Alert" [(visible)]="displayPageDirtyDialog" [style]="{width: '50vw'}" [baseZIndex]="10000">
-    There are unsaved Items on this page. Do you want to leave without saving ?
-<p-footer>
-    <button type="button" pButton icon="pi pi-check" (click)="showDirtyPageDialog(true)" label="Yes"></button>
-    <button type="button" pButton icon="pi pi-times" (click)="showDirtyPageDialog(false)" label="No" class="ui-button-secondary"></button>
-</p-footer>
-</p-dialog>
 </form>
+
+<app-modal-confirm
+  [title]="modalAlertConfig.title"
+  [modalType]="modalAlertConfig.modalType" 
+  [showModal]="modalAlertConfig.showModal" 
+  [modalContent]="modalAlertConfig.modalContent"
+  [cancelButtonLabel]="modalAlertConfig.cancelButtonLabel"
+  [confirmButtonLabel]="modalAlertConfig.confirmButtonLabel"
+  (dialogCanceled)="modalAlertAction(modalAlertConfig.dialogCanceled)"
+  (dialogConfirmed)="modalAlertAction(modalAlertConfig.dialogConfirmed)"
+  (dialogClosed)="modalAlertAction(modalAlertConfig.dialogClosed)"
+>
+</app-modal-confirm>

@@ -294,6 +294,9 @@ export class TaskDetailsComponent implements OnInit {
         });
     }
 
-  
+    ngAfterContentInit(){
+      this.parentForm.untouched;
+    }
+    
 }
 

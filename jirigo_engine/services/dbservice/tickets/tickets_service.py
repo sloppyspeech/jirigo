@@ -276,7 +276,7 @@ class JirigoTicket(object):
             new_ticket_no=cursor.fetchone()[0]
             self.jdb.dbConn.commit()
             response_data['dbQryStatus']='Success'
-            response_data['dbQryResponse']={"ticketNo":new_ticket_no,"rowCount":1}
+            response_data['dbQryResponse']={"clonedTicketNo":new_ticket_no,"rowCount":1}
             return response_data
         except  (Exception, psycopg2.Error) as error:
             if(self.jdb.dbConn):

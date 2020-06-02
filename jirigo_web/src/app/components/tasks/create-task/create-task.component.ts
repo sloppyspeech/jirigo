@@ -32,7 +32,7 @@ export class CreateTaskComponent implements OnInit {
 
   showAlert:boolean=false;
   alertContent:string='';
-  alertType:string='info';
+  alertType:string='';
   alertTitle:string='Tasks';
   alertCancelButtonTest='';
   alertConfirmButtonText='';
@@ -171,11 +171,10 @@ export class CreateTaskComponent implements OnInit {
         if (res['dbQryStatus'] == 'Success') {
           this.createTaskFB.reset();
           this.alertType='success';
-          this.alertContent=this.newTaskNo+" Created Successfully.";
+          this.alertContent=this.newTaskNo+" created Successfully.";
           this.alertCancelButtonTest='';
           this.alertConfirmButtonText='Ok';
           this.showAlert=true;
-          // this._router.navigate(['/tasks/view-edit-task/'+res['dbQryResponse']['taskNo']]);
           this._NgxSpinner.hide();
         }
         else {
@@ -227,10 +226,13 @@ export class CreateTaskComponent implements OnInit {
 
   dialogAction(param){
     this.showAlert=false;
-    this.alertType='info';
+    this.alertType='';
     this.alertContent='';
     if(param != 'confirmed'){
       this.createTaskFB.reset();
+    }
+    else {
+      this._router.navigate(['/tasks/view-edit-task/'+this.newTaskNo]);
     }
   }
 

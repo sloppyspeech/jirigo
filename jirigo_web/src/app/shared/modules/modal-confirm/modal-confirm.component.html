@@ -4,7 +4,7 @@
   [ngClass]="{ showModal: _showModal, hideModal: !_showModal }"
   role="dialog"
 >
-<div class="modal-dialog" >
+<div class="modal-dialog shadow" >
     <div class="modal-content ">
       <div #jirigoModalHeader class="modal-header">
         <h5 class="modal-title">{{ title }}</h5>
@@ -18,7 +18,7 @@
       <div class="modal-footer">
         <button
           type="submit"
-          class="btn btn-dark"
+          class="btn btn-light"
           *ngIf="cancelButtonLabel != '' "
           (click)="closeModal('cancel')"
         >
@@ -26,7 +26,7 @@
         </button>
         <button
           type="submit"
-          class="btn btn-primary"
+          class="btn btn-secondary"
           (click)="closeModal('confirm')"
         >
           {{ confirmButtonLabel }}

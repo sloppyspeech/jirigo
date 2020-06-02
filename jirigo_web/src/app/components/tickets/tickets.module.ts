@@ -24,6 +24,7 @@ import { ListTicketsComponent} from  './list-tickets/list-tickets.component';
 import { TicketAuditComponent} from  './ticket-audit/ticket-audit.component';
 import { TicketCommentsComponent} from  './ticket-comments/ticket-comments.component';
 import { ViewEditTicketsComponent} from  './view-edit-tickets/view-edit-tickets.component';
+import { ModalConfirmModule } from './../../shared/modules/modal-confirm/modal-confirm.module';
 
 @NgModule({
   declarations: [
@@ -51,7 +52,8 @@ import { ViewEditTicketsComponent} from  './view-edit-tickets/view-edit-tickets.
     SelectButtonModule,
     CalendarModule,
     FontAwesomeModule,
-    ContextMenuModule
+    ContextMenuModule,
+    ModalConfirmModule
   ]
 })
 export class TicketsModule { }

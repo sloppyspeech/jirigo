@@ -237,7 +237,7 @@ class JirigoTask(object):
 
         insert_sql="""
                         INSERT INTO ttasks (task_no, SUMMARY, description, issue_status, issue_type, 
-                                              severity, priority, environment, is_blocking, module,created_by, 
+                                              severity, priority, environment, is_blocking, module_name,created_by, 
                                               created_date, reported_by, reported_date, project_id,estimated_time)
                                     SELECT get_issue_no_by_proj(get_proj_name(project_id)),
                                         SUMMARY,
@@ -271,7 +271,7 @@ class JirigoTask(object):
             new_task_no=cursor.fetchone()[0]
             self.jdb.dbConn.commit()
             response_data['dbQryStatus']='Success'
-            response_data['dbQryResponse']={"taskNo":new_task_no,"rowCount":1}
+            response_data['dbQryResponse']={"clonedTaskNo":new_task_no,"rowCount":1}
             return response_data
         except  (Exception, psycopg2.Error) as error:
             if(self.jdb.dbConn):

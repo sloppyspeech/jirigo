@@ -17,9 +17,9 @@
         <div class="form-group">
           <div class="row">
             <div class="col-md-3">
-              <label for="formGroupExampleInput" class="col-form-label col-form-label-sm">Task Type<span
+              <label for="formGroupExampleInput" class="col-form-label col-form-label-sm ">Task Type<span
                   class="required-field"></span></label>
-              <select class="form-control-plain" id="exampleFormControlSelect1" formControlName="fctlIssueType">
+              <select class="form-control-plain j-current-input" id="exampleFormControlSelect1" formControlName="fctlIssueType">
                 <option value="" disabled>Choose..</option>
                 <option *ngFor="let issueType of taskIssueTypesRef" [ngValue]="issueType.name">{{ issueType.name }}
                 </option>
@@ -28,7 +28,7 @@
             <div class="col-md-3">
               <label for="formGroupExampleInput" class="col-form-label col-form-label-sm">Severity<span
                   class="required-field"></span></label>
-              <select class="form-control-plain" id="exampleFormControlSelect1" formControlName="fctlSeverity"
+              <select class="form-control-plain j-current-input" id="exampleFormControlSelect1" formControlName="fctlSeverity"
                 (change)="setEnvironment1($event)">
                 <option value="" disabled>Choose..</option>
                 <option *ngFor="let severity of taskSeveritiesRef" [ngValue]="severity.name">{{ severity.name }}
@@ -38,7 +38,7 @@
             <div class="col-md-3">
               <label for="formGroupExampleInput" class="col-form-label col-form-label-sm">Priority<span
                   class="required-field"></span></label>
-              <select class="form-control-plain" id="exampleFormControlSelect1" formControlName="fctlPriority"
+              <select class="form-control-plain j-current-input" id="exampleFormControlSelect1" formControlName="fctlPriority"
                 (change)="setEnvironment1($event)">
                 <option value="" disabled>Choose..</option>
                 <option *ngFor="let priority of taskPrioritiesRef" [ngValue]="priority.name">{{ priority.name }}
@@ -49,7 +49,7 @@
             <div class="col-md-3">
               <label for="formGroupExampleInput" class="col-form-label col-form-label-sm">Environment<span
                   class="required-field"></span></label>
-              <select class="form-control-plain" id="exampleFormControlSelect1" formControlName="fctlEnvironment"
+              <select class="form-control-plain j-current-input" id="exampleFormControlSelect1" formControlName="fctlEnvironment"
                 (change)="setEnvironment1($event)">
                 <option value="" disabled>Choose..</option>
                 <option *ngFor="let env of taskEnvRef" [ngValue]="env.name">{{
@@ -62,7 +62,7 @@
             <div class="col-md-3">
               <label for="formGroupExampleInput" class="col-form-label col-form-label-sm">Task Status<span
                   class="required-field"></span></label>
-              <select class="form-control-plain" id="exampleFormControlSelect1" formControlName="fctlIssueStatus"
+              <select class="form-control-plain j-current-input" id="exampleFormControlSelect1" formControlName="fctlIssueStatus"
                 (change)="setReportedBy($event)">
                 <option value=""  disabled>Choose..</option>
                 <option *ngFor="let issueStatus of taskIssueStatusesRef" [ngValue]="issueStatus.name"
@@ -86,7 +86,7 @@
             <div class="col-md-3 col-lg-3">
               <label class="col-form-label col-form-label-sm" >Reported Date<span class="required-field"></span></label>
             <div class="input-group ">
-                <input class="form-control " formControlName="fctlReportedDate" placeholder="yyyy-mm-dd" name="md"
+                <input class="form-control j-current-input" formControlName="fctlReportedDate" placeholder="yyyy-mm-dd" name="md"
                 ngbDatepicker #md="ngbDatepicker" (click)="md.toggle()" />
               <div class="input-group-append">
                 <span (click)="md.toggle()" class="oi oi-calendar"
@@ -108,14 +108,15 @@
               <label for="typeahead-http" class="col-form-label col-form-label-sm">Assigned To</label>
               <br />
               <p-autoComplete formControlName="fctlAssigneeName" [suggestions]="userListForDropDown"
-                (completeMethod)="searchUsers($event)" [size]="41" [style]="{'border-radius':'40px'}">
+                (completeMethod)="searchUsers($event)" [size]="41" [style]="{'border-radius':'40px'}"
+                >
               </p-autoComplete>
             </div>
 
             <div class="col-md-3">
               <label for="formGroupExampleInput" class="col-form-label col-form-label-sm">Affected Module
               </label>
-              <select class="form-control-plain" id="exampleFormControlSelect1" formControlName="fctlModuleName"
+              <select class="form-control-plain j-current-input" id="exampleFormControlSelect1" formControlName="fctlModuleName"
                 (change)="setEnvironment1($event)">
                 <option value="" disabled>Choose..</option>
                 <option *ngFor="let module of taskModuleRef" [ngValue]="module.name">{{ module.name }}</option>
@@ -124,7 +125,7 @@
             <div class="col-md-3">
               <label for="typeahead-http" class="col-form-label col-form-label-sm">Estimated Time(Hrs)<small
                   class="text-muted"> 0.5 = 30 minutes</small></label>
-              <input step="0.5" id="idEstimatedTime" type="number" class="form-control-plain"
+              <input step="0.5" id="idEstimatedTime" type="number" class="form-control-plain j-current-input"
                 formControlName="fctlEstimatedTime" placeholder="Increments of 0.5"
                 (focusout)="validateEstimatedTime($event.target.value)" />
               <div *ngIf="parentForm.errors">{{ parentForm.errors }}</div>

@@ -33,6 +33,7 @@ export class ViewEditTaskComponent implements OnInit {
   environment: string = "Environment";
   task_data: any;
   task_no: string;
+  clonedTaskNo:string="";
   task_issue_type:string;
   viewModifyTaskFCList;
   displayPageDirtyDialog:boolean=false;
@@ -77,6 +78,17 @@ export class ViewEditTaskComponent implements OnInit {
     ]
   };
 
+  modalAlertConfig={
+      modalType :'',
+      showModal:false,
+      title:'',
+      modalContent:'',
+      cancelButtonLabel:'',
+      confirmButtonLabel:'',
+      dialogCanceled:'',
+      dialogConfirmed:'',
+      dialogClosed:''
+  };
 
   @Input()
   issueType: string;
@@ -126,6 +138,7 @@ export class ViewEditTaskComponent implements OnInit {
 
   ngOnInit(): void {
     console.log("NgOnInit");
+    this.initializeModalAlertConfig();
     console.log(this._activatedRoute.snapshot.routeConfig['path']);
     this.isLoaded = false;
     this.task_no = this._activatedRoute.snapshot.paramMap.get('task_no');
@@ -178,6 +191,7 @@ export class ViewEditTaskComponent implements OnInit {
     console.log('------------------------------------------------------');
 
   }
+
   disableAllFormControls(){
     Object.keys(this.viewModifyTaskFCList).forEach(control => {
       if (control != 'fctlTabOptions'){
@@ -186,6 +200,7 @@ export class ViewEditTaskComponent implements OnInit {
     });
     this.editorStyle["background-color"]='red';
   }
+
   enableAllFormControls(){
     this.editorStyle["background-color"]='white';
     Object.keys(this.viewModifyTaskFCList).forEach(control => {
@@ -200,8 +215,10 @@ export class ViewEditTaskComponent implements OnInit {
   }
 
   updateTask() {
-    let formData:any;
 
+    this._serNgxSpinner.show();
+    let formData:any;
+    this.initializeModalAlertConfig();
     console.log("updateTask");
     console.log('===============================');
     console.log(this.viewModifyTaskFB.status);
@@ -231,31 +248,41 @@ export class ViewEditTaskComponent implements OnInit {
     console.log('@@------@@');
     console.log(formData);
 
+    this.modalAlertConfig.cancelButtonLabel="";
+    this.modalAlertConfig.confirmButtonLabel="Ok";
+    this.modalAlertConfig.dialogConfirmed="TaskUpdateModalConfirm";
+    this.modalAlertConfig.dialogCanceled="TaskUpdateModalClosed";
+    this.modalAlertConfig.dialogClosed="TaskUpdateModalClosed";
+
+
     this._serTaskDetails.updateTask(formData)
         .subscribe(res=>{
           console.log("Update Task Output :"+JSON.stringify(res));
           console.log("Update Task Output :"+res['dbQryStatus']);
           console.log("Update Task Output :"+res['dbQryResponse']);
+
           if (res['dbQryStatus'] == 'Success'){
-            this._serNgxSpinner.show();
             this.viewModifyTaskFB.reset();
-            // alert("Task Updated Successfully.");
-            // this.reloadComponent();
             this._serNgxSpinner.hide();
-            this._toastService.add({severity:'success', 
-            summary:res['dbQryResponse']['taskNo'],
-            detail:'Task Modification Successful'
-            });
-           setTimeout(() => {
-             this.reloadComponent();
-           }, 3000);
+
+            //---
+            this.modalAlertConfig.dialogConfirmed="TaskUpdateModalSuccessConfirm";
+            this.modalAlertConfig.title="Task Update Success";
+            this.modalAlertConfig.modalContent=formData['task_no'] + "  updated successfully";
+            this.modalAlertConfig.modalType="success";
+            this.modalAlertConfig.showModal=true;
+            //---
+
           }
           else{
-            this._toastService.add({severity:'error', 
-            summary:res['dbQryResponse']['taskNo'],
-            detail:'Task Modification UnSuccessful,contact Administrator'
-            });
+            this._serNgxSpinner.hide(); 
+            this.modalAlertConfig.dialogConfirmed="TaskUpdateModalFailureConfirm";
+            this.modalAlertConfig.title="Task Update Failed";
+            this.modalAlertConfig.modalContent=formData['task_no']  + "  update failed. Contact Adminstrator.";
+            this.modalAlertConfig.modalType="danger";
+            this.modalAlertConfig.showModal=true;
           }
+
         });
 
     // alert("submitted");
@@ -272,13 +299,34 @@ export class ViewEditTaskComponent implements OnInit {
     this.viewEditFormEditBtnEnabled=false;
   }
 
+  initializeModalAlertConfig(){
+    this.modalAlertConfig={
+      modalType :'',
+      showModal:false,
+      title:'',
+      modalContent:'',
+      cancelButtonLabel:'',
+      confirmButtonLabel:'',
+      dialogCanceled:'',
+      dialogConfirmed:'',
+      dialogClosed:''
+  };
+  }
 
   cancelViewEditForm(){
     console.log("Inside cancelViewEditForm()");
     console.log("======this.viewModifyTaskFB.dirty======="+this.viewModifyTaskFB.dirty+"==============");
     if (this.viewModifyTaskFB.dirty)
     {
-      this.displayPageDirtyDialog=true;
+      this.modalAlertConfig.title="Unsaved Data Alert";
+      this.modalAlertConfig.cancelButtonLabel="Discard";
+      this.modalAlertConfig.confirmButtonLabel="Keep";
+      this.modalAlertConfig.modalType="warning";
+      this.modalAlertConfig.modalContent="There are unsaved Items on this page. What do you want to do with them ?";
+      this.modalAlertConfig.dialogConfirmed="Keep";
+      this.modalAlertConfig.dialogCanceled="Discard";
+      this.modalAlertConfig.dialogClosed="Discard";
+      this.modalAlertConfig.showModal=true;
     }
     else{
       this.viewEditFormEditBtnEnabled=true;
@@ -286,23 +334,19 @@ export class ViewEditTaskComponent implements OnInit {
     }
   }
 
-  showDirtyPageDialog(optionSelected){
-    
-    console.log("======this.leaveViewEditPageUnsaved======="+this.leaveViewEditPageUnsaved+"==============");
-    if (optionSelected){
+  discardChangesOnCancel(){
+      console.log("======this.leaveViewEditPageUnsaved======="+this.leaveViewEditPageUnsaved+"==============");
       console.log("Reset Back To Old values");
       console.log(this.viewModifyTaskFB.value);
       console.log(this.viewModifyTaskFBState);
       this.viewEditFormEditBtnEnabled=true;
       this.setFormBackToIntialState();
       this.disableAllFormControls();
-    }
-      this.displayPageDirtyDialog=false;
+      this.modalAlertConfig.showModal=false;
   }
 
   reloadComponent() {
     console.log("===============reloadComponent=================");
-    console.log();
     console.log(this._router.url);
     this._router.routeReuseStrategy.shouldReuseRoute = () => false;
     this._router.onSameUrlNavigation = 'reload';
@@ -310,34 +354,47 @@ export class ViewEditTaskComponent implements OnInit {
 }
 
 cloneTask(){
+  this.clonedTaskNo="";
+  this.initializeModalAlertConfig();
   let formData={
     "task_no":this.viewModifyTaskFB.get('fctlTaskNo').value,
     "created_by":localStorage.getItem('loggedInUserId')
-  }
+  };
+
+  this.modalAlertConfig.cancelButtonLabel="";
+  this.modalAlertConfig.confirmButtonLabel="Ok";
+  this.modalAlertConfig.dialogConfirmed="TaskCloneModalConfirm";
+  this.modalAlertConfig.dialogCanceled="TaskCloneModalClosed";
+  this.modalAlertConfig.dialogClosed="TaskCloneModalClosed";
+
+
   this._serNgxSpinner.show();
   this._serTaskDetails.cloneTask(formData)
   .subscribe(res=>{
     console.log("Clone Task Output :"+JSON.stringify(res));
     console.log("Clone Task Output :"+res['dbQryStatus']);
     console.log("Clone Task Output :"+res['dbQryResponse']);
-    if (res['dbQryStatus'] == 'Success'){
-      this._serNgxSpinner.show();
-      this.viewModifyTaskFB.reset();
+      if (res['dbQryStatus'] == 'Success'){
+        this.viewModifyTaskFB.reset();
         this._serNgxSpinner.hide();
-        this._toastService.add({severity:'success', 
-        summary:'New Task Number : '+res['dbQryResponse']['taskNo'], 
-        detail:'Task Cloning Successful'
-        });
-       setTimeout(() => {
-         this.reloadComponent();
-       }, 2000);
-    }
-    else{
-      this._toastService.add({severity:'error', 
-      summary:'Task Cloning Unsuccessful', 
-      detail:'Clone Failure'
-      });
-    }
+        this.clonedTaskNo=res['dbQryResponse']['clonedTaskNo'];
+        //---
+        this.modalAlertConfig.dialogConfirmed="TaskCloneModalSuccessConfirm";
+        this.modalAlertConfig.title="Task Cloned";
+        this.modalAlertConfig.modalContent=formData['task_no'] + "  cloned successfully to "+ this.clonedTaskNo;
+        this.modalAlertConfig.modalType="success";
+        this.modalAlertConfig.showModal=true;
+        //---
+
+      }
+      else{
+        this._serNgxSpinner.hide(); 
+        this.modalAlertConfig.dialogConfirmed="TaskCloneModalFailureConfirm";
+        this.modalAlertConfig.title="Task cloning failed";
+        this.modalAlertConfig.modalContent=formData['task_no']  + "  cloning failed. Contact Adminstrator.";
+        this.modalAlertConfig.modalType="danger";
+        this.modalAlertConfig.showModal=true;
+      }
   });
 }
 
@@ -389,6 +446,36 @@ console.log(inpData);
       .subscribe(res=>{
         console.log(res);
       });
+}
+
+modalAlertAction(param){
+  console.log(param);
+  console.log(this.clonedTaskNo);
+  this.modalAlertConfig.showModal=false;
+  this.modalAlertConfig.modalType='';
+  this.modalAlertConfig.modalContent='';
+
+  if (param === "Discard"){
+    this.discardChangesOnCancel();
+  }
+  //-- Task Update action finished (success or failure ), reloaded component
+  else if( param === "TaskUpdateModalSuccessConfirm"  || 
+           param === "TaskUpdateModalFailureConfirm"  ||
+           param === "TaskUpdateModalClosed" ){
+
+      this.reloadComponent();
+  }
+  else if(param === "TaskCloneModalSuccessConfirm"){
+    console.log('/tasks/view-edit-task/'+this.clonedTaskNo);
+    this._router.navigateByUrl('/tasks/view-edit-task/'+this.clonedTaskNo);
+    this._router.routeReuseStrategy.shouldReuseRoute = () => false;
+    this._router.onSameUrlNavigation = 'reload';
+  }
+  else if( param === "TaskCloneModalFailureConfirm"  ||
+           param === "TaskCloneModalClosed" ){
+    this.reloadComponent();
+  }
+
 }
 
 }

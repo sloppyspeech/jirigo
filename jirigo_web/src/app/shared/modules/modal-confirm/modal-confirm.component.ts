@@ -48,14 +48,14 @@ export class ModalConfirmComponent implements OnInit {
   @Output('dialogClosed') dialogClosed = new EventEmitter;
 
   modalTypeBSClasses = {
-    'primary': 'alert-primary',
-    'success': 'alert-success',
-    'secondary': 'alert-secondary',
-    'info': 'alert-info',
-    'dark': 'alert-dark',
-    'light': 'alert-light',
-    'danger': 'alert-danger',
-    'warning': 'alert-warning'
+    'primary': 'bg-new-primary',
+    'success': 'bg-new-success',
+    'secondary': 'bg-secondary',
+    'info': 'bg-info',
+    'dark': 'bg-dark',
+    'light': 'bg-light',
+    'danger': 'bg-new-danger',
+    'warning': 'bg-warning'
   }
 
   constructor(private _renderer2: Renderer2
@@ -66,6 +66,13 @@ export class ModalConfirmComponent implements OnInit {
 
   setModalClasses() {
     let classTypeToAdd = this.modalTypeBSClasses[this.modalType.toLowerCase()] ? this.modalTypeBSClasses[this.modalType.toLowerCase()] : this.modalTypeBSClasses['info']
+    console.log("=========setModalClasses=========");
+    console.log(this.modalType.toLowerCase());
+    console.log(classTypeToAdd);
+    for (const property in this.modalTypeBSClasses){
+      this._renderer2.removeClass(this.modalHeader.nativeElement,this.modalTypeBSClasses[property]);
+    }
+    this._renderer2.addClass(this.modalHeader.nativeElement, 'text-light');
     this._renderer2.addClass(this.modalHeader.nativeElement, classTypeToAdd);
   }
 

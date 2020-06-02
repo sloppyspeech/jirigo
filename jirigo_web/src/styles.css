@@ -152,6 +152,15 @@ select:disabled{
   color:#A7A7A7
 }
 
+.j-current-input:hover:enabled {
+  cursor: pointer;
+  border-radius:5px;
+  border-style: solid;
+  border-color: #3884ff;
+  border-width: 2px;
+  color:#666;
+}
+
 .jSelectButtonContainer .ui-buttonset:not(.ui-splitbutton) .ui-button {
   /* border-top-left-radius: .3em;
   border-top-right-radius: .3em;

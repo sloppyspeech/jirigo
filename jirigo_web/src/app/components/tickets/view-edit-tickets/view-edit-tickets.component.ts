@@ -27,6 +27,7 @@ export class ViewEditTicketsComponent implements OnInit {
   environment: string = "Environment";
   ticket_data: any;
   ticket_no: string;
+  clonedTicketNo:string="";
   ticket_issue_type:string;
   viewModifyTicketFCList;
   displayPageDirtyDialog:boolean=false;
@@ -37,7 +38,7 @@ export class ViewEditTicketsComponent implements OnInit {
     showAudit:false
   };
   
-  showLinkTaskModal:boolean=false;
+  showLinkTicketModal:boolean=false;
 
   showTicketDetails:boolean=true;
   showTicketComments:boolean=false;
@@ -81,6 +82,17 @@ export class ViewEditTicketsComponent implements OnInit {
   @Output()
   issueTypeO: EventEmitter<any> = new EventEmitter();
 
+  modalAlertConfig={
+    modalType :'',
+    showModal:false,
+    title:'',
+    modalContent:'',
+    cancelButtonLabel:'',
+    confirmButtonLabel:'',
+    dialogCanceled:'',
+    dialogConfirmed:'',
+    dialogClosed:''
+};
 
   constructor(private _formBuilder: FormBuilder,
     private _staticRefData: StaticDataService,
@@ -119,6 +131,7 @@ export class ViewEditTicketsComponent implements OnInit {
 
   ngOnInit(): void {
     console.log("NgOnInit");
+    this.initializeModalAlertConfig();
     this.isLoaded = false;
     this.ticket_no = this._activatedRoute.snapshot.paramMap.get('ticket_no');
     console.log('Routed Ticket No :'+this.ticket_no);
@@ -190,7 +203,7 @@ export class ViewEditTicketsComponent implements OnInit {
 
   updateTicket() {
     let formData:any;
-
+    this.initializeModalAlertConfig();
     console.log("updateTicket");
     console.log('===============================');
     console.log(this.viewModifyTicketFB.status);
@@ -219,21 +232,37 @@ export class ViewEditTicketsComponent implements OnInit {
     console.log('@@------@@');
     console.log(formData);
 
+    this.modalAlertConfig.cancelButtonLabel="";
+    this.modalAlertConfig.confirmButtonLabel="Ok";
+    this.modalAlertConfig.dialogConfirmed="TicketUpdateModalConfirm";
+    this.modalAlertConfig.dialogCanceled="TicketUpdateModalClosed";
+    this.modalAlertConfig.dialogClosed="TicketUpdateModalClosed";
+
     this._serTicketDetails.updateTicket(formData)
         .subscribe(res=>{
           console.log("Update Ticket Output :"+JSON.stringify(res));
           console.log("Update Ticket Output :"+res['dbQryStatus']);
           console.log("Update Ticket Output :"+res['dbQryResponse']);
           if (res['dbQryStatus'] == 'Success'){
-            this._serNgxSpinner.show();
             this.viewModifyTicketFB.reset();
-            // alert("Ticket Updated Successfully.");
-            this.reloadComponent();
             this._serNgxSpinner.hide();
+
+            //---
+            this.modalAlertConfig.dialogConfirmed="TicketUpdateModalSuccessConfirm";
+            this.modalAlertConfig.title="Ticket Update Success";
+            this.modalAlertConfig.modalContent=formData['ticket_no'] + "  updated successfully";
+            this.modalAlertConfig.modalType="success";
+            this.modalAlertConfig.showModal=true;
+            //---
 
           }
           else{
-            alert('Ticket Updation Unsuccessful');
+            this._serNgxSpinner.hide(); 
+            this.modalAlertConfig.dialogConfirmed="TicketUpdateModalFailureConfirm";
+            this.modalAlertConfig.title="Ticket Update Failed";
+            this.modalAlertConfig.modalContent=formData['Ticket_no']  + "  update failed. Contact Adminstrator.";
+            this.modalAlertConfig.modalType="danger";
+            this.modalAlertConfig.showModal=true;
           }
         });
 
@@ -257,26 +286,47 @@ export class ViewEditTicketsComponent implements OnInit {
     console.log("======this.viewModifyTicketFB.dirty======="+this.viewModifyTicketFB.dirty+"==============");
     if (this.viewModifyTicketFB.dirty)
     {
-      this.displayPageDirtyDialog=true;
+      this.modalAlertConfig.title="Unsaved Data Alert";
+      this.modalAlertConfig.cancelButtonLabel="Discard";
+      this.modalAlertConfig.confirmButtonLabel="Keep";
+      this.modalAlertConfig.modalType="warning";
+      this.modalAlertConfig.modalContent="There are unsaved Items on this page. What do you want to do with them ?";
+      this.modalAlertConfig.dialogConfirmed="Keep";
+      this.modalAlertConfig.dialogCanceled="Discard";
+      this.modalAlertConfig.dialogClosed="Discard";
+      this.modalAlertConfig.showModal=true;
     }
     else{
       this.viewEditFormEditBtnEnabled=true;
       this.disableAllFormControls();
     }
+
+
   }
 
-  showDirtyPageDialog(optionSelected){
-    
+  discardChangesOnCancel(){
     console.log("======this.leaveViewEditPageUnsaved======="+this.leaveViewEditPageUnsaved+"==============");
-    if (optionSelected){
       console.log("Reset Back To Old values");
       console.log(this.viewModifyTicketFB.value);
       console.log(this.viewModifyTicketFBState);
       this.viewEditFormEditBtnEnabled=true;
       this.setFormBackToIntialState();
       this.disableAllFormControls();
-    }
-      this.displayPageDirtyDialog=false;
+      this.modalAlertConfig.showModal=false;
+  }
+
+  initializeModalAlertConfig(){
+    this.modalAlertConfig={
+      modalType :'',
+      showModal:false,
+      title:'',
+      modalContent:'',
+      cancelButtonLabel:'',
+      confirmButtonLabel:'',
+      dialogCanceled:'',
+      dialogConfirmed:'',
+      dialogClosed:''
+  };
   }
 
   reloadComponent() {
@@ -292,7 +342,14 @@ cloneTicket(){
   let formData={
     "ticket_no":this.viewModifyTicketFB.get('fctlTicketNo').value,
     "created_by":localStorage.getItem('loggedInUserId')
-  }
+  };
+  this.initializeModalAlertConfig();
+  this.modalAlertConfig.cancelButtonLabel="";
+  this.modalAlertConfig.confirmButtonLabel="Ok";
+  this.modalAlertConfig.dialogConfirmed="TicketCloneModalConfirm";
+  this.modalAlertConfig.dialogCanceled="TicketCloneModalClosed";
+  this.modalAlertConfig.dialogClosed="TicketCloneModalClosed";
+  
   this._serNgxSpinner.show();
   this._serTicketDetails.cloneTicket(formData)
   .subscribe(res=>{
@@ -300,22 +357,25 @@ cloneTicket(){
     console.log("Clone Ticket Output :"+res['dbQryStatus']);
     console.log("Clone Ticket Output :"+res['dbQryResponse']);
     if (res['dbQryStatus'] == 'Success'){
-      this._serNgxSpinner.show();
       this.viewModifyTicketFB.reset();
-        this._serNgxSpinner.hide();
-        this._toastService.add({severity:'success', 
-        summary:'New Ticket Number : '+res['dbQryResponse']['ticketNo'], 
-        detail:'Ticket Cloning Successful'
-        });
-       setTimeout(() => {
-         this.reloadComponent();
-       }, 4000);
+      this._serNgxSpinner.hide();
+      this.clonedTicketNo=res['dbQryResponse']['clonedTicketNo'];
+      //---
+      this.modalAlertConfig.dialogConfirmed="TicketCloneModalSuccessConfirm";
+      this.modalAlertConfig.title="Ticket Cloned";
+      this.modalAlertConfig.modalContent=formData['ticket_no'] + "  cloned successfully to "+ this.clonedTicketNo;
+      this.modalAlertConfig.modalType="success";
+      this.modalAlertConfig.showModal=true;
+      //---
+
     }
     else{
-      this._toastService.add({severity:'error', 
-      summary:'Ticket Cloning Unsuccessful', 
-      detail:'Clone Failure'
-      });
+      this._serNgxSpinner.hide(); 
+      this.modalAlertConfig.dialogConfirmed="TicketCloneModalFailureConfirm";
+      this.modalAlertConfig.title="Ticket cloning failed";
+      this.modalAlertConfig.modalContent=formData['ticket_no']  + "  cloning failed. Contact Adminstrator.";
+      this.modalAlertConfig.modalType="danger";
+      this.modalAlertConfig.showModal=true;
     }
   });
 }
@@ -331,10 +391,40 @@ tabSelected(e){
     }
   }
   console.log(this.viewModifyTicketFB.getRawValue());
-  console.log("viewModifyTaskFB.dirty:"+this.viewModifyTicketFB.dirty);
-  console.log("viewModifyTaskFB.touched:"+this.viewModifyTicketFB.touched);
-  console.log("viewModifyTaskFB.errors:"+this.viewModifyTicketFB.errors);
-  console.log("viewModifyTaskFB.viewModifyTaskFB.valid:"+this.viewModifyTicketFB.valid);
+  console.log("viewModifyTicketFB.dirty:"+this.viewModifyTicketFB.dirty);
+  console.log("viewModifyTicketFB.touched:"+this.viewModifyTicketFB.touched);
+  console.log("viewModifyTicketFB.errors:"+this.viewModifyTicketFB.errors);
+  console.log("viewModifyTicketFB.viewModifyTicketFB.valid:"+this.viewModifyTicketFB.valid);
+}
+
+modalAlertAction(param){
+  console.log(param);
+  console.log(this.clonedTicketNo);
+  this.modalAlertConfig.showModal=false;
+  this.modalAlertConfig.modalType='';
+  this.modalAlertConfig.modalContent='';
+
+  if (param === "Discard"){
+    this.discardChangesOnCancel();
+  }
+  //-- Ticket Update action finished (success or failure ), reloaded component
+  else if( param === "TicketUpdateModalSuccessConfirm"  || 
+           param === "TicketUpdateModalFailureConfirm"  ||
+           param === "TicketUpdateModalClosed" ){
+
+      this.reloadComponent();
+  }
+  else if(param === "TicketCloneModalSuccessConfirm"){
+    console.log('/tickets/view-edit-Ticket/'+this.clonedTicketNo);
+    this._router.navigateByUrl('/tickets/view-edit-tickets/'+this.clonedTicketNo);
+    this._router.routeReuseStrategy.shouldReuseRoute = () => false;
+    this._router.onSameUrlNavigation = 'reload';
+  }
+  else if( param === "TicketCloneModalFailureConfirm"  ||
+           param === "TicketCloneModalClosed" ){
+    this.reloadComponent();
+  }
+
 }
 
 }

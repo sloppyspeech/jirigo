@@ -2,7 +2,7 @@
 <hr />
 <div
   class="container-fluid"
-  style="background-color: #f4f4f4; border-radius: 5px;"
+  style="background-color: #f4f4f4; border-radius: 5px; margin: 0 0 17px 0;"
 >
   <div class="row" style="padding:20px 0 0 0;">
     <div class="col-lg-3">
@@ -51,8 +51,10 @@
     
   </div>
 </div>
-<hr />
-
+<div class="alert alert-success alert-dismissible">
+  <button type="button" class="close" data-dismiss="alert">&times;</button>
+  <strong>Success!</strong> This alert box could indicate a successful or positive action.
+</div>
 <p-table
   #dt
   *ngIf="showTable"

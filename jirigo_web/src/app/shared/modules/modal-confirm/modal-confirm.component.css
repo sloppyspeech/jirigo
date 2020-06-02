@@ -20,3 +20,32 @@
     opacity: 0.6;
     z-index: 10;
 }
+
+.modal-dialog{
+    border-radius: 2px;
+
+    /* border-radius: 1px; */
+    /* border-color: red;
+    border-style: solid;
+    border-width: 2px; */
+}
+.modal-content{
+    border-radius: 2px;
+
+}
+.modal-header{
+    border-radius: 2px;
+
+}
+
+.bg-new-primary{
+    background-color: #448aff;
+}
+
+.bg-new-success{
+    background-color: #64dd17;
+}
+.bg-new-danger{
+    background-color: #ff3d00;
+}
+
