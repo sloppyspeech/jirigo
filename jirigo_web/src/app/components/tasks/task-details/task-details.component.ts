@@ -149,7 +149,9 @@ export class TaskDetailsComponent implements OnInit {
               this.parentForm.get('fctlModuleName').setValue(this.task_data.module);
               this.parentForm.get('fctlEnvironment').setValue(this.task_data.environment);
               this.parentForm.get('fctlCreatedDate').setValue(this.task_data.created_date);
+              this.parentForm.get('fctlModifiedDate').setValue(this.task_data.modified_date);
               this.parentForm.get('fctlCreatedBy').setValue(this.task_data.created_by);
+              this.parentForm.get('fctlModifiedBy').setValue(this.task_data.modified_by);
               this.parentForm.get('fctlReportedDate').setValue(this.task_data.reported_date);
               this.parentForm.get('fctlReportedBy').setValue(this.task_data.reported_by);
               this.parentForm.get('fctlAssigneeName').setValue(this.task_data.assignee_name);

@@ -80,21 +80,6 @@
               </div>
             </div>
 
-            <!-- <div class="col-md-3 col-lg-3">
-              <label for="formGroupExampleInput" class="col-form-label col-form-label-sm">Reported Date<span
-                  class="required-field"></span></label>
-              <div class="row">
-                <div class="input-group col-lg-11">
-                  <input class="form-control " formControlName="fctlReportedDate" placeholder="yyyy-mm-dd" name="md"
-                    ngbDatepicker #md="ngbDatepicker" (click)="md.toggle()" />
-                  <span (click)="md.toggle()" class="oi oi-calendar"
-                    style="font-size: 2.25em;padding: 3px 0 0 0; margin: 0 0 0 5px;"></span>
-                </div>
-                <div>
-
-                </div>
-              </div>
-            </div> -->
             <div class="col-md-3 col-lg-3">
               <label class="col-form-label col-form-label-sm">Reported Date<span class="required-field"></span></label>
               <div class="input-group ">
@@ -108,7 +93,7 @@
             </div>
 
 
-            <div class="col-md-3">
+            <div class="col-md-3 col-lg-3">
               <label for="typeahead-http" class="col-form-label col-form-label-sm">Reported By<span
                   class="required-field"></span></label>
               <br />
@@ -118,7 +103,7 @@
             </div>
 
 
-            <div class="col-md-3">
+            <div class="col-md-3 col-lg-3">
               <label for="typeahead-http" class="col-form-label col-form-label-sm">Assigned To<span
                   class="required-field"></span></label>
               <br />
@@ -127,7 +112,7 @@
               </p-autoComplete>
             </div>
 
-            <div class="col-md-3">
+            <div class="col-md-3 col-lg-3">
               <label for="formGroupExampleInput" class="col-form-label col-form-label-sm">Affected Module
               </label>
               <select class="form-control-plain j-current-input" id="exampleFormControlSelect1" formControlName="fctlModule"
@@ -136,7 +121,53 @@
                 <option *ngFor="let module of ticketModuleRef" [ngValue]="module.name">{{ module.name }}</option>
               </select>
             </div>
+            <div class="col-md-3 col-lg-3">
+              <label for="id_ticketChannel" class="col-form-label col-form-label-sm">Channel<span
+                class="required-field"></span></label>
+              <select class="form-control-plain j-current-input" id="id_ticketChannel" formControlName="fctlChannel"
+                >
+                <option value="" disabled>Choose..</option>
+                <option *ngFor="let channel of ticketChannelsRef" [ngValue]="channel.name">{{ channel.name }}</option>
+              </select>
+            </div>
           </div>
+
+            <div class="row" *ngIf="this.parentForm.get('fctlTicketNo')?.value">
+              <div class="col-md-3 col-lg-3">
+                <label class="col-form-label col-form-label-sm">Created By</label>
+                <div class="input-group ">
+                  <input class="form-control j-current-input " formControlName="fctlCreatedBy"  name="nm_createdDate"
+                  readonly />
+                </div>
+              </div>
+              <div class="col-md-3 col-lg-3">
+                <label class="col-form-label col-form-label-sm">Created Date</label>
+                <div class="input-group ">
+                  <input class="form-control j-current-input " 
+                  [value]="parentForm.get('fctlCreatedDate').value | date : 'dd MMM yyyy HH:MM:SS'"
+                  name="nm_createdDate"
+                  readonly />
+                </div>
+              </div>
+              <div class="col-md-3 col-lg-3">
+                <label class="col-form-label col-form-label-sm">Modified By</label>
+                <div class="input-group ">
+                  <input class="form-control j-current-input " formControlName="fctlModifiedBy"  name="nm_modifiedBy"
+                    readonly />
+                </div>
+              </div>
+              <div class="col-md-3 col-lg-3">
+                <label class="col-form-label col-form-label-sm">Modified Date</label>
+                <div class="input-group ">
+                  <input type="text" class="form-control j-current-input " 
+                          name="mmd"
+                          [value]="parentForm.get('fctlModifiedDate').value | date : 'dd MMM yyyy HH:MM:SS'"
+                          readonly />
+                </div>
+              </div>
+            </div>
+          
+
         </div>
       </div>
     </div>

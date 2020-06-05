@@ -85,4 +85,10 @@ export class TicketsDashboardService {
     return this._httpCli.get<any>(url);
   }
 
+  getDashboardTicketCountByChannelInLastNDays(last_n_days){
+    let url=this.sApiEndPoint+'count-of-tickets-by-channel-last-ndays?project_id='+localStorage.getItem('currentProjectId')+'&last_n_days='+last_n_days;
+    console.log('@@@@getDashboardTicketCountByChannelInLastNDays');
+    console.log("getDashboardTicketCountByChannelInLastNDays End point :"+url);
+    return this._httpCli.get<any>(url);
+  }
 }

@@ -105,14 +105,16 @@ legend: {
   ticket_stillopen_bymodule_last_n_days_count: any[] = [];
   ticket_stillopen_bymodule_last_n_days_label: any[] = [];
 
+  ticket_count_bychannel_last_n_days_count: any[] = [];
+  ticket_count_bychannel_last_n_days_label: any[] = [];
+
 
   ticketIssueStatusBarChart;
   ticketIssueTypeBarChart;
   ticketCreatedPerDayChart;
   ticketOpenLastNDaysChart;
   ticketOpenByModuleLastNDaysChart;
-  
-  ticketOpenLastNDaysChartTest;
+  ticketCountByChannelLastNDaysChart;
 
   weatherDates = [];
   globalChartIntervalInDays=7;
@@ -124,6 +126,7 @@ legend: {
   showErrorNoDataticketCreatedPerDayInLastNdays:boolean=false;
   showErrorNoDataticketsStillOpenLastNDays:boolean=false;
   showErrorNoDataticketsOpenByModuleLastNDays:boolean=false;
+  showErrorNoDataticketsCountByChannelLastNDays:boolean=false;
 
   constructor(
     private _serTicketDashboard: TicketsDashboardService,
@@ -633,39 +636,33 @@ legend: {
       
     });
 
-
-    //----------
-    this._serTicketDashboard.getDashboardTicketStillOpenInLastNDays(this.globalChartIntervalInDays)
+    this._serTicketDashboard.getDashboardTicketCountByChannelInLastNDays(this.globalChartIntervalInDays)
     .subscribe(res => {
-      console.log("===============getDashboardTicketStillOpenInLastNDays================");
+      console.log("===============getDashboardTicketOpenByModuleInLastNDays================");
       console.log(res['dbQryResponse']);
-      this.ticket_stillopen_last_n_days_count=[];
-      this.ticket_stillopen_last_n_days_label=[];
-      if(res['dbQryResponse']){
+        if(res['dbQryResponse']){
           res['dbQryResponse'].forEach(e => {
-            this.ticket_stillopen_last_n_days_count.push(e['count']);
-            this.ticket_stillopen_last_n_days_label.push(e['created_date']);
+            this.ticket_count_bychannel_last_n_days_count.push(e['count']);
+            this.ticket_count_bychannel_last_n_days_label.push(e['channel']);
           });
+          console.log("===============================");
           console.log("=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*");
-          console.log(this.ticket_stillopen_last_n_days_count);
-          console.log(this.ticket_stillopen_last_n_days_label);
-          console.log(Math.max(...this.ticket_stillopen_last_n_days_count));
+          console.log(this.ticket_count_bychannel_last_n_days_count);
+          console.log(this.ticket_count_bychannel_last_n_days_label);
           console.log("=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*=*");
 
-          if (this.ticketOpenLastNDaysChartTest){
-            this.ticketOpenLastNDaysChartTest.destroy();
+          if (this.ticketCountByChannelLastNDaysChart){
+            this.ticketCountByChannelLastNDaysChart.destroy();
           }
-
-          this.ticketOpenLastNDaysChartTest = new Chart('id_ticketsStillOpenLastNDaysTest', {
-            type: 'line',
+          this.ticketCountByChannelLastNDaysChart = new Chart('id_ticketCountByChannel', {
+            type: 'horizontalBar',
             data: {
-              labels: this.ticket_stillopen_last_n_days_label,
+              labels: this.ticket_count_bychannel_last_n_days_label,
               datasets: [
                 {
-                  data: this.ticket_stillopen_last_n_days_count,
-                  fill: false,
-                  borderWidth: 2,
-                  borderColor: 'yellow'
+                  data: this.ticket_count_bychannel_last_n_days_count,
+                  fill: true,
+                  backgroundColor: ['#803690', '#ffce56', '#36a2eb', '#cc65fe', '#ff6384', '#949FB1', '#4D5360']
                 }
               ]
             },
@@ -675,13 +672,8 @@ legend: {
                   scheme: 'office.Parallax6'
                 }
               },
-              title:{
-                display:false,
-                text:'# Tickets Still Open '
-              }
-              ,
-              maintainAspectRatio: true,
-              responsive: false,
+              maintainAspectRatio: false,
+              responsive: true,
               legend: {
                 display: false
               },
@@ -689,59 +681,50 @@ legend: {
                 xAxes: [{
                   display: true,
                   gridLines: true,
-                  zeroLineColor:'white',
+                  zeroLineColor:'black',
                   ticks: {
-                    fontSize: 2,
-                    stepSize: 5,
-                    padding:8,
-                    fontColor:'white'
+                    fontSize: 12,
+                    suggestedMin: 1,
+                    stepSize: 5
                   },
                   scaleLabel: {
                     fontColor: "black",
-                    labelString: "Last "+this.globalChartIntervalInDays+" days",
-                    display: false,
-                    fontSize: 2
-                  },
-                  type:'time',
-                  time: {
-                    parser: 'YYYY-MM-DD',
-                    tooltipFormat: 'll HH:mm',
-                    unit: 'day',
-                    unitStepSize: 1,
-                    displayFormats: {
-                      'day': 'DD/MMM'
-                    }
+                    labelString: "Count For Last " +this.globalChartIntervalInDays+" days",
+                    display: true,
+                    fontSize: 12
                   }
                 }],
                 yAxes: [{
-                  display: false,
-                  gridLines: {},
+                  display: true,
+                  gridLines: {
+                  },
                   ticks: {
                     fontColor: "black",
-                    fontSize: 2,
-                    padding:15,
-                    max:Math.max(...this.ticket_stillopen_last_n_days_count) +2
+                    fontSize: 12,
+                    padding:8
                   },
                   scaleLabel: {
-                    fontColor: "white",
-                    fontSize: 2,
-                    labelString: "Count Of Open Tickets",
-                    display: false
+                    fontColor: "black",
+                    fontSize: 12,
+                    labelString: "Count By Channel",
+                    display: true
                   }
                 }]
               }
             }
-
           });
-          
-
         }
         else{
+          console.log('getDashboardTicketCountByChannelInLastNDays is NULL');
           this.initializeVars();
-          this.showErrorNoDataticketsStillOpenLastNDays=true;
+          this.showErrorNoDataticketsCountByChannelLastNDays=true;
         }
       
     });
+
+
+
+    
 
   }
 
@@ -772,6 +755,9 @@ legend: {
 
     this.ticket_stillopen_bymodule_last_n_days_count=[];
     this.ticket_stillopen_bymodule_last_n_days_label=[];
+
+    this.ticket_count_bychannel_last_n_days_count=[];
+    this.ticket_count_bychannel_last_n_days_label=[];
 
   }
 

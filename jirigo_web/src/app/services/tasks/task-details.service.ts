@@ -25,7 +25,7 @@ export class TaskDetailsService {
     return this._httpCli.get<any>(this.sApiEndPoint + 'tasks/' + taskNo)
       .toPromise()
       .then(res => {
-        console.log("In  TaskDetailsService:" + JSON.stringify(res));
+        console.log("In  TaskDetailsService:" + JSON.stringify(res,null,'\t'));
         return res;
       });
   }

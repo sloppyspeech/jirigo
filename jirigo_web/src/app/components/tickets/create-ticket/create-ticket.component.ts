@@ -27,7 +27,7 @@ export class CreateTicketComponent implements OnInit {
   ticketPrioritiesRef:[any];
   ticketSeveritiesRef:[any];
   ticketIssueTypesRef:[any];
-
+  newTicketNo:string="";
   editorStyle = {
     height: '200px'
   };
@@ -57,6 +57,17 @@ export class CreateTicketComponent implements OnInit {
   @Output()
   issueTypeO: EventEmitter<any> = new EventEmitter();
 
+  modalAlertConfig={
+    modalType :'',
+    showModal:false,
+    title:'',
+    modalContent:'',
+    cancelButtonLabel:'',
+    confirmButtonLabel:'',
+    dialogCanceled:'',
+    dialogConfirmed:'',
+    dialogClosed:''
+    };
 
   constructor(private _formBuilder:FormBuilder,
               private _staticRefData:StaticDataService,
@@ -92,6 +103,7 @@ export class CreateTicketComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.initializeModalAlertConfig();
     console.log("NgOnInit");
     
     this.createTicketFB= this._formBuilder.group({
@@ -112,7 +124,8 @@ export class CreateTicketComponent implements OnInit {
       fctlReportedBy:new FormControl({ value:'', disabled: false }, Validators.required),
       fctlReportedDate:new FormControl({ value:'', disabled: false }, Validators.required),
       fctlComment:new FormControl({ value: '', disabled: true }),
-      fctlAssigneeName:new FormControl({ value: '', disabled: false })
+      fctlAssigneeName:new FormControl({ value: '', disabled: false }),
+      fctlChannel:new FormControl({ value: '', disabled: false }, Validators.required)
     });
     
   }
@@ -125,17 +138,6 @@ export class CreateTicketComponent implements OnInit {
     console.log('===============================');
     console.log(this.createTicketFB.getRawValue());
     console.log('===============================');
-    console.log(this.createTicketFB.get('fctlSummary').value);
-    console.log(this.createTicketFB.get('fctlDescription').value);
-    console.log(this.createTicketFB.get('fctlIssueType').value);
-    console.log(this.createTicketFB.get('fctlSeverity').value);
-    console.log(this.createTicketFB.get('fctlPriority').value);
-    console.log(this.createTicketFB.get('fctlModule').value);
-    console.log(this.createTicketFB.get('fctlIssueStatus').value);
-    console.log(this.createTicketFB.get('fctlIsBlocking').value);
-    console.log(this.createTicketFB.get('fctlEnvironment').value);
-    // console.log(this.createTicketFB.get('fctlCreatedDate').value);
-    // console.log(this.createTicketFB.get('fctlCreatedBy').value);
     formData={
       "project_name":this.createTicketFB.get('fctlProjectName').value,
       "summary":this.createTicketFB.get('fctlSummary').value,
@@ -151,36 +153,43 @@ export class CreateTicketComponent implements OnInit {
       "created_by":localStorage.getItem('loggedInUserId'),
       "created_date":this.createTicketFB.get('fctlCreatedDate').value,
       "reported_by": this.createTicketFB.get('fctlReportedBy').value,
-      "reported_date":this.createTicketFB.get('fctlReportedDate').value
+      "reported_date":this.createTicketFB.get('fctlReportedDate').value,
+      "channel":this.createTicketFB.get('fctlChannel').value
     }
     console.log('@@------@@');
     console.log(formData);
 
+    this._NgxSpinner.show();
+    this.initializeModalAlertConfig();
+    this.modalAlertConfig.cancelButtonLabel="";
+    this.modalAlertConfig.confirmButtonLabel="Ok";
+    this.modalAlertConfig.dialogConfirmed="TicketCreationModalConfirm";
+    this.modalAlertConfig.dialogCanceled="TicketCreationModalClosed";
+    this.modalAlertConfig.dialogClosed="TicketCreationModalClosed";
+    
     this._serTicketDetails.creTicket(formData)
         .subscribe(res=>{
           console.log("Create Ticket Output :"+JSON.stringify(res));
           console.log("Create Ticket Output :"+res['dbQryStatus']);
-          console.log("Create Ticket Output :"+res['dbQryResponse']);
-          if (res['dbQryStatus'] == 'Success'){
-            this._NgxSpinner.show();
-            this.createTicketFB.reset();
-            // alert(res['dbQryResponse']['ticketId'] +"  Created Successfully.");
-            alert("Created Successfully.");
-            this._NgxSpinner.hide();
-            // this._router.navigate(['/view-edit-tickets',res['dbQryResponse']['ticketId']]);
+          console.log(res['dbQryResponse']);
 
-            //-- Test Done to verify Update worked
-            // formData['summary']="UPDATE "+formData['summary'];
-            // formData['ticket_no']=res['dbQryResponse']['ticketId'];
-            // // this._serTicketDetails.updateTicket(formData)
-            // //     .subscribe(res=>{
-            // //         console.log("_serTicketDetails.updateTicket");
-            // //         console.log(res);
-            // //     });
+          if (res['dbQryStatus'] == 'Success'){
+            this.newTicketNo=res['dbQryResponse']['ticket_no'];
+            this.createTicketFB.reset();
+            this.modalAlertConfig.dialogConfirmed="TicketCreationModalSuccessConfirm";
+            this.modalAlertConfig.title="Ticket Creation Successful";
+            this.modalAlertConfig.modalContent= this.newTicketNo+ "  created successfully";
+            this.modalAlertConfig.modalType="success";
           }
           else{
-            alert('Ticket Creation Unsuccessful');
+            this.modalAlertConfig.dialogConfirmed="TicketCreationModalFailureConfirm";
+            this.modalAlertConfig.title="Ticket Creation Failed";
+            this.modalAlertConfig.modalContent="Ticket creation failed. Contact Adminstrator.";
+            this.modalAlertConfig.modalType="danger";
           }
+          this.modalAlertConfig.showModal=true;
+          this._NgxSpinner.hide();
+
         })
 
     // alert("submitted");
@@ -238,6 +247,45 @@ export class CreateTicketComponent implements OnInit {
   }
 
 
+  modalAlertAction(param){
+    console.log(param);
+    this.modalAlertConfig.showModal=false;
+    this.modalAlertConfig.modalType='';
+    this.modalAlertConfig.modalContent='';
   
+    if(param === "TicketCreationModalSuccessConfirm"){
+      console.log('/tickets/view-edit-Ticket/'+this.newTicketNo);
+      this._router.navigateByUrl('/tickets/view-edit-tickets/'+this.newTicketNo);
+      this._router.routeReuseStrategy.shouldReuseRoute = () => false;
+      this._router.onSameUrlNavigation = 'reload';
+    }
+    else if( param === "TicketCreationModalFailureConfirm"  ||
+             param === "TicketCreationModalClosed" ){
+      this._router.navigateByUrl('/tickets/list-tickets/');
+    }
+  
+  }
+  reloadComponent() {
+    console.log("===============reloadComponent=================");
+    console.log();
+    console.log(this._router.url);
+    this._router.routeReuseStrategy.shouldReuseRoute = () => false;
+    this._router.onSameUrlNavigation = 'reload';
+    this._router.navigate([this._router.url]);
+}
+
+initializeModalAlertConfig(){
+  this.modalAlertConfig={
+    modalType :'',
+    showModal:false,
+    title:'',
+    modalContent:'',
+    cancelButtonLabel:'',
+    confirmButtonLabel:'',
+    dialogCanceled:'',
+    dialogConfirmed:'',
+    dialogClosed:''
+};
+}
 
 }

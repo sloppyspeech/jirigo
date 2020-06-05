@@ -22,6 +22,7 @@ class JirigoTicket(object):
         self.issue_status = data.get('issue_status','')
         self.is_blocking = data.get('is_blocking','N')
         self.environment = data.get('environment','')
+        self.channel = data.get('channel','')
         self.created_by = data.get('created_by','')
         self.created_date = datetime.datetime.now()
         self.modified_by = data.get('modified_by','')
@@ -49,14 +50,14 @@ class JirigoTicket(object):
         self.logger.debug("Inside Create Ticket")
         insert_sql="""  INSERT INTO TTICKETS(ticket_no,summary,description,severity,priority,
                         issue_status,issue_type,environment,is_blocking,created_by,
-                        created_date,reported_by,reported_date,assignee_id,project_id,module) 
+                        created_date,reported_by,reported_date,assignee_id,project_id,module,channel) 
                         VALUES (get_issue_no_by_proj(%s),%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,
-                                get_user_id(%s),%s,get_user_id(%s),get_proj_id(%s),%s) returning ticket_int_id;
+                                get_user_id(%s),%s,get_user_id(%s),get_proj_id(%s),%s,%s) returning ticket_no;
                     """
         values=(self.project_name,self.summary,self.description,self.severity,self.priority,
                 "Open",self.issue_type,self.environment,self.is_blocking,self.created_by,
                 datetime.datetime.today(),self.reported_by,datetime.datetime.today(),
-                self.assignee_name,self.project_name,self.module,)
+                self.assignee_name,self.project_name,self.module,self.channel,)
         self.logger.debug(f'Insert : {insert_sql}  {values}')
 
         try:
@@ -69,7 +70,7 @@ class JirigoTicket(object):
             row_count=cursor.rowcount
             self.logger.debug(f'Insert Success with {row_count} row(s) Ticket ID {ticket_int_id}')
             response_data['dbQryStatus']='Success'
-            response_data['dbQryResponse']={"ticketId":ticket_int_id,"rowCount":row_count}
+            response_data['dbQryResponse']={"ticket_no":ticket_int_id,"rowCount":row_count}
             return response_data
         except  (Exception, psycopg2.Error) as error:
             if(self.jdb.dbConn):
@@ -93,6 +94,7 @@ class JirigoTicket(object):
                                     environment,
                                     is_blocking,
                                     module,
+                                    channel,
                                     get_user_name(created_by) created_by,
                                     to_char(created_date, 'DD-Mon-YYYY HH24:MI:SS') created_date,
                                     get_user_name(modified_by) modified_by,
@@ -156,6 +158,7 @@ class JirigoTicket(object):
                                         environment,
                                         is_blocking,
                                         module,
+                                        channel,
                                         get_proj_name(project_id) project_name,
                                         get_user_name(COALESCE(assignee_id, 0)) assignee_name,
                                         get_user_name(COALESCE(created_by, 0)) created_by,
@@ -204,20 +207,21 @@ class JirigoTicket(object):
                                 issue_status=%s,
                                 issue_type=%s,
                                 environment=%s,
-                                modified_by=get_user_id(%s),
+                                modified_by=%s,
                                 modified_date=%s,
                                 reported_by=get_user_id(%s),
                                 reported_date=%s,
                                 project_id=get_proj_id(%s),
                                 assignee_id=get_user_id(%s),
                                 is_blocking=%s,
-                                module=%s
+                                module=%s,
+                                channel=%s
                          WHERE ticket_no=%s;
                     """
         values=(self.summary,self.description,self.severity,self.priority,
                 self.issue_status,self.issue_type,self.environment,self.modified_by,
                 datetime.datetime.today(),self.reported_by,datetime.datetime.today(),
-                self.project_name,self.assignee_name,self.is_blocking,self.module,
+                self.project_name,self.assignee_name,self.is_blocking,self.module,self.channel,
                 self.ticket_no,)
 
         self.logger.debug(f'Update : {update_sql}  {values}')
@@ -244,7 +248,7 @@ class JirigoTicket(object):
         insert_sql="""
                         INSERT INTO ttickets (ticket_no, SUMMARY, description, issue_status, issue_type, 
                                               severity, priority, environment, is_blocking, module,created_by, 
-                                              created_date, reported_by, reported_date, project_id)
+                                              created_date, reported_by, reported_date, project_id,channel)
                                     SELECT get_issue_no_by_proj(get_proj_name(project_id)),
                                         SUMMARY,
                                         description,
@@ -259,7 +263,8 @@ class JirigoTicket(object):
                                         %s,
                                         reported_by,
                                         reported_date,
-                                        project_id
+                                        project_id,
+                                        channel
                                     FROM ttickets
                                     WHERE ticket_no=%s
                                     returning ticket_no;

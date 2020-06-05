@@ -655,6 +655,28 @@ def get_tickets_open_by_module_last_n_days():
     else:
         return get_jsonified_error_response('Failure',"get_tickets_open_by_module_last_n_days "+ get_errmsg('NAGR'))
 
+@app.route('/api/v1/ticket-dashboard/count-of-tickets-by-channel-last-ndays',methods=['GET'])
+def get_count_of_tickets_by_channel_last_n_days():
+    data={}
+    last_n_days=0
+    project_id=0
+    if request.method == 'GET':
+        print('In GET get_count_of_tickets_by_channel_last_n_days')
+        try:
+            print(request.args)
+            last_n_days=request.args.get('last_n_days',0)
+            project_id=request.args.get('project_id',0)
+            jdb=JirigoTicketDashboard({'last_n_days':last_n_days,'project_id':project_id})
+            data=jdb.get_count_of_tickets_by_channel_last_n_days()
+            print("="*80)
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in get_count_of_tickets_by_channel_last_n_days {error}')
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',"get_count_of_tickets_by_channel_last_n_days "+ get_errmsg('NAGR'))
+
+
 
 
 @app.route('/api/v1/task-management/task',methods=['POST'])

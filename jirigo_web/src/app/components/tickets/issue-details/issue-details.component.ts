@@ -31,6 +31,7 @@ export class IssueDetailsComponent implements OnInit {
   ticketSeveritiesRef: [any];
   ticketIssueTypesRef: [any];
   ticketModuleRef: [any];
+  ticketChannelsRef:[any];
   isLoaded: boolean = false;
   ticket_no: string = 'NA';
   ticket_data: any;
@@ -82,6 +83,7 @@ export class IssueDetailsComponent implements OnInit {
         this.ticketModuleRef = res.Modules;
         this.ticketPrioritiesRef = res.Priorities;
         this.ticketSeveritiesRef = res.Severities;
+        this.ticketChannelsRef = res.Channels;
 
         console.log("here:" + JSON.stringify(this.ticketEnvRef));
         console.log("ticketIssueStatusesRef:" + JSON.stringify(this.ticketIssueStatusesRef));
@@ -125,9 +127,12 @@ export class IssueDetailsComponent implements OnInit {
               this.parentForm.get('fctlEnvironment').setValue(this.ticket_data.environment);
               this.parentForm.get('fctlCreatedDate').setValue(this.ticket_data.created_date);
               this.parentForm.get('fctlCreatedBy').setValue(this.ticket_data.created_by);
+              this.parentForm.get('fctlModifiedDate').setValue(this.ticket_data.modified_date);
+              this.parentForm.get('fctlModifiedBy').setValue(this.ticket_data.modified_by);
               this.parentForm.get('fctlReportedDate').setValue(this.ticket_data.reported_date);
               this.parentForm.get('fctlReportedBy').setValue(this.ticket_data.reported_by);
               this.parentForm.get('fctlAssigneeName').setValue(this.ticket_data.assignee_name);
+              this.parentForm.get('fctlChannel').setValue(this.ticket_data.channel);
               this.parentForm.get('fctlIsBlocking').setValue((this.ticket_data.is_blocking == 'Y') ? true : false);
               console.log('------@@@@@@@--------');
               console.log(this.parentForm.get('fctlReportedDate').value);

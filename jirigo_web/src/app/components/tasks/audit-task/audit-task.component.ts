@@ -24,6 +24,7 @@ export class AuditTaskComponent implements OnInit {
     this.getTaskAuditData();
   }
   getTaskAuditData(){
+    this._serNgxSpinner.show();
     console.log("=======getTaskAuditData=======");
     console.log("======="+this.parentForm.get('fctlTaskNo').value+"=======");
     this._serTaskAudit.getTaskAuditData(this.parentForm.get('fctlTaskNo').value)

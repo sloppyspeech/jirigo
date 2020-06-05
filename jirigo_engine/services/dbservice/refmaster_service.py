@@ -219,6 +219,7 @@ class JirigoRefMaster(object):
                                         when REF_NAME='Severity' then 'Severities'
                                         when REF_NAME='Status' then 'IssueStatuses'
                                         when REF_NAME='Module' then 'Modules'
+                                        when REF_NAME='Channel' then 'Channels'
                                         else REF_NAME
                                     end REF_NAME ,
                                     ref_value

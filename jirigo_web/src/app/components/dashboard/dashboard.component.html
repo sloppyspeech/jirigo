@@ -149,9 +149,9 @@
 
     <div class="col-lg-6 ">
       <div class="overview-chart " >
-        <canvas id="id_ticketsStillOpenLastNDaysTest" height="80px;" width="100px;">{{ticketOpenLastNDaysChartTest}}</canvas>
+        <canvas id="id_ticketCountByChannel" height="300;" >{{ticketCountByChannelLastNDaysChart}}</canvas>
       </div>
-      <div class="noChartData " *ngIf="showErrorNoDataticketsStillOpenLastNDays">
+      <div class="noChartData " *ngIf="showErrorNoDataticketsCountByChannelLastNDays">
         <h6 > Stale Chart, Not REFRESHED ,No Data Found for Said Time Range</h6>
       </div>
     </div>

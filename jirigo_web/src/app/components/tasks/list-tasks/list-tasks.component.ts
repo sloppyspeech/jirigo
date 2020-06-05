@@ -169,13 +169,5 @@ export class ListTasksComponent implements OnInit {
     alert(val);
   }
 
-  gotoHeroes(inp) {
-    // let heroId = hero ? hero.id : null;
-    // Pass along the hero id if available
-    // so that the HeroList component can select that hero.
-    // Include a junk 'foo' property for fun.
-    this._router.navigate(['/view-edit-tasks', { id: "heroId", foo: 'foo' }]);
-  }
-
 
 }

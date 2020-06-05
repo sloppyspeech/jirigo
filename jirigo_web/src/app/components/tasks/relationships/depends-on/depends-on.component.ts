@@ -1,7 +1,7 @@
 import { Component, OnInit,Input } from '@angular/core';
 import { TaskTicketLinkService  } from '../../../../services/task-ticket-links/task-ticket-link.service';
 import { Subscription } from 'rxjs';
-
+import { NgxSpinnerService} from 'ngx-spinner';
 
 @Component({
   selector: 'app-depends-on',
@@ -13,9 +13,11 @@ export class DependsOnComponent implements OnInit {
   getTaskTicketLinkDependsOn$:Subscription;
   listDependsOn:any[]=[];
 
-  constructor(private _serTaskTicketLink:TaskTicketLinkService) { }
+  constructor(private _serTaskTicketLink:TaskTicketLinkService,
+              private _serNgxSpinner:NgxSpinnerService) { }
 
   ngOnInit(): void {
+    this._serNgxSpinner.show();
     console.log('DependsOnComponent');
     let inpData={
       'project_id':localStorage.getItem('currentProjectId'),
@@ -30,6 +32,7 @@ export class DependsOnComponent implements OnInit {
               this.listDependsOn.push(item);
             });
           }
+          this._serNgxSpinner.hide();
         });
 
   }

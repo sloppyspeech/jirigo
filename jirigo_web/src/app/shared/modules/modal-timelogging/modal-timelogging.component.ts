@@ -46,7 +46,7 @@ export class ModalTimeloggingComponent implements OnInit {
   constructor(private _formBuilder:FormBuilder) {
     this.modTimeLogFG= this._formBuilder.group({
       fctlHours: new FormControl(0,{validators:[Validators.required,Validators.min(0),Validators.max(23)],updateOn:'blur'}),
-      fctlMinutes: new FormControl(15,{validators:[Validators.required,Validators.min(15),Validators.max(59)],updateOn:'blur'}),
+      fctlMinutes: new FormControl(15,{validators:[Validators.required,Validators.min(0),Validators.max(59)],updateOn:'blur'}),
       fctlActivity: new FormControl(null,{validators:[Validators.required]}),
       fctlActivityDate: new FormControl(null,{validators:[Validators.required]}),
       fctlActivityComment: new FormControl(''),

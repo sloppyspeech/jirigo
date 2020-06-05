@@ -120,6 +120,7 @@ export class ViewEditTicketsComponent implements OnInit {
         fctlModifiedBy: new FormControl({ value: '', disabled: true }),
         fctlReportedBy: new FormControl({ value: '', disabled: true }, Validators.required),
         fctlReportedDate: new FormControl({ value: '', disabled: true }, Validators.required),
+        fctlChannel: new FormControl({ value: '', disabled: true }, Validators.required),
         fctlComment: new FormControl({ value: '', disabled: true }),
         fctlProjectName:new FormControl({ value: localStorage.getItem('currentProjectName'), disabled: true }),
         fctlAssigneeName:new FormControl({ value: localStorage.getItem('currentProjectName'), disabled: true }),
@@ -167,10 +168,10 @@ export class ViewEditTicketsComponent implements OnInit {
             console.log('------@@@@fctlReportedDate@@@--------');
             console.log(this.viewModifyTicketFB.get('fctlReportedDate').value);
             this.isLoaded = true;
-            this._serNgxSpinner.hide();
             this.viewModifyTicketFCList=this.viewModifyTicketFB.controls;
             this.setInitialDataFormValues();
             this.viewModifyTicketFB.get('fctlTabOptions').setValue('Ticket Details');
+            this._serNgxSpinner.hide();
           });
       }
       );
@@ -225,9 +226,9 @@ export class ViewEditTicketsComponent implements OnInit {
       "environment":this.viewModifyTicketFB.get('fctlEnvironment').value,
       "assignee_name":this.viewModifyTicketFB.get('fctlAssigneeName').value,
       "modified_by":localStorage.getItem('loggedInUserId'),
-      "modified_date":this.viewModifyTicketFB.get('fctlCreatedDate').value,
       "reported_by": this.viewModifyTicketFB.get('fctlReportedBy').value,
-      "reported_date":this.viewModifyTicketFB.get('fctlReportedDate').value
+      "reported_date":this.viewModifyTicketFB.get('fctlReportedDate').value,
+      "channel":this.viewModifyTicketFB.get('fctlChannel').value
     }
     console.log('@@------@@');
     console.log(formData);
@@ -260,7 +261,7 @@ export class ViewEditTicketsComponent implements OnInit {
             this._serNgxSpinner.hide(); 
             this.modalAlertConfig.dialogConfirmed="TicketUpdateModalFailureConfirm";
             this.modalAlertConfig.title="Ticket Update Failed";
-            this.modalAlertConfig.modalContent=formData['Ticket_no']  + "  update failed. Contact Adminstrator.";
+            this.modalAlertConfig.modalContent=formData['ticket_no']  + "  update failed. Contact Adminstrator.";
             this.modalAlertConfig.modalType="danger";
             this.modalAlertConfig.showModal=true;
           }
@@ -355,7 +356,7 @@ cloneTicket(){
   .subscribe(res=>{
     console.log("Clone Ticket Output :"+JSON.stringify(res));
     console.log("Clone Ticket Output :"+res['dbQryStatus']);
-    console.log("Clone Ticket Output :"+res['dbQryResponse']);
+    console.log(res['dbQryResponse']);
     if (res['dbQryStatus'] == 'Success'){
       this.viewModifyTicketFB.reset();
       this._serNgxSpinner.hide();

@@ -197,7 +197,7 @@ class JirigoTask(object):
                                 issue_status=%s,
                                 issue_type=%s,
                                 environment=%s,
-                                modified_by=get_user_id(%s),
+                                modified_by=%s,
                                 modified_date=%s,
                                 reported_by=get_user_id(%s),
                                 reported_date=%s,

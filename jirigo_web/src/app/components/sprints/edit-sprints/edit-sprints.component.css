@@ -1,9 +1,11 @@
 .task {
     border-radius: 1px;
-    background-color: #CCFF90 ; 
+    background-color: #CEEDC0 ; 
     padding:10px 0 20px 0;
 }
-
+.task-allocated{
+    background-color:#ffffdd;
+}
 .task-badge{
     margin:0 10px 0 0;
     font-size: 12px;

@@ -18,6 +18,7 @@ npm-debug.log*
 **scanner**
 **/uploaded_files
 **/*adhoc*
+**/locust*
 **/.idea
 **/.ionic
 **/.sass-cache

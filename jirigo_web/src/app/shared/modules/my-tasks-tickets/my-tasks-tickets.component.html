@@ -1,27 +1,25 @@
 <div class="row " *ngIf="true">
-    <div class="col-md-9 col-sm-12 col-lg-9">
-      <div class="row">
-        <div class="col-md-2 col-lg-3"  >
+  <div class="btn-group" role="group">
+        <div class="col-md-2 col-lg-2 text-nowrap mr-3"  >
           <button type="button" label="Modify item" class="btn btn-warning"
            (click)="ListItems('AssignedToMe')"
             >
             <fa-icon [icon]="faBookmark" style="padding: 0 9px 0 0; color: white;"></fa-icon>My {{myItemType}}
           </button>
         </div>
-        <div class="col-md-2 col-lg-3" >
-          <button type="button" label="Clone item" class="btn btn-purple" (click)="ListItems('CreatedByMe')">
+        <div class="col-md-2 col-lg-2 text-nowrap mr-5" >
+          <button type="button" label="Clone item" class="btn  btn-purple" (click)="ListItems('CreatedByMe')">
             <fa-icon [icon]="faCubes" style="color: white;"></fa-icon>&nbsp;
             Created By Me
           </button>
         </div>
-        <div class="col-md-2 col-lg-3 text-nowrap"  >
-          <button type="button" label="Clone item" class="btn btn-electricpurple"  (click)="ListItems('ModifiedByMe')">
+        <div class="col-md-2 col-lg-2 text-nowrap ml-3"  >
+          <button type="button" label="Clone item" class="btn  btn-electricpurple"  (click)="ListItems('ModifiedByMe')">
             <fa-icon [icon]="faCube" style="color: white;"></fa-icon>&nbsp;
             Modified By Me
           </button>
         </div>
       </div>
-    </div>
   </div>
   
   <div class="row" style="margin:20px 0 0 0;">

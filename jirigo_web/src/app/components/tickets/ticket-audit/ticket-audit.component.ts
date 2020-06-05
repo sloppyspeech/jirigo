@@ -24,6 +24,7 @@ export class TicketAuditComponent implements OnInit {
     this.getTicketAuditData();
   }
   getTicketAuditData(){
+    this._serNgxSpinner.show();
     console.log("=======getTicketAuditData=======");
     console.log("======="+this.parentForm.get('fctlTicketNo').value+"=======");
     this._serTicketAudit.getTicketAuditData(this.parentForm.get('fctlTicketNo').value)
@@ -32,12 +33,13 @@ export class TicketAuditComponent implements OnInit {
           if (res['dbQryStatus'] == "Success") {
             console.log(res['dbQryResponse']);
             this.allTicketAuditData = res['dbQryResponse'];
-            this._serNgxSpinner.hide();
+            
             console.log("==================");
           }
           else{
             this.allTicketAuditData=[];
           }
+          this._serNgxSpinner.hide();
         });
   }
 

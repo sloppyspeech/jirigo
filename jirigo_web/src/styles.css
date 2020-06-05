@@ -174,3 +174,9 @@ select:disabled{
 .jSelectButtonContainer .ui-buttonset:not(.ui-splitbutton)  .ui-state-active {
   background-color: #007BFC !important;
 }
+
+.form-control:disabled, .form-control[readonly] {
+  background-color: #fff;
+  opacity: 1;
+  color:#b7b7b7
+}

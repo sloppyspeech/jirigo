@@ -240,7 +240,6 @@ export class ViewEditTaskComponent implements OnInit {
       "environment":this.viewModifyTaskFB.get('fctlEnvironment').value,
       "assignee_name":this.viewModifyTaskFB.get('fctlAssigneeName').value,
       "modified_by":localStorage.getItem('loggedInUserId'),
-      "modified_date":this.viewModifyTaskFB.get('fctlCreatedDate').value,
       "reported_by": this.viewModifyTaskFB.get('fctlReportedBy').value,
       "reported_date":this.viewModifyTaskFB.get('fctlReportedDate').value,
       "estimated_time":this.viewModifyTaskFB.get('fctlEstimatedTime').value
@@ -373,7 +372,7 @@ cloneTask(){
   .subscribe(res=>{
     console.log("Clone Task Output :"+JSON.stringify(res));
     console.log("Clone Task Output :"+res['dbQryStatus']);
-    console.log("Clone Task Output :"+res['dbQryResponse']);
+    console.log(res['dbQryResponse']);
       if (res['dbQryStatus'] == 'Success'){
         this.viewModifyTaskFB.reset();
         this._serNgxSpinner.hide();

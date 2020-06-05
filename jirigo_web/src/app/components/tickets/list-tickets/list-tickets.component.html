@@ -1,7 +1,14 @@
-<h3>Ticket List</h3>
+
+<div class="row">
+    <div class="col-lg-2">
+      <h3>Ticket List</h3>
+    </div>
+    <div class="col-lg-10">
+      <a [routerLink]="['/tickets/create-ticket']" href="#" class="btn btn-success float-right">Create Ticket</a>
+    </div>
+</div>
 <ngx-spinner [fullScreen]="true" type="ball-newton-cradle"></ngx-spinner>
 <div *ngIf="showNoTicketsRetrieved">
-
   <h4 style="text-align:center;"><span class="oi oi-fire" style="color:orange;font-size: 100px;"></span> No Tickets For
     This Project/Error Occurred retrieving Tickets</h4>
 </div>

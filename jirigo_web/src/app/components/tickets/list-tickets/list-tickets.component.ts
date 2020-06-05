@@ -50,39 +50,13 @@ export class ListTicketsComponent implements OnInit {
   ];
   
   dtOptions: DataTables.Settings = {};
-// dtOptions: DataTables.Settings = {
-//   "columnDefs": [
-//     { "orderable": false, "targets": 0 },
-//     null,
-//     null,
-//     null,
-//     null,
-//     null,
-//     null,
-//     null,
-//     null,
-//     null,
-//     null
-//   ],
-//   "columns": [
-//     { "orderable": false,"width":"80%" },
-//     null,
-//     null,
-//     null,
-//     null,
-//     null,
-//     null,
-//     null,
-//     null,
-//     null,
-//     null
-//   ]
-// };
+
   constructor(private _router:Router,
               private _serTicketDetails:TicketDetailsService,
               private _serNgxSpinner:NgxSpinnerService) { }
 
   ngOnInit(): void {
+    this._serNgxSpinner.show();
     this.showNoTicketsRetrieved=false;
     this.allTickets=[];
     this.showTable=false;
@@ -125,11 +99,13 @@ export class ListTicketsComponent implements OnInit {
         });
         console.log(this.allTickets);
         this.showTable=true;
+        this._serNgxSpinner.hide();
       }
     else{
       console.log("*********here *********");
       this.showTable=false;
       this.showNoTicketsRetrieved=true;
+      this._serNgxSpinner.hide();
     }
 
 
@@ -137,6 +113,7 @@ export class ListTicketsComponent implements OnInit {
     })
     .catch(e=>{
         console.log("Error Fetching all tickets getAllTickets in list-tickets-components:"+e);
+        this._serNgxSpinner.hide();
     });
   }
   cellToEdit(e,val){
@@ -144,14 +121,6 @@ export class ListTicketsComponent implements OnInit {
   }
   cellToDblEdit(e,val){
     alert(val);
-  }
-
-  gotoHeroes(inp) {
-    // let heroId = hero ? hero.id : null;
-    // Pass along the hero id if available
-    // so that the HeroList component can select that hero.
-    // Include a junk 'foo' property for fun.
-    this._router.navigate(['/view-edit-tickets', { id: "heroId", foo: 'foo' }]);
   }
 
   assignToggle(dataRow,action){
