@@ -1,18 +1,35 @@
-<div class="container-fluid" style="background-color: white; ">
+
+    <table class="table table-borderless table-sm table-striped j-details-table">
+      <thead >
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">User</th>
+          <th scope="col">Time Spent</th>
+          <th scope="col">Activity</th>
+          <th scope="col">Date</th>
+          <th scope="col">Other Activity Comment</th>
+          <th scope="col">Comment</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let logentry of listTimeLogEntries ; let idx=index;">
+          <td scope="row">{{idx+1}}</td>
+          <td>{{logentry.time_spent_by}}</td>
+          <td>{{logentry.actual_time_spent | numToHHMI}}</td>
+          <td>{{logentry.activity}}</td>
+          <td>{{logentry.actual_date | date : 'dd MMM yyyy'}}</td>
+          <td>{{logentry.other_activity_comment}}</td>
+          <td>{{logentry.timelog_comment}}</td>
+        </tr>
+        
+      </tbody>
+    </table>
+
+
+<!-- <div class="container-fluid" style="background-color: white; ">
     <div *ngFor="let logentry of listTimeLogEntries">
         <div class="row" style="border-bottom-style: solid; border-bottom-color: #E6E6E6; border-bottom-width: 1px;">
             <div class="col-lg-12">
-                <!-- <div class="row" style="padding:10px 0 0 0;">
-                    <div class="col-lg-12 col-md-12">
-                        <span class="item-no-text" >
-                            {{logentry.task_no}}
-                        </span>
-                        <span class="summary-text" >
-                            {{logentry.task_no}}
-                        </span>
-                    </div>
-                </div> -->
-
 
                 <div class="row" style="padding:8px 0 15px 0;">
                     <div class="col-lg-1 col-md-1 bottom-detail-right-border item-details-text">
@@ -31,9 +48,7 @@
                             </div>
                         </div>
                     </div>
-                    <!-- <div class="col-lg-1 col-md-1 bottom-detail-right-border item-details-text" >
-                        {{logentry.activity}}
-                    </div> -->
+
                     <div class="col-lg-1 col-md-1 bottom-detail-right-border item-details-text">
                         <div class="row">
                             <div class="col-12">
@@ -87,7 +102,7 @@
                             <div class="col-12">
                                 <div class="row">
                                     <div class="col-12">
-                                    {{logentry.activity_comment}}
+                                    {{logentry.other_activity_comment}}
                                     </div>
                                 </div>
                                 <div class="row">
@@ -118,4 +133,4 @@
             </div>
         </div>
     </div>
-</div>
+</div> -->

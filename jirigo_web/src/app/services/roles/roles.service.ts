@@ -66,7 +66,17 @@ export class RolesService {
     return this._httpCli.post(url, inpData, this.sHttpOptions);
   }
 
+  getRolesForUserAssignment(inpData){
+    let url = this.sApiEndPoint +'roles-assignable-for-user-by-project'+`?project_id=${inpData['project_id']}&user_id=${inpData['user_id']}`;
+    console.log(url);
+    return this._httpCli.get(url);
+  }
 
+  assignRolesToUser(inpData){
+    let url = this.sApiEndPoint +'assign-roles-to-user';
+    console.log(url);
+    return this._httpCli.post(url, inpData, this.sHttpOptions);
+  }
 }
 
 export interface infRole {

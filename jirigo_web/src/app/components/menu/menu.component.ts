@@ -1,3 +1,4 @@
+import { MenusService } from './../../services/menus/menus.service';
 import { Component, OnInit,ViewChild,AfterViewInit } from '@angular/core';
 import { UsersService  } from '../../services/users/users.service';
 import { ChangeProjectComponent  } from '../projects/change-project/change-project.component';
@@ -18,8 +19,10 @@ export class MenuComponent implements OnInit,AfterViewInit {
   currentProjectName:string;
   showProjectChangeMenu:boolean=false;
   random_avatar_png_no=1;
+  validUserMenuPaths:any={};
 
-  constructor(private _serUser:UsersService) { }
+  constructor(private _serUser:UsersService,
+              private _serMenu:MenusService) { }
 
   ngOnInit(): void {
     console.log('MenuComponent Init :loggedIn:'+this.loggedIn);
@@ -27,6 +30,9 @@ export class MenuComponent implements OnInit,AfterViewInit {
     let seconds = date.getSeconds();
     this.random_avatar_png_no = seconds%30;
     this.loggedIn=false;
+
+
+
     this._serUser.isLoggedIn.subscribe(res=>{
       console.log("Menu Component Init :"+this.loggedIn);
       console.log(res);
@@ -46,6 +52,23 @@ export class MenuComponent implements OnInit,AfterViewInit {
           this.loggedIn=true;
         }
       }
+      let inpData={
+        'project_id':localStorage.getItem('currentProjectId'),
+        'user_id':localStorage.getItem('loggedInUserId'),
+        'role_id':localStorage.getItem('loggedInUserRoleId')
+      };
+      console.log(inpData); 
+      this._serMenu.getAllValidUserRoutesForMenu(inpData)
+      .subscribe(res=>{
+          console.log(res);
+          if (res['dbQryResponse'] && res['dbQryStatus']=="Success"){
+            res['dbQryResponse'].forEach(e => {
+                this.validUserMenuPaths[e.path]=true;
+            });
+          }
+          console.log(this.validUserMenuPaths);
+          console.log(this.validUserMenuPaths['/dashboard']);
+      });
       console.log("End Menu Component Init :"+this.loggedIn);
     });
  
@@ -64,8 +87,13 @@ export class MenuComponent implements OnInit,AfterViewInit {
         this.loggedInUserName=localStorage.getItem('loggedInUserName');
         this.currentProjectName=localStorage.getItem('currentProjectName');
         this.loggedInUserRole=localStorage.getItem('loggedInUserRoleName');
+        console.log(localStorage.getItem('loggedInUserId'));
+        console.log(localStorage.getItem('loggedInUserName'));
+        console.log(localStorage.getItem('currentProjectName'));
         console.log("@@@@@@@@@@@ :"+this.loggedInUserRole);
       }
+
+
     });
   }
 

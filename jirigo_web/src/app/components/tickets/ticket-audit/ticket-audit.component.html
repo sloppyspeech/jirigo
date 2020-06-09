@@ -1,112 +1,24 @@
-<form [formGroup]="parentForm" *ngIf="allTicketAuditData" #taskAuditComponent>
-  <div class="container-fluid" style="background-color: white; ">
-    <div *ngFor="let auditItem of allTicketAuditData">
-      <div class="row" style="border-bottom-style: solid; border-bottom-color: #E6E6E6; border-bottom-width: 1px;">
-        <div class="col-lg-12">
-          <div class="row" style="padding:8px 0 15px 0;">
-
-            <div class="col-lg-2 col-md-2 bottom-detail-right-border item-details-text">
-              <div class="row">
-                <div class="col-12">
-                  <div class="row">
-                    <div class="col-12">
-                      {{auditItem.created_date | date : 'dd MMM yyyy HH:MM'}}
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-12 ">
-                      <span class="item-details-labels">When?</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="col-lg-1 col-md-1 bottom-detail-right-border item-details-text">
-              <div class="row">
-                <div class="col-12">
-                  <div class="row">
-                    <div class="col-12">
-                      {{auditItem.created_by}}
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-12 ">
-                      <span class="item-details-labels">Who?</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-1 col-md-1 bottom-detail-right-border item-details-text">
-              <div class="row">
-                <div class="col-12">
-                  <div class="row">
-                    <div class="col-12">
-                      Changed
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-12 ">
-                      <span class="item-details-labels">Action</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-2 col-md-2 bottom-detail-right-border item-details-text">
-              <div class="row">
-                <div class="col-12">
-                  <div class="row">
-                    <div class="col-12">
-                      {{auditItem.display_column_name}}
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-12 ">
-                      <span class="item-details-labels">What?</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-3 col-md-3 bottom-detail-right-border item-details-text-overflow">
-              <div class="row">
-                <div class="col-12">
-                  <div class="row">
-                    <div class="col-12">
-                      {{auditItem.old_value}}
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-12 ">
-                      <span class="item-details-labels">From</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-3 col-md-3 bottom-detail-right-border item-details-text-overflow">
-              <div class="row">
-                <div class="col-12">
-                  <div class="row">
-                    <div class="col-12">
-                      {{auditItem.new_value}}
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-12 ">
-                      <span class="item-details-labels">To</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-</form>
+<table class="table table-borderless table-sm table-striped j-details-table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Time</th>
+      <th scope="col">User</th>
+      <th scope="col">Action</th>
+      <th scope="col">Field</th>
+      <th scope="col">From</th>
+      <th scope="col">To</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let auditItem of allTicketAuditData; let idx = index">
+      <td scope="row">{{ idx + 1 }}</td>
+      <td>{{ auditItem.created_date | date: "dd MMM yyyy HH:MM:ss" }}</td>
+      <td>{{ auditItem.created_by }}</td>
+      <td>Changed</td>
+      <td>{{ auditItem.display_column_name }}</td>
+      <td>{{ auditItem.old_value }}</td>
+      <td>{{ auditItem.new_value }}</td>
+    </tr>
+  </tbody>
+</table>

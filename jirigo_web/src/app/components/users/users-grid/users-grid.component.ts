@@ -1,3 +1,5 @@
+import { ProjectsService } from './../../../services/projects/projects.service';
+import { RolesService } from './../../../services/roles/roles.service';
 import { Component, OnInit } from '@angular/core';
 import { NgxSpinnerService  } from 'ngx-spinner';
 import { UsersService } from './../../../services/users/users.service';
@@ -15,6 +17,15 @@ export class UsersGridComponent implements OnInit {
   faRegistered=faRegistered;
   showUserGrid:boolean=false;
   userEmailForPwdChange:string='';
+  userEmailForRoleAssignment:string='';
+  allRolesList:roleValues[]=[];
+  modifiedRoles:roleValues[]=[];
+  selectedRoleId:number=0;
+  projectList:projectValues[]=[];
+  selectedProjectId:number=0;
+  selectedUserId:number=0;
+
+  
   newPassword='';
 
   cols:any[] = [
@@ -28,12 +39,14 @@ export class UsersGridComponent implements OnInit {
   users:any[]=[];
 
   constructor(private _serNgxSpinner:NgxSpinnerService,
-              private _serUsers:UsersService
+              private _serUsers:UsersService,
+              private _serRoles:RolesService,
+              private _serProjects:ProjectsService
              ) { }
 
 
   ngOnInit(): void {
-
+    this.populateProjectDropDown();
     this.loadUserDetails();
 
   }
@@ -41,6 +54,44 @@ export class UsersGridComponent implements OnInit {
   openChangePasswordModal(userDetails){
     this.userEmailForPwdChange=userDetails.email;
     console.log(userDetails);
+  }
+
+  assignRolesToUser (userDetails){
+    this.userEmailForRoleAssignment=userDetails.email;
+    this.selectedUserId=userDetails.user_id;
+    this.selectedProjectId=0;
+    this.allRolesList=[];
+    console.log(userDetails);
+    console.log(this.selectedUserId);
+    
+  }
+  populateProjectDropDown(){
+    this.projectList=[];
+    this._serProjects.getAllProjects()
+        .subscribe(res=>{
+            if(res['dbQryStatus'] && res['dbQryStatus'] == "Success"){
+              console.log(res);
+              res['dbQryResponse'].forEach(e=>{
+                this.projectList.push({'project_id': e.project_id,'project_name':e.project_name});
+              })
+            }
+        });
+  }
+
+  getAllActiveRoles(){
+    let inpData={
+      'project_id':this.selectedProjectId,
+      'user_id':this.selectedUserId
+    };
+    this._serRoles.getRolesForUserAssignment(inpData)
+        .subscribe(res=>{
+          if(res['dbQryStatus'] && res['dbQryStatus'] == "Success"){
+            console.log(res);
+            res['dbQryResponse'].forEach(e=>{
+               this.allRolesList.push({'user_id': e.user_id,'role_id': e.role_id,'role_name':e.role_name,'project_id': e.project_id,'project_name':e.project_name,'is_default':e.is_default=='Y' ? true:false,'assigned':e.email ? true:false});
+            });
+          }
+        });
   }
 
   changePassword(){
@@ -58,10 +109,6 @@ export class UsersGridComponent implements OnInit {
             this.loadUserDetails();
           }
         });
-  }
-
-  userEditModalDialogAction(action:string){
-
   }
 
   loadUserDetails(){
@@ -94,6 +141,56 @@ export class UsersGridComponent implements OnInit {
           this.loadUserDetails();
         });
   }
+  
+  
+  onDefaultRoleSet(rowIdx){
+    console.log(rowIdx);
+    for(let i=0;i<this.allRolesList.length;i++){
+      if (i!=rowIdx){
+        this.allRolesList[i]['is_default']=false;
+      }
+      else{
+        this.allRolesList[i]['is_default']=true;
+      }
+    }
+    console.log(this.allRolesList);
+  }
 
+  addRoleToUser(){
+    let tempRolesList:roleValues[]=[];
+    this.allRolesList.forEach(e=>{
+        if(e.assigned){
+          tempRolesList.push(e);
+        }
+    });
+    if (this.allRolesList.length>0) {
+      let inpdata={
+        'project_id':this.selectedProjectId,
+        'user_id':this.selectedUserId,
+        'new_roles_values':tempRolesList,
+        'created_by':localStorage.getItem('loggedInUserId')
+      };
+      this._serRoles.assignRolesToUser(inpdata)
+          .subscribe(res=>{
+            console.log(res);
+          });
+  }
+      console.log(this.allRolesList);
+      console.log(tempRolesList);
+  }
 
 }
+
+interface roleValues{
+  user_id:number,
+  role_id:number,
+  role_name:string,
+  project_id:number,
+  project_name:string,
+  is_default:boolean,
+  assigned:boolean
+};
+interface projectValues{
+  project_id:number,
+  project_name:string
+};

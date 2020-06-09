@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, OnChanges, SimpleChanges, AfterViewInit, EventEmitter } from '@angular/core';
-import { FormControl,FormGroup,Validator,FormBuilder} from '@angular/forms';
+import { FormControl, FormGroup, Validator, FormBuilder, Validators } from '@angular/forms';
 import { ReferencesService } from './../../../services/references/references.service';
 
 @Component({
@@ -32,10 +32,11 @@ export class CreateReferenceComponent implements OnInit {
     this.errorMessage="";
 
     this.createRefFG= this._formBuilder.group({
-      fctlProjectName: new FormControl(''),
-      fctlRefCategory: new FormControl(''),
-      fctlRefName: new FormControl(''),
-      fctlRefValue: new FormControl(''),
+      fctlProjectName: new FormControl('',{validators:[Validators.required]}),
+      fctlRefCategory: new FormControl('',{validators:[Validators.required]}),
+      fctlRefName: new FormControl('',{validators:[Validators.required]}),
+      fctlRefValue: new FormControl('',{validators:[Validators.required]}),
+      fctlOrderId: new FormControl(0,{validators:[Validators.required]})
     });
 
     console.log("--------------------");
@@ -66,18 +67,15 @@ export class CreateReferenceComponent implements OnInit {
   }
   createReference(){
     console.log("=====createReference====");
-    let lprojectName=this.getFctlVal('fctlProjectName')
-    let lrefCategory=this.getFctlVal('fctlRefCategory');
-    let lrefName=this.getFctlVal('fctlRefName');
-    let lrefValue=this.getFctlVal('fctlRefValue');
 
     let inpData={
-      'project_name': lprojectName['code'] ,
-      'ref_category': typeof lrefCategory == "string" ? lrefCategory : lrefCategory['code'],
-      'ref_name':typeof lrefName == "string" ? lrefName : lrefName['code'],
-      'ref_value':typeof lrefValue == "string" ? lrefValue : lrefValue['code'],
+      'project_name': this.getFctlVal('fctlProjectName') ,
+      'ref_category': this.getFctlVal('fctlRefCategory'),
+      'ref_name':this.getFctlVal('fctlRefName'),
+      'ref_value':this.getFctlVal('fctlRefValue'),
       'created_by': localStorage.getItem('loggedInUserId'),
-      'is_active':'Y'
+      'is_active':'Y',
+      'order_id':this.getFctlVal('fctlOrderId')
     };
 
     console.log(inpData);

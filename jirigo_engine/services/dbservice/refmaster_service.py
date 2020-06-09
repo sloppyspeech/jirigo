@@ -17,6 +17,7 @@ class JirigoRefMaster(object):
         self.ref_name=data.get('ref_name',None)
         self.ref_value=data.get('ref_value',None)
         self.ref_id=data.get('ref_id',None)
+        self.order_id=data.get('order_id',None)
         self.is_active=data.get('is_active',None)
         self.created_by=data.get('created_by',1)
         self.created_date = datetime.datetime.now()
@@ -399,6 +400,26 @@ class JirigoRefMaster(object):
                             ref_name 
                         ) t2
                    """
+        # query_sql="""  
+        #                 with t as (
+        #                         SELECT 
+        #                         get_proj_name(project_id) project_name, 
+        #                         ref_category, 
+        #                         ref_name, 
+        #                         ref_id, 
+        #                         ref_value, 
+        #                         project_id, 
+        #                         is_active, 
+        #                         order_id 
+        #                         FROM 
+        #                         tref_master 
+        #                         ORDER BY 
+        #                         1, 
+        #                         2, 
+        #                         3)
+        #                 select json_agg(t) FROM t
+
+        #            """
         # self.ref_category = None if self.ref_category == '' else self.ref_category
         # self.ref_name = None if self.ref_name == '' else self.ref_name
         # self.project_id = None if self.project_id == '' else self.project_id
@@ -455,6 +476,12 @@ class JirigoRefMaster(object):
     def insert_reference(self):
         response_data={}
         self.logger.debug("insert_reference")
+        
+        #
+        # self.order_id will be "0" for auto assignment, where max +1 of subset 
+        # of ref_name and rev_category will be used.
+        #
+
         insert_refs_sql="""
                             INSERT 
                               INTO tref_master
@@ -465,11 +492,12 @@ class JirigoRefMaster(object):
                              VALUES (
                                      %s,%s,%s,%s,%s,%s,
                                      (
-                                        SELECT coalesce(max(ref_id),0)+1
+                                        SELECT CASE WHEN %s=0 THEN  COALESCE(max(order_id), 0)+ 1
+	                                                ELSE %s
+	                                           END 
                                           FROM tref_master
                                          WHERE ref_category=%s 
                                            AND ref_name=%s
-                                           AND ref_value=%s
                                            AND project_id=get_proj_id(%s)
                                               ),
                                     get_proj_id(%s)
@@ -477,7 +505,8 @@ class JirigoRefMaster(object):
                             """
         values=( self.ref_category,self.ref_name,self.ref_value,
                         self.is_active,self.created_by,self.created_date,
-                        self.ref_category,self.ref_name,self.ref_value,self.project_name,
+                        self.order_id,self.order_id,
+                        self.ref_category,self.ref_name,self.project_name,
                         self.project_name,
                         )
         print(f' {insert_refs_sql}  values {values}')

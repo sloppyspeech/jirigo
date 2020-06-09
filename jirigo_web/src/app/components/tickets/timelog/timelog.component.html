@@ -1,0 +1,27 @@
+
+    <table class="table table-borderless table-sm table-striped j-details-table">
+        <thead >
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">User</th>
+            <th scope="col">Time Spent</th>
+            <th scope="col">Activity</th>
+            <th scope="col">Date</th>
+            <th scope="col">Other Activity Comment</th>
+            <th scope="col">Comment</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let logentry of listTimeLogEntries ; let idx=index;">
+            <td scope="row">{{idx+1}}</td>
+            <td>{{logentry.time_spent_by}}</td>
+            <td>{{logentry.time_spent | numToHHMI}}</td>
+            <td>{{logentry.activity}}</td>
+            <td>{{logentry.actual_date | date : 'dd MMM yyyy'}}</td>
+            <td>{{logentry.other_activity_comment}}</td>
+            <td>{{logentry.timelog_comment}}</td>
+          </tr>
+          
+        </tbody>
+      </table>
+  

@@ -23,6 +23,8 @@ from services.dbservice.tasks.tasks_timelogging_service import JirigoTasksLogTim
 from services.dbservice.images.image_service import JirigoImages
 from services.dbservice.workflows.project_workflow_service import JirigoProjectWorkflow
 from services.dbservice.roles.role_service import JirigoRoles
+from services.dbservice.tickets.ticket_timelogging_service  import JirigoTicketLogTime
+from services.dbservice.menus.menus_service import JirigoMenus
 
 #-------------------
 UPLOAD_FOLDER='./uploaded_files'
@@ -1074,7 +1076,7 @@ def create_tasks_tickets_links():
     else:
         return get_jsonified_error_response('Failure',"get_tasks_tickets_for_multiselect_drop_down " + get_errmsg('NAGR'))
 
-@app.route('/api/v1/timelogger/log-time',methods=['POST'])
+@app.route('/api/v1/timelogger/tasks/task/log-time',methods=['POST'])
 def create_timelog_entry():
     data={}
     if request.method == 'POST':
@@ -1091,7 +1093,7 @@ def create_timelog_entry():
         return get_jsonified_error_response('Failure',"create_timelog_entry " + get_errmsg('NAGR'))
 
 
-@app.route('/api/v1/timelogger/get-task-timelog/<task_no>',methods=['GET'])
+@app.route('/api/v1/timelogger/tasks/timelog/<task_no>',methods=['GET'])
 def get_timelog_entries_for_task(task_no):
     data={}
     if request.method == 'GET':
@@ -1105,6 +1107,38 @@ def get_timelog_entries_for_task(task_no):
             return get_jsonified_error_response('Failure',error)
     else:
         return get_jsonified_error_response('Failure',"get_timelog_entries_for_task " + get_errmsg('NAGR'))
+
+@app.route('/api/v1/timelogger/tickets/ticket/log-time',methods=['POST'])
+def create_ticket_timelog_entry():
+    data={}
+    if request.method == 'POST':
+        print('In POST create_ticket_timelog_entry')
+        try:
+            print(request.get_json())
+            jdb=JirigoTicketLogTime(request.get_json())
+            data=jdb.create_timelog_entry();
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in create_ticket_timelog_entry {error}')
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',"Ticket create_ticket_timelog_entry " + get_errmsg('NAGR'))
+
+
+@app.route('/api/v1/timelogger/tickets/timelog/<ticket_no>',methods=['GET'])
+def get_timelog_entries_for_ticket(ticket_no):
+    data={}
+    if request.method == 'GET':
+        print('In GET get_timelog_entries_for_ticket')
+        try:
+            jdb=JirigoTicketLogTime({'ticket_no':ticket_no})
+            data=jdb.get_timelog_entries_for_ticket()
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in get_task_or_ticket_depends_on {error}')
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',"get_timelog_entries_for_ticket " + get_errmsg('NAGR'))
 
 
 @app.route('/api/v1/image-manager/image',methods=['POST'])
@@ -1299,7 +1333,7 @@ def get_workflow_details_for_update():
 def get_all_active_roles():
     data={}
     if request.method == 'GET':
-        print('In GET get_timelog_entries_for_task')
+        print('In GET get_all_active_roles')
         try:
             jdb=JirigoRoles()
             data=jdb.get_all_active_roles()
@@ -1326,6 +1360,22 @@ def get_roles_active_for_allprojects():
     else:
         return get_jsonified_error_response('Failure',"get_roles_active_for_allprojects" + get_errmsg('NAGR'))
 
+@app.route('/api/v1/role-management/roles-assignable-for-user-by-project',methods=['GET'])
+def get_roles_for_user_assignment():
+    data={}
+    if request.method == 'GET':
+        print('In GET get_active_project_roles')
+        try:
+            project_id=request.args.get('project_id')
+            user_id=request.args.get('user_id')
+            jdb=JirigoRoles({'user_id':user_id,'project_id':project_id})
+            data=jdb.get_roles_for_user_assignment()
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in get_roles_for_user_assignment {error}')
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',"get_roles_for_user_assignment" + get_errmsg('NAGR'))
 
 @app.route('/api/v1/role-management/project-role',methods=['POST'])
 def add_project_role():
@@ -1344,6 +1394,24 @@ def add_project_role():
             return get_jsonified_error_response('Failure',error)
     else:
         return get_jsonified_error_response('Failure',"add_project_role " + get_errmsg('NAPR'))
+
+@app.route('/api/v1/role-management/assign-roles-to-user',methods=['POST'])
+def assign_roles_to_user():
+    data=''
+    if request.method == 'POST':
+        print('In Post assign_roles_to_user')
+        pprint.pprint(request.get_json())
+        try:
+            jdb=JirigoRoles(request.get_json())
+            data=jdb.assign_roles_to_user()
+            print('*'*40)
+            print(data['dbQryResponse'])
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in assign_roles_to_user {error}')
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',"assign_roles_to_user " + get_errmsg('NAPR'))
 
 
 @app.route('/api/v1/role-management/assign-workflow-to-role',methods=['POST'])
@@ -1421,6 +1489,93 @@ def remove_project_role():
     else:
         return get_jsonified_error_response('Failure',"remove_project_role " + get_errmsg('NADR'))
 
+@app.route('/api/v1/menu-management/all-menuitems-by-role-project',methods=['GET'])
+def get_all_menus_details_for_projectrole():
+    if request.method == 'GET':
+        print('In Get get_all_menus_details_for_projectrole')
+        try:
+            project_id=request.args.get('project_id')
+            role_id=request.args.get('role_id')
+            jdb=JirigoMenus({'role_id':role_id,'project_id':project_id})
+            data=jdb.get_all_menus_details_for_projectrole()
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in get_all_menus_details_for_projectrole {error}')
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',"get_all_menus_details_for_projectrole " + get_errmsg('NAGR'))
+
+
+@app.route('/api/v1/menu-management/valid-routes-for-user',methods=['GET'])
+def get_all_valid_routes_for_user():
+    data={}
+    if request.method == 'GET':
+        print('In GET get_all_valid_routes_for_user')
+        try:
+            project_id=request.args.get('project_id','')
+            user_id=request.args.get('user_id','')
+            role_id=request.args.get('role_id','')
+
+            jdb=JirigoUsers({'project_id':project_id,'user_id':user_id,'role_id':role_id})
+            data=jdb.get_all_valid_routes_for_user()
+            print("="*80)
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in get_all_valid_routes_for_user {error}')
+            print(get_jsonified_error_response('Failure',error))
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',"get_all_valid_routes_for_user " +get_errmsg('NAPR'))
+
+
+@app.route('/api/v1/menu-management/all-unassigned-menuitems-by-role-project',methods=['GET'])
+def get_all_unassigned_menus_for_projectrole():
+    if request.method == 'GET':
+        print('In Get get_all_unassigned_menus_for_projectrole')
+        try:
+            project_id=request.args.get('project_id')
+            role_id=request.args.get('role_id')
+            jdb=JirigoMenus({'role_id':role_id,'project_id':project_id})
+            data=jdb.get_all_unassigned_menus_for_projectrole()
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in get_all_unassigned_menus_for_projectrole {error}')
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',"get_all_unassigned_menus_for_projectrole " + get_errmsg('NAGR'))
+
+
+@app.route('/api/v1/menu-management/all-assigned-menuitems-by-role-project',methods=['GET'])
+def get_all_assigned_menus_for_projectrole():
+    if request.method == 'GET':
+        print('In Get get_all_assigned_menus_for_projectrole')
+        try:
+            project_id=request.args.get('project_id')
+            role_id=request.args.get('role_id')
+            jdb=JirigoMenus({'role_id':role_id,'project_id':project_id})
+            data=jdb.get_all_assigned_menus_for_projectrole()
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in get_all_assigned_menus_for_projectrole {error}')
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',"get_all_assigned_menus_for_projectrole " + get_errmsg('NAGR'))
+
+
+@app.route('/api/v1/menu-management/add-menus-to-role',methods=['POST'])
+def add_menus_to_role():
+    if request.method == 'POST':
+        print('In Get add_menus_to_role')
+        print(request.get_json())
+        try:
+            jdb=JirigoMenus(request.get_json())
+            data=jdb.add_menus_to_role()
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in add_menus_to_role {error}')
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',"add_menus_to_role " + get_errmsg('NAPR'))
 
 def get_errmsg(mesg_code) :
     error_messages={

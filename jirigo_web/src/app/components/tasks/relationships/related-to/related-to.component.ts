@@ -25,7 +25,7 @@ export class RelatedToComponent implements OnInit {
     this._serTaskTicketLink.getTaskTicketLinkRelatedTo(inpData)
         .subscribe(res=>{
           console.log(res);
-          if(res['dbQryStatus']=="Success"){
+          if(res['dbQryStatus']=="Success" && res['dbQryResponse']){
             res['dbQryResponse'].forEach(item=>{
               this.listRelatedTo.push(item);
             });

@@ -10,77 +10,78 @@
     <div id="navbarCollapse" class="collapse navbar-collapse" >
         <ul class="nav navbar-nav">
             <li class="nav-item " [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-                <a  [routerLink]="['/dashboard']" href="#" class="nav-link">Dashboard</a>
+                <a  [routerLink]="['/dashboard']" href="#" class="nav-link" *ngIf="validUserMenuPaths['/dashboard']">Dashboard</a>
             </li>
             <li class="nav-item dropdown"  [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Projects</a>
+                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" *ngIf="validUserMenuPaths['/projects']">Projects</a>
                 <div class="dropdown-menu">
-                    <a [routerLink]="['/projects/create-project']" href="#" class="dropdown-item">Create Project</a>
-                    <a [routerLink]="['/projects/list-projects']" href="#" class="dropdown-item">List Projects</a>
+                    <a [routerLink]="['/projects/create-project']" href="#" class="dropdown-item" *ngIf="validUserMenuPaths['/projects/create-project']">Create Project</a>
+                    <a [routerLink]="['/projects/list-projects']" href="#" class="dropdown-item" *ngIf="validUserMenuPaths['/projects/list-projects']">List Projects</a>
                     <div class="dropdown-divider"></div>
                     <div class="dropdown-item"
                         style="color:white;background-color:blue">{{currentProjectName}}</div>
                     <div class="dropdown-divider"></div>
                     <a [routerLink]="['/projects/change-project']" href="#" class="dropdown-item"
-                        (click)="changeProject($event)">Change Project</a>
+                        (click)="changeProject($event)"  *ngIf="validUserMenuPaths['/projects/change-project']">Change Project</a>
                 </div>
             </li>
             <li class="nav-item dropdown" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Tickets</a>
+                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" *ngIf="validUserMenuPaths['/tickets']">Tickets</a>
                 <div class="dropdown-menu">
-                    <a [routerLink]="['/tickets/create-ticket']" href="#" class="dropdown-item">Create Ticket</a>
-                    <a [routerLink]="['/tickets/list-tickets']" href="#" class="dropdown-item">List Tickets</a>
-                    <a [routerLink]="['/my-items/tickets']" href="#" class="dropdown-item">My Tickets</a>
+                    <a [routerLink]="['/tickets/create-ticket']" href="#" class="dropdown-item" *ngIf="validUserMenuPaths['/tickets/create-ticket']">Create Ticket</a>
+                    <a [routerLink]="['/tickets/list-tickets']" href="#" class="dropdown-item" *ngIf="validUserMenuPaths['/tickets/list-tickets']">List Tickets</a>
+                    <a [routerLink]="['/my-items/tickets']" href="#" class="dropdown-item" *ngIf="validUserMenuPaths['/my-items/tickets']">My Tickets</a>
                 </div>
             </li>
             <li class="nav-item dropdown" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Tasks</a>
+                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" *ngIf="validUserMenuPaths['/tasks']">Tasks</a>
                 <div class="dropdown-menu">
-                    <a [routerLink]="['/tasks/create-task']" href="#" class="dropdown-item">Create Task</a>
-                    <a [routerLink]="['/tasks/list-tasks']" href="#" class="dropdown-item">List Tasks</a>
-                    <a [routerLink]="['/my-items/tasks']" href="#" class="dropdown-item">My Tasks</a>
+                    <a [routerLink]="['/tasks/create-task']" href="#" class="dropdown-item" *ngIf="validUserMenuPaths['/tasks/create-task']">Create Task</a>
+                    <a [routerLink]="['/tasks/list-tasks']" href="#" class="dropdown-item" *ngIf="validUserMenuPaths['/tasks/list-tasks']">List Tasks</a>
+                    <a [routerLink]="['/my-items/tasks']" href="#" class="dropdown-item" *ngIf="validUserMenuPaths['/my-items/tasks']">My Tasks</a>
                 </div>
             </li>
             <li class="nav-item dropdown" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
-                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Sprints</a>
+                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" *ngIf="validUserMenuPaths['/sprints']"  >Sprints</a>
                 <div class="dropdown-menu">
-                    <a [routerLink]="['/sprints/create-sprint']" href="#" class="dropdown-item">Create Sprint</a>
-                    <a [routerLink]="['/sprints/list-sprints']" href="#" class="dropdown-item">List Sprints</a>
+                    <a [routerLink]="['/sprints/create-sprint']" href="#" class="dropdown-item" *ngIf="validUserMenuPaths['/sprints/create-sprint']">Create Sprint</a>
+                    <a [routerLink]="['/sprints/list-sprints']" href="#" class="dropdown-item" *ngIf="validUserMenuPaths['/sprints/list-sprints']">List Sprints</a>
                 </div>
             </li>
             
             <li class="nav-item dropdown" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}"  *ngIf="loggedInUserRole == 'Admin'">
-                <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" >
+                <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">
                   Administration
                 </a>
                 <ul class="dropdown-menu" > 
                   <li class="dropdown-submenu">
-                    <a class="dropdown-item dropdown-toggle" data-toggle="dropdown" href="#">References</a>
+                    <a class="dropdown-item dropdown-toggle" data-toggle="dropdown" href="#" *ngIf="validUserMenuPaths['/refdata-management']">References</a>
                     <ul class="dropdown-menu">
-                        <a [routerLink]="['/refdata-management/show-and-edit']" href="#" class="dropdown-item">List References</a>
+                        <a [routerLink]="['/refdata-management/show-and-edit']" href="#" class="dropdown-item" *ngIf="validUserMenuPaths['/refdata-management/show-and-edit']">List References</a>
                     </ul>
                   </li>
                   
                   <li class="dropdown-submenu">
-                    <a class="dropdown-item dropdown-toggle" data-toggle="dropdown" href="#">Users</a>
+                    <a class="dropdown-item dropdown-toggle" data-toggle="dropdown" href="#" *ngIf="validUserMenuPaths['/user-management']">Users</a>
                     <ul class="dropdown-menu">
-                        <a [routerLink]="['/user-management/create-user']" href="#" class="dropdown-item">Create User</a>
-                        <a [routerLink]="['/user-management/all-users']" href="#" class="dropdown-item">List Users</a>
+                        <a [routerLink]="['/user-management/create-user']" href="#" class="dropdown-item" *ngIf="validUserMenuPaths['/user-management/create-user']">Create User</a>
+                        <a [routerLink]="['/user-management/all-users']" href="#" class="dropdown-item" *ngIf="validUserMenuPaths['/user-management/all-users']">List Users</a>
                     </ul>
                   </li>
 
                   <li class="dropdown-submenu">
-                    <a class="dropdown-item dropdown-toggle" data-toggle="dropdown" href="#">Workflows</a>
+                    <a class="dropdown-item dropdown-toggle" data-toggle="dropdown" href="#" *ngIf="validUserMenuPaths['/workflow-management']">Workflows</a>
                     <ul class="dropdown-menu">
-                        <a [routerLink]="['/workflow-management/create-workflow']" href="#" class="dropdown-item">Create Workflow</a>
-                        <a [routerLink]="['/workflow-management/edit-workflow']" href="#" class="dropdown-item">Edit Workflow</a>
+                        <a [routerLink]="['/workflow-management/create-workflow']" href="#" class="dropdown-item" *ngIf="validUserMenuPaths['/workflow-management/create-workflow']">Create Workflow</a>
+                        <a [routerLink]="['/workflow-management/edit-workflow']" href="#" class="dropdown-item" *ngIf="validUserMenuPaths['/workflow-management/edit-workflow']">Edit Workflow</a>
                     </ul>
                   </li>
                   <li class="dropdown-submenu">
-                    <a class="dropdown-item dropdown-toggle" data-toggle="dropdown" href="#">Roles</a>
+                    <a class="dropdown-item dropdown-toggle" data-toggle="dropdown" href="#" *ngIf="validUserMenuPaths['/role-management']">Roles</a>
                     <ul class="dropdown-menu">
-                        <a [routerLink]="['/role-management/crud-roles']" href="#" class="dropdown-item">Manage Roles</a>
-                        <a [routerLink]="['/role-management/assign-roles']" href="#" class="dropdown-item">Assign Roles</a>
+                        <a [routerLink]="['/role-management/crud-roles']" href="#" class="dropdown-item" *ngIf="validUserMenuPaths['/role-management/crud-roles']">Manage Roles</a>
+                        <a [routerLink]="['/role-management/assign-roles']" href="#" class="dropdown-item" *ngIf="validUserMenuPaths['/role-management/assign-roles']">Assign Roles</a>
+                        <a [routerLink]="['/role-management/assign-menus-to-role']" href="#" class="dropdown-item" *ngIf="validUserMenuPaths['/role-management/assign-menus-to-role']">Assign Menu To Role</a>
                     </ul>
                   </li>  
                 </ul>

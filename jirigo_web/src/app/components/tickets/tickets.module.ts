@@ -25,6 +25,9 @@ import { TicketAuditComponent} from  './ticket-audit/ticket-audit.component';
 import { TicketCommentsComponent} from  './ticket-comments/ticket-comments.component';
 import { ViewEditTicketsComponent} from  './view-edit-tickets/view-edit-tickets.component';
 import { ModalConfirmModule } from './../../shared/modules/modal-confirm/modal-confirm.module';
+import { ModalTimeloggingModule} from '../../shared/modules/modal-timelogging/modal-timelogging.module';
+import { TimelogComponent } from './timelog/timelog.component';
+import { NumToHhmiPipeModule} from '../../shared/modules/pipes/num-to-hhmi.pipe.module';
 
 @NgModule({
   declarations: [
@@ -33,7 +36,8 @@ import { ModalConfirmModule } from './../../shared/modules/modal-confirm/modal-c
     ListTicketsComponent,
     TicketAuditComponent,
     TicketCommentsComponent,
-    ViewEditTicketsComponent
+    ViewEditTicketsComponent,
+    TimelogComponent
   ],
   imports: [
     FormsModule,
@@ -53,7 +57,9 @@ import { ModalConfirmModule } from './../../shared/modules/modal-confirm/modal-c
     CalendarModule,
     FontAwesomeModule,
     ContextMenuModule,
-    ModalConfirmModule
+    ModalConfirmModule,
+    ModalTimeloggingModule,
+    NumToHhmiPipeModule
   ]
 })
 export class TicketsModule { }

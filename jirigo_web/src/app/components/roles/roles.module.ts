@@ -6,16 +6,20 @@ import { FormsModule,ReactiveFormsModule} from '@angular/forms';
 import { RolesRoutingModule } from './roles-routing.module';
 import { CrudRolesComponent } from './crud-roles/crud-roles.component';
 import { AssignRolesComponent } from './assign-roles/assign-roles.component';
+import { AssignMenusToRoleComponent } from './assign-menus-to-role/assign-menus-to-role.component';
+
+import { PickListModule} from 'primeng/picklist';
 
 
 @NgModule({
-  declarations: [CrudRolesComponent, AssignRolesComponent],
+  declarations: [CrudRolesComponent, AssignRolesComponent, AssignMenusToRoleComponent],
   imports: [
     CommonModule,
     RolesRoutingModule,
     FontAwesomeModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    PickListModule
   ]
 })
 export class RolesModule { }

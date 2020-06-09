@@ -52,7 +52,6 @@ export class LoginComponent implements OnInit {
       email:this.lf.email.value,
       password:this.lf.password.value
     }
-    console.log(loginData);
     this._serUsers.login(loginData)
         .toPromise()
         .then(res=>{

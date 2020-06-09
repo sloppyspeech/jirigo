@@ -27,7 +27,7 @@ export class DependsOnComponent implements OnInit {
     this._serTaskTicketLink.getTaskTicketLinkDependsOn(inpData)
         .subscribe(res=>{
           console.log(res);
-          if(res['dbQryStatus']=="Success"){
+          if(res['dbQryStatus']=="Success" && res['dbQryResponse']){
             res['dbQryResponse'].forEach(item=>{
               this.listDependsOn.push(item);
             });

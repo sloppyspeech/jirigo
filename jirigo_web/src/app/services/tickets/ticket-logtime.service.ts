@@ -6,9 +6,9 @@ import { environment  } from '../../../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class TaskLogtimeService {
+export class TicketLogtimeService {
   sApiBaseUrl:string=environment.apiBaseUrl;
-  sApiEndPoint:string=this.sApiBaseUrl+"timelogger/tasks/"
+  sApiEndPoint:string=this.sApiBaseUrl+"timelogger/tickets/"
   private sHttpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
@@ -22,22 +22,22 @@ export class TaskLogtimeService {
     private _httpCli:HttpClient
   ) { }
 
-  getTimeLog(taskNo:string){
+  getTimeLog(ticketNo:string){
     console.log("@@@@getAllComments@@@@@")
-    console.log("getAllTaskComments:"+taskNo);
-    let url=this.sApiEndPoint+"tasks/timelog/"+taskNo;
+    console.log("getAllTicketComments:"+ticketNo);
+    let url=this.sApiEndPoint+"timelog/"+ticketNo;
     return this._httpCli.get(url);
   }
   createTimeLog(inpData:ITimeLogData){
     console.log('createTimeLog');
     console.log(inpData);
-    let url=this.sApiEndPoint+"task/log-time";
+    let url=this.sApiEndPoint+"ticket/log-time";
     return this._httpCli.post(url, inpData, this.sHttpOptions);
   }
 }
 
 export interface ITimeLogData {
-  task_no:string;
+  ticket_no:string;
   activity:string;
   actual_time_spent:number;
   other_activity_comment:string;

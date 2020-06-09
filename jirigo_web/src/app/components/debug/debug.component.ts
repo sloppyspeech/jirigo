@@ -6,13 +6,19 @@ import { Injectable } from '@angular/core';
 import { HttpClient,HttpHeaders  } from '@angular/common/http';
 import { environment  } from '../../../environments/environment';
 import { ErrorMessageService } from '../../services/error_messages/error-message.service';
+import { ReferencesService} from '../../services/references/references.service';
+import * as FileSaver from 'file-saver';
 
+
+declare var $:any;
 @Component({
   selector: 'app-debug',
   templateUrl: './debug.component.html',
   styleUrls: ['./debug.component.css']
 })
 export class DebugComponent implements OnInit {
+  fileName:string='';
+  fileUrl:string='';
   launchIt:boolean=false;
   newModalContent:string='';
   newModalContent2:string="";
@@ -25,14 +31,224 @@ export class DebugComponent implements OnInit {
       "Access-Control-Allow-Headers":"Content-Type"
     })
   };
-
+  typeahead: FormControl = new FormControl();
+  suggestions:string[]=[];
+   countries:string[]=[
+      "Afghanistan",
+      "Albania",
+      "Algeria",
+      "Andorra",
+      "Angola",
+      "Anguilla",
+      "Antigua &amp; Barbuda",
+      "Argentina",
+      "Armenia",
+      "Aruba",
+      "Australia",
+      "Austria",
+      "Azerbaijan",
+      "Bahamas",
+      "Bahrain",
+      "Bangladesh",
+      "Barbados",
+      "Belarus",
+      "Belgium",
+      "Belize",
+      "Benin",
+      "Bermuda",
+      "Bhutan",
+      "Bolivia",
+      "Bosnia &amp; Herzegovina",
+      "Botswana",
+      "Brazil",
+      "British Virgin Islands",
+      "Brunei",
+      "Bulgaria",
+      "Burkina Faso",
+      "Burundi",
+      "Cambodia",
+      "Cameroon",
+      "Cape Verde",
+      "Cayman Islands",
+      "Chad",
+      "Chile",
+      "China",
+      "Colombia",
+      "Congo",
+      "Cook Islands",
+      "Costa Rica",
+      "Cote D Ivoire",
+      "Croatia",
+      "Cruise Ship",
+      "Cuba",
+      "Cyprus",
+      "Czech Republic",
+      "Denmark",
+      "Djibouti",
+      "Dominica",
+      "Dominican Republic",
+      "Ecuador",
+      "Egypt",
+      "El Salvador",
+      "Equatorial Guinea",
+      "Estonia",
+      "Ethiopia",
+      "Falkland Islands",
+      "Faroe Islands",
+      "Fiji",
+      "Finland",
+      "France",
+      "French Polynesia",
+      "French West Indies",
+      "Gabon",
+      "Gambia",
+      "Georgia",
+      "Germany",
+      "Ghana",
+      "Gibraltar",
+      "Greece",
+      "Greenland",
+      "Grenada",
+      "Guam",
+      "Guatemala",
+      "Guernsey",
+      "Guinea",
+      "Guinea Bissau",
+      "Guyana",
+      "Haiti",
+      "Honduras",
+      "Hong Kong",
+      "Hungary",
+      "Iceland",
+      "India",
+      "Indonesia",
+      "Iran",
+      "Iraq",
+      "Ireland",
+      "Isle of Man",
+      "Israel",
+      "Italy",
+      "Jamaica",
+      "Japan",
+      "Jersey",
+      "Jordan",
+      "Kazakhstan",
+      "Kenya",
+      "Kuwait",
+      "Kyrgyz Republic",
+      "Laos",
+      "Latvia",
+      "Lebanon",
+      "Lesotho",
+      "Liberia",
+      "Libya",
+      "Liechtenstein",
+      "Lithuania",
+      "Luxembourg",
+      "Macau",
+      "Macedonia",
+      "Madagascar",
+      "Malawi",
+      "Malaysia",
+      "Maldives",
+      "Mali",
+      "Malta",
+      "Mauritania",
+      "Mauritius",
+      "Mexico",
+      "Moldova",
+      "Monaco",
+      "Mongolia",
+      "Montenegro",
+      "Montserrat",
+      "Morocco",
+      "Mozambique",
+      "Namibia",
+      "Nepal",
+      "Netherlands",
+      "Netherlands Antilles",
+      "New Caledonia",
+      "New Zealand",
+      "Nicaragua",
+      "Niger",
+      "Nigeria",
+      "Norway",
+      "Oman",
+      "Pakistan",
+      "Palestine",
+      "Panama",
+      "Papua New Guinea",
+      "Paraguay",
+      "Peru",
+      "Philippines",
+      "Poland",
+      "Portugal",
+      "Puerto Rico",
+      "Qatar",
+      "Reunion",
+      "Romania",
+      "Russia",
+      "Rwanda",
+      "Saint Pierre &amp; Miquelon",
+      "Samoa",
+      "San Marino",
+      "Satellite",
+      "Saudi Arabia",
+      "Senegal",
+      "Serbia",
+      "Seychelles",
+      "Sierra Leone",
+      "Singapore",
+      "Slovakia",
+      "Slovenia",
+      "South Africa",
+      "South Korea",
+      "Spain",
+      "Sri Lanka",
+      "St Kitts &amp; Nevis",
+      "St Lucia",
+      "St Vincent",
+      "St. Lucia",
+      "Sudan",
+      "Suriname",
+      "Swaziland",
+      "Sweden",
+      "Switzerland",
+      "Syria",
+      "Taiwan",
+      "Tajikistan",
+      "Tanzania",
+      "Thailand",
+      "Timor L'Este",
+      "Togo",
+      "Tonga",
+      "Trinidad &amp; Tobago",
+      "Tunisia",
+      "Turkey",
+      "Turkmenistan",
+      "Turks &amp; Caicos",
+      "Uganda",
+      "Ukraine",
+      "United Arab Emirates",
+      "United Kingdom",
+      "Uruguay",
+      "Uzbekistan",
+      "Venezuela",
+      "Vietnam",
+      "Virgin Islands (US)",
+      "Yemen",
+      "Zambia",
+      "Zimbabwe",
+      "ZimbabweZimbabweZimbabweZimbabweZimbabweZimbabweZimbabweZimbabweZimbabwe"
+  ];
   @ViewChild('myModal') myModal:ElementRef;
 
   constructor(private _formBuilder: FormBuilder,private _router:Router,
     private _taskTicketLinkSer:TaskTicketLinkService,
     private _httpCli:HttpClient,
     private _ren2:Renderer2,
-    private _errSer:ErrorMessageService 
+    private _errSer:ErrorMessageService ,
+    private _serReferences:ReferencesService
     ) {
 }
   projectType: any[] = [
@@ -202,5 +418,68 @@ options = {
     this.newModalContent='HEHEREdsfdsfsdRE';
     this.newModalContent2="Helllsdweoiuweldkslmfdlsfsd";
   }
+
+
+  suggestCountry(){
+    this.suggestions = this.countries
+      .filter(c => c.startsWith(this.typeahead.value))
+      .slice(0, 5);
+  }
+
+  selectVal(s){
+    console.log('select val '+s);
+    this.typeahead.setValue(s);
+    this.suggestions=[];
+  }
+  chgColor(){
+    $("p").css("color","#FF7671");
+    this.downloadFile();
+  }
+  closess(){
+    console.log('blurred');
+    this.suggestions=[];
+  }
+  initialiseDD(){
+    this.suggestions=[];
+  }
+
+  makeChoice(e){
+    console.log(e);
+  }
+
+  downloadFile() {
+    this._serReferences.getAllRefsForShowAndEdit()
+        .subscribe(data=>{
+          console.log(data);
+          this.fileName="NewFile.json";
+          let val=this.ConvertReferencesToCSV(data['dbQryResponse'][0], ['ref_id','ref_category','ref_name','ref_value','is_active','order_id','project_id','project_name']);
+          console.log(val);
+          const blob = new Blob([val], { type: 'text/csv' });
+          this.fileUrl= window.URL.createObjectURL(blob);
+          window.URL.revokeObjectURL(this.fileUrl);
+          FileSaver.saveAs(blob,'New File');
+          
+        });
+  }
+
+  ConvertReferencesToCSV(objArray, headerList) {
+    let array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
+    let str = '';
+    let row = 'S.No,';
+    for (let index in headerList) {
+     row += headerList[index] + ',';
+    }
+    row = row.slice(0, -1);
+    str += row + '\r\n';
+    for (let i = 0; i < array.length; i++) {
+     let line = (i+1)+'';
+     for (let index in headerList) {
+      let head = headerList[index];
+      line += ',' + array[i][head];
+     }
+     str += line + '\r\n';
+    }
+    return str;
+   }
 
 }

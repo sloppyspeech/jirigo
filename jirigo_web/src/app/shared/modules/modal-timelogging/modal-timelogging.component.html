@@ -3,7 +3,7 @@
     [style.display]="showTimeLoggerModal ? 'block' : 'none'">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
-        <div class="modal-header">
+        <div class="modal-header" style="background-color: #eee;">
           <h5 class="modal-title" id="logTimeHeader">{{modalTitle}}</h5>
         </div>
         <div class="modal-body">
@@ -19,11 +19,11 @@
                         <div class="row">
                           <div class="col-lg-8 input-group ">
                             <input #inpHours formControlName="fctlHours" type="number" class="form-control col-lg-3" name="" id=""
-                              aria-describedby="helpId" placeholder="HH" min="0" max="23" maxlength="2"
+                              aria-describedby="helpId" placeholder="00" min="0" max="23" maxlength="2"
                               required />
                             <div  class="col-lg-2 text-muted" style="padding:6px 0 0 5px; font-size:18px;">Hrs</div>
                             <input #inpMinutes formControlName="fctlMinutes" type="number" class="form-control  col-lg-3" name="" id=""
-                              aria-describedby="helpId" placeholder="MI" maxlength="2"
+                              aria-describedby="helpId" placeholder="00" maxlength="2"
                               step="15" min="0" max="59" required />
                               <div  class="col-lg-2 text-muted" style="padding:6px 0 0 5px; font-size:18px;">Mins</div>
 
@@ -34,6 +34,7 @@
                     </div>
                     <!-- <small id="helpId" class="form-text text-muted">Enter time in HH:MM format e.g 02:30
                       for 2 hrs 30 mins</small> -->
+
                     <small *ngIf="modTimeLogFG.get('fctlHours').hasError('required') && ( modTimeLogFG.get('fctlHours').dirty || modTimeLogFG.get('fctlHours').touched) " style="color:red">{{errorMessages['hoursValid']}}<br></small>
                     <small *ngIf="modTimeLogFG.get('fctlMinutes').hasError('required') && ( modTimeLogFG.get('fctlMinutes').dirty || modTimeLogFG.get('fctlMinutes').dirty) " style="color:red">{{errorMessages['minutesValid']}}<br></small>
                   </div>
@@ -64,6 +65,7 @@
                       <option value="Other Activity">Other Activity</option>
                     </select>
                   </div>
+
                 </div>
 
                 <div class="row" *ngIf="modTimeLogFG.get('fctlActivity').value =='Other Activity'">
@@ -76,27 +78,6 @@
                   </div>
                 </div>
                 <div>
-                  <!-- <small>{{modTimeLogFG.get('fctlHours').hasError('required') }}:</small>
-                  <small>{{modTimeLogFG.get('fctlHours').dirty }}:</small>
-                  <small>{{modTimeLogFG.get('fctlHours').touched }}:</small>
-                  <small>{{modTimeLogFG.get('fctlHours').valid }}:</small>
-                  <small>{{modTimeLogFG.get('fctlHours').invalid }}:</small>
-                  <br>
-                  <small>{{modTimeLogFG.get('fctlMinutes').hasError('required') }}:</small>
-                  <small>{{modTimeLogFG.get('fctlMinutes').dirty }}:</small>
-                  <small>{{modTimeLogFG.get('fctlMinutes').touched }}:</small>
-                  <small>{{modTimeLogFG.get('fctlMinutes').valid }}:</small>
-                  <small>{{modTimeLogFG.get('fctlMinutes').invalid }}:</small>
-                  <br>
-                  <small>{{modTimeLogFG.get('fctlActivityDate').hasError('required') }}:</small>
-                  <small>{{modTimeLogFG.get('fctlActivityDate').dirty }}:</small>
-                  <small>{{modTimeLogFG.get('fctlActivityDate').touched }}:</small>
-                  <small>{{modTimeLogFG.get('fctlActivityDate').valid }}:</small>
-                  <small>{{modTimeLogFG.get('fctlActivityDate').invalid }}:</small>
-                  <br>-->
-                  <h6>{{modTimeLogFG.valid }}:</h6> 
-                  <h6>{{modTimeLogFG.errors }}:</h6> 
-
                 </div>
                 <div class="row">
                                 <div class="form-group col-lg-12">
@@ -111,11 +92,14 @@
             </div>
           </div>
         </div>
+
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="cancelTimeLog()">
             {{cancelLabel}}
           </button>
-          <button type="button" class="btn btn-primary" (click)="confirmTimeLog()">{{confirmLabel}}</button>
+          <button type="button" class="btn btn-primary" (click)="confirmTimeLog()"
+            [disabled]="!this.modTimeLogFG.valid"
+          >{{confirmLabel}}</button>
         </div>
       </div>
     </div>

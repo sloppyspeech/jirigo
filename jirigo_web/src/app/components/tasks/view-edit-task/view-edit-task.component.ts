@@ -47,8 +47,10 @@ export class ViewEditTaskComponent implements OnInit {
     showDuplicatedBy:false,
     showTimeLog:false
   };
-  showMod2:boolean=false;
+
   showLinkTaskModal:boolean=false;
+  // TimeLogging
+  showMod2:boolean=false;
   activitiesToLogTime:any[]=[];
 
   tabs:any[]=[
@@ -427,6 +429,7 @@ timeLoggerCancelled(){
 }
 
 timeLoggerConfirmed(data){
+  this._serNgxSpinner.show();
   console.log('timeLoggerConfirmed called ');
   console.log(data);
   let adate=new Date(data['actualDate']['year'],data['actualDate']['month']-1,data['actualDate']['day']);
@@ -444,6 +447,14 @@ console.log(inpData);
   this._serTaskLogTime.createTimeLog(inpData)
       .subscribe(res=>{
         console.log(res);
+        if (res['dbQryStatus'] == 'Success' && res['dbQryResponse']){
+            console.log("ALl OKAY");
+            this.reloadComponent();
+            this._serNgxSpinner.hide();
+        }
+        else{
+            console.log("Problem");
+        }
       });
 }
 

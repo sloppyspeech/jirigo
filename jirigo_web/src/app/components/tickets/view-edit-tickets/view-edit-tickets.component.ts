@@ -1,3 +1,4 @@
+import { TicketLogtimeService } from './../../../services/tickets/ticket-logtime.service';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { StaticDataService } from '../../../services/static-data.service';
@@ -5,7 +6,7 @@ import { TicketDetailsService } from '../../../services/tickets/ticket-details.s
 import { ActivatedRoute } from '@angular/router';
 import { NgxSpinnerService  } from 'ngx-spinner';
 import { Router  } from '@angular/router';
-import { faClone,faEdit,faLink } from '@fortawesome/free-solid-svg-icons';
+import { faClone,faEdit,faLink,faClock } from '@fortawesome/free-solid-svg-icons';
 import {MessageService} from 'primeng/api';
 
 @Component({
@@ -18,6 +19,7 @@ export class ViewEditTicketsComponent implements OnInit {
   faClone=faClone;
   faEdit=faEdit;
   faLink=faLink;
+  faClock=faClock;
   isLoaded: boolean = false;
   viewEditFormEditBtnEnabled:boolean=true;
   viewModifyTicketFB: FormGroup;
@@ -35,7 +37,8 @@ export class ViewEditTicketsComponent implements OnInit {
   buttonGroupOptions:any={
     showTicketDetails:false,
     showTicketComments:false,
-    showAudit:false
+    showAudit:false,
+    showTimeLog:false
   };
   
   showLinkTicketModal:boolean=false;
@@ -44,10 +47,15 @@ export class ViewEditTicketsComponent implements OnInit {
   showTicketComments:boolean=false;
   showAudit:boolean=false;
 
+  //Timelogging
+  showMod2:boolean=false;
+  activitiesToLogTime:any[]=[];
+
   tabs:any[]=[
     {label:'Ticket Details',value:'showTicketDetails'},
     {label:'Comments',value:'showTicketComments'},
-    {label:'Audit Log',value:'showAudit'}
+    {label:'Audit Log',value:'showAudit'},
+    {label:'Time Log',value:'showTimeLog'}
   ];
 
   editorStyle = {
@@ -100,7 +108,8 @@ export class ViewEditTicketsComponent implements OnInit {
     private _serTicketDetails: TicketDetailsService,
     private _serNgxSpinner:NgxSpinnerService,
     private _router:Router,
-    private _toastService: MessageService) {
+    private _toastService: MessageService,
+    private _serTicketLogTime: TicketLogtimeService) {
 
       this.viewModifyTicketFB = this._formBuilder.group({
         fctlTicketId: new FormControl({ value: '', disabled: true }),
@@ -141,7 +150,7 @@ export class ViewEditTicketsComponent implements OnInit {
     this._staticRefData.getRefTicketMaster(localStorage.getItem('currentProjectId'))
       .then(res => {
         console.log(res);
-        
+        this.activitiesToLogTime = res.IssueStatuses;
         console.log('Activated Route check');
         console.log(this.ticket_no);
         
@@ -428,4 +437,40 @@ modalAlertAction(param){
 
 }
 
+
+timeLoggerCancelled(){
+  console.log('timeLoggerCancelled called ');
+}
+
+timeLoggerConfirmed(data){
+  this._serNgxSpinner.show();
+  console.log('timeLoggerConfirmed called ');
+  console.log(data);
+  let adate=new Date(data['actualDate']['year'],data['actualDate']['month']-1,data['actualDate']['day']);
+  console.log(adate);
+  let inpData={
+    ticket_no:this.ticket_no,
+    activity:data['selectedActivity'],
+    actual_time_spent:data['loggedTime'],
+    other_activity_comment:data['otherActivity'],
+    timelog_comment:data['comment'],
+    time_spent_by:localStorage.getItem('loggedInUserId'),
+    actual_date: adate
+  }
+console.log(inpData);
+  this._serTicketLogTime.createTimeLog(inpData)
+      .subscribe(res=>{
+        console.log(res);
+        if (res['dbQryStatus'] == 'Success' && res['dbQryResponse']){
+            console.log("ALl OKAY");
+            this.reloadComponent();
+            this._serNgxSpinner.hide();
+        }
+        else{
+            console.log(res);
+            console.log("Problem");
+            this._serNgxSpinner.hide();
+        }
+      });
+}
 }

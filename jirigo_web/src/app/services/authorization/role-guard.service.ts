@@ -42,10 +42,12 @@ export class RoleGuardService implements CanActivate {
       'project_id': this.loggedUserProjectId,
       'user_id':this.loggedInUserId,
       'role_id':this.loggedInUserRoleId,
-      'current_route':activatedRouteSnapshot.routeConfig.path ? activatedRouteSnapshot.routeConfig.path: _routerStateSnapShot.url
+      'current_route': _routerStateSnapShot.url
+      // 'current_route':activatedRouteSnapshot.routeConfig.path
     }
     console.log("=======================");
     console.log(activatedRouteSnapshot);
+    console.log(activatedRouteSnapshot.routeConfig.path );
     console.log("--*--*--*--*--*--*--*--*--*--*--");
     console.log(_routerStateSnapShot);
     console.log(this._router.config);

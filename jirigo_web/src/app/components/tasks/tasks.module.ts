@@ -35,7 +35,8 @@ import { RelatedToComponent } from './relationships/related-to/related-to.compon
 import { DuplicatedByComponent } from './relationships/duplicated-by/duplicated-by.component';
 import { ModalTimeloggingModule} from '../../shared/modules/modal-timelogging/modal-timelogging.module';
 import { TimelogComponent } from './timelog/timelog.component';
-import { NumToHhmiPipe} from '../../shared/pipes/num-to-hhmi.pipe';
+import { NumToHhmiPipeModule } from './../../shared/modules/pipes/num-to-hhmi.pipe.module';
+
 
 @NgModule({
   declarations: [
@@ -49,8 +50,7 @@ import { NumToHhmiPipe} from '../../shared/pipes/num-to-hhmi.pipe';
     DependsOnComponent,
     RelatedToComponent,
     DuplicatedByComponent,
-    TimelogComponent,
-    NumToHhmiPipe
+    TimelogComponent
   ],
   imports: [
     CommonModule,
@@ -74,7 +74,8 @@ import { NumToHhmiPipe} from '../../shared/pipes/num-to-hhmi.pipe';
     FontAwesomeModule,
     ModalTimeloggingModule,
     ContextMenuModule,
-    ModalConfirmModule
+    ModalConfirmModule,
+    NumToHhmiPipeModule
   ]
 })
 export class TasksModule { }

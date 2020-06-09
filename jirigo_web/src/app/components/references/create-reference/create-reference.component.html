@@ -1,6 +1,70 @@
-<p>create-reference works!</p>
+<form [formGroup]="createRefFG">
+<div class="modal" tabindex="-1" role="dialog" [style.display]="showAddRefModal ? 'block' :'none'">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Add Reference</h5>
+      </div>
+      <div class="modal-body">
 
-<div class="container">
+        <div class="row">
+          <div class="form-group col-md-8 col-lg-8 offset-md-1 offset-lg-1">
+            <label class="col-form-label">Project Name<span class="required-field"></span></label>
+            <select formControlName="fctlProjectName" class="form-control" name="projectName" id="id_addref_project_name">
+            <option value="" selected >Choose Project</option>
+            <option *ngFor="let project of ddProjectList">{{project.name}}</option>
+          </select>
+          </div>
+        </div>
+
+
+        <div class="row">
+          <div class="form-group col-md-8 col-lg-8 offset-md-1 offset-lg-1">
+            <label class="col-form-label">Reference Category<span class="required-field"></span></label>
+            <select formControlName="fctlRefCategory" class="form-control" name="referenceCategory" id="id_addref_ref_category">
+            <option value="" selected >Choose Ref Category</option>
+            <option *ngFor="let refCat of ddRefCategories">{{refCat.name}}</option>
+          </select>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="form-group col-md-8 col-lg-8 offset-md-1 offset-lg-1">
+            <label class="col-form-label">Reference Name<span class="required-field"></span></label>
+            <select formControlName="fctlRefName" class="form-control" name="referenceName" id="id_addref_ref_name">
+            <option value="" selected >Choose Ref Name</option>
+            <option *ngFor="let refName of ddRefNames">{{refName.name}}</option>
+          </select>
+          </div>
+        </div>
+
+        <div class="row" >
+          <div class="form-group col-md-8 col-lg-8 offset-md-1 offset-lg-1">
+            <label for="" class="col-form-label">Reference Value<span class="required-field"></span></label>
+            <input #inpOtherActivityComment formControlName="fctlRefValue" type="text" class="form-control" name="referenceName" id="id_addref_ref_value"
+              aria-describedby="helpId" placeholder="Ref Value"/>
+          </div>
+        </div>
+
+        <div class="row" >
+          <div class="form-group col-md-8 col-lg-8 offset-md-1 offset-lg-1">
+            <label for="" class="col-form-label">Order Sequence<span class="required-field"></span></label>
+            <input #inpOtherActivityComment formControlName="fctlOrderId" type="number" class="form-control" name="referenceName" id="id_addref_ref_value"
+              aria-describedby="helpId"  [value]="1" min="1"/>
+            <small class="text-muted">To auto assign at time of creation,leave value as 0.</small>
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" (click)="createReference()">Save changes</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="cancelReference()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+</form>
+<!-- <div class="container">
   <p-dialog
     header="Add Reference"
     [(visible)]="showAddRefModal"
@@ -96,4 +160,4 @@
       </p-footer>
     </form>
   </p-dialog>
-</div>
+</div> -->

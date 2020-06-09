@@ -1,4 +1,4 @@
-import { Component, OnInit,Input,Output,EventEmitter,SimpleChanges,Renderer2,ElementRef,ViewChild } from '@angular/core';
+import { Component, OnInit,Input,Output,EventEmitter,SimpleChanges,Renderer2,ElementRef,ViewChild,ChangeDetectorRef } from '@angular/core';
 import { FormControl,FormGroup,FormBuilder,Validators} from '@angular/forms';
 
 @Component({
@@ -43,10 +43,10 @@ export class ModalTimeloggingComponent implements OnInit {
 
   errorList:any[]=[];
   
-  constructor(private _formBuilder:FormBuilder) {
+  constructor(private _formBuilder:FormBuilder,private _cdr:ChangeDetectorRef) {
     this.modTimeLogFG= this._formBuilder.group({
       fctlHours: new FormControl(0,{validators:[Validators.required,Validators.min(0),Validators.max(23)],updateOn:'blur'}),
-      fctlMinutes: new FormControl(15,{validators:[Validators.required,Validators.min(0),Validators.max(59)],updateOn:'blur'}),
+      fctlMinutes: new FormControl(0,{validators:[Validators.minLength(0),Validators.min(0),Validators.max(59)],updateOn:'blur'}),
       fctlActivity: new FormControl(null,{validators:[Validators.required]}),
       fctlActivityDate: new FormControl(null,{validators:[Validators.required]}),
       fctlActivityComment: new FormControl(''),
@@ -58,11 +58,28 @@ export class ModalTimeloggingComponent implements OnInit {
   ngOnInit(){
     console.log("ModalTimeLoggingComponentInit");
     this.modTimeLogFG.reset();
+
+
+    
   }
+
+ngAfterContentChecked() {
+    
+  this.modTimeLogFG.get('fctlActivity').valueChanges
+  .subscribe(value => {
+    if(value == "Other Activity") {
+      this.modTimeLogFG.get('fctlOtherActivityComment').setValidators(Validators.required)
+    } else {
+      this.modTimeLogFG.get('fctlOtherActivityComment').clearValidators();
+    }
+  }
+  );
+}
 
   openMod(){
     
     this.modTimeLogFG.reset();
+    this.modTimeLogFG.get('fctlMinutes').setValue(0);
     this.tActivityList=this.tActivityList.length >0 ? this.tActivityList :this.activityList;
     this.modalTitle = this.modalTitle ? this.modalTitle : "Log Time";
     this.cancelLabel = this.cancelLabel ? this.cancelLabel : "Cancel";
@@ -142,63 +159,4 @@ export class ModalTimeloggingComponent implements OnInit {
     }
   }
 
-  // setLoggedTime(val:number){
-  //   console.log('setLoggedTime');
-  //   console.log(val);
-  //   this.loggedTime=val;
-  // }
-
-  // setActualDate(e){
-  //   console.log(e);    
-  //   this.actualDate= e;
-  //   console.log(this.actualDate);
-  // }
-
-  // setOtherActivity(val){
-  //   console.log('setOtherActivity');
-  //   console.log(val);
-  //   if(val.trim()){
-  //     this.otherActivity=val;
-  //     this.modalPageValidity['otherActivityValid']=true;
-  //   }
-  //   else{
-  //     this.modalPageValidity['otherActivityValid']=false;
-  //   }
-  // }
-
-  // setComment(val){
-  //   this.comment=val;
-  // }
-
-  // validateHours(val:number){
-  //   this.invalidHoursMsg='';
-  //   if( this.validateFields['hoursValid'](val)){
-  //     this.modalPageValidity['hoursValid']=true;
-  //     this.loggedTime=val*60;
-  //     console.log(this.loggedTime);
-  //   }  
-  //   else{
-  //     // this.invalidHoursMsg= this.errorMessages['hoursValid'](val);
-  //     this.modalPageValidity['hoursValid']=false;
-  //     this.modalPageValidity['allFieldChecksOK']=false;
-  //     console.log(`${val} : ${this.invalidHoursMsg} `)
-  //   }
-  // }
-
-  // validateMinutes(val){
-  //   this.invalidMinutesMsg='';
-  //   console.log(val)
-  //   console.log(typeof val);
-  //   if( this.validateFields['minutesValid'](val)){
-  //     this.modalPageValidity['minutesValid']=true;
-  //     this.loggedTime=(this.loggedTime+ parseInt(val));
-  //     console.log(this.loggedTime);
-  //   }  
-  //   else{
-  //     // this.invalidMinutesMsg=this.errorMessages['minutesValid'](val);
-  //     this.modalPageValidity['minutesValid']=false;
-  //     this.modalPageValidity['allFieldChecksOK']=false;
-  //     console.log(`${val} : ${this.invalidMinutesMsg} `)
-  //   }
-  // }
 }

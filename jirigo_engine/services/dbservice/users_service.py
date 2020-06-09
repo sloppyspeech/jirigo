@@ -370,12 +370,12 @@ class JirigoUsers(object):
                          WHERE vuprm.project_id =%s
                            AND user_id=%s
                            AND role_id=%s
-                           AND ( menu_url=%s or path = %s )
+                           AND (path = %s )
                     )
                     SELECT json_agg(t) from t;
                    """
 
-        values=(self.project_id,self.user_id,self.role_id,self.current_route,self.current_route,)
+        values=(self.project_id,self.user_id,self.role_id,self.current_route,)
         self.logger.debug(f'Select : {query_sql} Values {values}')
         try:
             print('-'*80)
@@ -401,6 +401,37 @@ class JirigoUsers(object):
                 print(f'Error While Select authenticate_route_for_user {error}')
                 raise
 
+    def get_all_valid_routes_for_user(self):
+        response_data={}
+        self.logger.debug("Inside get_all_valid_routes_for_user")
+
+        query_sql="""  
+                 WITH t AS (
+                        SELECT * 
+                          FROM v_user_projects_role_menu vuprm 
+                         WHERE vuprm.project_id =%s
+                           AND user_id=%s
+                           AND role_id=%s
+                    )
+                    SELECT json_agg(t) from t;
+                   """
+
+        values=(self.project_id,self.user_id,self.role_id,)
+        self.logger.debug(f'Select : {query_sql} Values {values}')
+        try:
+            print('-'*80)
+            cursor=self.jdb.dbConn.cursor()
+            cursor.execute(query_sql,values)
+            json_data=cursor.fetchone()[0]
+            row_count=cursor.rowcount
+            self.logger.debug(f'Select Success with {row_count} row(s) {json_data}')
+            response_data['dbQryStatus']='Success'
+            response_data['dbQryResponse']=json_data
+            return response_data
+        except  (Exception, psycopg2.Error) as error:
+            if(self.jdb.dbConn):
+                print(f'Error While get_roles_for_user_assignment {error}')
+                raise
 
     def update_toggle_active_status(self):
         response_data={}
