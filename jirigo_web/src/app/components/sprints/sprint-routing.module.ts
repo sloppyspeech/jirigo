@@ -23,6 +23,11 @@ const routes: Routes = [
     canActivate:[AuthGuard,RoleGuard]
   },
   {
+    path:'edit-sprints',
+    component:EditSprintsComponent,
+    canActivate:[AuthGuard,RoleGuard]
+  },
+  {
     path:'**',
     component:ListSprintsComponent
   }

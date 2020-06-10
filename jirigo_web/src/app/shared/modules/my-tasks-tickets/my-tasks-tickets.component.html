@@ -1,4 +1,23 @@
-<div class="row btn-group" *ngIf="true">
+<div class="row">
+  <div class="col-md-5 col-lg-5">
+    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+      <label class="btn btn-outline-info active">
+        <input type="radio" name="options" id="option1" checked (click)="ListItems('AssignedToMe')"/>
+        My {{myItemType}}
+      </label>
+      <label class="btn btn-outline-info ">
+        <input type="radio" name="options" id="option1" checked (click)="ListItems('CreatedByMe')"/>
+        Created By Me
+      </label>
+      <label class="btn btn-outline-info">
+        <input type="radio" name="options" id="option1" checked  (click)="ListItems('ModifiedByMe')"/>
+        Modified By Me
+      </label>
+    </div>
+  </div>
+</div>
+
+<!-- <div class="row btn-group" *ngIf="true">
   <div class="col-lg-12" role="group">
           <button type="button" label="Modify item" class="btn btn-sm btn-orange mr-1"
            (click)="ListItems('AssignedToMe')"
@@ -14,7 +33,7 @@
             Modified By Me
           </button>
       </div>
-  </div>
+</div> -->
   
   <div class="row" style="margin:20px 0 0 0;">
     <ngx-spinner [fullScreen]="true" type="ball-newton-cradle"></ngx-spinner>
@@ -47,7 +66,16 @@
         <ng-template pTemplate="body" let-item let-columns="itemDetailsCols" let-i="rowIndex">
             <tr>
                 <td>{{i+1}}</td>
-                <td><a [routerLink]="[item.url, item.item_no]">{{item.item_no}}</a></td>
+                <td *ngIf="myItemType =='tasks'">
+                      <a  [routerLink]="[item.url]"  [queryParams]="{'task_no':item.item_no}">
+                          {{item.item_no}}
+                      </a>
+                </td>
+                <td *ngIf="myItemType =='tickets'">
+                  <a  [routerLink]="[item.url]"  [queryParams]="{'ticket_no':item.item_no}">
+                      {{item.item_no}}
+                  </a>
+                </td>
                 <!-- <td><a (click)="viewEditTask(item.url, item.item_no)">{{item.item_no}}</a></td> -->
                 <td>{{item.summary}}</td>
                 <td>{{item.issue_status}}</td>

@@ -9,6 +9,11 @@ const routes: Routes = [
     path:'scrum/:sprint_id',
     component:ScrumBoardComponent,
     canActivate:[AuthGuard,RoleGuard]
+  },
+  {
+    path:'scrum',
+    component:ScrumBoardComponent,
+    canActivate:[AuthGuard,RoleGuard]
   }
 ];
 

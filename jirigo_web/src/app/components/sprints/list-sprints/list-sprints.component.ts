@@ -114,7 +114,7 @@ export class ListSprintsComponent implements OnInit {
   }
   sprintDetails(ele){
     console.log(ele);
-    this._router.navigate(['sprints/edit-sprints/',ele['sprint_id']]);
+    this._router.navigate(['sprints/edit-sprints'],{queryParams:{'sprint_id':ele['sprint_id']} }   );
   }
   modifySprint(){
     console.log("----------------modifySprint----------------");

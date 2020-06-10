@@ -86,6 +86,11 @@ const routes: Routes = [
     canActivate:[AuthGuard,RoleGuard]
   },
   {
+    path:'data-extracts',
+    loadChildren: () => import('./components/data-extracts/data-extracts.module').then( m => m.DataExtractsModule),
+    canActivate:[AuthGuard,RoleGuard]
+  },
+  {
     path:'**',
     component:LoginComponent
   }

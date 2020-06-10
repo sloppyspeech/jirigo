@@ -125,7 +125,7 @@ export class MyTasksTicketsComponent implements OnInit {
                       this.myItemList=res['dbQryResponse'];
                       res['dbQryResponse'].forEach(element => {
                         element['item_no']=element['task_no'];
-                        element['url']='/tasks/view-edit-task'
+                        element['url']='/tasks/view-edit-tasks'
                       });
                       this.showTable=true;
                       console.log(this.myItemList);

@@ -21,7 +21,7 @@ export class RoleGuardService implements CanActivate {
   loggedInUserRoleId: string = "";
   loggedUserProjectId: string = "";
 
-  constructor(private _router: Router, private _serUsers:UsersService) { }
+  constructor(private _router: Router, private _serUsers:UsersService ,private _activatedRoute:ActivatedRoute) { }
 
   ngOnInit() {
     this.loggedInUserId = localStorage.getItem("loggedInUserId");
@@ -42,16 +42,24 @@ export class RoleGuardService implements CanActivate {
       'project_id': this.loggedUserProjectId,
       'user_id':this.loggedInUserId,
       'role_id':this.loggedInUserRoleId,
-      'current_route': _routerStateSnapShot.url
+      'current_route': _routerStateSnapShot.url.indexOf('?') == -1 ? _routerStateSnapShot.url : _routerStateSnapShot.url.substring(0,_routerStateSnapShot.url.indexOf('?'))
       // 'current_route':activatedRouteSnapshot.routeConfig.path
     }
     console.log("=======================");
     console.log(activatedRouteSnapshot);
+    console.log(this._activatedRoute.snapshot);
+    console.log(this._activatedRoute.snapshot.firstChild?.url[0]?.path); // array of states
     console.log(activatedRouteSnapshot.routeConfig.path );
+    console.log(_routerStateSnapShot?.url);
+    console.log( activatedRouteSnapshot.routeConfig.path.indexOf(':') );
     console.log("--*--*--*--*--*--*--*--*--*--*--");
     console.log(_routerStateSnapShot);
     console.log(this._router.config);
     console.log(inpData);
+    this._activatedRoute.params.subscribe(params => {
+      console.log(params)
+      // In a real app: dispatch action to load the details here.
+   });
     console.log("=======================");
 
     return this._serUsers.authorizeCurrentRouteForUser(inpData).pipe(

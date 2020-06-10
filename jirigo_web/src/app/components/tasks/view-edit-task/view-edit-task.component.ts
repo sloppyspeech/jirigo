@@ -140,10 +140,11 @@ export class ViewEditTaskComponent implements OnInit {
 
   ngOnInit(): void {
     console.log("NgOnInit");
+    console.log(this._router);
     this.initializeModalAlertConfig();
     console.log(this._activatedRoute.snapshot.routeConfig['path']);
     this.isLoaded = false;
-    this.task_no = this._activatedRoute.snapshot.paramMap.get('task_no');
+    this.task_no = this._activatedRoute.snapshot.queryParamMap.get('task_no');
     console.log('Routed Task No :'+this.task_no);
     this.viewModifyTaskFB.get('fctlTaskNo').setValue(this.task_no);
     this._serNgxSpinner.show();
@@ -349,9 +350,14 @@ export class ViewEditTaskComponent implements OnInit {
   reloadComponent() {
     console.log("===============reloadComponent=================");
     console.log(this._router.url);
-    this._router.routeReuseStrategy.shouldReuseRoute = () => false;
-    this._router.onSameUrlNavigation = 'reload';
-    this._router.navigate([this._router.url]);
+    // this._router.routeReuseStrategy.shouldReuseRoute = () => true;
+    // this._router.onSameUrlNavigation = 'reload';
+    // this._router.navigate([this._router.url]);
+
+    let currentUrl = this._router.url;
+    this._router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
+        this._router.navigate([currentUrl]);
+    });
 }
 
 cloneTask(){

@@ -53,7 +53,8 @@
     <tr [pContextMenuRow]="ticket">
       <td>{{i+1}}</td>
       <td>
-        <a [routerLink]="['/tickets/view-edit-tickets', ticket.ticket_no]">{{
+        <a [routerLink]="['/tickets/view-edit-tickets']" [queryParams]="{'ticket_no':ticket.ticket_no}" >{{
+          
           ticket.ticket_no
         }}</a>
       </td>

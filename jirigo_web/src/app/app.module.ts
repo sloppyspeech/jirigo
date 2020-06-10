@@ -42,7 +42,8 @@ import { MenuComponent } from './components/menu/menu.component';
 import { DebugComponent } from './components/debug/debug.component';
 import { UtilsService  } from './services/shared/utils.service';
 
-import { ModalConfirmModule} from './shared/modules/modal-confirm/modal-confirm.module'
+import { ModalConfirmModule} from './shared/modules/modal-confirm/modal-confirm.module';
+import { DataExtractsComponent } from './components/data-extracts/data-extracts.component'
 @NgModule({
   declarations: [
     AppComponent,
@@ -53,7 +54,8 @@ import { ModalConfirmModule} from './shared/modules/modal-confirm/modal-confirm.
     RegisterComponent,
     LogoutComponent,
     MenuComponent,
-    DebugComponent
+    DebugComponent,
+    DataExtractsComponent
   ],
   imports: [
     BrowserModule,

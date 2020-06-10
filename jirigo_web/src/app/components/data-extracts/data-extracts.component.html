@@ -1,0 +1,63 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-5 col-lg-5">
+      <div class="btn-group btn-group-toggle" data-toggle="buttons">
+        <label class="btn btn-outline-info">
+          <input type="radio" name="options" id="option1" checked (click)="setExtractType('Tickets')" />
+          Tickets
+        </label>
+        <label class="btn btn-outline-info active">
+          <input type="radio" name="options" id="option1" checked (click)="setExtractType('Tasks')" />
+          Tasks
+        </label>
+        <label class="btn btn-outline-info">
+          <input type="radio" name="options" id="option1" checked (click)="setExtractType('Users')" />
+          Users
+        </label>
+        <label class="btn btn-outline-info">
+          <input type="radio" name="options" id="option1" checked (click)="setExtractType('Roles')" />
+          Roles
+        </label>
+        <label class="btn btn-outline-info">
+          <input type="radio" name="options" id="option1" checked (click)="setExtractType('Sprints')" />
+          Sprints
+        </label>
+      </div>
+    </div>
+  </div>
+  <div class="row mt-3 pb-3"  style="background-color: #ffffff;border-radius: 5px;">
+    <div class="col-md-3 col-lg-3">
+      <label class="col-form-label">Start Date<span class="required-field"></span></label>
+      <div class="input-group ">
+        <input #inpStartDate  class="form-control " placeholder="yyyy-mm-dd" name="mdStart" ngbDatepicker
+          #mdStart="ngbDatepicker" [(ngModel)]="startDate" (click)="mdStart.toggle()" required readonly/>
+        <div class="input-group-append">
+          <span (click)="mdStart.toggle()" class="oi oi-calendar"
+            style="font-size: 2.25em;padding: 3px 0 0 0; margin: 0 0 0 5px;"></span>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 col-lg-3">
+      <label class="col-form-label">End Date<span class="required-field"></span></label>
+      <div class="input-group ">
+        <input #inpEndDate  class="form-control " placeholder="yyyy-mm-dd" name="mdEnd" ngbDatepicker
+          #mdEnd="ngbDatepicker" [minDate]="startDate" [(ngModel)]="endDate" (click)="mdEnd.toggle()" 
+          [disabled]="!startDate"
+          required readonly/>
+        <div class="input-group-append">
+          <span (click)="mdEnd.toggle()" class="oi oi-calendar"
+            style="font-size: 2.25em;padding: 3px 0 0 0; margin: 0 0 0 5px;"></span>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-2">
+        <label class="col-form-label"><span>&nbsp;</span></label>
+        <div class="input-group ">
+            <button type="button" class="btn btn-primary"(click)="getData()">Submit</button>
+        </div>
+    </div>
+  </div>
+  <div class="row">
+      <small style="color:crimson"> Fields in the csv file are delimited by "§"</small>
+  </div>
+</div>

@@ -25,7 +25,7 @@ from services.dbservice.workflows.project_workflow_service import JirigoProjectW
 from services.dbservice.roles.role_service import JirigoRoles
 from services.dbservice.tickets.ticket_timelogging_service  import JirigoTicketLogTime
 from services.dbservice.menus.menus_service import JirigoMenus
-
+from services.dbservice.data_extracts.data_extract_service import JirigoDataExtract
 #-------------------
 UPLOAD_FOLDER='./uploaded_files'
 UPLOAD_IMAGE_FOLDER='images'
@@ -1576,6 +1576,41 @@ def add_menus_to_role():
             return get_jsonified_error_response('Failure',error)
     else:
         return get_jsonified_error_response('Failure',"add_menus_to_role " + get_errmsg('NAPR'))
+
+
+@app.route('/api/v1/data-extracts/tickets-by-daterange',methods=['GET'])
+def get_all_tickets_for_time_range():
+    if request.method == 'GET':
+        print('In Get get_all_tickets_for_time_range')
+        try:
+            start_date=request.args.get('start_date')
+            end_date=request.args.get('end_date')
+            jdb=JirigoDataExtract({'start_date':start_date,'end_date':end_date})
+            data=jdb.get_all_tickets_for_time_range()
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in get_all_tickets_for_time_range {error}')
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',"get_all_tickets_for_time_range " + get_errmsg('NAGR'))
+
+@app.route('/api/v1/data-extracts/tasks-by-daterange',methods=['GET'])
+def get_all_tasks_for_time_range():
+    if request.method == 'GET':
+        print('In Get get_all_tasks_for_time_range')
+        try:
+            start_date=request.args.get('start_date')
+            end_date=request.args.get('end_date')
+            jdb=JirigoDataExtract({'start_date':start_date,'end_date':end_date})
+            data=jdb.get_all_tasks_for_time_range()
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in get_all_tasks_for_time_range {error}')
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',"get_all_tasks_for_time_range " + get_errmsg('NAGR'))
+
+
 
 def get_errmsg(mesg_code) :
     error_messages={

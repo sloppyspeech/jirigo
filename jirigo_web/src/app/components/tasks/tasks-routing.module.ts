@@ -23,6 +23,11 @@ const routes: Routes = [
     canActivate:[AuthGuard,RoleGuard]
    },
    {
+    path:'view-edit-tasks',
+    component:ViewEditTaskComponent ,
+    canActivate:[AuthGuard,RoleGuard]
+   },
+   {
      path:'**',
      component:ListTasksComponent
    }

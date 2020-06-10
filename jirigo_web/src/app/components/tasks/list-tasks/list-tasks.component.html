@@ -39,7 +39,7 @@
     <ng-template pTemplate="body" let-task let-columns="taskDetailsCols" let-i="rowIndex">
         <tr [pContextMenuRow]="task">
             <td>{{i+1}}</td>
-            <td><a [routerLink]="['/tasks/view-edit-task', task.task_no]">{{task.task_no}}</a></td>
+            <td><a [routerLink]="['/tasks/view-edit-tasks']" [queryParams]="{'task_no':task.task_no}">{{task.task_no}}</a></td>
             <td >{{task.summary}}</td>
             <td>{{task.issue_status}}</td>
             <td>{{task.issue_type}}</td>

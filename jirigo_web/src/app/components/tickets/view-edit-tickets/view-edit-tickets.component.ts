@@ -143,7 +143,7 @@ export class ViewEditTicketsComponent implements OnInit {
     console.log("NgOnInit");
     this.initializeModalAlertConfig();
     this.isLoaded = false;
-    this.ticket_no = this._activatedRoute.snapshot.paramMap.get('ticket_no');
+    this.ticket_no = this._activatedRoute.snapshot.queryParamMap.get('ticket_no');
     console.log('Routed Ticket No :'+this.ticket_no);
     this.viewModifyTicketFB.get('fctlTicketNo').setValue(this.ticket_no);
     this._serNgxSpinner.show();

@@ -38,7 +38,7 @@ export class EditSprintsComponent implements OnInit {
     this.header_sprint_name="";
 
     console.log("Inside Edit Sprints NgOnAfterViewInit");
-    this.sprintId=this._activatedRoute.snapshot.paramMap.get('sprint_id')
+    this.sprintId=this._activatedRoute.snapshot.queryParamMap.get('sprint_id')
     console.log("Getting the details for Sprint Id:"+this.sprintId);
 
     this._serSprintDetails.getAllNotClosedTasksByProjForSprint(localStorage.getItem("currentProjectName"))

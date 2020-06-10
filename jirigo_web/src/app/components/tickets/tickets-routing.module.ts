@@ -26,6 +26,11 @@ const routes: Routes = [
     canActivate:[AuthGuard,RoleGuard]
   },
   {
+    path:'view-edit-tickets',
+    component:ViewEditTicketsComponent,
+    canActivate:[AuthGuard,RoleGuard]
+  },
+  {
     path:'view-edit-ticket',
     component:ViewEditTicketsComponent,
     canActivate:[AuthGuard,RoleGuard]
