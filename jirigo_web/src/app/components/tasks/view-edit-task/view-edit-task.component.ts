@@ -428,6 +428,11 @@ enableSelectedTabOptions(tab){
 }
 
 tabSelected(e){
+  // Since the control is part of the form, clicking on a tab option
+  // marks the form as dirty. So to avoid enabling the submit button
+  // set the control to pristine
+  this.viewModifyTaskFB.get('fctlTabOptions').markAsPristine();
+  
   console.log(this.buttonGroupOptions);
   this.enableSelectedTabOptions(e.value);
   console.log(this.buttonGroupOptions);

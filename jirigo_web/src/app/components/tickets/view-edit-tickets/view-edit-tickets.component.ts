@@ -199,6 +199,7 @@ export class ViewEditTicketsComponent implements OnInit {
     console.log('------------------------------------------------------');
 
   }
+  
   disableAllFormControls(){
     Object.keys(this.viewModifyTicketFCList).forEach(control => {
       if (control != 'fctlTabOptions'){
@@ -294,6 +295,7 @@ export class ViewEditTicketsComponent implements OnInit {
     let controls=this.viewModifyTicketFB.controls;
     this.enableAllFormControls();
     this.viewEditFormEditBtnEnabled=false;
+
   }
 
 
@@ -414,9 +416,19 @@ enableSelectedTabOptions(tab){
 }
 
 tabSelected(e){
+  // Since the control is part of the form, clicking on a tab option
+  // marks the form as dirty. So to avoid enabling the submit button
+  // set the control to pristine
+  this.viewModifyTicketFB.get('fctlTabOptions').markAsPristine();
+  
   console.log(this.buttonGroupOptions);
   this.enableSelectedTabOptions(e.value);
   console.log(this.viewModifyTicketFB.getRawValue());
+
+  Object.keys(this.viewModifyTicketFB.controls).forEach(e=>{
+    console.log(e+" : "+this.viewModifyTicketFB.controls[e].dirty)
+  });
+
   console.log("viewModifyTicketFB.dirty:"+this.viewModifyTicketFB.dirty);
   console.log("viewModifyTicketFB.touched:"+this.viewModifyTicketFB.touched);
   console.log("viewModifyTicketFB.errors:"+this.viewModifyTicketFB.errors);

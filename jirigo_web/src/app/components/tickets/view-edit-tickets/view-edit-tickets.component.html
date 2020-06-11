@@ -125,7 +125,7 @@
       </button>
       <button
         type="submit"
-        [disabled]="!viewModifyTicketFB.valid || !viewModifyTicketFB.dirty"
+        [disabled]="!viewModifyTicketFB.valid || !( viewModifyTicketFB.dirty && viewModifyTicketFB.touched) "
         class="btn btn-primary"
       >
         Submit
