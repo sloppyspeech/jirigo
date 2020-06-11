@@ -203,4 +203,8 @@ table.j-details-table  thead th{
   background-color: #ABACAE;
   color:whitesmoke
 }
-
+/* global quill-editor code display background , default black
+.ql-snow .ql-editor pre.ql-syntax {
+  background-color: #E8E8E8;
+  color:#404040
+} */

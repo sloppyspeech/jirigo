@@ -13,16 +13,16 @@
               <fa-icon [icon]="faClone" style="color: white;"></fa-icon>&nbsp;
               Clone Task
             </button>
-            <button type="button" label="Clone Task" class="btn btn-sm btn-electricpurple mr-1" (click)="showLinksModal($event)">
+            <button type="button" label="Link Task" class="btn btn-sm btn-electricpurple mr-1" (click)="showLinksModal($event)">
               <fa-icon [icon]="faLink" style="color: white;"></fa-icon>&nbsp;
               Link Task
             </button>
-            <button type="button" label="Clone Task" class="btn btn-sm btn-blandviolet mr-1" (click)="mtl.openMod()"
+            <button type="button" label="Log Time" class="btn btn-sm btn-blandviolet mr-1" (click)="mtl.openMod()"
               >
               <fa-icon [icon]="faClock" style="color: white;"></fa-icon>&nbsp;
               Log Time
             </button>
-            <button type="button" label="Clone Task" class="btn btn-sm btn-cyan-a700" (click)="mtl.openMod()"
+            <button type="button" label="Attachments" class="btn btn-sm btn-cyan-a700" (click)="mtl.openMod()"
               >
               <fa-icon [icon]="faPaperclip" style="color: white;"></fa-icon>&nbsp;
               Attachments
@@ -68,7 +68,7 @@
   <app-timelog [currentTaskNo]="task_no" *ngIf="buttonGroupOptions.showTimeLog"></app-timelog>
 
 
-  <div class="row " style="margin-top:40px;">
+  <div class="row mt-3" *ngIf="buttonGroupOptions.showTaskDetails || ! viewEditFormEditBtnEnabled">
     <div class="col offset-lg-5">
         <button type="button"  (click)="cancelViewEditForm()" class="btn btn-secondary mr-4">Cancel</button>
         <button type="submit" 

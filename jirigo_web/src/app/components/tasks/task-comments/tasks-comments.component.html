@@ -23,22 +23,29 @@
         <div class="form-group">
           <div class="row">
             <div class="col">
-              <quill-editor
-                formControlName="fctlComment"
-                [styles]="editorStyle"
-                [modules]="config"
-                [minLength]="5"
-              ></quill-editor>
-              <br />
-              <button
-                pButton
-                type="button"
-                label="Save Comment"
-                class="ui-button-success float-right"
-                (click)="saveComment()"
-              ></button>
+              <quill-editor 
+                    formControlName="fctlComment" 
+                    [styles]="editorStyle" 
+                    [modules]="config" 
+                    [minLength]="5"
+                    [placeholder]="'Enter your comment'"
+                    (onFocus)="execCommentFocusFunctions()"
+                    (onBlur)="execCommentBlurFunctions()"
+                    (onEditorChanged)="execOnEditorChanged()"
+                    (onEditorCreated)="onEditorCreated($event)"
+              >
+              </quill-editor>
+
             </div>
           </div>
+
+          <div class="row mt-3">
+            <div class="col-lg-12">
+              <button  type="button" label="Save Comment" class="btn btn-primary "
+                (click)="saveComment()" [disabled]="!getCommentVal() ">Comment</button>
+            </div>
+          </div>
+
         </div>
       </div>
     </div>
@@ -51,14 +58,18 @@
 </h5>
 <hr>
 <div *ngIf="allComments" style="background-color:#FFFFFF;">
-  <div *ngFor="let comment of allComments">
-      <div style="height:auto; background-color:#FFFFFF;">
-        <p style="padding:0 0 0 15px; margin: 0 0 0 0;">{{comment.created_by}} commented on :
-          {{comment.created_date | date : 'dd MMM yyyy HH:MM'}}</p>
-        <quill-editor [(ngModel)]="comment.comment_text" [readOnly]="true" [modules]="{toolbar:false}"
-          [styles]="{'height':'auto','border':'0px','margin':'0px 0px 0px 0px'}"></quill-editor>
-        <!-- <div [innerHTML]="comment.comment"></div> -->
+  <div class="container-fluid" style="background-color: #F8F8F8;">
+    <ng-container *ngFor="let comment of allComments">
+      <div class="row mb-3" >
+        <div class="col-lg-12 comment-item-col" >
+          <p  class="comment-header">
+            <span class="comment-author">{{comment.created_by}}</span>
+            commented on :
+            {{comment.created_date | date : 'dd MMM yyyy HH:mm:ss'}}</p>
+          <quill-editor [(ngModel)]="comment.comment_text" [readOnly]="true" [modules]="{toolbar:false}"
+            [styles]="{'height':'auto','border':'0px','margin':'0px 0px 0px 0px'}"></quill-editor>
+        </div>
       </div>
-      <hr style="margin: 0 20px 10px 15px;">
+    </ng-container>
   </div>
 </div>

@@ -13,7 +13,7 @@
   <tbody>
     <tr *ngFor="let auditItem of allTaskAuditData; let idx = index">
       <td scope="row">{{ idx + 1 }}</td>
-      <td>{{ auditItem.created_date | date: "dd MMM yyyy HH:MM:ss" }}</td>
+      <td>{{ auditItem.created_date | date: "dd MMM yyyy HH:mm:ss" }}</td>
       <td>{{ auditItem.created_by }}</td>
       <td>Changed</td>
       <td>{{ auditItem.display_column_name }}</td>

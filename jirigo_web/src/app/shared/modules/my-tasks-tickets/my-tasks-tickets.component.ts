@@ -64,12 +64,8 @@ export class MyTasksTicketsComponent implements OnInit {
     console.log(this._router.getCurrentNavigation());
     console.log(this._activeRoute.routeConfig);
     this.myItemType = this._activeRoute.routeConfig.path;
-
-    if (this.myItemType == "tickets") {
-      this.ListItems('AssignedToMe');
-    } else if (this.myItemType == "tasks") {
-      this.ListItems('AssignedToMe');
-    }
+    this.ListItems('AssignedToMe');
+    
   }
 
   ListItems(criterion){

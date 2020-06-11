@@ -1,6 +1,6 @@
 import { Subscription } from 'rxjs';
 import { UtilsService } from './../../../services/shared/utils.service';
-import { NgModule, Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { NgModule, Component, OnInit, Input, Output, EventEmitter,ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { StaticDataService } from '../../../services/static-data.service';
 import { TaskDetailsService } from '../../../services/tasks/task-details.service';
@@ -10,6 +10,8 @@ import { NgxSpinnerService  } from 'ngx-spinner';
 import { Router  } from '@angular/router';
 import { faClone,faEdit, faTshirt,faLink,faClock,faPaperclip } from '@fortawesome/free-solid-svg-icons';
 import { MessageService} from 'primeng/api';
+import { TimelogComponent} from '../timelog/timelog.component';
+import { TaskCommentsComponent } from '../task-comments/tasks-comments.component';
 
 @Component({
   selector: 'app-view-edit-task',
@@ -98,6 +100,9 @@ export class ViewEditTaskComponent implements OnInit {
 
   @Output()
   issueTypeO: EventEmitter<any> = new EventEmitter();
+
+  @ViewChild(TimelogComponent) timeLogChildComponent: TimelogComponent;
+  @ViewChild(TaskCommentsComponent) taskCommentsChildComponent: TaskCommentsComponent;
 
 
   constructor(private _formBuilder: FormBuilder,
@@ -350,14 +355,19 @@ export class ViewEditTaskComponent implements OnInit {
   reloadComponent() {
     console.log("===============reloadComponent=================");
     console.log(this._router.url);
-    // this._router.routeReuseStrategy.shouldReuseRoute = () => true;
-    // this._router.onSameUrlNavigation = 'reload';
-    // this._router.navigate([this._router.url]);
+    console.log(this._router);
+    console.log(this._activatedRoute);
 
+    this._router.routeReuseStrategy.shouldReuseRoute = () => false;
+    this._router.onSameUrlNavigation = 'reload';
+    // this._router.navigate([this._router.url]);
+    
     let currentUrl = this._router.url;
-    this._router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
-        this._router.navigate([currentUrl]);
-    });
+    console.log(currentUrl.substring(0,currentUrl.indexOf('?')));
+    console.log(this._activatedRoute.snapshot.queryParams);
+    // this._router.navigateByUrl('/', {skipLocationChange: true}).then(() => {
+    this._router.navigate([currentUrl.substring(0,currentUrl.indexOf('?'))],{queryParams: this._activatedRoute.snapshot.queryParams});
+    // });
 }
 
 cloneTask(){
@@ -405,15 +415,21 @@ cloneTask(){
   });
 }
 
-tabSelected(e){
-  console.log(this.buttonGroupOptions);
+enableSelectedTabOptions(tab){
+  console.log("========enableSelectedTabOptions=========");
   for (let key in this.buttonGroupOptions){
-    if(key == e.value)
+    console.log(key +":"+tab);
+    if(key == tab)
       this.buttonGroupOptions[key]=true;
     else{
       this.buttonGroupOptions[key]=false;
     }
   }
+}
+
+tabSelected(e){
+  console.log(this.buttonGroupOptions);
+  this.enableSelectedTabOptions(e.value);
   console.log(this.buttonGroupOptions);
   console.log(this.viewModifyTaskFB.getRawValue());
   console.log("viewModifyTaskFB.dirty:"+this.viewModifyTaskFB.dirty);
@@ -455,7 +471,8 @@ console.log(inpData);
         console.log(res);
         if (res['dbQryStatus'] == 'Success' && res['dbQryResponse']){
             console.log("ALl OKAY");
-            this.reloadComponent();
+            // this.reloadComponent();
+            this.timeLogChildComponent.getTimeLoggingData();
             this._serNgxSpinner.hide();
         }
         else{
@@ -482,8 +499,8 @@ modalAlertAction(param){
       this.reloadComponent();
   }
   else if(param === "TaskCloneModalSuccessConfirm"){
-    console.log('/tasks/view-edit-task/'+this.clonedTaskNo);
-    this._router.navigateByUrl('/tasks/view-edit-task/'+this.clonedTaskNo);
+    console.log('/tasks/view-edit-tasks/'+this.clonedTaskNo);
+    this._router.navigate(['/tasks/view-edit-tasks'],{queryParams:{'task_no':this.clonedTaskNo}});
     this._router.routeReuseStrategy.shouldReuseRoute = () => false;
     this._router.onSameUrlNavigation = 'reload';
   }
@@ -492,6 +509,15 @@ modalAlertAction(param){
     this.reloadComponent();
   }
 
+}
+
+
+enableTaskComments (e){
+  console.log('enableTicketComments');
+  console.log(e);
+  this.buttonGroupOptions.showTicketComments=true;
+  this.enableSelectedTabOptions('showTicketComments');
+  this.taskCommentsChildComponent.getTaskComments(this.task_no);
 }
 
 }

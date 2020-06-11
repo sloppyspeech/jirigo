@@ -1,8 +1,8 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input,Output,EventEmitter } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { TaskCommentsService } from '../../../services/tasks/task-comments.service';
 import { NgxSpinnerService  }  from 'ngx-spinner';
-import { Router} from '@angular/router';
+import { Router,ActivatedRoute} from '@angular/router';
 
 
 @Component({
@@ -14,16 +14,25 @@ export class TaskCommentsComponent implements OnInit {
   @Input()
   parentForm: FormGroup;
 
+  @Output()
+  taskCommentLogged=new EventEmitter;
+
+  quillEditor:any='';
   editorStyle = {
-    height: '200px'
+    height: '200px',
+    backgroundColor:'#F8F8F8'
   };
 
   allComments;
 
+  editorOptions={
+    theme:'snow'
+  }
+
   config = {
     toolbar: [
       ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-      // ['blockquote', 'code-block'],
+      ['blockquote', 'code-block'],
       // [{ 'header': 1 }, { 'header': 2 }],               // custom button values
       [{ 'list': 'ordered' }, { 'list': 'bullet' }],
       // [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
@@ -34,15 +43,16 @@ export class TaskCommentsComponent implements OnInit {
       // [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
       [{ 'font': [] }],
       [{ 'align': [] }],
-      // ['clean'],                                         // remove formatting button
-      ['link', 'image']                         // link and image, video
+      ['clean'],                                         // remove formatting button
+      // ['link', 'image']                         // link and image, video
     ]
   };
 
   constructor(
     private _serTaskComments: TaskCommentsService,
     private _serNgxSpinner:NgxSpinnerService,
-    private _router:Router
+    private _router:Router,
+    private _activatedRoute:ActivatedRoute
   ) { }
 
   ngOnInit(): void {
@@ -50,6 +60,7 @@ export class TaskCommentsComponent implements OnInit {
     console.log(this.parentForm.getRawValue());
     console.log("===============================================");
     this._serNgxSpinner.show();
+    this.parentForm.get('fctlComment').enable();
 
     this._serTaskComments.getAllTaskComments(this.parentForm.get('fctlTaskNo').value)
       .subscribe(res => {
@@ -91,8 +102,9 @@ export class TaskCommentsComponent implements OnInit {
           this.parentForm.reset();
           setTimeout(() => {
             this.getTaskComments(inpData['task_no']);
-            this.reloadComponent();
+            // this.reloadComponent();
             this._serNgxSpinner.hide();
+            this.taskCommentLogged.next('taskCommentLogged');
           }, 1200);
         });
     }
@@ -118,6 +130,31 @@ export class TaskCommentsComponent implements OnInit {
     console.log(this._router.url);
     this._router.routeReuseStrategy.shouldReuseRoute = () => false;
     this._router.onSameUrlNavigation = 'reload';
-    this._router.navigate([this._router.url]);
+    let currentUrl = this._router.url;
+    console.log(currentUrl.substring(0,currentUrl.indexOf('?')));
+    console.log(this._activatedRoute.snapshot.queryParams);
+    // this._router.navigate([this._router.url]);
+    this._router.navigate([currentUrl.substring(0,currentUrl.indexOf('?'))],{queryParams: this._activatedRoute.snapshot.queryParams});
+
+}
+
+onEditorCreated(quill) {
+  this.quillEditor = quill;
+  console.log(quill);
+}
+
+execCommentFocusFunctions(){
+  console.log(this.quillEditor.options.container.style.backgroundColor);
+  this.quillEditor.options.container.style.backgroundColor='white';
+}
+execCommentBlurFunctions(){
+  console.log(this.quillEditor.options.container.style.backgroundColor);
+  this.quillEditor.options.container.style.backgroundColor='#F8F8F8';
+}
+execOnEditorChanged(){
+}
+
+getCommentVal(){
+  return this.parentForm.get('fctlComment').value?.trim();
 }
 }

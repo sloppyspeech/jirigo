@@ -1,8 +1,8 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input,Output,EventEmitter } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { TicketCommentsService } from '../../../services/tickets/ticket-comments.service';
 import { NgxSpinnerService  }  from 'ngx-spinner';
-import { Router} from '@angular/router';
+import { Router,ActivatedRoute} from '@angular/router';
 
 
 @Component({
@@ -11,11 +11,18 @@ import { Router} from '@angular/router';
   styleUrls: ['./ticket-comments.component.css']
 })
 export class TicketCommentsComponent implements OnInit {
+  disableComment:boolean=true;
+
   @Input()
   parentForm: FormGroup;
 
+  @Output()
+  ticketCommentLogged=new EventEmitter;
+
+  quillEditor:any='';
   editorStyle = {
-    height: '200px'
+    height: '200px',
+    backgroundColor:'#F8F8F8'
   };
 
   allComments;
@@ -23,7 +30,7 @@ export class TicketCommentsComponent implements OnInit {
   config = {
     toolbar: [
       ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-      // ['blockquote', 'code-block'],
+      ['blockquote', 'code-block'],
       // [{ 'header': 1 }, { 'header': 2 }],               // custom button values
       [{ 'list': 'ordered' }, { 'list': 'bullet' }],
       // [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
@@ -34,7 +41,7 @@ export class TicketCommentsComponent implements OnInit {
       // [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
       [{ 'font': [] }],
       [{ 'align': [] }]
-      // ['clean'],                                         // remove formatting button
+      ['clean'],                                         // remove formatting button
       // ['link', 'image']                         // link and image, video
     ]
   };
@@ -42,12 +49,16 @@ export class TicketCommentsComponent implements OnInit {
   constructor(
     private _serTicketComments: TicketCommentsService,
     private _serNgxSpinner:NgxSpinnerService,
-    private _router:Router
+    private _router:Router,
+    private _activatedRoute: ActivatedRoute,
   ) { }
 
   ngOnInit(): void {
     console.log('===========Ticket Component NgInit=============');
     console.log(this.parentForm.getRawValue());
+    console.log('fctlComment :'+this.parentForm.get('fctlComment').value);
+    this.parentForm.get('fctlComment').enable();
+
     console.log("===============================================");
     this._serNgxSpinner.show();
 
@@ -92,8 +103,9 @@ export class TicketCommentsComponent implements OnInit {
           this.parentForm.reset();
           setTimeout(() => {
             this.getTicketComments(inpData['ticket_no']);
-            this.reloadComponent();
+            // this.reloadComponent();
             this._serNgxSpinner.hide();
+            this.ticketCommentLogged.next('ticketCommentLogged');
           }, 1200);
         });
     }
@@ -119,6 +131,32 @@ export class TicketCommentsComponent implements OnInit {
     console.log(this._router.url);
     this._router.routeReuseStrategy.shouldReuseRoute = () => false;
     this._router.onSameUrlNavigation = 'reload';
-    this._router.navigate([this._router.url]);
+    let currentUrl = this._router.url;
+    console.log(currentUrl.substring(0,currentUrl.indexOf('?')));
+    console.log(this._activatedRoute.snapshot.queryParams);
+    // this._router.navigate([this._router.url]);
+    this._router.navigate([currentUrl.substring(0,currentUrl.indexOf('?'))],{queryParams: this._activatedRoute.snapshot.queryParams});
+
 }
+
+onEditorCreated(quill) {
+  this.quillEditor = quill;
+}
+
+execCommentFocusFunctions(){
+  console.log(this.quillEditor.options.container.style.backgroundColor);
+  this.quillEditor.options.container.style.backgroundColor='white';
+}
+execCommentBlurFunctions(){
+  console.log(this.quillEditor.options.container.style.backgroundColor);
+  this.quillEditor.options.container.style.backgroundColor='#F8F8F8';
+}
+execOnEditorChanged(){
+}
+
+getCommentVal(){
+  return this.parentForm.get('fctlComment').value?.trim();
+}
+
+
 }

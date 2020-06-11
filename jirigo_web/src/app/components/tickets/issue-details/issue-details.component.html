@@ -134,7 +134,7 @@
                 <label class="col-form-label col-form-label-sm">Created Date</label>
                 <div class="input-group ">
                   <input class="form-control j-current-input " 
-                  [value]="parentForm.get('fctlCreatedDate').value | date : 'dd MMM yyyy HH:MM:SS'"
+                  [value]="parentForm.get('fctlCreatedDate').value | date : 'dd MMM yyyy HH:mm:ss'"
                   name="nm_createdDate"
                   readonly />
                 </div>
@@ -151,7 +151,7 @@
                 <div class="input-group ">
                   <input type="text" class="form-control j-current-input " 
                           name="mmd"
-                          [value]="parentForm.get('fctlModifiedDate').value | date : 'dd MMM yyyy HH:MM:SS'"
+                          [value]="parentForm.get('fctlModifiedDate').value | date : 'dd MMM yyyy HH:mm:ss'"
                           readonly />
                 </div>
               </div>

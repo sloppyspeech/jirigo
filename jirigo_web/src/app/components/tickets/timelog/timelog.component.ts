@@ -1,6 +1,6 @@
 import { Component, OnInit,Input } from '@angular/core';
 import { TicketLogtimeService} from '../../../services/tickets/ticket-logtime.service';
-
+import { NgxSpinnerService} from 'ngx-spinner';
 @Component({
   selector: 'app-ticket-timelog',
   templateUrl: './timelog.component.html',
@@ -10,11 +10,15 @@ export class TimelogComponent implements OnInit {
   @Input() currentTicketNo:string;
   listTimeLogEntries:any[]=[];
 
-  constructor(private _serTicketTimeLog:TicketLogtimeService) { }
+  constructor(private _serTicketTimeLog:TicketLogtimeService,
+              private _serNgxSpinner:NgxSpinnerService) { }
 
   ngOnInit(): void {
-    console.log('DependsOnComponent');
-
+    console.log('ngOnInit ticket timelog');
+    this.getTimeLoggingData();
+  }
+  getTimeLoggingData(){
+    this._serNgxSpinner.show();
     console.log(this.currentTicketNo);
     this._serTicketTimeLog.getTimeLog(this.currentTicketNo)
         .subscribe(res=>{
@@ -24,7 +28,7 @@ export class TimelogComponent implements OnInit {
               this.listTimeLogEntries.push(item);
             });
           }
+              this._serNgxSpinner.hide();
         });
   }
-
 }

@@ -15,8 +15,11 @@ export class TimelogComponent implements OnInit {
   constructor(private _serTaskTimeLog:TaskLogtimeService) { }
 
   ngOnInit(): void {
-    console.log('DependsOnComponent');
+    console.log('ngOnInit Timelogging');
+    this.getTimeLoggingData();
+  }
 
+  getTimeLoggingData(){
     console.log(this.currentTaskNo);
     this._serTaskTimeLog.getTimeLog(this.currentTaskNo)
         .subscribe(res=>{

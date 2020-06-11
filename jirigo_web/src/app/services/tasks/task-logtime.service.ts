@@ -25,7 +25,7 @@ export class TaskLogtimeService {
   getTimeLog(taskNo:string){
     console.log("@@@@getAllComments@@@@@")
     console.log("getAllTaskComments:"+taskNo);
-    let url=this.sApiEndPoint+"tasks/timelog/"+taskNo;
+    let url=this.sApiEndPoint+"task/timelog/"+taskNo;
     return this._httpCli.get(url);
   }
   createTimeLog(inpData:ITimeLogData){

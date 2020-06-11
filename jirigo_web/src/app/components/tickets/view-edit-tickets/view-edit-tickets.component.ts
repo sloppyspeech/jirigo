@@ -1,5 +1,5 @@
 import { TicketLogtimeService } from './../../../services/tickets/ticket-logtime.service';
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter,ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { StaticDataService } from '../../../services/static-data.service';
 import { TicketDetailsService } from '../../../services/tickets/ticket-details.service';
@@ -7,7 +7,9 @@ import { ActivatedRoute } from '@angular/router';
 import { NgxSpinnerService  } from 'ngx-spinner';
 import { Router  } from '@angular/router';
 import { faClone,faEdit,faLink,faClock } from '@fortawesome/free-solid-svg-icons';
-import {MessageService} from 'primeng/api';
+import { MessageService } from 'primeng/api';
+import { TimelogComponent } from '../timelog/timelog.component';
+import { TicketCommentsComponent } from '../ticket-comments/ticket-comments.component';
 
 @Component({
   selector: 'app-create-ticket',
@@ -34,6 +36,7 @@ export class ViewEditTicketsComponent implements OnInit {
   viewModifyTicketFCList;
   displayPageDirtyDialog:boolean=false;
   leaveViewEditPageUnsaved:boolean=false;
+
   buttonGroupOptions:any={
     showTicketDetails:false,
     showTicketComments:false,
@@ -89,6 +92,9 @@ export class ViewEditTicketsComponent implements OnInit {
 
   @Output()
   issueTypeO: EventEmitter<any> = new EventEmitter();
+
+  @ViewChild(TimelogComponent) ticketTimeLogChildComponent:TimelogComponent;  
+  @ViewChild(TicketCommentsComponent) ticketCommentsChildComponent:TicketCommentsComponent;  
 
   modalAlertConfig={
     modalType :'',
@@ -345,7 +351,12 @@ export class ViewEditTicketsComponent implements OnInit {
     console.log(this._router.url);
     this._router.routeReuseStrategy.shouldReuseRoute = () => false;
     this._router.onSameUrlNavigation = 'reload';
-    this._router.navigate([this._router.url]);
+    // this._router.navigate([this._router.url]);
+    let currentUrl = this._router.url;
+    console.log(currentUrl.substring(0,currentUrl.indexOf('?')));
+    console.log(this._activatedRoute.snapshot.queryParams);
+    this._router.navigate([currentUrl.substring(0,currentUrl.indexOf('?'))],{queryParams: this._activatedRoute.snapshot.queryParams});
+
 }
 
 cloneTicket(){
@@ -390,16 +401,21 @@ cloneTicket(){
   });
 }
 
-
-tabSelected(e){
-  console.log(this.buttonGroupOptions);
+enableSelectedTabOptions(tab){
+  console.log("========enableSelectedTabOptions=========");
   for (let key in this.buttonGroupOptions){
-    if(key == e.value)
+    console.log(key +":"+tab);
+    if(key == tab)
       this.buttonGroupOptions[key]=true;
     else{
       this.buttonGroupOptions[key]=false;
     }
   }
+}
+
+tabSelected(e){
+  console.log(this.buttonGroupOptions);
+  this.enableSelectedTabOptions(e.value);
   console.log(this.viewModifyTicketFB.getRawValue());
   console.log("viewModifyTicketFB.dirty:"+this.viewModifyTicketFB.dirty);
   console.log("viewModifyTicketFB.touched:"+this.viewModifyTicketFB.touched);
@@ -426,7 +442,7 @@ modalAlertAction(param){
   }
   else if(param === "TicketCloneModalSuccessConfirm"){
     console.log('/tickets/view-edit-Ticket/'+this.clonedTicketNo);
-    this._router.navigateByUrl('/tickets/view-edit-tickets/'+this.clonedTicketNo);
+    this._router.navigate(['/tickets/view-edit-tickets'],{queryParams:{'ticket_no':this.clonedTicketNo}});
     this._router.routeReuseStrategy.shouldReuseRoute = () => false;
     this._router.onSameUrlNavigation = 'reload';
   }
@@ -443,7 +459,7 @@ timeLoggerCancelled(){
 }
 
 timeLoggerConfirmed(data){
-  this._serNgxSpinner.show();
+  // this._serNgxSpinner.show();
   console.log('timeLoggerConfirmed called ');
   console.log(data);
   let adate=new Date(data['actualDate']['year'],data['actualDate']['month']-1,data['actualDate']['day']);
@@ -462,9 +478,10 @@ console.log(inpData);
       .subscribe(res=>{
         console.log(res);
         if (res['dbQryStatus'] == 'Success' && res['dbQryResponse']){
-            console.log("ALl OKAY");
-            this.reloadComponent();
-            this._serNgxSpinner.hide();
+            console.log("ALL OKAY");
+            // this.reloadComponent();
+            this.ticketTimeLogChildComponent.getTimeLoggingData();
+            // this._serNgxSpinner.hide();
         }
         else{
             console.log(res);
@@ -473,4 +490,13 @@ console.log(inpData);
         }
       });
 }
+
+enableTicketComments (e){
+  console.log('enableTicketComments');
+  console.log(e);
+  this.buttonGroupOptions.showTicketComments=true;
+  this.enableSelectedTabOptions('showTicketComments');
+  this.ticketCommentsChildComponent.getTicketComments(this.ticket_no);
+}
+
 }

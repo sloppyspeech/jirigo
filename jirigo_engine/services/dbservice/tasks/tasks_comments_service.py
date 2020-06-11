@@ -57,7 +57,7 @@ class JirigoTaskComments(object):
                         from ttask_comments 
                     where is_active='Y'
                       and task_no=%s
-                      order by comment_id desc
+                      order by comment_id
                     )
                     SELECT json_agg(t) from t;
                    """

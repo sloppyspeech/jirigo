@@ -1,11 +1,5 @@
 <!-- <h4 style="margin-bottom: 20px;">Create Sprint</h4> -->
-<div class="row">
-<div class="col-lg-12 col-md-12 col-sm-12 text-center">
-    <button type="submit" (click)="showSprintNameDialog();" class="btn btn-primary">Create Sprint</button>
-    <a [routerLink]="['/sprints/list-sprints']" class="btn btn-secondary" style="margin:0 0 0 20px; padding: 6px 40px 6px 40px;">Cancel</a>
-</div>
-</div>
-<br>
+
 <p-pickList
   [source]="sourceTasks"
   [target]="targetTasks"
@@ -41,6 +35,12 @@
   </ng-template>
 </p-pickList>
 
+<div class="row  mt-4" >
+  <div class="col-lg-12 col-md-12 col-sm-12 text-center">
+    <button type="submit" (click)="showSprintNameDialog();" class="btn btn-primary">Create Sprint</button>
+    <a [routerLink]="['/sprints/list-sprints']" class="btn btn-secondary mr-2" style="margin:0 0 0 20px; padding: 6px 40px 6px 40px;">Cancel</a>
+  </div>
+</div>
 
 <p-dialog [(visible)]="displayConfirmSprintNameModal" [modal]="true" [style]="{width: '28vw'}" [baseZIndex]="10000"
     [draggable]="false" [resizable]="false" onHide="sprintNameModalOnHide()">

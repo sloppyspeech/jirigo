@@ -3,3 +3,24 @@
     margin-right: 3px;
     cursor: pointer;
 }
+
+.comment-item-col{
+    background-color: white; 
+    padding-right: 0px; 
+    padding-left: 0px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #E8E8E8;
+}
+.comment-header{
+    background-color: #DDDDDD;
+    color:#666666;
+    padding-top:5px;
+    padding-bottom:5px;
+    padding-left: 15px;
+}
+.comment-header >span.comment-author{
+    color:black;
+    font-size: 16px;
+    font-weight: 550;
+}

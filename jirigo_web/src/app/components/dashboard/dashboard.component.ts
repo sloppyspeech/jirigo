@@ -13,20 +13,6 @@ import { compileNgModule } from '@angular/compiler';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
-/** sparkle line test***/
- 
-data = {
-  labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-  datasets: [
-      
-      {
-          label: 'Second Dataset',
-          data: [28, 48, 40, 19, 86, 27, 90],
-          fill: false,
-          borderColor: '#565656'
-      }
-  ]
-};
 
 options = {
 title: {
@@ -485,7 +471,7 @@ legend: {
               },
               title:{
                 display:true,
-                text:'# Tickets Still Open '
+                text:'# Tickets Still Open,count by Created Date'
               }
               ,
               maintainAspectRatio: false,

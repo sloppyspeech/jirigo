@@ -1093,7 +1093,7 @@ def create_timelog_entry():
         return get_jsonified_error_response('Failure',"create_timelog_entry " + get_errmsg('NAGR'))
 
 
-@app.route('/api/v1/timelogger/tasks/timelog/<task_no>',methods=['GET'])
+@app.route('/api/v1/timelogger/tasks/task/timelog/<task_no>',methods=['GET'])
 def get_timelog_entries_for_task(task_no):
     data={}
     if request.method == 'GET':
