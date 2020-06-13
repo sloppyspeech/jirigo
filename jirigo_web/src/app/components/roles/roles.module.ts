@@ -1,3 +1,4 @@
+import { ModalConfirmModule } from './../../shared/modules/modal-confirm/modal-confirm.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -19,7 +20,9 @@ import { PickListModule} from 'primeng/picklist';
     FontAwesomeModule,
     FormsModule,
     ReactiveFormsModule,
-    PickListModule
+    PickListModule,
+    ModalConfirmModule
+
   ]
 })
 export class RolesModule { }

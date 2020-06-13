@@ -91,3 +91,17 @@
    
   </div>
 </div>
+
+
+<app-modal-confirm
+  [modalType]="modalAlertConfig.modalType"
+  [showModal]="modalAlertConfig.showModal"
+  [title]="modalAlertConfig.title"
+  [modalContent]="modalAlertConfig.modalContent"
+  [cancelButtonLabel]="modalAlertConfig.cancelButtonLabel"
+  [confirmButtonLabel]="modalAlertConfig.confirmButtonLabel"
+  (dialogCanceled)="modalAlertAction(modalAlertConfig.dialogCanceled)"
+  (dialogConfirmed)="modalAlertAction(modalAlertConfig.dialogConfirmed)"
+  (dialogClosed)="modalAlertAction(modalAlertConfig.dialogClosed)"
+>
+</app-modal-confirm>

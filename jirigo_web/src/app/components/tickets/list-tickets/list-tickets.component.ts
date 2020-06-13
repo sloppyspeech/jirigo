@@ -2,13 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { Router,ActivatedRoute,ParamMap  } from '@angular/router';
 import { TicketDetailsService  } from '../../../services/tickets/ticket-details.service';
 import { NgxSpinnerComponent, NgxSpinnerService } from 'ngx-spinner';
-
+import {faPlusSquare} from '@fortawesome/free-solid-svg-icons';
 @Component({
   selector: 'app-list-tickets',
   templateUrl: './list-tickets.component.html',
   styleUrls: ['./list-tickets.component.css']
 })
 export class ListTicketsComponent implements OnInit {
+  faPlusSquare=faPlusSquare;
+
   allTickets=[];
   showTable:boolean=false;
   showNoTicketsRetrieved:boolean=false;

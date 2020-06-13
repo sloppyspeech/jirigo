@@ -430,7 +430,7 @@ class JirigoUsers(object):
             return response_data
         except  (Exception, psycopg2.Error) as error:
             if(self.jdb.dbConn):
-                print(f'Error While get_roles_for_user_assignment {error}')
+                print(f'Error While get_all_valid_routes_for_user {error}')
                 raise
 
     def update_toggle_active_status(self):

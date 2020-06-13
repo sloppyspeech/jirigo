@@ -1,0 +1,45 @@
+
+.jhp-icon-task{
+    font-size: 14px;
+    display: inline-block;
+    margin-right: 8px;
+    color:#bbbbbb;
+}
+.jhp-icon-ticket{
+    font-size: 14px;
+    display: inline-block;
+    margin-right: 8px;
+    color:#bbbbbb;
+}
+.jhp-activity-date{
+    font-size: 12px;
+    color: #bbbbbb;
+    text-align:right;
+}
+
+.jhp-item-details{
+    font-size:16px;
+    color:#628cB5;
+}
+
+.jhp-item-details:hover{
+    cursor: pointer;
+}
+.jhp-item-changer-text{
+    color: #bbbbbb;
+    font-size:13px;
+    padding-right:8px;
+}
+.jhp-item-changer-username{
+    color: #777777;
+    font-size:16px;
+    text-decoration: underline;
+}
+.jhp-item-summary{
+    cursor: pointer;
+    color:#628cB5;
+}
+.a-item:hover{
+    background-color: honeydew;
+    text-decoration-line: unset;
+}

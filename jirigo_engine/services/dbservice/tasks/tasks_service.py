@@ -192,14 +192,14 @@ class JirigoTask(object):
                         UPDATE TTASKS 
                            SET  summary=%s,
                                 description=%s,
-                                severity=%s,
-                                priority=%s,
-                                issue_status=%s,
-                                issue_type=%s,
-                                environment=%s,
+                                severity=COALESCE(%s,severity),
+                                priority=COALESCE(%s,priority),
+                                issue_status=COALESCE(%s,issue_status),
+                                issue_type=COALESCE(%s,issue_type),
+                                environment=COALESCE(%s,issue_type),
                                 modified_by=%s,
                                 modified_date=%s,
-                                reported_by=get_user_id(%s),
+                                reported_by=COALESCE(get_user_id(%s),reported_by),
                                 reported_date=%s,
                                 project_id=get_proj_id(%s),
                                 assignee_id=get_user_id(%s),
@@ -208,6 +208,9 @@ class JirigoTask(object):
                                 estimated_time=%s  
                          WHERE task_no=%s;
                     """
+
+        self.estimated_time = None if self.estimated_time == '' else self.estimated_time
+        
         values=(self.summary,self.description,self.severity,self.priority,
                 self.issue_status,self.issue_type,self.environment,self.modified_by,
                 datetime.datetime.today(),self.reported_by,datetime.datetime.today(),

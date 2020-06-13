@@ -43,7 +43,7 @@ import { DebugComponent } from './components/debug/debug.component';
 import { UtilsService  } from './services/shared/utils.service';
 
 import { ModalConfirmModule} from './shared/modules/modal-confirm/modal-confirm.module';
-import { DataExtractsComponent } from './components/data-extracts/data-extracts.component'
+import { DataExtractsComponent } from './components/data-extracts/data-extracts.component';
 @NgModule({
   declarations: [
     AppComponent,

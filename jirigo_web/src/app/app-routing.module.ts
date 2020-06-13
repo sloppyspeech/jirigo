@@ -29,7 +29,11 @@ const routes: Routes = [
     path:'register',
     component:RegisterComponent
   },
-
+  {
+    path:'homepage',
+    loadChildren: () => import('./components/homepage/homepage.module').then( m => m.HomepageModule),
+    canActivate:[AuthGuard,RoleGuard]
+  },
   {
     path:'tickets',
     loadChildren: () => import('./components/tickets/tickets.module').then( m => m.TicketsModule),
@@ -48,6 +52,11 @@ const routes: Routes = [
   {
     path:'boards',
     loadChildren:() => import ('./components/boards/boards.module').then(m=> m.BoardsModule),
+    canActivate:[AuthGuard,RoleGuard]
+  },
+  {
+    path:'dashboard',
+    loadChildren: () => import('./components/dashboard/dashboard.module').then( m => m.DashboardModule),
     canActivate:[AuthGuard,RoleGuard]
   },
   {

@@ -23,7 +23,7 @@ export class ViewEditTicketsComponent implements OnInit {
   faLink=faLink;
   faClock=faClock;
   isLoaded: boolean = false;
-  viewEditFormEditBtnEnabled:boolean=true;
+  viewEditFormEditBtnDisabled:boolean=true;
   viewModifyTicketFB: FormGroup;
   viewModifyTicketFBState: any;
   createdDate: any;
@@ -207,6 +207,7 @@ export class ViewEditTicketsComponent implements OnInit {
       }
     });
   }
+
   enableAllFormControls(){
     Object.keys(this.viewModifyTicketFCList).forEach(control => {
       this.viewModifyTicketFB.get(control).enable();
@@ -293,9 +294,13 @@ export class ViewEditTicketsComponent implements OnInit {
   markFormEditable() {
     console.log("Inside markFormEditable");
     let controls=this.viewModifyTicketFB.controls;
-    this.enableAllFormControls();
-    this.viewEditFormEditBtnEnabled=false;
-
+    // this.enableAllFormControls();
+    this.viewEditFormEditBtnDisabled=false;
+    // Object.keys(this.viewModifyTicketFB.controls).forEach(e=>{
+    //   console.log(e+" : "+this.viewModifyTicketFB.controls[e].valid)
+    // });
+    this.viewModifyTicketFB.get('fctlSummary').enable();
+    this.viewModifyTicketFB.get('fctlDescription').enable();
   }
 
 
@@ -315,7 +320,7 @@ export class ViewEditTicketsComponent implements OnInit {
       this.modalAlertConfig.showModal=true;
     }
     else{
-      this.viewEditFormEditBtnEnabled=true;
+      this.viewEditFormEditBtnDisabled=true;
       this.disableAllFormControls();
     }
 
@@ -327,7 +332,7 @@ export class ViewEditTicketsComponent implements OnInit {
       console.log("Reset Back To Old values");
       console.log(this.viewModifyTicketFB.value);
       console.log(this.viewModifyTicketFBState);
-      this.viewEditFormEditBtnEnabled=true;
+      this.viewEditFormEditBtnDisabled=true;
       this.setFormBackToIntialState();
       this.disableAllFormControls();
       this.modalAlertConfig.showModal=false;

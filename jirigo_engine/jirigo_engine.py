@@ -26,6 +26,9 @@ from services.dbservice.roles.role_service import JirigoRoles
 from services.dbservice.tickets.ticket_timelogging_service  import JirigoTicketLogTime
 from services.dbservice.menus.menus_service import JirigoMenus
 from services.dbservice.data_extracts.data_extract_service import JirigoDataExtract
+from services.dbservice.homepage.homepage_service import JirigoHomePage
+
+
 #-------------------
 UPLOAD_FOLDER='./uploaded_files'
 UPLOAD_IMAGE_FOLDER='images'
@@ -1525,7 +1528,7 @@ def get_all_valid_routes_for_user():
             print(get_jsonified_error_response('Failure',error))
             return get_jsonified_error_response('Failure',error)
     else:
-        return get_jsonified_error_response('Failure',"get_all_valid_routes_for_user " +get_errmsg('NAPR'))
+        return get_jsonified_error_response('Failure',"get_all_valid_routes_for_user " +get_errmsg('NAGR'))
 
 
 @app.route('/api/v1/menu-management/all-unassigned-menuitems-by-role-project',methods=['GET'])
@@ -1609,6 +1612,23 @@ def get_all_tasks_for_time_range():
             return get_jsonified_error_response('Failure',error)
     else:
         return get_jsonified_error_response('Failure',"get_all_tasks_for_time_range " + get_errmsg('NAGR'))
+
+@app.route('/api/v1/homepage/recent-proj-activities',methods=['GET'])
+def get_recent_proj_ticket_task_activities():
+    if request.method == 'GET':
+        print('In Get get_recent_proj_ticket_task_activities')
+        try:
+            project_id=request.args.get('project_id')
+            current_user_id=request.args.get('current_user_id')
+            num_rows=request.args.get('num_rows')
+            jdb=JirigoHomePage({'project_id':project_id,'current_user_id':current_user_id,'num_rows':num_rows})
+            data=jdb.get_recent_proj_ticket_task_activities()
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in get_recent_proj_ticket_task_activities {error}')
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',"get_recent_proj_ticket_task_activities " + get_errmsg('NAGR'))
 
 
 

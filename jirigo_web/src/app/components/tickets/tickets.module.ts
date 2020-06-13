@@ -59,7 +59,8 @@ import { NumToHhmiPipeModule} from '../../shared/modules/pipes/num-to-hhmi.pipe.
     ContextMenuModule,
     ModalConfirmModule,
     ModalTimeloggingModule,
-    NumToHhmiPipeModule
+    NumToHhmiPipeModule,
+    FontAwesomeModule
   ]
 })
 export class TicketsModule { }

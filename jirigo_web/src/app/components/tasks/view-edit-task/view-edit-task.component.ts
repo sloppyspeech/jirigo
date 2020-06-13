@@ -27,7 +27,7 @@ export class ViewEditTaskComponent implements OnInit {
   faClock=faClock;
   faPaperclip=faPaperclip;
   isLoaded: boolean = false;
-  viewEditFormEditBtnEnabled:boolean=true;
+  viewEditFormEditBtnDisabled:boolean=true;
   viewModifyTaskFB: FormGroup;
   viewModifyTaskFBState: any;
   createdDate: any;
@@ -302,8 +302,11 @@ export class ViewEditTaskComponent implements OnInit {
   markFormEditable() {
     console.log("Inside markFormEditable");
     let controls=this.viewModifyTaskFB.controls;
-    this.enableAllFormControls();
-    this.viewEditFormEditBtnEnabled=false;
+    // this.enableAllFormControls();
+    this.viewEditFormEditBtnDisabled=false;
+    this.viewModifyTaskFB.get('fctlSummary').enable();
+    this.viewModifyTaskFB.get('fctlDescription').enable();
+
   }
 
   initializeModalAlertConfig(){
@@ -336,7 +339,7 @@ export class ViewEditTaskComponent implements OnInit {
       this.modalAlertConfig.showModal=true;
     }
     else{
-      this.viewEditFormEditBtnEnabled=true;
+      this.viewEditFormEditBtnDisabled=true;
       this.disableAllFormControls();
     }
   }
@@ -346,7 +349,7 @@ export class ViewEditTaskComponent implements OnInit {
       console.log("Reset Back To Old values");
       console.log(this.viewModifyTaskFB.value);
       console.log(this.viewModifyTaskFBState);
-      this.viewEditFormEditBtnEnabled=true;
+      this.viewEditFormEditBtnDisabled=true;
       this.setFormBackToIntialState();
       this.disableAllFormControls();
       this.modalAlertConfig.showModal=false;

@@ -46,7 +46,7 @@ export class UsersService {
 
   login(inpData){
     this.isLoggedIn.next(false);
-    console.log("User Data For login "+JSON.stringify(inpData));
+    // console.log("User Data For login "+JSON.stringify(inpData));
     console.log("login End point :"+this.sApiEndPoint+'login');
     return this._httpCli.post(this.sApiEndPoint+'login',inpData,this.sHttpOptions);
   }

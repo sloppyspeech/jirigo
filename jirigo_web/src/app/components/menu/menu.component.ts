@@ -67,7 +67,7 @@ export class MenuComponent implements OnInit,AfterViewInit {
             });
           }
           console.log(this.validUserMenuPaths);
-          console.log(this.validUserMenuPaths['/dashboard']);
+          console.log(this.validUserMenuPaths['/homepage']);
       });
       console.log("End Menu Component Init :"+this.loggedIn);
     });

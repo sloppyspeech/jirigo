@@ -1,3 +1,4 @@
+import { NgxSpinnerService } from 'ngx-spinner';
 import { RolesService } from './../../../services/roles/roles.service';
 import { Component, OnInit } from '@angular/core';
 import { ProjectsService } from './../../../services/projects/projects.service';
@@ -16,9 +17,21 @@ export class AssignMenusToRoleComponent implements OnInit {
   filteredRolesList:roleValues[]=[];
   unAssignedMenus:menuItem[]=[];
   assignedMenus:menuItem[]=[];
+  modalAlertConfig={
+    modalType :'',
+    showModal:false,
+    title:'',
+    modalContent:'',
+    cancelButtonLabel:'',
+    confirmButtonLabel:'',
+    dialogCanceled:'',
+    dialogConfirmed:'',
+    dialogClosed:''
+};
   constructor(private _serMenu:MenusService,
               private _serProjects:ProjectsService,
-              private _serRoles:RolesService) { }
+              private _serRoles:RolesService,
+              private _serNgxSpinner:NgxSpinnerService) { }
 
   ngOnInit(): void {
     this.populateProjectDropDown();
@@ -94,7 +107,7 @@ export class AssignMenusToRoleComponent implements OnInit {
 this._serMenu.getAllUnassignedMenusForProjectRole(inpData)
     .subscribe(res=>{
       console.log(res);
-      res['dbQryResponse'].forEach(e => {
+      res['dbQryResponse']?.forEach(e => {
                         this.unAssignedMenus.unshift({
                             'project_id':this.selectedProjectId,
                             'role_id':this.selectedRoleId,
@@ -176,10 +189,36 @@ this._serMenu.getAllUnassignedMenusForProjectRole(inpData)
       'new_menu_items':this.assignedMenus
     };
     console.log(inpData);
+    this.modalAlertConfig.cancelButtonLabel="";
+    this.modalAlertConfig.confirmButtonLabel="Ok";
+    this.modalAlertConfig.dialogConfirmed="RoleUpdateModalConfirm";
+    this.modalAlertConfig.dialogCanceled="RoleUpdateModalClosed";
+    this.modalAlertConfig.dialogClosed="RoleUpdateModalClosed";
+    this._serNgxSpinner.show(); 
     this._serMenu.addMenusToRole(inpData)
         .subscribe(res=>{
           console.log(res);
+          if (res['dbQryResponse'] && res['dbQryStatus']=="Success"){
+            this._serNgxSpinner.hide(); 
+            this.modalAlertConfig.dialogConfirmed="RoleUpdateModalSuccessConfirm";
+            this.modalAlertConfig.title="Role Update Success";
+            this.modalAlertConfig.modalContent="Role updated successfully";
+            this.modalAlertConfig.modalType="success";
+            this.modalAlertConfig.showModal=true;
+          }
+          else{
+            this._serNgxSpinner.hide(); 
+            this.modalAlertConfig.dialogConfirmed="RoleUpdateModalFailureConfirm";
+            this.modalAlertConfig.title="Role Update Failed";
+            this.modalAlertConfig.modalContent="Role update failed. Contact Adminstrator.";
+            this.modalAlertConfig.modalType="danger";
+            this.modalAlertConfig.showModal=true;
+          }
         })
+  }
+
+  modalAlertAction(){
+    this.modalAlertConfig.showModal=false;
   }
 
 }

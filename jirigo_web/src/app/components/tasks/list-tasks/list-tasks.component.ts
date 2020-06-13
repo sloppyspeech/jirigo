@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router,ActivatedRoute,ParamMap  } from '@angular/router';
 import { TaskDetailsService  } from '../../../services/tasks/task-details.service';
 import { NgxSpinnerComponent, NgxSpinnerService } from 'ngx-spinner';
+import {faPlusSquare} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-list-tasks',
@@ -9,7 +10,15 @@ import { NgxSpinnerComponent, NgxSpinnerService } from 'ngx-spinner';
   styleUrls: ['./list-tasks.component.css']
 })
 export class ListTasksComponent implements OnInit {
+  faPlusSquare=faPlusSquare;
   allTasks=[];
+  issueStatus:any[]=[
+    {'label':'Open','value':'Open'},
+    {'label':'Released','value':'Released'},
+    {'label':'WIP','value':'WIP'},
+    {'label':'Development','value':'Development'},
+    {'label':'Code Review','value':'Code Review'}
+  ]
   showTable:boolean=false;
   taskDetailsCols=[
     {'header':'Task No','field':'task_no','width':'8%'},

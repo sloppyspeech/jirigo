@@ -32,7 +32,7 @@ export class ScrumBoardComponent implements OnInit {
     this.t_reviews=[];
     this.t_dones=[];
   
-    this.sprint_id=this._activatedRoute.snapshot.paramMap.get("sprint_id");
+    this.sprint_id=this._activatedRoute.snapshot.queryParamMap.get("sprint_id");
     console.log("Inside Init sprint_id :"+this.sprint_id);
     this._serScrumBoard.getAllTasksOfASprintForScrumBoard(this.sprint_id)
         .subscribe(res =>{

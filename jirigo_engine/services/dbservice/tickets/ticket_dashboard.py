@@ -68,6 +68,7 @@ class JirigoTicketDashboard(object):
             self.logger.debug(f'Select get_ticket_dashboard_generic_summary Success with {row_count} row(s) Ticket ID {json_data}')
             response_data['dbQryStatus']='Success'
             response_data['dbQryResponse']=json_data
+            self.jdb.close_conn()
             return response_data
         except  (Exception, psycopg2.Error) as error:
             if(self.jdb.dbConn):
@@ -103,6 +104,7 @@ class JirigoTicketDashboard(object):
             self.logger.debug(f'get_ticket_summary_by_issue_status Success with {row_count} row(s) Ticket ID {json_data}')
             response_data['dbQryStatus']='Success'
             response_data['dbQryResponse']=json_data
+            self.jdb.close_conn()
             return response_data
         except  (Exception, psycopg2.Error) as error:
             if(self.jdb.dbConn):
@@ -137,6 +139,7 @@ class JirigoTicketDashboard(object):
             self.logger.debug(f'get_ticket_summary_by_issue_type Success with {row_count} row(s) Ticket ID {json_data}')
             response_data['dbQryStatus']='Success'
             response_data['dbQryResponse']=json_data
+            self.jdb.close_conn()
             return response_data
         except  (Exception, psycopg2.Error) as error:
             if(self.jdb.dbConn):
@@ -174,6 +177,7 @@ class JirigoTicketDashboard(object):
             self.logger.debug(f'get_tickets_created_by_range Success with {row_count} row(s) Ticket ID {json_data}')
             response_data['dbQryStatus']='Success'
             response_data['dbQryResponse']=json_data
+            self.jdb.close_conn()
             return response_data
         except  (Exception, psycopg2.Error) as error:
             if(self.jdb.dbConn):
@@ -212,6 +216,7 @@ class JirigoTicketDashboard(object):
             self.logger.debug(f'get_tickets_still_open_last_n_days Success with {row_count} row(s) Ticket ID {json_data}')
             response_data['dbQryStatus']='Success'
             response_data['dbQryResponse']=json_data
+            self.jdb.close_conn()
             return response_data
         except  (Exception, psycopg2.Error) as error:
             if(self.jdb.dbConn):
@@ -246,6 +251,7 @@ class JirigoTicketDashboard(object):
             self.logger.debug(f'get_tickets_open_by_module_last_n_days Success with {row_count} row(s) Data{json_data}')
             response_data['dbQryStatus']='Success'
             response_data['dbQryResponse']=json_data
+            self.jdb.close_conn()
             return response_data
         except  (Exception, psycopg2.Error) as error:
             if(self.jdb.dbConn):
@@ -279,6 +285,7 @@ class JirigoTicketDashboard(object):
             self.logger.debug(f'get_count_of_tickets_by_channel_last_n_days Success with {row_count} row(s) data{json_data}')
             response_data['dbQryStatus']='Success'
             response_data['dbQryResponse']=json_data
+            self.jdb.close_conn()
             return response_data
         except  (Exception, psycopg2.Error) as error:
             if(self.jdb.dbConn):

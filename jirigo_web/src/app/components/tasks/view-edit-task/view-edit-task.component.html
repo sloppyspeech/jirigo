@@ -3,7 +3,7 @@
 <form [formGroup]="viewModifyTaskFB" (ngSubmit)="updateTask()" *ngIf="isLoaded">
   <div class="form-group">
 
-    <div class="row btn-group"  *ngIf="viewEditFormEditBtnEnabled" style="margin-bottom: 8px;">
+    <div class="row btn-group"  *ngIf="viewEditFormEditBtnDisabled" style="margin-bottom: 8px;">
       <div class="col-lg-12" >
             <button type="button" label="Modify Task" class="btn btn-sm btn-orange mr-1" (click)="markFormEditable()"
               >
@@ -68,7 +68,7 @@
   <app-timelog [currentTaskNo]="task_no" *ngIf="buttonGroupOptions.showTimeLog"></app-timelog>
 
 
-  <div class="row mt-3" *ngIf="buttonGroupOptions.showTaskDetails || ! viewEditFormEditBtnEnabled">
+  <div class="row mt-3" *ngIf="buttonGroupOptions.showTaskDetails || ! viewEditFormEditBtnDisabled">
     <div class="col offset-lg-5">
         <button type="button"  (click)="cancelViewEditForm()" class="btn btn-secondary mr-4">Cancel</button>
         <button type="submit" 

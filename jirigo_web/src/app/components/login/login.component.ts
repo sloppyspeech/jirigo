@@ -71,7 +71,7 @@ export class LoginComponent implements OnInit {
               localStorage.setItem('loggedInUserRoleName',res['dbQryResponse'][0]['role_name']);
               this._serUsers.isLoggedIn.next(true);
               this._serUsers.loggedInUserProps.next(res['dbQryResponse'][0]);
-              this._router.navigate(['dashboard']);
+              this._router.navigate(['homepage']);
             }
 
         })
