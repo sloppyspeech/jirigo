@@ -1,8 +1,8 @@
 .active-user{
     padding: 5px 10px 5px 10px; 
-    background-color: #B1EB00;
+    background-color: #DCEDC8;
     font-size: 14px;
-    font-weight: 550;
+    font-weight: 500;
     color:green;
 }
 .active-user:hover{
@@ -10,10 +10,10 @@
 }
 .inactive-user{
     padding: 5px 10px 5px 10px; 
-    background-color: #ff432e;
+    background-color: #FBE9E7;
     font-size: 14px;
     font-weight: 500;
-    color:white
+    color:#BF360C;
 }
 .inactive-user:hover{
     cursor: pointer;
@@ -31,7 +31,7 @@
 
 .role-icon{
     padding: 0px 2px 7px 15px;
-    color: #D500F9;
+    color: #536DFE;
     font-size: 20px;
 }
 

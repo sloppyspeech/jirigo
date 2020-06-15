@@ -249,13 +249,14 @@ export class CreateTicketComponent implements OnInit {
   
     if(param === "TicketCreationModalSuccessConfirm"){
       console.log('/tickets/view-edit-Ticket/'+this.newTicketNo);
-      this._router.navigateByUrl('/tickets/view-edit-tickets/'+this.newTicketNo);
+      this._router.navigate(['/tickets/view-edit-tickets'],{queryParams:{'ticket_no':this.newTicketNo}});
+
       this._router.routeReuseStrategy.shouldReuseRoute = () => false;
       this._router.onSameUrlNavigation = 'reload';
     }
     else if( param === "TicketCreationModalFailureConfirm"  ||
              param === "TicketCreationModalClosed" ){
-      this._router.navigateByUrl('/tickets/list-tickets/');
+      this._router.navigateByUrl('/tickets/list-tickets');
     }
   
   }

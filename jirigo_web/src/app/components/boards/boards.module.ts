@@ -1,3 +1,5 @@
+import { NgxSpinnerModule } from 'ngx-spinner';
+import { ModalConfirmModule } from './../../shared/modules/modal-confirm/modal-confirm.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -11,7 +13,9 @@ import {ScrumBoardComponent} from './scrum/scrum-board/scrum-board.component';
   imports: [
     CommonModule,
     BoardsRoutingModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    ModalConfirmModule,
+    NgxSpinnerModule
   ]
 })
 export class BoardsModule { }

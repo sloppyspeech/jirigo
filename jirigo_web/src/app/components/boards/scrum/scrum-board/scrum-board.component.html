@@ -1,199 +1,101 @@
-<h3>Scrum Board</h3>
+<div class="row">
+  <div class="col-lg-5">
+    <span style="font-size:24px;font-weight:500;padding-right:7px;">{{sprint_name}}</span>
+  </div>
+  <div class="col-lg-1 offset-lg-5">
+    <button type="button" class="btn btn-light">Cancel</button>
+  </div>
+  <div class="col-lg-1">
+    <button type="button" class="btn btn-primary" (click)="saveSprint()">
+      Submit
+    </button>
+  </div>
+</div>
 <!-- <div class="small  text-dark">Drag and drop between swim lanes</div> -->
-<div class="container-fluid pt-3" *ngIf="showBoard">
-    <div class="row flex-row flex-sm-nowrap py-3" pDroppable="t_todos">
-        <div class="col-sm-6 col-md-3 col-xl-3 col-lg-3">
-            <div class="card " style="background-color:#fff1f3">
-                <div class="card-body">
-                    <h6 class="card-title text-uppercase text-truncate py-2">To Do</h6>
-                    <div class="items border border-light">
-                        <div *ngFor="let todo of t_todos;">
-                            <div class="card draggable shadow-sm" id="cd1" draggable="true" ondragstart="drag(event)">
-                                <div class="card-body p-2">
-                                    <div class="card-title">
-                                        <!-- <img src="//placehold.it/30" class="rounded-circle float-right"> -->
-                                        <span class="badge float-right badge-primary"> {{todo.issue_status}} </span>
-                                        <a href="" class="lead font-weight-light">{{todo.task_no}}</a>
-                                    </div>
-                                    <p>
-                                        {{todo.summary}}
-                                    </p>
-                                    <!-- <button class="btn btn-primary btn-sm">View</button> -->
-                                </div>
-                            </div>
-                            <div class="dropzone rounded" ondrop="drop(event)" ondragover="allowDrop(event)" ondragleave="clearDrop(event)"> &nbsp; </div>
+<div class="pt-1" *ngIf="showBoard">
+  <div class="row py-2" >
+    <ng-container *ngFor="let step of tBoardStepsName">
+      <div class="col-lg-2">
+          <div class="card dropzone rounded" style="
+              background-color: #f1f1f1;
+              padding-top: 1px !important;
+              margin-top: 1px !important;
+            " (drop)="drop($event)" (dragenter)="allowDrop($event)" (dragover)="allowDrop($event)"
+            (dragleave)="clearDrop($event)" id="header_{{ step.stepName }}#">
+            &nbsp;
 
+            <div class="card-body dropzone" style="
+                background-color: #f1f1f1;
+                padding-top: 1px !important;
+                margin-top: 1px !important;
+                padding-right: 4px !important;
+                padding-left: 4px !important;
+              " id="body_{{ step.stepName }}#"
+              (drop)="drop($event)" (dragenter)="allowDrop($event)" (dragover)="allowDrop($event)"
+              (dragleave)="clearDrop($event)" >
+              <div class="card-title dropzone" style="
+                  padding-top: 1px !important;
+                  margin-top: 1px !important;
+                  font-size: 15px;
+                  font-weight: 600;
+                " id="title_{{ step.stepName }}#"
+                (drop)="drop($event)" (dragenter)="allowDrop($event)" (dragover)="allowDrop($event)"
+                (dragleave)="clearDrop($event)" >
+                {{ step.stepName.substring(step.stepName.indexOf("$") + 1) }}
+                <span class="task-count">{{getTaskCountForStep(step.stepName)}}</span>
+              </div>
+              <ng-container *ngFor="let tasks of tSprintTasks">
+                <ng-container *ngFor="let task of tasks[step.stepName]">
+                  <div class="card  draggable dropzone shadow-sm" id="carditem_{{ step.stepName }}#{{ task.task_no }}"
+                    draggable="true" (dragstart)="dragStart($event)" (dragend)="dragEnd($event)"
+                    (drop)="drop($event)" 
+                    >
+                    <div class="card-body dropzone" id="item_{{ step.stepName }}#{{ task.task_no }}" draggable="true"
+                      (dragstart)="dragStart($event)" (dragend)="dragEnd($event)">
+                      <div class="row" style="
+                          height: 20px;
+                          margin-bottom: 1px !important;
+                          padding-bottom: 2px !important;
+                        ">
+                        <div class="col-lg-7">
+                          <p class="font-weight-light" style="font-size: 13px;">
+                            {{ task.task_no }}
+                          </p>
                         </div>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-        <div class="col-sm-6 col-md-3 col-xl-3 col-lg-3">
-            <div class="card bg-light">
-                <div class="card-body" >
-                    <h6 class="card-title text-uppercase text-truncate py-2">Doing</h6>
-                    <div class="items border border-light">
-                        <div *ngFor="let doing of t_doings;">
-                            <div class="card draggable shadow-sm" id="cd1" draggable="true" ondragstart="drag(event)">
-                                <div class="card-body p-2">
-                                    <div class="card-title">
-                                        <!-- <img src="//placehold.it/30" class="rounded-circle float-right"> -->
-                                        <span class="badge float-right badge-primary"> {{doing.issue_status}} </span>
-                                        <a href="" class="lead font-weight-light">{{doing.task_no}}</a>
-                                    </div>
-                                    <p>
-                                        {{doing.summary}}
-                                    </p>
-                                    <!-- <button class="btn btn-primary btn-sm">View</button> -->
-                                </div>
-                            </div>
-                            <div class="dropzone rounded" ondrop="drop(event)" ondragover="allowDrop(event)" ondragleave="clearDrop(event)"> &nbsp; </div>
+                        <div class="col-lg-5">
+                          <span class="badge float-right badge-light c-issue-status" >
+                            {{ task.issue_status }}
+                          </span>
                         </div>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-sm-6 col-md-3 col-xl-3 col-lg-3">
-            <div class="card " style="background-color: #e8f4f8;">
-                <div class="card-body">
-                    <h6 class="card-title text-uppercase text-truncate py-2">Review</h6>
-                    <div class="items border border-light">
-                        <div *ngFor="let review of t_reviews;">
-                            <div class="card draggable shadow-sm" id="cd1" draggable="true" ondragstart="drag(event)">
-                                <div class="card-body p-2">
-                                    <div class="card-title">
-                                        <!-- <img src="//placehold.it/30" class="rounded-circle float-right"> -->
-                                        <span class="badge float-right badge-primary"> {{review.issue_status}} </span>
-                                        <a href="" class="lead font-weight-light">{{review.task_no}}</a>
-                                    </div>
-                                    <p>
-                                        {{review.summary}}
-                                    </p>
-                                    <!-- <button class="btn btn-primary btn-sm">View</button> -->
-                                </div>
-                            </div>
-                            <div class="dropzone rounded" ondrop="drop(event)" ondragover="allowDrop(event)" ondragleave="clearDrop(event)"> &nbsp; </div>
+                      </div>
+                      <hr style="margin: 1px 0 1px 0;" />
+                      <div class="row mt-1">
+                        <div class="col-lg-12">
+                          <div class="font-weight-light" style="font-size: 14px;">
+                            {{ task.summary }}
+                          </div>
                         </div>
+                      </div>
                     </div>
-                </div>
+                  </div>
+                </ng-container>
+              </ng-container>
             </div>
-        </div>
-
-
-        <div class="col-sm-6 col-md-3 col-xl-3 col-lg-3">
-            <div class="card " style="background-color:mintcream;">
-                <div class="card-body">
-                    <h6 class="card-title text-uppercase text-truncate py-2">Done</h6>
-                    <div class="items border border-light">
-                        <div *ngFor="let done of t_dones;">
-                            <div class="card draggable shadow-sm" id="cd1" draggable="true" ondragstart="drag(event)">
-                                <div class="card-body p-2">
-                                    <div class="card-title">
-                                        <!-- <img src="//placehold.it/30" class="rounded-circle float-right"> -->
-                                        <span class="badge float-right badge-primary"> {{done.issue_status}} </span>
-                                        <a href="" class="lead font-weight-light">{{done.task_no}}</a>
-                                    </div>
-                                    <p>
-                                        {{done.summary}}
-                                    </p>
-                                    <!-- <button class="btn btn-primary btn-sm">View</button> -->
-                                </div>
-                            </div>
-                            <div class="dropzone rounded" ondrop="drop(event)" ondragover="allowDrop(event)" ondragleave="clearDrop(event)"> &nbsp; </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-    </div>
+          </div>
+      </div>
+    </ng-container>
+  </div>
 </div>
 
-<!-- <div class="p-grid " >
-    <div class="p-col-fixed  drag-column" style="width:200px;border-radius: 8px ;margin-right:5px;background-color:lavender;padding: 0 4px 0 4px;" pDroppable="cars" >
-        <h6 class="swimlane-heading">Sprint backlog</h6>
-        <ul style="margin:10px 0 0 0;padding:0">
-            <div *ngFor="let car of availableCars" class="ui-helper-clearfix" pDraggable="cars"
-                (onDragStart)="dragStart($event,car)" (onDragEnd)="dragEnd($event)">
-                <p-card [style]="{margin: '4px 8px 4px 8px'}">
-                    <div ><h5>{{car.vin}}</h5> {{car.year}}</div>
-                </p-card>
-            </div>
-        </ul>
-    </div>
-    <div class="p-col-2  drop-column drag-column" pDroppable="cars"  
-        (onDrop)="drop($event)" [ngClass]="{'ui-highlight-car':draggedCar}" style="border-radius: 8px ;margin-right:5px;padding: 0 4px 0 4px;background-color:#fff6e9;">
-        <h6 class="swimlane-heading">To Be Done</h6>
-        <p-table [value]="selectedCars">
-            <ng-template pTemplate="header">
- 
-            </ng-template>
-            <ng-template pTemplate="body" let-car pDraggable="cars">
- 
-                <p-card [style]="{margin: '4px 8px 4px 8px'}">
-                    <div  ><h5>{{car.vin}}</h5> {{car.year}}</div>
-                </p-card>
-            </ng-template>
-        </p-table>
-    </div>
-    <div class="p-col-2  drop-column drag-column" pDroppable="cars" 
-    (onDrop)="drop($event)" [ngClass]="{'ui-highlight-car':draggedCar}" style="border-radius: 8px ;margin-right:5px;padding: 0 4px 0 4px;background-color:#ffefd7;">
-    <h6 class="swimlane-heading">Dev</h6>
-    <p-table [value]="selectedCars">
-        <ng-template pTemplate="header" >
-
-        </ng-template>
-        <ng-template pTemplate="body" let-car >
- 
-            <p-card [style]="{margin: '4px 8px 4px 8px'}">
-                <div ><h5>{{car.vin}}</h5> {{car.year}}</div>
-            </p-card>
-        </ng-template>
-    </p-table>
-    </div>
-    <div class="p-col-2  drop-column drag-column" pDroppable="cars" 
-    (onDrop)="drop($event)" [ngClass]="{'ui-highlight-car':draggedCar}" style="border-radius: 8px ;margin-right:5px;padding: 0 4px 0 4px;background-color:#e3f0ff;">
-    <h6 class="swimlane-heading">Review</h6>
-    <p-table [value]="selectedCars">
-
-        <ng-template pTemplate="body" let-car  pDroppable="cars" >
-
-            <p-card [style]="{margin: '4px 8px 4px 8px'}">
-                <div ><h5>{{car.vin}}</h5> {{car.year}}</div>
-            </p-card>
-        </ng-template>
-    </p-table>
-    </div>
-    <div class="p-col-2  drop-column drag-column" pDroppable="cars" 
-    (onDrop)="drop($event)" [ngClass]="{'ui-highlight-car':draggedCar}" style="border-radius: 8px ;margin-right:5px;padding: 0 4px 0 4px;background-color:#d2e7ff ;">
-    <h6 class="swimlane-heading">Done</h6>
-    <p-table [value]="selectedCars">
-
-        <ng-template pTemplate="body" let-car  pDroppable="cars" >
-
-            <p-card [style]="{margin: '4px 8px 4px 8px'}">
-                <div ><h5>{{car.vin}}</h5> {{car.year}}</div>
-            </p-card>
-        </ng-template>
-    </p-table>
-    </div>
-    <div class="p-col-2  drop-column drag-column" pDroppable="cars" 
-    (onDrop)="drop($event)" [ngClass]="{'ui-highlight-car':draggedCar}" style="border-radius: 8px ;margin-right:5px;padding: 0 4px 0 4px;background-color:#84c1ff ;">
-    <h6 class="swimlane-heading">Released</h6>
-    <p-table [value]="selectedCars">
-
-        <ng-template pTemplate="body" let-car  pDroppable="cars" >
-
-            <p-card [style]="{margin: '4px 8px 4px 8px'}">
-                <div ><h5>{{car.vin}}</h5> {{car.year}}</div>
-            </p-card>
-        </ng-template>
-    </p-table>
-    </div>
-</div> -->
+<app-modal-confirm
+  [title]="modalAlertConfig.title"
+  [modalType]="modalAlertConfig.modalType" 
+  [showModal]="modalAlertConfig.showModal" 
+  [modalContent]="modalAlertConfig.modalContent"
+  [cancelButtonLabel]="modalAlertConfig.cancelButtonLabel"
+  [confirmButtonLabel]="modalAlertConfig.confirmButtonLabel"
+  (dialogCanceled)="modalAlertAction(modalAlertConfig.dialogCanceled)"
+  (dialogConfirmed)="modalAlertAction(modalAlertConfig.dialogConfirmed)"
+  (dialogClosed)="modalAlertAction(modalAlertConfig.dialogClosed)"
+>
+</app-modal-confirm>

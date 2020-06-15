@@ -975,13 +975,13 @@ def update_sprint_tasks():
         return get_jsonified_error_response('Failure',"update_sprint_tasks " + get_errmsg('NAGR'))
 
 
-@app.route('/api/v1/boards-management/scrum/<sprint_id>',methods=['GET'])
-def get_all_tasks_of_sprint_for_scrum_board(sprint_id):
+@app.route('/api/v1/boards-management/scrum',methods=['GET'])
+def get_all_tasks_of_sprint_for_scrum_board():
     data={}
 
     if request.method == 'GET':
-        print('In GET get_all_tasks_for_sprint :'+sprint_id)
         try:
+            sprint_id=request.args.get('sprint_id')
             jdb=JirigoScrumBoard({'sprint_id':sprint_id})
             data=jdb.get_all_tasks_of_sprint_for_scrum_board()
             return jsonify(data)
@@ -990,6 +990,27 @@ def get_all_tasks_of_sprint_for_scrum_board(sprint_id):
             return get_jsonified_error_response('Failure',error)
     else:
         return get_jsonified_error_response('Failure',"get_all_tasks_of_sprint_for_scrum_board " + get_errmsg('NAGR'))
+
+
+@app.route('/api/v1/boards-management/update-sprint-steps-for-scrumboard',methods=['PUT'])
+def update_sprint_task_steps_for_scrumboard():
+    data={}
+
+    if request.method == 'PUT':
+        try:
+            print(request.get_json())
+            sprint_id=request.get_json()['sprint_id']
+            sprint_tasks=request.get_json()['sprint_tasks']
+            modified_by=request.get_json()['modified_by']
+            jdb=JirigoScrumBoard({'sprint_id':sprint_id,'sprint_tasks':sprint_tasks,'modified_by':modified_by})
+            data=jdb.update_sprint_task_steps_for_scrumboard()
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in update_sprint_task_steps_for_scrumboard {error}')
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',"update_sprint_task_steps_for_scrumboard " + get_errmsg('NAPUR'))
+
 
 
 @app.route('/api/v1/link-tasks-tickets/search',methods=['GET'])

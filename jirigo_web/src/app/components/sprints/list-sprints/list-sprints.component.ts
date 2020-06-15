@@ -87,7 +87,7 @@ export class ListSprintsComponent implements OnInit {
 
   showSprintBoard(sprint){
     console.log(sprint);
-    this._router.navigate(['boards/scrum'],{queryParams:{'sprint_id':sprint['sprint_id']}});
+    this._router.navigate(['boards/scrum'],{queryParams:{'sprint_id':sprint['sprint_id'],'sprint_name':sprint['sprint_name']}});
   }
 
   editSprint(ele){

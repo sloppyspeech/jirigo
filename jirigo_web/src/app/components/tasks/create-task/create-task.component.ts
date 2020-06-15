@@ -232,7 +232,7 @@ export class CreateTaskComponent implements OnInit {
       this.createTaskFB.reset();
     }
     else {
-      this._router.navigate(['/tasks/view-edit-task/'+this.newTaskNo]);
+      this._router.navigate(['/tasks/view-edit-tasks'],{queryParams:{'task_no':this.newTaskNo}});
     }
   }
 

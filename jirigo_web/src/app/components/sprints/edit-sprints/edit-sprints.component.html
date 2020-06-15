@@ -59,3 +59,16 @@
     <!-- <button type="button" pButton icon="pi pi-times" (click)="closeNoTasksSelectedDialog()" label="Close" class="ui-button-warning"></button> -->
   </p-footer>
 </p-dialog>
+
+<app-modal-confirm
+  [title]="modalAlertConfig.title"
+  [modalType]="modalAlertConfig.modalType" 
+  [showModal]="modalAlertConfig.showModal" 
+  [modalContent]="modalAlertConfig.modalContent"
+  [cancelButtonLabel]="modalAlertConfig.cancelButtonLabel"
+  [confirmButtonLabel]="modalAlertConfig.confirmButtonLabel"
+  (dialogCanceled)="modalAlertAction(modalAlertConfig.dialogCanceled)"
+  (dialogConfirmed)="modalAlertAction(modalAlertConfig.dialogConfirmed)"
+  (dialogClosed)="modalAlertAction(modalAlertConfig.dialogClosed)"
+>
+</app-modal-confirm>

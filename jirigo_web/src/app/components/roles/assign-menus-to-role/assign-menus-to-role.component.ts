@@ -217,7 +217,7 @@ this._serMenu.getAllUnassignedMenusForProjectRole(inpData)
         })
   }
 
-  modalAlertAction(){
+  modalAlertAction(e){
     this.modalAlertConfig.showModal=false;
   }
 

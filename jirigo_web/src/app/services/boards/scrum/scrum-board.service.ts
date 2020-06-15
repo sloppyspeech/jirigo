@@ -23,8 +23,22 @@ export class ScrumBoardService {
 
 
   getAllTasksOfASprintForScrumBoard(inpSprintId:string){
-    console.log("getAllTasksOfASprintForScrumBoard End point :" + this.sApiEndPoint + 'scrum/'+inpSprintId);
-    return this._httpCli.get<any>(this.sApiEndPoint + 'scrum/'+inpSprintId);
+    let url=this.sApiEndPoint + `scrum?sprint_id=${inpSprintId}`;
+    console.log(url);
+    return this._httpCli.get(url);
+  }
+
+  getAllStatusesForScrumBoard(inpData){
+    let url=this.sApiEndPoint + `scrum-statuses-for-project?project_id=${inpData['project_id']}`;
+    console.log(url);
+    return this._httpCli.get(url);
+  }
+
+  updateSprintStepsForScrumBoard(inpData){
+    let url=this.sApiEndPoint + `update-sprint-steps-for-scrumboard`;
+    console.log(url);
+    console.log(inpData)
+    return this._httpCli.put(url,inpData,this.sHttpOptions);
   }
 
 }

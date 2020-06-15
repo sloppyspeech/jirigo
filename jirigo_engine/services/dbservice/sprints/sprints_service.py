@@ -216,32 +216,52 @@ class JirigoSprints(object):
     def update_sprint_tasks(self):
         response_data={}
         self.logger.debug("Sprints Service Inside Update Sprint Tasks")
+
+        select_existing_sprint_tasks="""
+                                        WITH t AS (
+                                            SELECT task_no
+                                             FROM tsprint_tasks
+                                            WHERE sprint_id=%s
+                                            )
+                                        SELECT json_agg(t) from t;
+                                     """
+
         delete_all_sprint_tasks_sql="""
                                         DELETE
                                           FROM tsprint_tasks
-                                         WHERE sprint_id=%s
+                                         WHERE sprint_id =%s
+                                           AND task_no NOT in %s
                                     """
-        sprint_values=(self.sprint_id,)
-        # sprint_values=(self.sprint_name,self.sprint_status,self.start_date,self.end_date,self.modified_by,self.modified_date,self.sprint_id,)
-        print(sprint_values)
+        sprint_tasksto_delete=(self.sprint_id,tuple(self.sprint_tasks),)
+        print(sprint_tasksto_delete)
         
         print("======sprint_values========")
-        print(f'sprint_values {sprint_values} at time {self.created_date}')
-        self.logger.debug(f'sprint_values {sprint_values} at time {self.created_date}')
+        print(f'sprint_values {sprint_tasksto_delete} at time {self.created_date}')
+        self.logger.debug(f'sprint_values {sprint_tasksto_delete} at time {self.created_date}')
         create_sprint_tasks_sql="""
-                                INSERT INTO tsprint_tasks (sprint_id,task_no,created_by,workflow_step_id,created_date)
+                                INSERT INTO tsprint_tasks (sprint_id,task_no,created_by,board_step,created_date)
                                        VALUES %s
                                 """
         try:
             print('-'*80)
             cursor=self.jdb.dbConn.cursor()
-            cursor.execute(delete_all_sprint_tasks_sql,sprint_values)
+            cursor.execute(select_existing_sprint_tasks,(self.sprint_id,))
+            existing_sprint_tasks=json_data=cursor.fetchone()[0]
+            print(f'existing_sprint_tasks {existing_sprint_tasks}')
+            print(f'before sprint_tasks {self.sprint_tasks}')
+            for row in existing_sprint_tasks:
+                try:
+                    self.sprint_tasks.remove(row['task_no'])
+                except ValueError:
+                    print(f"{row['task_no']} deleted from app")
+                    self.logger.debug(f"{row['task_no']} deleted from app")
+            cursor.execute(delete_all_sprint_tasks_sql,sprint_tasksto_delete)
             row_count=cursor.rowcount
             self.logger.debug(f'Delete Success with {row_count} row(s) Sprint ID {self.sprint_id}')
-            print(f'sprint_tasks {self.sprint_tasks}')
+            print(f'after sprint_tasks {self.sprint_tasks}')
             task_vals=[(self.sprint_id,x ,self.created_by,self.sprint_id) for x in self.sprint_tasks]
             print(f'task_vals {task_vals}')
-            execute_values(cursor,create_sprint_tasks_sql,task_vals,template="(%s,%s,%s,get_first_step_id_for_sprint(%s),now())")
+            execute_values(cursor,create_sprint_tasks_sql,task_vals,template="(%s,%s,%s,get_first_step_for_sprint(%s),now())")
             row_count=cursor.rowcount
             self.logger.debug(f'Bulk Insert Success with {row_count} row(s) Sprint ID {self.sprint_id} at time {self.created_date}')
             self.jdb.dbConn.commit()

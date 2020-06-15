@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router,ActivatedRoute  } from '@angular/router';
 
 import {  SprintDetailsService  } from '../../../services/sprints/sprint-details.service';
-import { ThrowStmt } from '@angular/compiler';
+import { NgxSpinnerService } from 'ngx-spinner';
 @Component({
   selector: 'app-edit-sprints',
   templateUrl: './edit-sprints.component.html',
@@ -20,12 +20,23 @@ export class EditSprintsComponent implements OnInit {
   updatedSprintData:any;
   sprintId:string;
 
-
+  modalAlertConfig={
+    modalType :'',
+    showModal:false,
+    title:'',
+    modalContent:'',
+    cancelButtonLabel:'',
+    confirmButtonLabel:'',
+    dialogCanceled:'',
+    dialogConfirmed:'',
+    dialogClosed:''
+};
 
   constructor(
     private _serSprintDetails:SprintDetailsService,
     private _router:Router,
-    private _activatedRoute:ActivatedRoute
+    private _activatedRoute:ActivatedRoute,
+    private _serNgxSpinner:NgxSpinnerService
   ) { }
 
   ngOnInit(): void {
@@ -86,11 +97,46 @@ export class EditSprintsComponent implements OnInit {
       'sprint_tasks':this.updatedSprintTasks,
       'created_by':localStorage.getItem('loggedInUserId'),
     };
+
+    this.modalAlertConfig.cancelButtonLabel="";
+    this.modalAlertConfig.confirmButtonLabel="Ok";
+    this.modalAlertConfig.dialogConfirmed="SprintUpdateModalConfirm";
+    this.modalAlertConfig.dialogCanceled="SprintUpdateModalClosed";
+    this.modalAlertConfig.dialogClosed="SprintUpdateModalClosed";
+  
+    this._serNgxSpinner.show();
+  
     this._serSprintDetails.updateSprintTasks(this.updatedSprintData)
         .subscribe(res=>{
             console.log("-----------updateSprintTasks----------");
             console.log(res);
+            if (res['dbQryStatus'] == 'Success'){
+              this._serNgxSpinner.hide();
+    
+              //---
+              this.modalAlertConfig.dialogConfirmed="SprintUpdateModalSuccessConfirm";
+              this.modalAlertConfig.title="Success";
+              this.modalAlertConfig.modalContent= "Sprint updated successfully";
+              this.modalAlertConfig.modalType="success";
+              this.modalAlertConfig.showModal=true;
+              //---
+    
+            }
+            else{
+              this._serNgxSpinner.hide(); 
+              this.modalAlertConfig.dialogConfirmed="SprintUpdateModalFailureConfirm";
+              this.modalAlertConfig.title="Failure";
+              this.modalAlertConfig.modalContent=" Sprint update failed. Contact Adminstrator.";
+              this.modalAlertConfig.modalType="danger";
+              this.modalAlertConfig.showModal=true;
+            }
         });
   } 
+
+  modalAlertAction(action){
+    this.modalAlertConfig.showModal=false;
+    this.modalAlertConfig.modalType='';
+    this.modalAlertConfig.modalContent='';
+  }
 
 }

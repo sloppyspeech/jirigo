@@ -1,17 +1,32 @@
-.swimlane-heading{
-    padding: 5px 0 0 3px;
-    text-align: center;
-    font-size: large;
-}
 
 .card.draggable {
     margin-bottom: 1rem;
     cursor: grab;
 }
 
-.droppable {
-    background-color: var(--success);
-    min-height: 120px;
-    margin-bottom: 1rem;
+.droppable:hover {
+    background-color: #E8EAF6;
+
 }
+
+
+.card:hover {
+    background-color: #E8EAF6;
+
+}
+
+.task-count{
+    padding-left:5px;
+    font-size:13px;
+    font-weight:550;
+    color:grey;
+}
+.c-issue-status{
+    font-size: 10px;
+    font-weight: 500;
+    padding-bottom:3px;
+    background-color: #E3F2FD;
+}
+
+
 
