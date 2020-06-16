@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router,ActivatedRoute,ParamMap  } from '@angular/router';
 import { TicketDetailsService  } from '../../../services/tickets/ticket-details.service';
 import { NgxSpinnerComponent, NgxSpinnerService } from 'ngx-spinner';
-import {faPlusSquare} from '@fortawesome/free-solid-svg-icons';
+import {faPlusSquare,faStopCircle} from '@fortawesome/free-solid-svg-icons';
 @Component({
   selector: 'app-list-tickets',
   templateUrl: './list-tickets.component.html',
@@ -10,21 +10,22 @@ import {faPlusSquare} from '@fortawesome/free-solid-svg-icons';
 })
 export class ListTicketsComponent implements OnInit {
   faPlusSquare=faPlusSquare;
+  faStopCircle=faStopCircle;
 
   allTickets=[];
   showTable:boolean=false;
   showNoTicketsRetrieved:boolean=false;
 
   ticketDetailsCols=[
-    {'header':'Ticket No','field':'ticket_no','width':'7%'},
+    {'header':'Ticket No','field':'ticket_no','width':'8%'},
     {'header':'Summary','field':'summary','width':'28%'},
-    {'header':'Status','field':'issue_status','width':'7%'},
-    {'header':'Type','field':'issue_type','width':'8%'},
+    {'header':'Status','field':'issue_status','width':'9%'},
+    {'header':'Type','field':'issue_type','width':'9%'},
     {'header':'Severity','field':'severity','width':'8%'},
     {'header':'Priority','field':'priority','width':'7%'},
     {'header':'Blocking','field':'blocking','width':'6%'},
     {'header':'Reported By','field':'reported_by','width':'9%'},
-    {'header':'Reported Date','field':'reported_date','width':'10%'},
+    {'header':'Reported Date','field':'reported_date','width':'8%'},
     {'header':'Assigned To','field':'assigned_to','width':'9%'}
   ];
 

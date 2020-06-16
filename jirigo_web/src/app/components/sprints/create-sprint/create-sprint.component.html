@@ -18,18 +18,12 @@
   <ng-template let-task pTemplate="item" >
     <!-- background-color: #DEF3FD -->
     <div class="ui-helper-clearfix menu-item-assigned"  >
-          <button type="button" class="btn btn-secondary btn-sm">{{task.task_no}}</button>
+          <button type="button" class="btn btn-light btn-sm">{{task.task_no}}</button>
           <span class="badge badge-info float-right task-badge " >Severity : {{task.severity}}</span>
           <span class="badge badge-info float-right task-badge " >Priority : {{task.priority}}</span>
           <span class="badge badge-info float-right task-badge " >Status : {{task.issue_status}}</span>
-      <div
-        style="
-          font-size: 14px;
-          float: left;
-          margin:15px 0 0 10px;
-        "
-      >
-      <strong >Summary  : </strong>{{ task.summary }} <br>
+      <div class="jsprint-summary">
+      {{ task.summary }} <br>
       </div>
     </div>
   </ng-template>
@@ -37,8 +31,8 @@
 
 <div class="row  mt-4" >
   <div class="col-lg-12 col-md-12 col-sm-12 text-center">
+    <a [routerLink]="['/sprints/list-sprints']" class="btn btn-light mr-2" style="margin:0 0 0 20px; padding: 6px 40px 6px 40px;">Cancel</a>
     <button type="submit" (click)="showSprintNameDialog();" class="btn btn-primary">Create Sprint</button>
-    <a [routerLink]="['/sprints/list-sprints']" class="btn btn-secondary mr-2" style="margin:0 0 0 20px; padding: 6px 40px 6px 40px;">Cancel</a>
   </div>
 </div>
 
@@ -55,8 +49,8 @@
      <span *ngIf="showNoSprintNameEnteredDiag" style="color: red; font-size:13px;">Please Enter Sprint Name</span>
     </div>
         <p-footer>
-            <button type="button" pButton icon="pi pi-check" (click)="createSprint()" label="Create" class="ui-button-primary"></button>
-            <button type="button" pButton icon="pi pi-times" (click)="cancelSprintName()" label="Cancel" class="ui-button-warning"></button>
+          <button type="button" pButton icon="pi pi-times" (click)="cancelSprintName()" label="Cancel" class="ui-button-warning"></button>
+          <button type="button" pButton icon="pi pi-check" (click)="createSprint()" label="Create" class="ui-button-primary"></button>
         </p-footer>
 </p-dialog>
 

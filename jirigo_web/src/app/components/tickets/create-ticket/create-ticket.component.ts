@@ -174,12 +174,14 @@ export class CreateTicketComponent implements OnInit {
             this.modalAlertConfig.title="Ticket Creation Successful";
             this.modalAlertConfig.modalContent= this.newTicketNo+ "  created successfully";
             this.modalAlertConfig.modalType="success";
+            this.modalAlertConfig.showModal=true;
           }
           else{
             this.modalAlertConfig.dialogConfirmed="TicketCreationModalFailureConfirm";
             this.modalAlertConfig.title="Ticket Creation Failed";
             this.modalAlertConfig.modalContent="Ticket creation failed. Contact Adminstrator.";
             this.modalAlertConfig.modalType="danger";
+            this.modalAlertConfig.showModal=true;
           }
           this.modalAlertConfig.showModal=true;
           this._NgxSpinner.hide();

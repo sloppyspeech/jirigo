@@ -101,8 +101,8 @@ export class ViewEditTaskComponent implements OnInit {
   @Output()
   issueTypeO: EventEmitter<any> = new EventEmitter();
 
-  @ViewChild(TimelogComponent) timeLogChildComponent: TimelogComponent;
-  @ViewChild(TaskCommentsComponent) taskCommentsChildComponent: TaskCommentsComponent;
+  @ViewChild(TimelogComponent, { static: true }) timeLogChildComponent: TimelogComponent;
+  @ViewChild(TaskCommentsComponent, { static: true }) taskCommentsChildComponent: TaskCommentsComponent;
 
 
   constructor(private _formBuilder: FormBuilder,
@@ -302,7 +302,7 @@ export class ViewEditTaskComponent implements OnInit {
   markFormEditable() {
     console.log("Inside markFormEditable");
     let controls=this.viewModifyTaskFB.controls;
-    // this.enableAllFormControls();
+    this.enableAllFormControls();
     this.viewEditFormEditBtnDisabled=false;
     this.viewModifyTaskFB.get('fctlSummary').enable();
     this.viewModifyTaskFB.get('fctlDescription').enable();
@@ -479,12 +479,13 @@ console.log(inpData);
         console.log(res);
         if (res['dbQryStatus'] == 'Success' && res['dbQryResponse']){
             console.log("ALl OKAY");
-            // this.reloadComponent();
-            this.timeLogChildComponent.getTimeLoggingData();
+            this.reloadComponent();
+            // this.timeLogChildComponent?.getTimeLoggingData();
             this._serNgxSpinner.hide();
         }
         else{
             console.log("Problem");
+            this._serNgxSpinner.hide();
         }
       });
 }

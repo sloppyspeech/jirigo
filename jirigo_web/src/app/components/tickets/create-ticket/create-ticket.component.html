@@ -51,7 +51,7 @@
 
   <div class="row " style="margin-top:40px;">
     <div class="col offset-lg-5">
-        <button type="button"  (click)="cancelForm()" class="btn btn-secondary mr-4">Cancel</button>
+        <button type="button"  (click)="cancelForm()" class="btn btn-light mr-4">Cancel</button>
         <button type="submit" 
         [disabled]="!createTicketFB.valid || !createTicketFB.dirty" 
         class="btn btn-primary">Submit</button>
@@ -59,3 +59,16 @@
   </div>
 
 </form>
+
+<app-modal-confirm
+  [title]="modalAlertConfig.title"
+  [modalType]="modalAlertConfig.modalType" 
+  [showModal]="modalAlertConfig.showModal" 
+  [modalContent]="modalAlertConfig.modalContent"
+  [cancelButtonLabel]="modalAlertConfig.cancelButtonLabel"
+  [confirmButtonLabel]="modalAlertConfig.confirmButtonLabel"
+  (dialogCanceled)="modalAlertAction(modalAlertConfig.dialogCanceled)"
+  (dialogConfirmed)="modalAlertAction(modalAlertConfig.dialogConfirmed)"
+  (dialogClosed)="modalAlertAction(modalAlertConfig.dialogClosed)"
+>
+</app-modal-confirm>

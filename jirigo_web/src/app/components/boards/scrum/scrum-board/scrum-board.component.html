@@ -52,6 +52,11 @@
                     >
                     <div class="card-body dropzone" id="item_{{ step.stepName }}#{{ task.task_no }}" draggable="true"
                       (dragstart)="dragStart($event)" (dragend)="dragEnd($event)">
+                      <div class="row">
+                          <div class="col-lg-12">
+                            <progress value="{{task.task_completed_pct}}" max="100"></progress>
+                          </div>
+                      </div>
                       <div class="row" style="
                           height: 20px;
                           margin-bottom: 1px !important;

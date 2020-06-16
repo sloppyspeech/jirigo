@@ -294,7 +294,7 @@ export class ViewEditTicketsComponent implements OnInit {
   markFormEditable() {
     console.log("Inside markFormEditable");
     let controls=this.viewModifyTicketFB.controls;
-    // this.enableAllFormControls();
+    this.enableAllFormControls();
     this.viewEditFormEditBtnDisabled=false;
     // Object.keys(this.viewModifyTicketFB.controls).forEach(e=>{
     //   console.log(e+" : "+this.viewModifyTicketFB.controls[e].valid)

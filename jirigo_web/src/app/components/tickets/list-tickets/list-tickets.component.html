@@ -72,9 +72,13 @@
       <td>{{ ticket.severity }}</td>
       <td>{{ ticket.priority }}</td>
       <!-- <td>{{ ticket.environment }}</td> -->
-      <td>{{ ticket.blocking }}</td>
+      <td>
+        <ng-container *ngIf="ticket.is_blocking == 'Y'">
+          <fa-icon [icon]="faStopCircle" style="font-size:19px;color:red; text-align: center;"></fa-icon>
+        </ng-container>
+      </td>
       <td>{{ ticket.reported_by }}</td>
-      <td>{{ ticket.reported_date | date : 'dd MMM yyyy HH:mm'}}</td>
+      <td>{{ ticket.reported_date | date : 'dd MMM yyyy'}}</td>
       <td>{{ ticket.assigned_to }}</td>
 
     </tr>
