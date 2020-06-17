@@ -111,7 +111,7 @@
       <th scope="col" class="col-lg-1">#</th>
       <th scope="col" *ngFor="let colHdr of projStatuses" class="col-lg-1">{{colHdr}}</th>
       <th>
-        <p-chart type="line" [data]="data" width="120px" height="50px" [options]="options" ></p-chart>
+        <p-chart type="line" [data]="data" width="7.5rem" height="3.125rem" [options]="options" ></p-chart>
       </th>
     </tr>
   </thead>
@@ -149,7 +149,7 @@
 <title>Upload new File</title>
 <h1>Upload new File</h1>
 <img src="http://localhost:9001/api/v1/image-management/get-image/4?val=3" alt="MyImage" sizes="" srcset=""
-style="width:40px;height:40px;border-radius: 50%;"
+style="width:2.5rem;height:2.5rem;border-radius: 50%;"
 >
 <form action=''  enctype="multipart/form-data">
   <input type="file" accept='image/*' name="file" (change)="onFileChanged($event) ">
@@ -161,10 +161,10 @@ style="width:40px;height:40px;border-radius: 50%;"
   <label class="btn btn-outline-secondary active">
     <input type="radio" name="options" id="option1" autocomplete="off" checked> My Tickets
   </label>
-  <label class="btn btn-outline-secondary" style="margin: 0 0 0 10px;">
+  <label class="btn btn-outline-secondary" style="margin: 0 0 0 0.625rem;">
     <input type="radio" name="options" id="option2" autocomplete="off"> Created By Me
   </label>
-  <label class="btn btn-outline-secondary" style="margin: 0 0 0 10px;">
+  <label class="btn btn-outline-secondary" style="margin: 0 0 0 0.625rem;">
     <input type="radio" name="options" id="option3" autocomplete="off"> Modified By Me
   </label>
 </div> -->

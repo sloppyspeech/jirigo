@@ -1,6 +1,6 @@
 <div class="fluid-container col-sm-4 col-md-4 col-lg-4 offset-md-4 jcOneRowColumnBox">
         <form [formGroup]="createFG" (ngSubmit)="createUser()">
-            <div style="padding: 15px 15px 15px 15px;">
+            <div style="padding: 0.938rem 0.938rem 0.938rem 0.938rem;">
                 <div class="row jcOneRowColumnBoxheader" >
                     <h3>Create User</h3>
                 </div>
@@ -42,19 +42,19 @@
             </div>
 
             <div class="form-group row" >
-                <label>Assign Projects &nbsp;<span class="text-muted" style="font-size: 12px;">[ First Project in the list will be default.]</span></label>
+                <label>Assign Projects &nbsp;<span class="text-muted" style="font-size: 0.75rem;">[ First Project in the list will be default.]</span></label>
             </div>
             <div class="form-group row"  >
                 <p-multiSelect [options]="projectList" formControlName="assignedProjects"
-                    [style]="{'width':'100%','height':'36px','border-color':'#CED3D9','border-radius':'5px'}"
+                    [style]="{'width':'100%','height':'2.25rem','border-color':'#CED3D9','border-radius':'0.313rem'}"
                      ></p-multiSelect>
             </div>
             <div class="form-group row" >
-                <label>Assign Roles &nbsp;<span class="text-muted" style="font-size: 12px;">[ Select Projects Above to get Roles.]</span></label>
+                <label>Assign Roles &nbsp;<span class="text-muted" style="font-size: 0.75rem;">[ Select Projects Above to get Roles.]</span></label>
             </div>
             <div class="form-group row"  >
                 <p-multiSelect [options]="roleList" formControlName="assignedRoles"
-                    [style]="{'width':'100%','height':'36px','border-color':'#CED3D9','border-radius':'5px'}"
+                    [style]="{'width':'100%','height':'2.25rem','border-color':'#CED3D9','border-radius':'0.313rem'}"
                      ></p-multiSelect>
             </div>
 

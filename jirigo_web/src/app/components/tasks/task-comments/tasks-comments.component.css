@@ -1,26 +1,26 @@
 .comment-edit-button{
-    margin-top: 3px;
-    margin-right: 3px;
+    margin-top: 0.188rem;
+    margin-right: 0.188rem;
     cursor: pointer;
 }
 
 .comment-item-col{
     background-color: white; 
-    padding-right: 0px; 
-    padding-left: 0px;
+    padding-right: 0rem; 
+    padding-left: 0rem;
     border-style: solid;
-    border-width: 1px;
+    border-width: 0.063rem;
     border-color: #E8E8E8;
 }
 .comment-header{
     background-color: #DDDDDD;
     color:#666666;
-    padding-top:5px;
-    padding-bottom:5px;
-    padding-left: 15px;
+    padding-top:0.313rem;
+    padding-bottom:0.313rem;
+    padding-left: 0.938rem;
 }
 .comment-header >span.comment-author{
     color:black;
-    font-size: 16px;
+    font-size: 1rem;
     font-weight: 550;
 }

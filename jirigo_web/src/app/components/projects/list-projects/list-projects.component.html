@@ -7,7 +7,7 @@
         <button class="float-left" type="button" pButton icon="pi pi-file-o" iconPos="left" label="CSV"
             (click)="dt.exportCSV()" style="margin-right: 0.5em;"></button>
         <div style="text-align: right">
-            <i class="pi pi-search" style="margin:4px 4px 0 0"></i>
+            <i class="pi pi-search" style="margin:0.25rem 0.25rem 0 0"></i>
             <input type="text" pInputText size="50" placeholder="Global Filter"
                 (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto">
         </div>

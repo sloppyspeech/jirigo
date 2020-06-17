@@ -66,7 +66,7 @@ export class ViewEditTaskComponent implements OnInit {
   ];
 
   editorStyle = {
-    'height': '200px',
+    'height': '12.5rem',
     'background-color':'white'
   };
 

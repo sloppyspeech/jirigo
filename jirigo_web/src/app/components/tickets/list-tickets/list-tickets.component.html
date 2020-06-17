@@ -9,7 +9,7 @@
         <span>
           <fa-icon
             [icon]="faPlusSquare"
-            style="padding: 0 5px 0 0;"
+            style="padding: 0 0.313rem 0 0;"
           ></fa-icon>
         </span>
         Create Ticket</a>
@@ -17,7 +17,7 @@
 </div>
 <ngx-spinner [fullScreen]="true" type="ball-newton-cradle"></ngx-spinner>
 <div *ngIf="showNoTicketsRetrieved">
-  <h4 style="text-align:center;"><span class="oi oi-fire" style="color:orange;font-size: 100px;"></span> No Tickets For
+  <h4 style="text-align:center;"><span class="oi oi-fire" style="color:orange;font-size: 6.25rem;"></span> No Tickets For
     This Project/Error Occurred retrieving Tickets</h4>
 </div>
 <p-table #dt *ngIf="showTable" styleClass="j-class j-class-caption" [value]="allTickets" [columns]="ticketDetailsCols" [rowHover]="true" [responsive]="true"
@@ -40,7 +40,7 @@
     <div style="text-align: right" >                
         <button class="float-left" type="button" pButton icon="pi pi-file-o" iconPos="left" label="CSV" (click)="dt.exportCSV()"
         style="margin-right: 0.5em;"></button>
-        <i class="pi pi-search" style="margin:4px 4px 0 0"></i>
+        <i class="pi pi-search" style="margin:0.25rem 0.25rem 0 0"></i>
         <input type="text" pInputText size="50" placeholder="Global Filter"
             (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto">
     </div>
@@ -74,7 +74,7 @@
       <!-- <td>{{ ticket.environment }}</td> -->
       <td>
         <ng-container *ngIf="ticket.is_blocking == 'Y'">
-          <fa-icon [icon]="faStopCircle" style="font-size:19px;color:red; text-align: center;"></fa-icon>
+          <fa-icon [icon]="faStopCircle" style="font-size:1.188rem;color:red; text-align: center;"></fa-icon>
         </ng-container>
       </td>
       <td>{{ ticket.reported_by }}</td>

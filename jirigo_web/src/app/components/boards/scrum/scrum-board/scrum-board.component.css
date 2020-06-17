@@ -16,15 +16,15 @@
 }
 
 .task-count{
-    padding-left:5px;
-    font-size:13px;
+    padding-left:0.313rem;
+    font-size:0.813rem;
     font-weight:550;
     color:grey;
 }
 .c-issue-status{
-    font-size: 10px;
+    font-size: 0.625rem;
     font-weight: 500;
-    padding-bottom:3px;
+    padding-bottom:0.188rem;
     background-color: #E3F2FD;
 }
 

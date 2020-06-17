@@ -15,10 +15,10 @@
 
 .j-dropdown:hover {
     cursor: pointer;
-    border-radius:5px;
+    border-radius:0.313rem;
     border-style: solid;
     border-color: #3884ff;
-    border-width: 2px;
+    border-width: 0.125rem;
     color:#666;
 }
 

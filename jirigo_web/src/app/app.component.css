@@ -1,22 +1,22 @@
 /* The sidebar menu */
 .sidebar {
     height: 100%; /* 100% Full-height */
-    width: 230px; /* 0 width - change this with JavaScript */
+    width: 14.375rem; /* 0 width - change this with JavaScript */
     position: fixed; /* Stay in place */
     z-index: 1; /* Stay on top */
     top: 0;
     left: 0;
     background-color:#6e5773; /* Black*/
     overflow-x: hidden; /* Disable horizontal scroll */
-    padding-top: 60px; /* Place content 60px from the top */
+    padding-top: 3.75rem; /* Place content 3.75rem from the top */
     transition: 0.5s; /* 0.5 second transition effect to slide in the sidebar */
   }
   
   /* The sidebar links */
   .sidebar a {
-    padding: 8px 8px 3px 32px;
+    padding: 0.5rem 0.5rem 0.188rem 2rem;
     text-decoration: none;
-    font-size: 20px;
+    font-size: 1.25rem;
     color:#fef6fb;
     display: block;
     transition: 0.3s;
@@ -31,18 +31,18 @@
   .sidebar .closebtn {
     position: absolute;
     top: 0;
-    right: 25px;
-    font-size: 36px;
-    margin-left: 50px;
+    right: 1.563rem;
+    font-size: 2.25rem;
+    margin-left: 3.125rem;
   }
   
   /* The button used to open the sidebar */
   .openbtn {
-    font-size: 20px;
+    font-size: 1.25rem;
     cursor: pointer;
     background-color: #111;
     color: white;
-    padding: 10px 15px;
+    padding: 0.625rem 0.938rem;
     border: none;
   }
   
@@ -53,14 +53,14 @@
   /* Style page content - use this if you want to push the page content to the right when you open the side navigation */
   #main {
     transition: margin-left .5s; /* If you want a transition effect */
-    padding: 20px;
-    margin-left :"250px";
+    padding: 1.25rem;
+    margin-left :"23.125rem";
   }
   
-  /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
-  @media screen and (max-height: 450px) {
-    .sidebar {padding-top: 15px;}
-    .sidebar a {font-size: 18px;}
+  /* On smaller screens, where height is less than 28.125rem, change the style of the sidenav (less padding and a smaller font size) */
+  @media screen and (max-height: 28.125rem) {
+    .sidebar {padding-top: 0.938rem;}
+    .sidebar a {font-size: 1.125rem;}
   }
 
   .alwaysVisible{
@@ -71,26 +71,26 @@
 PrimeNG Global overriding the table classes
 */
 ::ng-deep .ui-table-caption {
-    border-right: 1px !important;
-    border-left: 1px !important;
+    border-right: 0.063rem !important;
+    border-left: 0.063rem !important;
 }
 
 ::ng-deep body .ui-table .ui-table-thead  > tr > th {
-    border-left: 1px;
-    border-right: 1px;
+    border-left: 0.063rem;
+    border-right: 0.063rem;
     cursor: auto;
 }
 
 ::ng-deep body .u-paginator-bottom {
   background-color: red;
-  border-left: 1px;
-  border-right: 1px;
+  border-left: 0.063rem;
+  border-right: 0.063rem;
   cursor: auto;
 }
 
 ::ng-deep body .ui-table .ui-table-tbody  > tr > td {
     /* border: 0 none !important;  */
-    border-bottom: 1px !important;;
+    border-bottom: 0.063rem !important;;
     border-right: 0 !important;;
     border-left: 0 !important;;
     cursor: auto;

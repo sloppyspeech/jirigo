@@ -38,7 +38,7 @@ export class CreateTaskComponent implements OnInit {
   alertConfirmButtonText='';
 
   editorStyle = {
-    'height': '200px'
+    'height': '12.5rem'
     // ,'background-color':'#EAF4FC'
   };
 

@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col-lg-5">
-    <span style="font-size:24px;font-weight:500;padding-right:7px;">{{sprint_name}}</span>
+    <span style="font-size:1.5rem;font-weight:500;padding-right:0.438rem;">{{sprint_name}}</span>
   </div>
   <div class="col-lg-1 offset-lg-5">
     <button type="button" class="btn btn-light">Cancel</button>
@@ -18,25 +18,25 @@
       <div class="col-lg-2">
           <div class="card dropzone rounded" style="
               background-color: #f1f1f1;
-              padding-top: 1px !important;
-              margin-top: 1px !important;
+              padding-top: 0.063rem !important;
+              margin-top: 0.063rem !important;
             " (drop)="drop($event)" (dragenter)="allowDrop($event)" (dragover)="allowDrop($event)"
             (dragleave)="clearDrop($event)" id="header_{{ step.stepName }}#">
             &nbsp;
 
             <div class="card-body dropzone" style="
                 background-color: #f1f1f1;
-                padding-top: 1px !important;
-                margin-top: 1px !important;
-                padding-right: 4px !important;
-                padding-left: 4px !important;
+                padding-top: 0.063rem !important;
+                margin-top: 0.063rem !important;
+                padding-right: 0.25rem !important;
+                padding-left: 0.25rem !important;
               " id="body_{{ step.stepName }}#"
               (drop)="drop($event)" (dragenter)="allowDrop($event)" (dragover)="allowDrop($event)"
               (dragleave)="clearDrop($event)" >
               <div class="card-title dropzone" style="
-                  padding-top: 1px !important;
-                  margin-top: 1px !important;
-                  font-size: 15px;
+                  padding-top: 0.063rem !important;
+                  margin-top: 0.063rem !important;
+                  font-size: 0.938rem;
                   font-weight: 600;
                 " id="title_{{ step.stepName }}#"
                 (drop)="drop($event)" (dragenter)="allowDrop($event)" (dragover)="allowDrop($event)"
@@ -58,12 +58,12 @@
                           </div>
                       </div>
                       <div class="row" style="
-                          height: 20px;
-                          margin-bottom: 1px !important;
-                          padding-bottom: 2px !important;
+                          height: 1.25rem;
+                          margin-bottom: 0.063rem !important;
+                          padding-bottom: 0.125rem !important;
                         ">
                         <div class="col-lg-7">
-                          <p class="font-weight-light" style="font-size: 13px;">
+                          <p class="font-weight-light" style="font-size: 0.813rem;">
                             {{ task.task_no }}
                           </p>
                         </div>
@@ -73,10 +73,10 @@
                           </span>
                         </div>
                       </div>
-                      <hr style="margin: 1px 0 1px 0;" />
+                      <hr style="margin: 0.063rem 0 0.063rem 0;" />
                       <div class="row mt-1">
                         <div class="col-lg-12">
-                          <div class="font-weight-light" style="font-size: 14px;">
+                          <div class="font-weight-light" style="font-size: 0.875rem;">
                             {{ task.summary }}
                           </div>
                         </div>

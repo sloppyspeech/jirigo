@@ -1,43 +1,43 @@
 .task {
-    border-radius: 1px;
+    border-radius: 0.063rem;
     background-color: #CEEDC0 ; 
-    padding:10px 0 20px 0;
+    padding:0.625rem 0 1.25rem 0;
 }
 .task-allocated{
     background-color:#ffffdd;
 }
 .task-badge{
-    margin:0 10px 0 0;
-    font-size: 12px;
+    margin:0 0.625rem 0 0;
+    font-size: 0.75rem;
     font-weight: 500;
-    padding: 6px 8px 6px 8px; 
-    border-radius: 20px;
+    padding: 0.375rem 0.5rem 0.375rem 0.5rem; 
+    border-radius: 1.25rem;
     background-color: #E3F2FD;
     color: black;
 }
 
 .menu-item-assigned{
-    font-size: 15px; 
-    padding: 10px 10px 10px 10px ;
+    font-size: 0.938rem; 
+    padding: 0.625rem 0.625rem 0.625rem 0.625rem ;
     background-color: white ;
     font-weight:500 ;
-    border-radius: 3px;
+    border-radius: 0.188rem;
     color:#555555;
 }
 
 .menu-item-unassigned{
-    font-size: 15px; 
-    padding: 10px 10px 10px 10px ;
+    font-size: 0.938rem; 
+    padding: 0.625rem 0.625rem 0.625rem 0.625rem ;
     background-color: white ;
     font-weight:500 ;
-    border-radius: 3px;
+    border-radius: 0.188rem;
     color:#555555;
 }
 
 .jsprint-summary{
-    font-size:13px;
+    font-size:0.813rem;
     font-weight: 400;
     float: left;
-    margin:15px 0 0 10px;
+    margin:0.938rem 0 0 0.625rem;
     color:#555555;
 }

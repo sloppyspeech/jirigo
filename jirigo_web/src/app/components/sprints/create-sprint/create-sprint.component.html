@@ -1,4 +1,4 @@
-<!-- <h4 style="margin-bottom: 20px;">Create Sprint</h4> -->
+<!-- <h4 style="margin-bottom: 1.25rem;">Create Sprint</h4> -->
 
 <p-pickList
   [source]="sourceTasks"
@@ -10,8 +10,8 @@
   dragdrop="true"
   sourceFilterPlaceholder="Search"
   targetFilterPlaceholder="Search"
-  [sourceStyle]="{ height: '480px','background-color':'#f4f4f4' }"
-  [targetStyle]="{ height: '480px','background-color':'#f4f4f4' }"
+  [sourceStyle]="{ height: '30rem','background-color':'#f4f4f4' }"
+  [targetStyle]="{ height: '30rem','background-color':'#f4f4f4' }"
   dragdrop="true"
 
 >
@@ -31,7 +31,7 @@
 
 <div class="row  mt-4" >
   <div class="col-lg-12 col-md-12 col-sm-12 text-center">
-    <a [routerLink]="['/sprints/list-sprints']" class="btn btn-light mr-2" style="margin:0 0 0 20px; padding: 6px 40px 6px 40px;">Cancel</a>
+    <a [routerLink]="['/sprints/list-sprints']" class="btn btn-light mr-2" style="margin:0 0 0 1.25rem; padding: 0.375rem 2.5rem 0.375rem 2.5rem;">Cancel</a>
     <button type="submit" (click)="showSprintNameDialog();" class="btn btn-primary">Create Sprint</button>
   </div>
 </div>
@@ -41,12 +41,12 @@
      <p-header>
         Create Sprint
      </p-header>
-     <div style="height:50px; margin: 20px 0 0 0 ;">
+     <div style="height:3.125rem; margin: 1.25rem 0 0 0 ;">
      <span class="ui-float-label">
         <input id="float-input" type=text pInputText [(ngModel)]="sprintName" size="50" maxlength="50" (keyup)="countInputTextChars()"/>
-        <label for="float-input" >Enter Sprint Name, <span style="font-weight: 600;font-size: 13px; color:darkviolet; background-color: bisque;">{{sprintNameCharsRemaining}}</span> Chars remaining</label>
+        <label for="float-input" >Enter Sprint Name, <span style="font-weight: 600;font-size: 0.813rem; color:darkviolet; background-color: bisque;">{{sprintNameCharsRemaining}}</span> Chars remaining</label>
      </span>
-     <span *ngIf="showNoSprintNameEnteredDiag" style="color: red; font-size:13px;">Please Enter Sprint Name</span>
+     <span *ngIf="showNoSprintNameEnteredDiag" style="color: red; font-size:0.813rem;">Please Enter Sprint Name</span>
     </div>
         <p-footer>
           <button type="button" pButton icon="pi pi-times" (click)="cancelSprintName()" label="Cancel" class="ui-button-warning"></button>

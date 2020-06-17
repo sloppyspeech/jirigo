@@ -3,7 +3,7 @@
   type="ball-newton-cradle"
   size="medium"
 ></ngx-spinner>
-<p-toast [style]="{ marginTop: '10px' }" position="top-right"></p-toast>
+<p-toast [style]="{ marginTop: '0.625rem' }" position="top-right"></p-toast>
 <form
   [formGroup]="viewModifyTicketFB"
   (ngSubmit)="updateTicket()"
@@ -12,18 +12,18 @@
   <div class="form-group">
 
 
-    <div class="row btn-group"  *ngIf="viewEditFormEditBtnDisabled" style="margin-bottom: 8px;">
+    <div class="row btn-group"  *ngIf="viewEditFormEditBtnDisabled" style="margin-bottom: 0.5rem;">
       <div class="col-lg-12" >
         <button
           type="button"
           label="Modify Task"
           class="btn btn-warning btn-sm mr-1"
           (click)="markFormEditable()"
-          style="margin-right: 10px; color: white;"
+          style="margin-right: 0.625rem; color: white;"
         >
           <fa-icon
             [icon]="faEdit"
-            style="padding-right: 3px; color: white;"
+            style="padding-right: 0.188rem; color: white;"
           ></fa-icon
           >Modify Ticket
         </button>

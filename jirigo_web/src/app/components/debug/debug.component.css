@@ -7,11 +7,11 @@
 
 #div1, #div2 {
     float: left;
-    width: 110px;
-    height: 63px;
-    margin: 10px;
-    padding: 10px;
-    border: 1px solid black;
+    width: 6.875rem;
+    height: 3.938rem;
+    margin: 0.625rem;
+    padding: 0.625rem;
+    border: 0.063rem solid black;
 }
 
 option {
@@ -36,14 +36,14 @@ cSuggestions{
     background-color: #f9f9f9;
     min-width: 100%;
     width: auto;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    box-shadow: 0rem 0.5rem 1rem 0rem rgba(0,0,0,0.2);
     z-index: 1;
   }
 
   /* Links inside the dropdown */
 .dropdown-content p {
     color: black;
-    padding: 0 16px;
+    padding: 0 1rem;
     text-decoration: none;
     display: block;
   }

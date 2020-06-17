@@ -1,33 +1,33 @@
 
 .jirigoCard1 {
-    border-radius: 5px;
-    /* box-shadow: 0 2px 4px 0 rgba(0,0,0,0.2); */
+    border-radius: 0.313rem;
+    /* box-shadow: 0 0.125rem 0.25rem 0 rgba(0,0,0,0.2); */
     transition: 0.3s;
-    margin-bottom:15px;
+    margin-bottom:0.938rem;
     width: auto;
   }
   
   .jirigoCard:hover {
-    box-shadow: 0 0px 0px 0 rgba(0,0,0,0.2);
+    box-shadow: 0 0rem 0rem 0 rgba(0,0,0,0.2);
   }
   
   .jirigoCardContainer {
-    margin: 0px 0 0px 0 ;
-    padding: 5px 0px 5px 0px;
+    margin: 0rem 0 0rem 0 ;
+    padding: 0.313rem 0rem 0.313rem 0rem;
   }
   .jHr{
-    margin : 0px 0 0px 0;
-    padding : 0px 0 0px 0;
+    margin : 0rem 0 0rem 0;
+    padding : 0rem 0 0rem 0;
     color: #DFE5EB;
   }
 
 .bottom-detail-right-border{
     border-right-style: solid; 
     border-right-color: #E6E6E6; 
-    border-right-width: 1px;
+    border-right-width: 0.063rem;
 }
 .summary-text{
-    padding-left: 15px;
+    padding-left: 0.938rem;
     color: #628cB5;
 }
 .item-no-text{
@@ -46,6 +46,6 @@
 
 .item-details-labels{
     color: #ABACAE;
-    font-size:12px;
-    padding:0 10px 0 0;
+    font-size:0.75rem;
+    padding:0 0.625rem 0 0;
 }

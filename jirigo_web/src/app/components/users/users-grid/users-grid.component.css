@@ -1,7 +1,7 @@
 .active-user{
-    padding: 5px 10px 5px 10px; 
+    padding: 0.313rem 0.625rem 0.313rem 0.625rem; 
     background-color: #DCEDC8;
-    font-size: 14px;
+    font-size: 0.875rem;
     font-weight: 500;
     color:green;
 }
@@ -9,9 +9,9 @@
     cursor: pointer;
 }
 .inactive-user{
-    padding: 5px 10px 5px 10px; 
+    padding: 0.313rem 0.625rem 0.313rem 0.625rem; 
     background-color: #FBE9E7;
-    font-size: 14px;
+    font-size: 0.875rem;
     font-weight: 500;
     color:#BF360C;
 }
@@ -20,9 +20,9 @@
 }
 .edit-icon{
     background-image: url("/assets/images/svgs/password-05.svg");
-    padding: 5px 35px 5px 5px;
+    padding: 0.313rem 2.188rem 0.313rem 0.313rem;
     color: lightsalmon;
-    font-size: 20px;
+    font-size: 1.25rem;
 }
 
 .edit-icon:hover{
@@ -30,9 +30,9 @@
 }
 
 .role-icon{
-    padding: 0px 2px 7px 15px;
+    padding: 0rem 0.125rem 0.438rem 0.938rem;
     color: #536DFE;
-    font-size: 20px;
+    font-size: 1.25rem;
 }
 
 .role-icon:hover{

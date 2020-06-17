@@ -6,7 +6,7 @@
           class="form-control"
           name="projectName"
           id="id_ProjectName"
-          style="border-radius: 3px;"
+          style="border-radius: 0.188rem;"
           [(ngModel)]="fProjectId"
           (change)="populateRolesDD($event)"
         >
@@ -26,7 +26,7 @@
           class="form-control browser-default"
           name="roleName"
           id="id_roleName"
-          style="border-radius: 3px;"
+          style="border-radius: 0.188rem;"
           [(ngModel)]="fRoleId"
           disabled="{{ !enableRoleDropdown }}"
           (change)="populateWorkflowDD()"
@@ -47,7 +47,7 @@
           class="form-control browser-default"
           name="workFlowName"
           id="id_workFlowName"
-          style="border-radius: 3px;"
+          style="border-radius: 0.188rem;"
           [(ngModel)]="fWorkflowId"
           disabled="{{ !enableWFDropdown }}"
           (change)="getWorkflowDetails()"
@@ -64,7 +64,7 @@
     </div>
   </div>
 
-  <div class="row" style="margin-left: 0px; margin-top: 20px;" *ngIf="statusGrid.length>0">
+  <div class="row" style="margin-left: 0rem; margin-top: 1.25rem;" *ngIf="statusGrid.length>0">
     <div class="col">
       <table class="table table-sm table-bordered ">
         <thead>
@@ -74,10 +74,10 @@
                 Next Statuses
                 <fa-icon
                   [icon]="faArrowRight"
-                  style="padding-left: 2px;"
+                  style="padding-left: 0.125rem;"
                 ></fa-icon>
               </div>
-              <div style="font-size: x-small; margin: 10px 0 0 0;">
+              <div style="font-size: x-small; margin: 0.625rem 0 0 0;">
                 Current status
                 <fa-icon [icon]="faArrowDown"></fa-icon>
               </div>

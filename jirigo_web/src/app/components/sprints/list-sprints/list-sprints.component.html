@@ -10,7 +10,7 @@
     <!-- <button class="float-left" type="button" pButton icon="pi pi-file-o" iconPos="left" label="CSV"
       (click)="dt.exportCSV()" style="margin-right: 0.5em;"></button> -->
     <div style="text-align: right">
-      <i class="pi pi-search" style="margin:4px 4px 0 0"></i>
+      <i class="pi pi-search" style="margin:0.25rem 0.25rem 0 0"></i>
       <input type="text" pInputText size="50" placeholder="Global Filter"
         (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto">
     </div>
@@ -41,9 +41,9 @@
       <td>{{sprint.end_date  |  date:'dd-MMM-yyyy'}}</td>
       <td>
         <button (click)="sprintDetails(sprint)" type="button" class="btn btn-light " label="Details"
-          style="width:48%; margin:0 0 0 2px;">Details</button>
+          style="width:48%; margin:0 0 0 0.125rem;">Details</button>
         <button (click)="showSprintBoard(sprint)" type="button" class="btn btn-light float-right" label="Edit"
-          style="width:48%;margin:0 2px 0 0; ">Board</button>
+          style="width:48%;margin:0 0.125rem 0 0; ">Board</button>
       </td>
     </tr>
   </ng-template>

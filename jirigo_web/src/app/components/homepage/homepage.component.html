@@ -23,16 +23,16 @@
                         <ng-container *ngIf="activity.item_type == 'Task'">
                           <a [routerLink]="['/tasks/view-edit-tasks']" [queryParams]="{'task_no':activity.item_no}" class="a-item">
                             <fa-icon [icon]="faTasks" class="jhp-icon-task" ></fa-icon>
-                            <span style="margin-right:9px;">{{activity.item_type}}</span>
-                            <span class="jhp-item-details" style="margin-right:9px;">{{activity.item_no}}:</span>
+                            <span style="margin-right:0.563rem;">{{activity.item_type}}</span>
+                            <span class="jhp-item-details" style="margin-right:0.563rem;">{{activity.item_no}}:</span>
                             <span class="jhp-item-summary ">{{activity.summary}}</span>
                           </a>
                         </ng-container>
                         <ng-container *ngIf="activity.item_type == 'Ticket'">
                           <a [routerLink]="['/tickets/view-edit-tickets']" [queryParams]="{'ticket_no':activity.item_no}" class="a-item">
                             <fa-icon [icon]="faTicketAlt" class="jhp-icon-ticket" ></fa-icon>
-                            <span style="margin-right:9px;">{{activity.item_type}}</span>
-                            <span class="jhp-item-details" style="margin-right:9px;">{{activity.item_no}}:</span>
+                            <span style="margin-right:0.563rem;">{{activity.item_type}}</span>
+                            <span class="jhp-item-details" style="margin-right:0.563rem;">{{activity.item_no}}:</span>
                             <span class="jhp-item-summary ">{{activity.summary}}</span>
                           </a>
                         </ng-container>
@@ -70,16 +70,16 @@
                       <ng-container *ngIf="activity.item_type == 'Task'">
                         <a [routerLink]="['/tasks/view-edit-tasks']" [queryParams]="{'task_no':activity.item_no}" class="a-item">
                           <fa-icon [icon]="faTasks" class="jhp-icon-task" ></fa-icon>
-                          <span style="margin-right:9px;">{{activity.item_type}}</span>
-                          <span class="jhp-item-details" style="margin-right:9px;">{{activity.item_no}}:</span>
+                          <span style="margin-right:0.563rem;">{{activity.item_type}}</span>
+                          <span class="jhp-item-details" style="margin-right:0.563rem;">{{activity.item_no}}:</span>
                           <span class="jhp-item-summary ">{{activity.summary}}</span>
                         </a>
                       </ng-container>
                       <ng-container *ngIf="activity.item_type == 'Ticket'">
                         <a [routerLink]="['/tickets/view-edit-tickets']" [queryParams]="{'ticket_no':activity.item_no}" class="a-item">
                           <fa-icon [icon]="faTicketAlt" class="jhp-icon-ticket" ></fa-icon>
-                          <span style="margin-right:9px;">{{activity.item_type}}</span>
-                          <span class="jhp-item-details" style="margin-right:9px;">{{activity.item_no}}:</span>
+                          <span style="margin-right:0.563rem;">{{activity.item_type}}</span>
+                          <span class="jhp-item-details" style="margin-right:0.563rem;">{{activity.item_no}}:</span>
                           <span class="jhp-item-summary ">{{activity.summary}}</span>
                         </a>
                       </ng-container>

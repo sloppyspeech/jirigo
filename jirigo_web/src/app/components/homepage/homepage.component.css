@@ -1,24 +1,24 @@
 
 .jhp-icon-task{
-    font-size: 14px;
+    font-size: 0.875rem;
     display: inline-block;
-    margin-right: 8px;
+    margin-right: 0.5rem;
     color:#bbbbbb;
 }
 .jhp-icon-ticket{
-    font-size: 14px;
+    font-size: 0.875rem;
     display: inline-block;
-    margin-right: 8px;
+    margin-right: 0.5rem;
     color:#bbbbbb;
 }
 .jhp-activity-date{
-    font-size: 12px;
+    font-size: 0.75rem;
     color: #bbbbbb;
     text-align:right;
 }
 
 .jhp-item-details{
-    font-size:16px;
+    font-size:1rem;
     font-weight: 300;
     color:#628cB5;
 }
@@ -28,12 +28,12 @@
 }
 .jhp-item-changer-text{
     color: #bbbbbb;
-    font-size:13px;
-    padding-right:8px;
+    font-size:0.813rem;
+    padding-right:0.5rem;
 }
 .jhp-item-changer-username{
     color: #777777;
-    font-size:16px;
+    font-size:1rem;
     text-decoration: underline;
 }
 .jhp-item-summary{

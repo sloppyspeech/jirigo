@@ -21,7 +21,7 @@
   -ms-user-select: none;
   user-select: none;
   background-color: transparent;
-  border: 1px solid transparent;
+  border: 0.063rem solid transparent;
       border-top-color: transparent;
       border-right-color: transparent;
       border-bottom-color: transparent;
@@ -93,7 +93,7 @@
 .form-control-plain {
   display: block;
   width: 100%;
-  height: calc(1.5em + .75rem + 2px);
+  height: calc(1.5em + .75rem + 0.125rem);
   padding: .375rem .75rem;
   font-size: 1rem;
   font-weight: 400;
@@ -101,7 +101,7 @@
   color: #495057;
   background-color: #fff;
   background-clip: padding-box;
-  border: 1px solid #ced4da;
+  border: 0.063rem solid #ced4da;
   border-radius: .25rem;
   transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 }
@@ -113,24 +113,24 @@
 .jcOneRowColumnBox{
   background-color:#fff; 
   /* background-color:aliceblue;  */
-  margin-bottom: 50px; 
-  border-radius: 10px; 
-  border-radius: 1px;
+  margin-bottom: 3.125rem; 
+  border-radius: 0.625rem; 
+  border-radius: 0.063rem;
   /* border-color:dodgerblue;  */
   /* border-style: solid;  */
-  /* border-width: 1px; */
-  box-shadow: 2px 2px #eee;
+  /* border-width: 0.063rem; */
+  box-shadow: 0.125rem 0.125rem #eee;
 }
 .jcOneRowColumnBoxheader{
   color:555 ;
   /* background-color: #BDE4FF;  */
   /* background-color: #BDE4FF;  */
-  padding:2px 0 20px 4px;
+  padding:0.125rem 0 1.25rem 0.25rem;
   vertical-align:middle; 
-  border-radius: 5px;
+  border-radius: 0.313rem;
 }
 .jcFormContainer{
-  padding: 20px 20px 20px 20px ;
+  padding: 1.25rem 1.25rem 1.25rem 1.25rem ;
 }
 
 html {
@@ -144,7 +144,7 @@ body {
 
 .main {
    min-height: 100%;
-   padding-bottom: 55px;
+   padding-bottom: 3.438rem;
 }
 
 :host {
@@ -160,10 +160,10 @@ select:disabled{
 
 .j-current-input:hover:enabled {
   cursor: pointer;
-  border-radius:5px;
+  border-radius:0.313rem;
   border-style: solid;
   border-color: #3884ff;
-  border-width: 2px;
+  border-width: 0.125rem;
   color:#666;
 }
 
@@ -188,7 +188,7 @@ select:disabled{
 }
 
 table.j-details-table{
-  margin-top:10px;
+  margin-top:0.625rem;
 }
 table.j-details-table tbody td{
   font-size: 0.87rem;
@@ -211,7 +211,7 @@ table.j-details-table  thead th{
 
 body .ui-table .ui-table-thead > tr > th {
   /* padding: 0.571em 0.857em; */
-  /* border: 1px solid #c8c8c8; */
+  /* border: 0.063rem solid #c8c8c8; */
   font-size:0.85rem;
   font-weight: 500;
   /* color: #333333; */
@@ -220,7 +220,7 @@ body .ui-table .ui-table-thead > tr > th {
 
 body .ui-table .ui-table-tbody > tr {
   /* padding: 0.571em 0.857em; */
-  /* border: 1px solid #c8c8c8; */
+  /* border: 0.063rem solid #c8c8c8; */
   font-size:0.85rem;
   font-weight: 400;
   /* color: #333333; */

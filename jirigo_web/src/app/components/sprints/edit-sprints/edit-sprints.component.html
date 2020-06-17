@@ -8,8 +8,8 @@
       dragdrop="true"
       sourceFilterPlaceholder="Search"
       targetFilterPlaceholder="Search"
-      [sourceStyle]="{ 'height': '480px','background-color':'#f4f4f4'}"
-      [targetStyle]="{ 'height': '480px','background-color':'#f4f4f4'}"
+      [sourceStyle]="{ 'height': '30rem','background-color':'#f4f4f4'}"
+      [targetStyle]="{ 'height': '30rem','background-color':'#f4f4f4'}"
       dragdrop="true"
     >
     <ng-template let-task pTemplate="item" >
@@ -25,7 +25,7 @@
         <!-- <strong >Task No  : </strong>{{ task.task_no }} <br> -->
         {{ task.summary }} <br>
         <!-- <strong >Severity : </strong>{{ task.severity}}     -->
-        <!-- <strong style="margin:0 0 0 30px;">Priority :</strong>{{ task.priority}} -->
+        <!-- <strong style="margin:0 0 0 1.875rem;">Priority :</strong>{{ task.priority}} -->
         </div>
       </div>
     </ng-template>
@@ -34,8 +34,8 @@
 <div class="row mt-4">
   <div class="col-lg-12 col-md-12 col-sm-12 text-center">
       <button type="submit" (click)="saveSprintTasks();" class="btn btn-primary">Save Sprint</button>
-      <button type="submit" (click)="backToSprintList();" class="btn btn-light" style="margin:0 0 0 20px; padding: 6px 40px 6px 40px;">Back</button>
-      <!-- <a [routerLink]="['/sprints/list-sprints']" class="btn btn-dark" style="margin:0 0 0 20px; padding: 6px 40px 6px 40px;">Cancel</a> -->
+      <button type="submit" (click)="backToSprintList();" class="btn btn-light" style="margin:0 0 0 1.25rem; padding: 0.375rem 2.5rem 0.375rem 2.5rem;">Back</button>
+      <!-- <a [routerLink]="['/sprints/list-sprints']" class="btn btn-dark" style="margin:0 0 0 1.25rem; padding: 0.375rem 2.5rem 0.375rem 2.5rem;">Cancel</a> -->
   </div>
 </div>
 <p-dialog

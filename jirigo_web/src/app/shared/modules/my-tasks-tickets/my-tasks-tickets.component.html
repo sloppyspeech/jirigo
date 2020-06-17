@@ -22,7 +22,7 @@
           <button type="button" label="Modify item" class="btn btn-sm btn-orange mr-1"
            (click)="ListItems('AssignedToMe')"
             >
-            <fa-icon [icon]="faBookmark" style="padding: 0 9px 0 0; color: white;"></fa-icon>My {{myItemType}}
+            <fa-icon [icon]="faBookmark" style="padding: 0 0.563rem 0 0; color: white;"></fa-icon>My {{myItemType}}
           </button>
           <button type="button" label="Clone item" class="btn  btn-sm btn-purple mr-1" (click)="ListItems('CreatedByMe')">
             <fa-icon [icon]="faCubes" style="color: white;"></fa-icon>&nbsp;
@@ -35,7 +35,7 @@
       </div>
 </div> -->
   
-  <div class="row" style="margin:20px 0 0 0;">
+  <div class="row" style="margin:1.25rem 0 0 0;">
     <ngx-spinner [fullScreen]="true" type="ball-newton-cradle"></ngx-spinner>
     
     <p-table #dt *ngIf="showTable" [value]="myItemList" [columns]="itemDetailsCols" [rowHover]="true" [responsive]="true"
@@ -47,7 +47,7 @@
                 <div style="text-align: right">                
                     <button class="float-left" type="button" pButton icon="pi pi-file-o" iconPos="left" label="CSV" (click)="dt.exportCSV()"
                     style="margin-right: 0.5em;"></button>
-                    <i class="pi pi-search" style="margin:4px 4px 0 0"></i>
+                    <i class="pi pi-search" style="margin:0.25rem 0.25rem 0 0"></i>
                     <input type="text" pInputText size="50" placeholder="Global Filter"
                         (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto">
                 </div>

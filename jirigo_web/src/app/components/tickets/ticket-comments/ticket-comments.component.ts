@@ -21,7 +21,7 @@ export class TicketCommentsComponent implements OnInit {
 
   quillEditor:any='';
   editorStyle = {
-    height: '200px',
+    height: '12.5rem',
     backgroundColor:'#F8F8F8'
   };
 

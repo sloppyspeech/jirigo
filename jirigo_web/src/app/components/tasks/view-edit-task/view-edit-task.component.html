@@ -1,13 +1,13 @@
 <ngx-spinner [fullScreen]="true" type="ball-newton-cradle" size="medium"></ngx-spinner>
-<p-toast [style]="{ marginTop: '10px' }" position="top-right"></p-toast>
+<p-toast [style]="{ marginTop: '0.625rem' }" position="top-right"></p-toast>
 <form [formGroup]="viewModifyTaskFB" (ngSubmit)="updateTask()" *ngIf="isLoaded">
   <div class="form-group">
 
-    <div class="row btn-group"  *ngIf="viewEditFormEditBtnDisabled" style="margin-bottom: 8px;">
+    <div class="row btn-group"  *ngIf="viewEditFormEditBtnDisabled" style="margin-bottom: 0.5rem;">
       <div class="col-lg-12" >
             <button type="button" label="Modify Task" class="btn btn-sm btn-orange mr-1" (click)="markFormEditable()"
               >
-              <fa-icon [icon]="faEdit" style="padding-right: 6px; color: white;"></fa-icon>Modify Task
+              <fa-icon [icon]="faEdit" style="padding-right: 0.375rem; color: white;"></fa-icon>Modify Task
             </button>
             <button type="button" label="Clone Task" class="btn btn-sm btn-purple mr-1" (click)="cloneTask()">
               <fa-icon [icon]="faClone" style="color: white;"></fa-icon>&nbsp;

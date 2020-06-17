@@ -1,17 +1,17 @@
 .menu-item-assigned{
-    font-size: 15px; 
-    padding: 10px 10px 10px 10px ;
+    font-size: 0.938rem; 
+    padding: 0.625rem 0.625rem 0.625rem 0.625rem ;
     background-color: #a4c639 ;
     font-weight:500 ;
-    border-radius: 3px;
+    border-radius: 0.188rem;
     color:white;
 }
 
 .menu-item-unassigned{
-    font-size: 15px; 
-    padding: 10px 10px 10px 10px ;
+    font-size: 0.938rem; 
+    padding: 0.625rem 0.625rem 0.625rem 0.625rem ;
     background-color: #fdc100 ;
     font-weight:500 ;
-    border-radius: 3px;
+    border-radius: 0.188rem;
     color:white;
 }

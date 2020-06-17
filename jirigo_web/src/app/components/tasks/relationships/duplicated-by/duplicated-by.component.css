@@ -1,10 +1,10 @@
 .bottom-detail-right-border{
     border-right-style: solid; 
     border-right-color: #E6E6E6; 
-    border-right-width: 1px;
+    border-right-width: 0.063rem;
 }
 .summary-text{
-    padding-left: 15px;
+    padding-left: 0.938rem;
     color: #628cB5;
 }
 .item-no-text{
@@ -15,6 +15,6 @@
 }
 .item-details-labels{
     color: #ABACAE;
-    font-size:12px;
-    padding:0 10px 0 0;
+    font-size:0.75rem;
+    padding:0 0.625rem 0 0;
 }
