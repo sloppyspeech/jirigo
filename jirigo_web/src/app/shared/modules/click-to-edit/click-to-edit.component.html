@@ -1,0 +1,6 @@
+<div class="col">
+  <label class="col-form-label" (click)="toggleInput($event)" *ngIf="!labelDivToggle">{{fc.value}} </label>
+  <div class="input-group" *ngIf="labelDivToggle">
+    <input class="form-control" (focusout)="toggleInput($event)" #inputText [value]="fc.value" />
+  </div>
+</div>

@@ -1,3 +1,4 @@
+import { ClickToEditModule } from './../../shared/modules/click-to-edit/click-to-edit.module';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { ModalConfirmModule } from './../../shared/modules/modal-confirm/modal-confirm.module';
 import { NgModule } from '@angular/core';
@@ -15,7 +16,8 @@ import {ScrumBoardComponent} from './scrum/scrum-board/scrum-board.component';
     BoardsRoutingModule,
     FontAwesomeModule,
     ModalConfirmModule,
-    NgxSpinnerModule
+    NgxSpinnerModule,
+    ClickToEditModule
   ]
 })
 export class BoardsModule { }

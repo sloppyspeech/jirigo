@@ -16,7 +16,7 @@ export class LogoutComponent implements OnInit {
 
   ngOnInit(): void {
     this._serNgxSpinner.show();
-    localStorage.clear();
+    // localStorage.clear();
     this._serUsers.isLoggedIn.next(false);
     this._serUsers.loggedInUserProps.next({});
 

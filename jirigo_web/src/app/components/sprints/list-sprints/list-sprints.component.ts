@@ -7,7 +7,7 @@ import { StaticDataService  } from '../../../services/static-data.service';
 import * as moment from 'moment';
 import { NgbDate } from '@ng-bootstrap/ng-bootstrap';
 
-import { faPenSquare,faPenNib,faPencilAlt,faEdit  } from '@fortawesome/free-solid-svg-icons';
+import { faPenSquare,faPenNib,faPencilAlt,faEdit,faListUl,faNewspaper,faTh  } from '@fortawesome/free-solid-svg-icons';
 
 declare var $: any;
 
@@ -21,6 +21,9 @@ export class ListSprintsComponent implements OnInit {
   faPenNib=faPenNib;
   faPencilAlt=faPencilAlt;
   faEdit=faEdit;
+  faListUl=faListUl;
+  faNewspaper=faNewspaper;
+  faTh=faTh;
 
   allSprints=[];
   refSprintStatus=[];

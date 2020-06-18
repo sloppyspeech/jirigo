@@ -12,7 +12,6 @@
 
 .card:hover {
     background-color: #E8EAF6;
-
 }
 
 .task-count{
@@ -21,12 +20,42 @@
     font-weight:550;
     color:grey;
 }
-.c-issue-status{
-    font-size: 0.625rem;
-    font-weight: 500;
-    padding-bottom:0.188rem;
+
+.c-card-issue-status{
+    font-size: 12px;
+    font-weight: 400;
+    padding-bottom:3px;
     background-color: #E3F2FD;
 }
 
+.c-card-header{
+    padding-left: 5px !important;
+    padding-top: 1px !important;
+    margin-top: 1px !important;
+    font-size: 17px;
+    font-weight: 500;
+}
 
+.c-card-body{
+    background-color: #f1f1f1;
+    padding-top: 1px !important;
+    margin-top: 1px !important;
+    padding-right: 4px !important;
+    padding-left: 4px !important;
+}
 
+.c-card{
+    background-color: #f1f1f1;
+    padding-top: 1px !important;
+    margin-top: 1px !important;
+}
+
+.c-card-row{
+    height: 20px;
+    margin-bottom: 1px !important;
+    padding-bottom: 2px !important;
+}
+
+.card.c-main-header:hover{
+    background-color: #f1f1f1;
+}

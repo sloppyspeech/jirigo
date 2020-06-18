@@ -1,3 +1,4 @@
+import { FormControl } from '@angular/forms';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Component, OnInit } from '@angular/core';
 import { Router,ActivatedRoute,ParamMap  } from '@angular/router';
@@ -25,6 +26,7 @@ export class ScrumBoardComponent implements OnInit {
   draggedTaskDivId:any;
   draggedTask:string;
   boardStepsVals:any[];
+  stepNameFC:FormControl;
 
   modalAlertConfig={
     modalType :'',
@@ -118,6 +120,11 @@ export class ScrumBoardComponent implements OnInit {
     return arr.splice(arr,1,idx);
   }
   
+  setNewStepName(stepName){
+    console.log(stepName);
+    console.log(this.tBoardStepsName);
+    console.log(this.getRefKey(stepName));
+  }
 /** 
  * Find Element in the original tasks JSON. Structure of the JSON is 
  * [  { "taskStatus1":[

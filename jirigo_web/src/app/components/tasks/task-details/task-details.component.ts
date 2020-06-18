@@ -15,6 +15,7 @@ import { Observable, of } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, map, tap, switchMap } from 'rxjs/operators';
 // import { faCalendar} from '@fortawesome/free-solid-svg-icons';
 import { faCalendar} from  '@fortawesome/free-regular-svg-icons';
+import { faCalendarAlt} from '@fortawesome/free-regular-svg-icons';
 
 @Component({
   selector: 'app-task-details',
@@ -23,7 +24,7 @@ import { faCalendar} from  '@fortawesome/free-regular-svg-icons';
 })
 export class TaskDetailsComponent implements OnInit {
   @Input() parentForm: FormGroup;
-
+  faCalendarAlt=faCalendarAlt;
   dataPipe = new DatePipe('en-US');
   taskEnvRef: [any];
   taskIssueStatusesRef:any[]=[];
@@ -161,6 +162,8 @@ export class TaskDetailsComponent implements OnInit {
               console.log('------@@@@@@@--------');
               console.log(this.parentForm.get('fctlReportedDate').value);
               this.parentForm.get('fctlReportedDate').setValue(this._serUtils.parseDateAsYYYYMMDD(this.task_data.reported_date));
+              this.parentForm.get('fctlStartDate').setValue(this._serUtils.parseDateAsYYYYMMDD(this.task_data.start_date));
+              this.parentForm.get('fctlEndDate').setValue(this._serUtils.parseDateAsYYYYMMDD(this.task_data.end_date));
               this.isLoaded = true;
 
               this._serNgxSpinner.hide();

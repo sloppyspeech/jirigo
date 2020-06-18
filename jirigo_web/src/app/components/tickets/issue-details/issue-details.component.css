@@ -60,3 +60,9 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 } 
+.calendar{
+  font-size: 2.25em;
+  padding: 0 0 0 0; 
+  margin: 0 0 3px 5px;
+  color:#888888
+}

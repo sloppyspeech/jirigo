@@ -32,6 +32,7 @@ export class DebugComponent implements OnInit {
     })
   };
   typeahead: FormControl = new FormControl();
+  testFC: FormControl = new FormControl();
   suggestions:string[]=[];
    countries:string[]=[
       "Afghanistan",
@@ -334,6 +335,7 @@ options = {
   projStatuses=['Open','Analysis','Dev','Code Review','QA Testing','UAT','Release','Closed'];
 
   ngOnInit(): void {
+    this.testFC.setValue('Test Button');
     // this._errSer.getErrorMessage('TASK')
     //     .subscribe(res=>{
     //       console.log('Error Message here here ');

@@ -7,7 +7,7 @@ import { TicketDetailsService } from '../../../services/tickets/ticket-details.s
 import { UsersService } from '../../../services/users/users.service';
 import { UtilsService } from '../../../services/shared/utils.service';
 import {faCalendarCheck,faCalendar } from '@fortawesome/free-solid-svg-icons';
-
+import { faCalendarAlt} from '@fortawesome/free-regular-svg-icons';
 import { NgxSpinnerService } from "ngx-spinner";
 
 import { Observable, of } from 'rxjs';
@@ -23,6 +23,7 @@ export class IssueDetailsComponent implements OnInit {
 
   faCalendar=faCalendar;
   faCalendarCheck=faCalendarCheck;
+  faCalendarAlt=faCalendarAlt;
 
   dataPipe = new DatePipe('en-US');
   ticketEnvRef: [any];

@@ -27,7 +27,7 @@ export class LoginComponent implements OnInit {
     console.log(localStorage.getItem('loggedInUserName'));
     console.log(localStorage.getItem('currentProjectName'));
     console.log('-------------');
-    localStorage.clear();
+    // localStorage.clear();
     this.loginFormInvalid=false;
     this.errorsList=[];
     this.loginFB=this._formBuilder.group({
@@ -41,7 +41,7 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit(){
-    localStorage.clear();
+    // localStorage.clear();
     this._serUsers.isLoggedIn.next(false);
 
     this.errorsList=[];

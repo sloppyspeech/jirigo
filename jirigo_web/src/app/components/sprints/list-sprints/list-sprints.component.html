@@ -40,10 +40,11 @@
       </td>
       <td>{{sprint.end_date  |  date:'dd-MMM-yyyy'}}</td>
       <td>
-        <button (click)="sprintDetails(sprint)" type="button" class="btn btn-light " label="Details"
-          style="width:48%; margin:0 0 0 0.125rem;">Details</button>
-        <button (click)="showSprintBoard(sprint)" type="button" class="btn btn-light float-right" label="Edit"
-          style="width:48%;margin:0 0.125rem 0 0; ">Board</button>
+        <button (click)="sprintDetails(sprint)" type="button" class="btn btn-light btn-list-sprints" label="Details"
+          ><fa-icon [icon]="faListUl"></fa-icon></button>
+        <button (click)="showSprintBoard(sprint)" type="button" class="btn btn-light btn-scrumboard" label="Edit"
+          ><fa-icon [icon]="faTh"></fa-icon></button>
+          
       </td>
     </tr>
   </ng-template>

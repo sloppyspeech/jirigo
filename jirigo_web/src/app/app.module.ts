@@ -44,6 +44,8 @@ import { UtilsService  } from './services/shared/utils.service';
 
 import { ModalConfirmModule} from './shared/modules/modal-confirm/modal-confirm.module';
 import { DataExtractsComponent } from './components/data-extracts/data-extracts.component';
+import { ClickToEditModule } from './shared/modules/click-to-edit/click-to-edit.module';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -86,7 +88,8 @@ import { DataExtractsComponent } from './components/data-extracts/data-extracts.
     DropdownModule,
     FontAwesomeModule,
     ChartModule,
-    ModalConfirmModule
+    ModalConfirmModule,
+    ClickToEditModule
   ],
   providers: [UtilsService],
   bootstrap: [AppComponent]

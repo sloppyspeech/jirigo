@@ -1,3 +1,4 @@
+import { UtilsService } from './../../../services/shared/utils.service';
 import { environment } from './../../../../environments/environment';
 import { Component, OnInit, Input, Output, EventEmitter, ɵConsole } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators,AbstractControl,ValidatorFn } from '@angular/forms';
@@ -67,7 +68,8 @@ export class CreateTaskComponent implements OnInit {
     private _NgxSpinner: NgxSpinnerService,
     private _serTaskDetails: TaskDetailsService,
     private _serUsers: UsersService,
-    private _router: Router) {
+    private _router: Router,
+    private _serUtils:UtilsService) {
 
     this._NgxSpinner.show();
     console.log("Calling the New Ref Master");
@@ -112,8 +114,10 @@ export class CreateTaskComponent implements OnInit {
       fctlReportedDate: new FormControl({ value: '', disabled: false }, Validators.required),
       fctlComment: new FormControl({ value: '', disabled: true }),
       fctlAssigneeName: new FormControl({ value: '', disabled: false }),
-      fctlEstimatedTime: new FormControl({ value: 0, disabled: false })
-    });
+      fctlEstimatedTime: new FormControl({ value: 0, disabled: false }),
+      fctlStartDate: new FormControl({ value: '', disabled: false }),
+      fctlEndDate: new FormControl({ value: '', disabled: false })
+    },{validator:this.validateStartAndEndDates});
   }
 
 
@@ -155,9 +159,12 @@ export class CreateTaskComponent implements OnInit {
       "created_by": localStorage.getItem('loggedInUserId'),
       "created_date": this.createTaskFB.get('fctlCreatedDate').value,
       "reported_by": this.createTaskFB.get('fctlReportedBy').value,
-      "reported_date": this.createTaskFB.get('fctlReportedDate').value,
+      "reported_date": this._serUtils.getDateInYYYYMMDD(this.createTaskFB.get('fctlReportedDate').value),
       "module_name": this.createTaskFB.get('fctlModuleName').value,
-      "estimated_time": this.createTaskFB.get('fctlEstimatedTime').value
+      "estimated_time": this.createTaskFB.get('fctlEstimatedTime').value,
+      "start_date":this._serUtils.getDateInYYYYMMDD(this.createTaskFB.get('fctlStartDate').value),
+      "end_date":this._serUtils.getDateInYYYYMMDD(this.createTaskFB.get('fctlEndDate').value)
+
     }
     console.log('@@------@@');
     console.log(formData);
@@ -181,6 +188,7 @@ export class CreateTaskComponent implements OnInit {
           this.alertType='danger';
           this.alertContent='Task Creation Unsuccessful';
           this.showAlert=true;
+          this._NgxSpinner.hide();
         }
       })
 
@@ -235,5 +243,19 @@ export class CreateTaskComponent implements OnInit {
       this._router.navigate(['/tasks/view-edit-tasks'],{queryParams:{'task_no':this.newTaskNo}});
     }
   }
-
+  validateStartAndEndDates(fg:FormGroup){
+    console.log('validateStartAndEndDates')
+    let startDate=fg.get('fctlStartDate').value
+    let endDate=fg.get('fctlEndDate').value
+    console.log(startDate);
+    console.log(endDate);
+    let startDateYYYYMMDD=startDate['year']+startDate['month']+startDate['day'];
+    let endDateYYYYMMDD=endDate['year']+endDate['month']+endDate['day'];
+    console.log(startDateYYYYMMDD);
+    console.log(endDateYYYYMMDD);
+  
+    console.log("--------------------------");
+  
+    return endDateYYYYMMDD<startDateYYYYMMDD ? {'sdateOverEndDate':true} : null;
+  }
 }

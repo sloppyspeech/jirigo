@@ -16,31 +16,19 @@
   <div class="row py-2" >
     <ng-container *ngFor="let step of tBoardStepsName">
       <div class="col-lg-2">
-          <div class="card dropzone rounded" style="
-              background-color: #f1f1f1;
-              padding-top: 0.063rem !important;
-              margin-top: 0.063rem !important;
-            " (drop)="drop($event)" (dragenter)="allowDrop($event)" (dragover)="allowDrop($event)"
+          <div class="card c-card dropzone rounded c-main-header"  (drop)="drop($event)" (dragenter)="allowDrop($event)" (dragover)="allowDrop($event)"
             (dragleave)="clearDrop($event)" id="header_{{ step.stepName }}#">
             &nbsp;
 
-            <div class="card-body dropzone" style="
-                background-color: #f1f1f1;
-                padding-top: 0.063rem !important;
-                margin-top: 0.063rem !important;
-                padding-right: 0.25rem !important;
-                padding-left: 0.25rem !important;
-              " id="body_{{ step.stepName }}#"
+            <div class="card-body dropzone c-card-body" id="body_{{ step.stepName }}#"
               (drop)="drop($event)" (dragenter)="allowDrop($event)" (dragover)="allowDrop($event)"
               (dragleave)="clearDrop($event)" >
-              <div class="card-title dropzone" style="
-                  padding-top: 0.063rem !important;
-                  margin-top: 0.063rem !important;
-                  font-size: 0.938rem;
-                  font-weight: 600;
-                " id="title_{{ step.stepName }}#"
+              <div class="card-title dropzone c-card-header" 
+                id="title_{{ step.stepName }}#"
                 (drop)="drop($event)" (dragenter)="allowDrop($event)" (dragover)="allowDrop($event)"
-                (dragleave)="clearDrop($event)" >
+                (dragleave)="clearDrop($event)" 
+                (click)="setNewStepName(step.stepName)"
+                >
                 {{ step.stepName.substring(step.stepName.indexOf("$") + 1) }}
                 <span class="task-count">{{getTaskCountForStep(step.stepName)}}</span>
               </div>
@@ -57,18 +45,14 @@
                             <progress value="{{task.task_completed_pct}}" max="100"></progress>
                           </div>
                       </div>
-                      <div class="row" style="
-                          height: 1.25rem;
-                          margin-bottom: 0.063rem !important;
-                          padding-bottom: 0.125rem !important;
-                        ">
+                      <div class="row c-card-row" >
                         <div class="col-lg-7">
                           <p class="font-weight-light" style="font-size: 0.813rem;">
                             {{ task.task_no }}
                           </p>
                         </div>
                         <div class="col-lg-5">
-                          <span class="badge float-right badge-light c-issue-status" >
+                          <span class="badge float-right badge-light c-card-issue-status" >
                             {{ task.issue_status }}
                           </span>
                         </div>

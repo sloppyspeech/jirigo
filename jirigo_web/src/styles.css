@@ -226,3 +226,9 @@ body .ui-table .ui-table-tbody > tr {
   /* color: #333333; */
   /* background-color: #f4f4f4; */
 }
+
+input.ui-inputtext:hover:enabled{
+  border-style: solid;
+  border-width: 2px;
+  border-color: #007BFC !important;
+}

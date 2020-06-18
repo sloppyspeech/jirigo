@@ -10,15 +10,21 @@ export class UtilsService {
   constructor() { }
 
   parseDateAsYYYYMMDD(inpDate){
-    console.log("--------parseDateAsYYYYMMDD--------");
-    console.log(inpDate);
-    var tempDate=this.dataPipe.transform(inpDate,'y-M-d').split('-');
-    console.log(tempDate);
-    console.log({ "year": parseInt(tempDate[0]), "month": parseInt(tempDate[1]), "day": parseInt(tempDate[2])});
-    return { "year": parseInt(tempDate[0]), "month": parseInt(tempDate[1]), "day": parseInt(tempDate[2])};
+    if(inpDate){
+      console.log("--------parseDateAsYYYYMMDD--------");
+      console.log(inpDate);
+      var tempDate=this.dataPipe.transform(inpDate,'y-M-d').split('-');
+      console.log(tempDate);
+      console.log({ "year": parseInt(tempDate[0]), "month": parseInt(tempDate[1]), "day": parseInt(tempDate[2])});
+      return { "year": parseInt(tempDate[0]), "month": parseInt(tempDate[1]), "day": parseInt(tempDate[2])};
+    }
+    else {
+      return inpDate;
+    }
   }
 
   parseDateAsYYYYMMDDHH24MISS(inpDate){
+    if(inpDate){
     console.log("--------parseDateAsYYYYMMDDHH24MISS--------");
     console.log(inpDate);
     var tempDate=this.dataPipe.transform(inpDate,'y-M-d-HH-mm-ss').split('-');
@@ -31,5 +37,20 @@ export class UtilsService {
              "minutes":parseInt(tempDate[4]),
              "seconds":parseInt(tempDate[5])
           };
+        }
+    else {
+        return inpDate;
+    }
   }
+
+  getDateInYYYYMMDD(inpDate,sep:string="-"){
+    if(inpDate){
+      return inpDate['year']+sep+inpDate['month'].padStart(2,0)+sep+inpDate['day'].padStart(2,0);
+    }
+    else{
+      return inpDate;
+    }
+  }
+
+  
 }

@@ -56,10 +56,6 @@ export class RoleGuardService implements CanActivate {
     console.log(_routerStateSnapShot);
     console.log(this._router.config);
     console.log(inpData);
-    this._activatedRoute.params.subscribe(params => {
-      console.log(params)
-      // In a real app: dispatch action to load the details here.
-   });
     console.log("=======================");
 
     return this._serUsers.authorizeCurrentRouteForUser(inpData).pipe(
@@ -73,9 +69,9 @@ export class RoleGuardService implements CanActivate {
       }
       else {
         alert('Access Denied to requested URL, You will be logged out');
-        localStorage.clear();
-        this._router.navigate(['logout']);
-        return false;
+        // localStorage.clear();
+        // this._router.navigate(['logout']);
+        // return false;
       }
       })
     );

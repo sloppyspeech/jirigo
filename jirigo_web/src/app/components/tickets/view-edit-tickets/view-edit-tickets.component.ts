@@ -93,8 +93,8 @@ export class ViewEditTicketsComponent implements OnInit {
   @Output()
   issueTypeO: EventEmitter<any> = new EventEmitter();
 
-  @ViewChild(TimelogComponent) ticketTimeLogChildComponent:TimelogComponent;  
-  @ViewChild(TicketCommentsComponent) ticketCommentsChildComponent:TicketCommentsComponent;  
+  @ViewChild(TimelogComponent,{static:true}) ticketTimeLogChildComponent:TimelogComponent;  
+  @ViewChild(TicketCommentsComponent,{static:true}) ticketCommentsChildComponent:TicketCommentsComponent;  
 
   modalAlertConfig={
     modalType :'',

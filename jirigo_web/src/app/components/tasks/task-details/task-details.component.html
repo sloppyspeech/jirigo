@@ -1,56 +1,81 @@
 <form [formGroup]="parentForm" #taskDetailsComponent>
   <div class="card">
-    <!-- <div
-      class="card-header container-fluid"
-      data-toggle="collapse"
-      data-target="#idIssueType"
-    >
-      Task Details
-      <button
-        class="oi oi-chevron-bottom float-right"
-        data-toggle="collapse"
-        data-target="#idIssueType"
-      ></button>
-    </div> -->
     <div id="idIssueType">
       <div class="card-body">
         <div class="form-group">
           <div class="row">
             <div class="col-md-3">
-              <label for="formGroupExampleInput" class="col-form-label col-form-label-sm ">Task Type<span
-                  class="required-field"></span></label>
-              <select class="form-control-plain j-current-input" id="exampleFormControlSelect1" formControlName="fctlIssueType">
+              <label
+                for="formGroupExampleInput"
+                class="col-form-label col-form-label-sm"
+                >Task Type<span class="required-field"></span
+              ></label>
+              <select
+                class="form-control-plain j-current-input"
+                id="tdc_issuetype"
+                formControlName="fctlIssueType"
+              >
                 <option value="" disabled>Choose..</option>
-                <option *ngFor="let issueType of taskIssueTypesRef" [ngValue]="issueType.name">{{ issueType.name }}
+                <option
+                  *ngFor="let issueType of taskIssueTypesRef"
+                  [ngValue]="issueType.name"
+                  >{{ issueType.name }}
                 </option>
               </select>
             </div>
             <div class="col-md-3">
-              <label for="formGroupExampleInput" class="col-form-label col-form-label-sm">Severity<span
-                  class="required-field"></span></label>
-              <select class="form-control-plain j-current-input" id="exampleFormControlSelect1" formControlName="fctlSeverity"
-                (change)="setEnvironment1($event)">
+              <label
+                for="formGroupExampleInput"
+                class="col-form-label col-form-label-sm"
+                >Severity<span class="required-field"></span
+              ></label>
+              <select
+                class="form-control-plain j-current-input"
+                id="tdc_severity"
+                formControlName="fctlSeverity"
+                (change)="setEnvironment1($event)"
+              >
                 <option value="" disabled>Choose..</option>
-                <option *ngFor="let severity of taskSeveritiesRef" [ngValue]="severity.name">{{ severity.name }}
+                <option
+                  *ngFor="let severity of taskSeveritiesRef"
+                  [ngValue]="severity.name"
+                  >{{ severity.name }}
                 </option>
               </select>
             </div>
             <div class="col-md-3">
-              <label for="formGroupExampleInput" class="col-form-label col-form-label-sm">Priority<span
-                  class="required-field"></span></label>
-              <select class="form-control-plain j-current-input" id="exampleFormControlSelect1" formControlName="fctlPriority"
-                (change)="setEnvironment1($event)">
+              <label
+                for="formGroupExampleInput"
+                class="col-form-label col-form-label-sm"
+                >Priority<span class="required-field"></span
+              ></label>
+              <select
+                class="form-control-plain j-current-input"
+                id="tdc_priority"
+                formControlName="fctlPriority"
+                (change)="setEnvironment1($event)"
+              >
                 <option value="" disabled>Choose..</option>
-                <option *ngFor="let priority of taskPrioritiesRef" [ngValue]="priority.name">{{ priority.name }}
+                <option
+                  *ngFor="let priority of taskPrioritiesRef"
+                  [ngValue]="priority.name"
+                  >{{ priority.name }}
                 </option>
               </select>
             </div>
 
             <div class="col-md-3">
-              <label for="formGroupExampleInput" class="col-form-label col-form-label-sm">Environment<span
-                  class="required-field"></span></label>
-              <select class="form-control-plain j-current-input" id="exampleFormControlSelect1" formControlName="fctlEnvironment"
-                (change)="setEnvironment1($event)">
+              <label
+                for="formGroupExampleInput"
+                class="col-form-label col-form-label-sm"
+                >Environment<span class="required-field"></span
+              ></label>
+              <select
+                class="form-control-plain j-current-input"
+                id="tdc_environment"
+                formControlName="fctlEnvironment"
+                (change)="setEnvironment1($event)"
+              >
                 <option value="" disabled>Choose..</option>
                 <option *ngFor="let env of taskEnvRef" [ngValue]="env.name">{{
                   env.name
@@ -60,12 +85,21 @@
           </div>
           <div class="row">
             <div class="col-md-3">
-              <label for="formGroupExampleInput" class="col-form-label col-form-label-sm">Task Status<span
-                  class="required-field"></span></label>
-              <select class="form-control-plain j-current-input" id="exampleFormControlSelect1" formControlName="fctlIssueStatus"
-                (change)="setReportedBy($event)">
-                <option value=""  disabled>Choose..</option>
-                <option *ngFor="let issueStatus of taskIssueStatusesRef" [ngValue]="issueStatus.name"
+              <label
+                for="formGroupExampleInput"
+                class="col-form-label col-form-label-sm"
+                >Task Status<span class="required-field"></span
+              ></label>
+              <select
+                class="form-control-plain j-current-input"
+                id="tdc_status"
+                formControlName="fctlIssueStatus"
+                (change)="setReportedBy($event)"
+              >
+                <option value="" disabled>Choose..</option>
+                <option
+                  *ngFor="let issueStatus of taskIssueStatusesRef"
+                  [ngValue]="issueStatus.name"
                 >
                   {{ issueStatus.name }}
                 </option>
@@ -73,102 +107,244 @@
             </div>
 
             <div class="col-md-3">
-              <label for="formGroupExampleInput" class="col-form-label col-form-label-sm">Blocking?<span
-                  class="required-field"></span></label>
+              <label
+                for="formGroupExampleInput"
+                class="col-form-label col-form-label-sm"
+                >Blocking?<span class="required-field"></span
+              ></label>
               <div>
                 <label class="switch">
-                  <input type="checkbox" formControlName="fctlIsBlocking" />
+                  <input
+                    type="checkbox"
+                    id="tdc_isblocking"
+                    formControlName="fctlIsBlocking"
+                  />
                   <span class="slider round"></span>
                 </label>
               </div>
             </div>
 
             <div class="col-md-3 col-lg-3">
-              <label class="col-form-label col-form-label-sm" >Reported Date<span class="required-field"></span></label>
-            <div class="input-group ">
-                <input class="form-control j-current-input" formControlName="fctlReportedDate" placeholder="yyyy-mm-dd" name="md"
-                ngbDatepicker #md="ngbDatepicker" (click)="md.toggle()" />
-              <div class="input-group-append">
-                <span (click)="md.toggle()" class="oi oi-calendar"
-                    style="font-size: 2.25em;padding: 0.188rem 0 0 0; margin: 0 0 0 0.313rem;"></span>
+              <label class="col-form-label col-form-label-sm"
+                >Reported Date<span class="required-field"></span
+              ></label>
+              <div class="input-group">
+                <input
+                  class="form-control j-current-input"
+                  formControlName="fctlReportedDate"
+                  placeholder="yyyy-mm-dd"
+                  name="md"
+                  id="tdc_reportedDate"
+                  ngbDatepicker
+                  #md="ngbDatepicker"
+                  (click)="md.toggle()"
+                />
+                <div class="input-group-append">
+                  <span (click)="md.toggle()" class="calendar">
+                    <i style="font-size: 0.85em; vertical-align: top;">
+                      <fa-icon [icon]="faCalendarAlt"></fa-icon>
+                    </i>
+                  </span>
+                </div>
               </div>
             </div>
-          </div>
 
             <div class="col-md-3">
-              <label for="typeahead-http" class="col-form-label col-form-label-sm">Reported By<span
-                  class="required-field"></span></label>
+              <label
+                for="typeahead-http"
+                class="col-form-label col-form-label-sm"
+                >Reported By<span class="required-field"></span
+              ></label>
               <br />
-              <p-autoComplete formControlName="fctlReportedBy" [suggestions]="userListForDropDown"
-                (completeMethod)="searchUsers($event)" [size]="41" [style]="{'border-radius':'2.5rem'}">
+              <p-autoComplete
+                formControlName="fctlReportedBy"
+                [suggestions]="userListForDropDown"
+                id="tdc_reportedBy"
+                (completeMethod)="searchUsers($event)"
+                [size]="41"
+                [style]="{ 'border-radius': '40px' }"
+              >
               </p-autoComplete>
             </div>
 
             <div class="col-md-3">
-              <label for="typeahead-http" class="col-form-label col-form-label-sm">Assigned To</label>
+              <label
+                for="typeahead-http"
+                class="col-form-label col-form-label-sm"
+                >Assigned To</label
+              >
               <br />
-              <p-autoComplete formControlName="fctlAssigneeName" [suggestions]="userListForDropDown"
-                (completeMethod)="searchUsers($event)" [size]="41" [style]="{'border-radius':'2.5rem'}"
-                >
+              <p-autoComplete
+                formControlName="fctlAssigneeName"
+                id="tdc_assignedTo"
+                [suggestions]="userListForDropDown"
+                (completeMethod)="searchUsers($event)"
+                [size]="41"
+                [style]="{ 'border-radius': '40px' }"
+              >
               </p-autoComplete>
             </div>
 
             <div class="col-md-3">
-              <label for="formGroupExampleInput" class="col-form-label col-form-label-sm">Affected Module
+              <label
+                for="formGroupExampleInput"
+                class="col-form-label col-form-label-sm"
+                >Affected Module
               </label>
-              <select class="form-control-plain j-current-input" id="exampleFormControlSelect1" formControlName="fctlModuleName"
-                (change)="setEnvironment1($event)">
+              <select
+                class="form-control-plain j-current-input"
+                id="tdc_module"
+                formControlName="fctlModuleName"
+              >
                 <option value="" disabled>Choose..</option>
-                <option *ngFor="let module of taskModuleRef" [ngValue]="module.name">{{ module.name }}</option>
+                <option
+                  *ngFor="let module of taskModuleRef"
+                  [ngValue]="module.name"
+                  >{{ module.name }}</option
+                >
               </select>
             </div>
             <div class="col-md-3">
-              <label for="typeahead-http" class="col-form-label col-form-label-sm">Estimated Time(Hrs)<small
-                  class="text-muted"> 0.5 = 30 minutes</small></label>
-              <input step="0.5" id="idEstimatedTime" type="number" class="form-control-plain j-current-input"
-                formControlName="fctlEstimatedTime" placeholder="Increments of 0.5"
-                (focusout)="validateEstimatedTime($event.target.value)" />
-              <div *ngIf="parentForm.errors">{{ parentForm.errors }}</div>
+              <label
+                for="typeahead-http"
+                class="col-form-label col-form-label-sm"
+                >Estimated Time(Hrs)<small class="text-muted">
+                  0.5 = 30 minutes</small
+                ></label
+              >
+              <input
+                step="0.5"
+                id="tdc_EstimatedTime"
+                type="number"
+                class="form-control-plain j-current-input"
+                formControlName="fctlEstimatedTime"
+                placeholder="Increments of 0.5"
+                (focusout)="validateEstimatedTime($event.target.value)"
+              />
+              <!-- <div *ngIf="parentForm.errors">{{ parentForm.errors }}</div> -->
             </div>
           </div>
 
           <div class="row" *ngIf="this.parentForm.get('fctlTaskNo')?.value">
-
             <div class="col-md-3 col-lg-3">
               <label class="col-form-label col-form-label-sm">Created By</label>
-              <div class="input-group ">
-                <input class="form-control j-current-input " formControlName="fctlCreatedBy"  name="nm_createdDate"
-                readonly />
+              <div class="input-group">
+                <input
+                  class="form-control j-current-input"
+                  formControlName="fctlCreatedBy"
+                  name="nm_createdBy"
+                  id="tdc_createdBy"
+                  readonly
+                />
               </div>
             </div>
             <div class="col-md-3 col-lg-3">
-              <label class="col-form-label col-form-label-sm">Created Date</label>
-              <div class="input-group ">
-                <input class="form-control j-current-input " 
-                [value]="parentForm.get('fctlCreatedDate').value | date : 'dd MMM yyyy HH:mm:ss'"
-                name="nm_createdDate"
-                readonly />
+              <label class="col-form-label col-form-label-sm"
+                >Created Date</label
+              >
+              <div class="input-group">
+                <input
+                  class="form-control j-current-input"
+                  [value]="
+                    parentForm.get('fctlCreatedDate').value
+                      | date: 'dd MMM yyyy HH:mm:ss'
+                  "
+                  name="nm_createdDate"
+                  id="tdc_createdDate"
+                  readonly
+                />
               </div>
             </div>
             <div class="col-md-3 col-lg-3">
-              <label class="col-form-label col-form-label-sm">Modified By</label>
-              <div class="input-group ">
-                <input class="form-control j-current-input " formControlName="fctlModifiedBy"  name="nm_modifiedBy"
-                  readonly />
+              <label class="col-form-label col-form-label-sm"
+                >Modified By</label
+              >
+              <div class="input-group">
+                <input
+                  class="form-control j-current-input"
+                  formControlName="fctlModifiedBy"
+                  name="nm_modifiedBy"
+                  id="tdc_modifiedBy"
+                  readonly
+                />
               </div>
             </div>
             <div class="col-md-3 col-lg-3">
-              <label class="col-form-label col-form-label-sm">Modified Date</label>
-              <div class="input-group ">
-                 <input type="text" class="form-control j-current-input " 
-                        placeholder="yyyy-mm-dd" name="mmd"
-                        [value]="parentForm.get('fctlModifiedDate').value | date : 'dd MMM yyyy HH:mm:ss'"
-                        readonly />
+              <label class="col-form-label col-form-label-sm"
+                >Modified Date</label
+              >
+              <div class="input-group">
+                <input
+                  type="text"
+                  class="form-control j-current-input"
+                  placeholder="yyyy-mm-dd"
+                  name="mmd"
+                  id="tdc_modifiedDate"
+                  [value]="
+                    parentForm.get('fctlModifiedDate').value
+                      | date: 'dd MMM yyyy HH:mm:ss'
+                  "
+                  readonly
+                />
               </div>
             </div>
-
           </div>
-
+          <div class="row">
+            <div class="col-md-3 col-lg-3">
+              <label class="col-form-label col-form-label-sm"
+                >Start Date
+                <span
+                  *ngIf="parentForm.hasError('sdateOverEndDate')"
+                  class="invalid-input"
+                >
+                  &times; Start date greater than end Date
+                </span>
+              </label>
+              <div class="input-group">
+                <input
+                  class="form-control j-current-input"
+                  formControlName="fctlStartDate"
+                  placeholder="yyyy-mm-dd"
+                  name="msd"
+                  id="tdc_startDate"
+                  ngbDatepicker
+                  #msd="ngbDatepicker"
+                  (click)="msd.toggle()"
+                />
+                <div class="input-group-append">
+                  <span (click)="msd.toggle()" class="calendar">
+                    <i style="font-size: 0.85em; vertical-align: top;">
+                      <fa-icon [icon]="faCalendarAlt"></fa-icon>
+                    </i>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3 col-lg-3">
+              <label class="col-form-label col-form-label-sm">End Date </label>
+              <div class="input-group">
+                <input
+                  class="form-control j-current-input"
+                  formControlName="fctlEndDate"
+                  placeholder="yyyy-mm-dd"
+                  name="med"
+                  [minDate]="parentForm.get('fctlStartDate').value"
+                  ngbDatepicker
+                  #med="ngbDatepicker"
+                  id="tdc_endDate"
+                  (click)="med.toggle()"
+                />
+                <div class="input-group-append">
+                  <!-- <span (click)="med.toggle()" class="oi oi-calendar calendar"></span> -->
+                  <span (click)="med.toggle()" class="calendar">
+                    <i style="font-size: 0.85em; vertical-align: top;">
+                      <fa-icon [icon]="faCalendarAlt"></fa-icon>
+                    </i>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
