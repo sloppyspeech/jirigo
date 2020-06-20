@@ -15,6 +15,14 @@ export class AuditTaskComponent implements OnInit {
   @Input()
   parentForm:FormGroup;
 
+  auditLogFields:any[]=[
+    {'header':'Time','field':'created_date','width':'8%','type':'hhmiss'},
+    {'header':'User','field':'created_by','width':'10%','type':'string'},
+    {'header':'Field','field':'display_column_name','width':'10%','type':'string'},
+    {'header':'Old Value','field':'old_value','width':'15%','type':'string'},
+    {'header':'New Value','field':'new_value','width':'15%','type':'string'}
+    ];
+
   constructor(
     private _serTaskAudit: TaskAuditService,
     private _serNgxSpinner:NgxSpinnerService
@@ -25,8 +33,6 @@ export class AuditTaskComponent implements OnInit {
   }
   getTaskAuditData(){
     this._serNgxSpinner.show();
-    console.log("=======getTaskAuditData=======");
-    console.log("======="+this.parentForm.get('fctlTaskNo').value+"=======");
     this._serTaskAudit.getTaskAuditData(this.parentForm.get('fctlTaskNo').value)
         .subscribe(res=>{
           console.log("======getTaskAuditData===" + res['dbQryStatus'] + "=========");

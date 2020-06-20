@@ -1,6 +1,6 @@
 .invalid-input{
-    padding-left:5px;
-    font-size: 11px;
+    padding-left:0.313rem;
+    font-size: 0.688rem;
     font-weight: 300;
     color:red !important;
   }

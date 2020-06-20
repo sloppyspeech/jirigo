@@ -63,6 +63,6 @@ input:checked + .slider:before {
 .calendar{
   font-size: 2.25em;
   padding: 0 0 0 0; 
-  margin: 0 0 3px 5px;
+  margin: 0 0 0.188rem 0.313rem;
   color:#888888
 }

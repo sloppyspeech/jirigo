@@ -1,4 +1,18 @@
-<table class="table table-borderless table-sm table-striped j-details-table">
+<ngx-spinner
+  [fullScreen]="false"
+  type="pulse-out-rapid"
+  size="medium"
+></ngx-spinner>
+<generic-table 
+      [tableData]="allTicketAuditData"
+      [tableColumnHeaders]="auditLogFields"
+      [showTable]="showTicketAudit"
+      *ngIf="showTicketAudit"
+  >
+</generic-table>
+
+
+<!-- <table class="table table-borderless table-sm table-striped j-details-table">
   <thead>
     <tr>
       <th scope="col">#</th>
@@ -21,4 +35,4 @@
       <td>{{ auditItem.new_value }}</td>
     </tr>
   </tbody>
-</table>
+</table> -->

@@ -8,7 +8,9 @@ import { TaskLogtimeService} from '../../../services/tasks/task-logtime.service'
 import { ActivatedRoute } from '@angular/router';
 import { NgxSpinnerService  } from 'ngx-spinner';
 import { Router  } from '@angular/router';
-import { faClone,faEdit, faTshirt,faLink,faClock,faPaperclip,faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
+import { faClone,faEdit, faTshirt,faLink,faClock,faPaperclip,faCalendarAlt,
+         faChevronCircleRight,faChevronCircleDown
+         } from '@fortawesome/free-solid-svg-icons';
 import { MessageService} from 'primeng/api';
 import { TimelogComponent} from '../timelog/timelog.component';
 import { TaskCommentsComponent } from '../task-comments/tasks-comments.component';
@@ -21,6 +23,9 @@ import { TaskCommentsComponent } from '../task-comments/tasks-comments.component
 })
 
 export class ViewEditTaskComponent implements OnInit {
+  toggleDescriptionDisp:boolean=false;
+  faChevronCircleRight=faChevronCircleRight;
+  faChevronCircleDown=faChevronCircleDown;
   faClone=faClone;
   faEdit=faEdit;
   faLink=faLink;
@@ -138,7 +143,7 @@ export class ViewEditTaskComponent implements OnInit {
         fctlComment: new FormControl({ value: '', disabled: true }),
         fctlProjectName:new FormControl({ value: localStorage.getItem('currentProjectName'), disabled: true }),
         fctlAssigneeName:new FormControl({ value: localStorage.getItem('currentProjectName'), disabled: true }),
-        fctlTabOptions: new FormControl({ value: 'Task Details'}),
+        fctlTabOptions: new FormControl({ value: 'showTaskDetails'}),
         fctlStartDate: new FormControl({ value: '', disabled: true }),
         fctlEndDate: new FormControl({ value: '', disabled: true })
       },{validator:this.validateStartAndEndDates});
@@ -191,7 +196,8 @@ export class ViewEditTaskComponent implements OnInit {
           this._serNgxSpinner.hide();
           this.viewModifyTaskFCList=this.viewModifyTaskFB.controls;
           this.setInitialDataFormValues();
-          this.viewModifyTaskFB.get('fctlTabOptions').setValue('Task Details');
+          this.viewModifyTaskFB.get('fctlTabOptions').setValue('showTaskDetails');
+          this.enableSelectedTabOptions('showTaskDetails');
         });
   }
 
@@ -535,18 +541,16 @@ enableTaskComments (e){
 }
 
 validateStartAndEndDates(fg:FormGroup){
-  console.log('validateStartAndEndDates')
+  let startDateYYYYMMDD;
+  let endDateYYYYMMDD;
   let startDate=fg.get('fctlStartDate').value
   let endDate=fg.get('fctlEndDate').value
-  console.log(startDate);
-  console.log(endDate);
-  let startDateYYYYMMDD=startDate['year']+startDate['month']+startDate['day'];
-  let endDateYYYYMMDD=endDate['year']+endDate['month']+endDate['day'];
-  console.log(startDateYYYYMMDD);
-  console.log(endDateYYYYMMDD);
-
-  console.log("--------------------------");
-
+  if (startDate){
+     startDateYYYYMMDD=startDate['year']+startDate['month']+startDate['day'];
+  }
+  if (endDate){
+     endDateYYYYMMDD=endDate['year']+endDate['month']+endDate['day'];
+  }
   return endDateYYYYMMDD<startDateYYYYMMDD ? {'sdateOverEndDate':true} : null;
 }
 

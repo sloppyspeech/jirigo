@@ -64,13 +64,13 @@ export class TaskDetailsComponent implements OnInit {
 
   }
 
-  ngOnInit(): void {
+  // ngOnInit(): void {
 
-    this.currentDate = new Date().toISOString().substring(0, 10);
+  //   this.currentDate = new Date().toISOString().substring(0, 10);
 
-  }
+  // }
 
-  ngAfterViewInit() {
+  ngOnInit() {
     var tempDate = [];
     // New Entry
     console.log("NgOnInit Issue Details Component");
@@ -96,13 +96,13 @@ export class TaskDetailsComponent implements OnInit {
         this.taskSeveritiesRef = res.Severities;
         this.taskModuleRef = res.Modules;
 
-        console.log("taskEnvRef:" + JSON.stringify(this.taskEnvRef));
-        console.log("taskIssueStatusesRef:" + JSON.stringify(this.taskIssueStatusesRef));
-        console.log("taskPrioritiesRef:" + JSON.stringify(this.taskPrioritiesRef));
-        console.log("taskSeverityRef:" + JSON.stringify(this.taskSeveritiesRef));
-        console.log("taskIssueTypesRef:" + JSON.stringify(this.taskIssueTypesRef));
-        console.log("taskModuleRef:" + JSON.stringify(this.taskModuleRef));
-        console.log('Activated Route check');
+        // console.log("taskEnvRef:" + JSON.stringify(this.taskEnvRef));
+        // console.log("taskIssueStatusesRef:" + JSON.stringify(this.taskIssueStatusesRef));
+        // console.log("taskPrioritiesRef:" + JSON.stringify(this.taskPrioritiesRef));
+        // console.log("taskSeverityRef:" + JSON.stringify(this.taskSeveritiesRef));
+        // console.log("taskIssueTypesRef:" + JSON.stringify(this.taskIssueTypesRef));
+        // console.log("taskModuleRef:" + JSON.stringify(this.taskModuleRef));
+        // console.log('Activated Route check');
         // console.log(this._activatedRoute.snapshot.paramMap.get('task_no'));
         console.log('@@@@@ this.task_no:' + this.task_no);
 
@@ -122,10 +122,12 @@ export class TaskDetailsComponent implements OnInit {
               };
               console.log('------*******--------');
               console.log(this.task_data['dbQryResponse']);
-              console.log('------@@@@@@@--------');
-              console.log(this.task_data.dbQryResponse);
-              this.task_data = this.task_data.dbQryResponse;
 
+              console.log('------@@@@@@@--------');
+              // console.log(this.task_data.dbQryResponse);
+              this.task_data = this.task_data.dbQryResponse;
+              console.log(this.task_data.task_remaining_time);
+              console.log(this.task_data.task_no);
               /** 
                  * Based on the current status, fetch the next allowed status of the workflow.
                  * e.g. if current status is 'Open', next allowed status could be

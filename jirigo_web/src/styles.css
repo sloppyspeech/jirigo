@@ -232,3 +232,12 @@ input.ui-inputtext:hover:enabled{
   border-width: 2px;
   border-color: #007BFC !important;
 }
+
+.logoimg{
+  display:inline-block;
+  max-width: 100%;
+  padding-bottom:2px !important;
+  padding-top:2px !important;
+  height:40px !important;
+  width:40px !important; 
+}

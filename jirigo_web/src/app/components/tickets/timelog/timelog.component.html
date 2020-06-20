@@ -3,7 +3,16 @@
   type="pulse-out-rapid"
   size="medium"
 ></ngx-spinner>
-    <table class="table table-borderless table-sm table-striped j-details-table">
+
+<generic-table 
+      [tableData]="listTimeLogEntries"
+      [tableColumnHeaders]="timelogFields"
+      [showTable]="showTimeLog"
+      *ngIf="showTimeLog"
+  >
+</generic-table>
+
+    <!-- <table class="table table-sm  j-details-table">
         <thead >
           <tr>
             <th scope="col">#</th>
@@ -27,5 +36,5 @@
           </tr>
           
         </tbody>
-      </table>
+      </table> -->
   

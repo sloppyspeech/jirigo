@@ -101,7 +101,8 @@ class JirigoTask(object):
                                     estimated_time,
                                     get_user_name(assignee_id) assigned_to,
                                     to_char(start_date, 'DD-Mon-YYYY') start_date,
-                                    to_char(end_date, 'DD-Mon-YYYY') end_date
+                                    to_char(end_date, 'DD-Mon-YYYY') end_date,
+                                    get_task_remaining_time(task_no) task_remaining_time
                               FROM ttasks 
                              WHERE 
                                     project_id=COALESCE(%s,project_id) AND
@@ -164,7 +165,8 @@ class JirigoTask(object):
                                         reported_date,
                                         estimated_time,
                                         start_date,
-                                        end_date
+                                        end_date,
+                                        get_task_remaining_time(task_no) task_remaining_time
                                 FROM ttasks
                                 WHERE TASK_NO=%s )
                                 SELECT json_agg(t)

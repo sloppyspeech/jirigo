@@ -42,6 +42,13 @@
     font-weight: 300;
 }
 .a-item:hover{
-    background-color: honeydew;
+    background-color: #E3F2FD;
     text-decoration-line: unset;
+}
+hr{
+    margin-top:0.125rem;
+    margin-bottom:0.125rem;
+}
+.welcomepage__projname{
+    color:#628cB5;
 }

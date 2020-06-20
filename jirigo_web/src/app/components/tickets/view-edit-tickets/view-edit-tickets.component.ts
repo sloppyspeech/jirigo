@@ -6,7 +6,7 @@ import { TicketDetailsService } from '../../../services/tickets/ticket-details.s
 import { ActivatedRoute } from '@angular/router';
 import { NgxSpinnerService  } from 'ngx-spinner';
 import { Router  } from '@angular/router';
-import { faClone,faEdit,faLink,faClock } from '@fortawesome/free-solid-svg-icons';
+import { faClone,faEdit,faLink,faClock ,faChevronCircleRight,faChevronCircleDown} from '@fortawesome/free-solid-svg-icons';
 import { MessageService } from 'primeng/api';
 import { TimelogComponent } from '../timelog/timelog.component';
 import { TicketCommentsComponent } from '../ticket-comments/ticket-comments.component';
@@ -18,6 +18,9 @@ import { TicketCommentsComponent } from '../ticket-comments/ticket-comments.comp
   providers:[MessageService]
 })
 export class ViewEditTicketsComponent implements OnInit {
+  toggleDescriptionDisp:boolean=false;
+  faChevronCircleRight=faChevronCircleRight;
+  faChevronCircleDown=faChevronCircleDown;
   faClone=faClone;
   faEdit=faEdit;
   faLink=faLink;
@@ -139,7 +142,8 @@ export class ViewEditTicketsComponent implements OnInit {
         fctlComment: new FormControl({ value: '', disabled: true }),
         fctlProjectName:new FormControl({ value: localStorage.getItem('currentProjectName'), disabled: true }),
         fctlAssigneeName:new FormControl({ value: localStorage.getItem('currentProjectName'), disabled: true }),
-        fctlTabOptions: new FormControl({ value: 'Ticket Details'})
+        fctlTabOptions: new FormControl({ value: 'showTicketDetails'})
+        
       });
 
   }
@@ -185,7 +189,8 @@ export class ViewEditTicketsComponent implements OnInit {
             this.isLoaded = true;
             this.viewModifyTicketFCList=this.viewModifyTicketFB.controls;
             this.setInitialDataFormValues();
-            this.viewModifyTicketFB.get('fctlTabOptions').setValue('Ticket Details');
+            this.viewModifyTicketFB.get('fctlTabOptions').setValue('showTicketDetails');
+            this.enableSelectedTabOptions('showTicketDetails');
             this._serNgxSpinner.hide();
           });
       }

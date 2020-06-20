@@ -71,3 +71,8 @@
   font-weight: 600;
 }
 
+.ticketnum-header{
+  width: auto; 
+  background-color: white !important;
+}
+

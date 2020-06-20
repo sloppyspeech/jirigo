@@ -45,7 +45,8 @@ export class UtilsService {
 
   getDateInYYYYMMDD(inpDate,sep:string="-"){
     if(inpDate){
-      return inpDate['year']+sep+inpDate['month'].padStart(2,0)+sep+inpDate['day'].padStart(2,0);
+      console.log(inpDate)
+      return inpDate['year']+sep+inpDate['month']?.toString().padStart(2,0)+sep+inpDate['day']?.toString().padStart(2,0);
     }
     else{
       return inpDate;

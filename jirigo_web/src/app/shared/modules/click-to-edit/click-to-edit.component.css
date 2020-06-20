@@ -1,0 +1,16 @@
+.dropdownTry{
+    position: relative;
+    height: 15rem;
+    width:auto;
+    background-color: white;
+    transition-duration: 2s;
+    transition-delay: 2s;
+    z-index: 700;
+    opacity: 0.7;
+}
+.dropdownContainer{
+    width:auto;
+    height:10rem;
+    position: relative;
+    z-index:1;
+}

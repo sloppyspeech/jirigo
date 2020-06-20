@@ -49,7 +49,8 @@ class JirigoScrumBoard(object):
                                         ts.sprint_name, trm.ref_value as ref_value1,
                                         get_sumof_task_actuals(t.task_no) task_actuals,
                                         get_task_estimate(t.task_no) task_estimate,
-                                        get_task_completed_percent(t.task_no) task_completed_pct
+                                        get_task_completed_percent(t.task_no) task_completed_pct,
+                                        t.start_date,t.end_date
                                     FROM
                                         ttasks t, tsprint_tasks tt, tsprints ts, 
                                         tboard_workflow_master tbwm, 
@@ -85,7 +86,8 @@ class JirigoScrumBoard(object):
                                     'module_name', t.module_name, 'sprint_name', 
                                     t.sprint_name,'step_id',t.step_id,
                                     'ref_key',t.ref_key,'task_completed_pct',task_completed_pct,
-                                    'task_actuals',task_actuals,'task_estimate',task_estimate
+                                    'task_actuals',task_actuals,'task_estimate',task_estimate,
+                                    'start_date',start_date,'end_date',end_date
                                 )
                                 )
                             ) AS col 

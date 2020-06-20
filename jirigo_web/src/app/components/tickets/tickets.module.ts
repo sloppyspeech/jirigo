@@ -1,3 +1,4 @@
+import { GenericTableModule } from './../../shared/modules/generic-table/generic-table.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule,ReactiveFormsModule  } from '@angular/forms';
@@ -60,7 +61,8 @@ import { NumToHhmiPipeModule} from '../../shared/modules/pipes/num-to-hhmi.pipe.
     ModalConfirmModule,
     ModalTimeloggingModule,
     NumToHhmiPipeModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    GenericTableModule
   ]
 })
 export class TicketsModule { }

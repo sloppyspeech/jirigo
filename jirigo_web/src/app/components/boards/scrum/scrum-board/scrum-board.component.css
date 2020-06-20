@@ -22,40 +22,52 @@
 }
 
 .c-card-issue-status{
-    font-size: 12px;
-    font-weight: 400;
-    padding-bottom:3px;
+    font-size: 0.625rem;
+    font-weight: 450;
+    padding-bottom:0.188rem;
     background-color: #E3F2FD;
+    color:#666666;
 }
 
 .c-card-header{
-    padding-left: 5px !important;
-    padding-top: 1px !important;
-    margin-top: 1px !important;
-    font-size: 17px;
+    padding-left: 0.313rem !important;
+    padding-top: 0.063rem !important;
+    margin-top: 0.063rem !important;
+    font-size: 1.063rem;
     font-weight: 500;
 }
 
 .c-card-body{
     background-color: #f1f1f1;
-    padding-top: 1px !important;
-    margin-top: 1px !important;
-    padding-right: 4px !important;
-    padding-left: 4px !important;
+    padding-top: 0.063rem !important;
+    margin-top: 0.063rem !important;
+    padding-right: 0.25rem !important;
+    padding-left: 0.25rem !important;
 }
 
 .c-card{
     background-color: #f1f1f1;
-    padding-top: 1px !important;
-    margin-top: 1px !important;
+    padding-top: 0.063rem !important;
+    margin-top: 0.063rem !important;
 }
 
 .c-card-row{
-    height: 20px;
-    margin-bottom: 1px !important;
-    padding-bottom: 2px !important;
+    height: 1.25rem;
+    margin-bottom: 0.063rem !important;
+    padding-bottom: 0.125rem !important;
 }
 
 .card.c-main-header:hover{
     background-color: #f1f1f1;
+}
+
+.c-card-due-date{
+    font-size: 0.625rem;
+    font-weight: 450;
+    padding-bottom:0.188rem;
+    background-color: #F3E5F5;
+    color:#666666;
+}
+.c-summary{
+    font-size: 0.850rem;
 }

@@ -11,11 +11,13 @@ export class HomepageComponent implements OnInit {
   yourRecentActivities:any[]=[];
   faTasks=faTasks;
   faTicketAlt=faTicketAlt;
+  currentProjectName:string='';
   constructor(
     private _serHomepage: HomepageService
   ) { }
 
   ngOnInit(): void {
+    this.currentProjectName=localStorage.getItem('currentProjectName');
     this.getRecentProjectActivities();
   }
 

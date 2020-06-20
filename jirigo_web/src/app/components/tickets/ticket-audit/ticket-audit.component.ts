@@ -11,7 +11,13 @@ import { NgxSpinnerService  }  from 'ngx-spinner';
 export class TicketAuditComponent implements OnInit {
   allTicketAuditData;
   showTicketAudit:boolean=true;
-
+  auditLogFields:any[]=[
+    {'header':'Time','field':'created_date','width':'8%','type':'hhmiss'},
+    {'header':'User','field':'created_by','width':'10%','type':'string'},
+    {'header':'Field','field':'display_column_name','width':'10%','type':'string'},
+    {'header':'Old Value','field':'old_value','width':'15%','type':'string'},
+    {'header':'New Value','field':'new_value','width':'15%','type':'string'}
+    ];
   @Input()
   parentForm:FormGroup;
 

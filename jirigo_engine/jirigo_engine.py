@@ -5,6 +5,7 @@ import pprint
 import sys
 import os
 import uuid
+from services.dbservice.dbconn_service import JirigoDBConn
 from services.dbservice.tickets.tickets_service import JirigoTicket
 from services.dbservice.projects_service import JirigoProjects
 from services.dbservice.users_service import JirigoUsers
@@ -1685,6 +1686,10 @@ def get_jsonified_error_response(status,error):
         print("------")
         return make_response(jsonify(error_response),200)
 
-
-if __name__=='__main__':
+if  __name__ == 'jirigo_engine':
+    test_if_db_up=JirigoDBConn()
+    test_if_db_up.close_conn()
+elif __name__=='__main__' :
+    test_if_db_up=JirigoDBConn()
+    test_if_db_up.close_conn()
     app.run()

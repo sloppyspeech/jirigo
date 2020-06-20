@@ -1,3 +1,4 @@
+import { GenericTableModule } from './../../shared/modules/generic-table/generic-table.module';
 import { ModalConfirmModule } from './../../shared/modules/modal-confirm/modal-confirm.module';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { NgModule } from '@angular/core';
@@ -75,7 +76,8 @@ import { NumToHhmiPipeModule } from './../../shared/modules/pipes/num-to-hhmi.pi
     ModalTimeloggingModule,
     ContextMenuModule,
     ModalConfirmModule,
-    NumToHhmiPipeModule
+    NumToHhmiPipeModule,
+    GenericTableModule
   ]
 })
 export class TasksModule { }

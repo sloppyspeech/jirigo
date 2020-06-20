@@ -1,6 +1,25 @@
 <div class="col">
+  <div class="dropdownContainer">
+    <div>
+      sdfdsfsdfsd
+    </div>
   <label class="col-form-label" (click)="toggleInput($event)" *ngIf="!labelDivToggle">{{fc.value}} </label>
-  <div class="input-group" *ngIf="labelDivToggle">
-    <input class="form-control" (focusout)="toggleInput($event)" #inputText [value]="fc.value" />
+  <div class="input" *ngIf="labelDivToggle">
+    <input class="form-control h-50" (focusout)="toggleInput($event)" #inputText [value]="fc.value" />
+    <div class="dropdownTry">
+    </div>
+  </div>
+
+</div>
+</div>
+<div class="col" >
+  <div class="dropdownContainer">
+    <div>
+      sdfdsfsdfsd
+    </div>
+  <label class="col-form-label" (click)="toggleInput($event)" *ngIf="!labelDivToggle">{{fc.value}} </label>
+  <div class="input" *ngIf="labelDivToggle">
   </div>
 </div>
+</div>
+

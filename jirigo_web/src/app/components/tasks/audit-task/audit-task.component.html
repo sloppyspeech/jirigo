@@ -1,24 +1,12 @@
-<table class="table table-borderless table-sm table-striped j-details-table">
-  <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Time</th>
-      <th scope="col">User</th>
-      <th scope="col">Action</th>
-      <th scope="col">Field</th>
-      <th scope="col">From</th>
-      <th scope="col">To</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let auditItem of allTaskAuditData; let idx = index">
-      <td scope="row">{{ idx + 1 }}</td>
-      <td>{{ auditItem.created_date | date: "dd MMM yyyy HH:mm:ss" }}</td>
-      <td>{{ auditItem.created_by }}</td>
-      <td>Changed</td>
-      <td>{{ auditItem.display_column_name }}</td>
-      <td>{{ auditItem.old_value }}</td>
-      <td>{{ auditItem.new_value }}</td>
-    </tr>
-  </tbody>
-</table>
+<ngx-spinner
+  [fullScreen]="false"
+  type="pulse-out-rapid"
+  size="medium"
+></ngx-spinner>
+<generic-table 
+      [tableData]="allTaskAuditData"
+      [tableColumnHeaders]="auditLogFields"
+      [showTable]="showTaskAudit"
+      *ngIf="showTaskAudit"
+  >
+</generic-table>

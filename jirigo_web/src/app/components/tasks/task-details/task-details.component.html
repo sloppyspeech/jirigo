@@ -14,6 +14,7 @@
                 class="form-control-plain j-current-input"
                 id="tdc_issuetype"
                 formControlName="fctlIssueType"
+                
               >
                 <option value="" disabled>Choose..</option>
                 <option
@@ -155,36 +156,36 @@
                 class="col-form-label col-form-label-sm"
                 >Reported By<span class="required-field"></span
               ></label>
-              <br />
               <p-autoComplete
                 formControlName="fctlReportedBy"
                 [suggestions]="userListForDropDown"
                 id="tdc_reportedBy"
                 (completeMethod)="searchUsers($event)"
                 [size]="41"
-                [style]="{ 'border-radius': '40px' }"
+                [style]="{ 'border-radius': '2.5rem' }"
               >
               </p-autoComplete>
             </div>
-
+          </div>
+          
+          <div class="row">
             <div class="col-md-3">
               <label
                 for="typeahead-http"
                 class="col-form-label col-form-label-sm"
                 >Assigned To</label
               >
-              <br />
               <p-autoComplete
                 formControlName="fctlAssigneeName"
                 id="tdc_assignedTo"
                 [suggestions]="userListForDropDown"
                 (completeMethod)="searchUsers($event)"
                 [size]="41"
-                [style]="{ 'border-radius': '40px' }"
+                [style]="{ 'border-radius': '2.5rem' }"
               >
               </p-autoComplete>
             </div>
-
+          
             <div class="col-md-3">
               <label
                 for="formGroupExampleInput"
@@ -208,18 +209,35 @@
               <label
                 for="typeahead-http"
                 class="col-form-label col-form-label-sm"
-                >Estimated Time(Hrs)<small class="text-muted">
-                  0.5 = 30 minutes</small
-                ></label
-              >
+                >Estimated Time(Hrs)
+                <!-- <small class="text-muted">0.5 = 30 minutes</small> -->
+              </label>
               <input
                 step="0.5"
                 id="tdc_EstimatedTime"
                 type="number"
-                class="form-control-plain j-current-input"
+                class="form-control j-current-input"
                 formControlName="fctlEstimatedTime"
                 placeholder="Increments of 0.5"
                 (focusout)="validateEstimatedTime($event.target.value)"
+              />
+              <!-- <div *ngIf="parentForm.errors">{{ parentForm.errors }}</div> -->
+            </div>
+            <div class="col-lg-3">
+              <label
+                for="typeahead-http"
+                class="col-form-label col-form-label-sm"
+                >Remaining Time(Hrs)
+                </label
+              >
+              <input
+                id="tdc_RemainingTime"
+                type="number"
+                class="form-control j-current-input"
+                placeholder="0"
+                [value]=task_data?.task_remaining_time
+                readonly
+                disabled
               />
               <!-- <div *ngIf="parentForm.errors">{{ parentForm.errors }}</div> -->
             </div>
@@ -251,7 +269,7 @@
                   "
                   name="nm_createdDate"
                   id="tdc_createdDate"
-                  readonly
+                  disabled
                 />
               </div>
             </div>
@@ -284,7 +302,7 @@
                     parentForm.get('fctlModifiedDate').value
                       | date: 'dd MMM yyyy HH:mm:ss'
                   "
-                  readonly
+                  disabled
                 />
               </div>
             </div>

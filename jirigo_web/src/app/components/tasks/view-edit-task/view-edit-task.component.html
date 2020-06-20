@@ -3,7 +3,7 @@
 <form [formGroup]="viewModifyTaskFB" (ngSubmit)="updateTask()" *ngIf="isLoaded">
   <div class="form-group">
 
-    <div class="row btn-group"  *ngIf="viewEditFormEditBtnDisabled" style="margin-bottom: 0.5rem;">
+    <div class="row btn-group"  *ngIf="viewEditFormEditBtnDisabled" style="margin-top:0.125rem !important;margin-bottom: 0.625rem;">
       <div class="col-lg-12" >
             <button type="button" label="Modify Task" class="btn btn-sm btn-orange mr-1" (click)="markFormEditable()"
               >
@@ -30,27 +30,36 @@
           </div>
     </div>
 
-
-    <br />
-    <div class="card">
-      <div class="card-header" style="width: auto;">
-        <h4>{{ task_no }}</h4>
+    <div class="row">
+      <div class="col-lg-12 tasknum-header" >
+        <h5>{{ task_no }}</h5>
       </div>
     </div>
-    <br />
     <div class="row">
       <div class="col">
-        <label for="formGroupExampleInput" class="col-form-label-md">Summary</label>
+        <!-- <label for="formGroupExampleInput" class="col-form-label-md">Summary</label> -->
         <input formControlName="fctlSummary" type="text" placeholder="" id="summary" class="form-control-plain"
           required />
       </div>
     </div>
   </div>
-  <div class="form-group">
+  <div class="form-group" >
     <div class="row">
       <div class="col">
-        <label for="formGroupExampleInput" class="col-form-label-md">Description</label>
-        <quill-editor formControlName="fctlDescription" [styles]="editorStyle" [modules]="config">
+        <label for="formGroupExampleInput" 
+                class="col-form-label-md"
+                >Description
+                <span style="cursor: pointer; color:#888888">
+                  <fa-icon [icon]="faChevronCircleRight" *ngIf="!toggleDescriptionDisp" (click)="toggleDescriptionDisp=!toggleDescriptionDisp"></fa-icon>
+                  <fa-icon [icon]="faChevronCircleDown" *ngIf="toggleDescriptionDisp" (click)="toggleDescriptionDisp=!toggleDescriptionDisp"></fa-icon>
+                </span>
+        </label>
+        <quill-editor 
+            formControlName="fctlDescription" 
+            [styles]="editorStyle" 
+            [modules]="config"
+            *ngIf="toggleDescriptionDisp"
+            >
         </quill-editor>
       </div>
     </div>

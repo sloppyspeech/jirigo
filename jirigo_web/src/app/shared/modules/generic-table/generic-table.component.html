@@ -1,0 +1,50 @@
+<p-table #dt *ngIf="showTable" [value]="tableData" [columns]="tableColumnHeaders" [rowHover]="true" [responsive]="true"
+    [rows]="10" [showCurrentPageReport]="true" [rowsPerPageOptions]="[2,5,10,25,50]" [paginator]="true"
+    currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" [filterDelay]="1" 
+    [resizableColumns]="true" columnResizeMode="expand"
+    [globalFilterFields]="globalFilterFields">
+
+    <ng-template pTemplate="caption">
+            <div style="text-align: right">                
+                <button class="float-left" type="button" pButton icon="pi pi-file-o" iconPos="left" label="CSV" (click)="dt.exportCSV()"
+                style="margin-right: 0.5em;"></button>
+                <i class="pi pi-search" style="margin:0.25rem 0.25rem 0 0"></i>
+                <input type="text" pInputText size="50" placeholder="Global Filter"
+                    (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto">
+            </div>
+    </ng-template>
+    
+    <ng-template pTemplate="header">
+        <tr>
+            <th style="width: 2.5em;">#</th>
+            <th *ngFor="let col of tableColumnHeaders" [pSortableColumn]="col.field"
+             [ngStyle]="{'width': col.width}">
+                {{col.header}}
+                <p-sortIcon [field]="col.field"></p-sortIcon>
+            </th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-row let-i="rowIndex">
+            <tr>
+            <td [ngStyle]="{'width': '8%'}">{{i+1}}</td>
+            <td *ngFor="let col of tableColumnHeaders" [ngStyle]="{'width': col.width}"
+            [ngSwitch]="col.type">
+                <ng-container *ngSwitchCase="'date'" >
+                    {{row[col.field] | date :'dd MMM yyyy'}}
+                </ng-container>
+                <ng-container *ngSwitchCase="'hhmi'" >
+                    {{row[col.field] | numToHHMI}}
+                </ng-container>
+                <ng-container *ngSwitchCase="'HHMM'" >
+                    {{row[col.field] | date :'dd MMM yyyy hh:mm'}}
+                </ng-container>
+                <ng-container *ngSwitchCase="'hhmiss'" >
+                    {{row[col.field] | date :'dd MMM yyyy hh:mm:ss'}}
+                </ng-container>
+                <ng-container *ngSwitchDefault >
+                    {{row[col.field] }}
+                </ng-container>
+            </td>
+            </tr>
+    </ng-template>
+</p-table>
