@@ -30,7 +30,7 @@
           [(ngModel)]="selectedRoleId"
           (change)="populateMenuDetailsFromDB()"
         >
-          <option class= "j-dropdown-item" value="0" selected>Choose Reference Category</option>
+          <option class= "j-dropdown-item" value="0" selected>Choose Role</option>
           <option class= "j-dropdown-item" *ngFor="let role of filteredRolesList" [value]="role.role_id">
             {{ role.role_name }}
           </option>

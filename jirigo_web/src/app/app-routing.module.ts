@@ -100,6 +100,11 @@ const routes: Routes = [
     canActivate:[AuthGuard,RoleGuard]
   },
   {
+    path:'calendar',
+    loadChildren: () => import('./components/calendar/calendar.module').then( m => m.CalendarModule),
+    canActivate:[AuthGuard,RoleGuard]
+  },
+  {
     path:'**',
     component:LoginComponent
   }
