@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { ChangeProjectComponent } from './change-project/change-project.component';
 import { CreateProjectComponent } from './create-project/create-project.component';
 import { ListProjectsComponent } from './list-projects/list-projects.component';
+import { EditProjectComponent } from './edit-project/edit-project.component';
 import { AuthGuardService as AuthGuard  } from '../../services/authentication/auth-guard.service';
 import { RoleGuardService as RoleGuard  } from '../../services/authorization/role-guard.service';
 
@@ -24,8 +25,8 @@ const routes: Routes = [
     canActivate:[AuthGuard,RoleGuard]
   },
   {
-    path:'view-edit-projects/:proj_abbr',
-    component:ListProjectsComponent,
+    path:'edit-project',
+    component:EditProjectComponent,
     canActivate:[AuthGuard,RoleGuard]
   },
   {

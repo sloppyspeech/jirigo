@@ -5,6 +5,9 @@ import { Router,ActivatedRoute,ParamMap  } from '@angular/router';
 
 import { SprintDetailsService  }  from '../../../../services/sprints/sprint-details.service';
 import { ScrumBoardService  } from '../../../../services/boards/scrum/scrum-board.service';
+import { ProjectWorkflowsService } from './../../../../services/workflows/project-workflows.service';
+import { TaskDetailsService } from './../../../../services/tasks/task-details.service';
+
 
 
 
@@ -27,6 +30,8 @@ export class ScrumBoardComponent implements OnInit {
   draggedTask:string;
   boardStepsVals:any[];
   stepNameFC:FormControl;
+  showNextTaskStatuses:any[]=[];
+  nextTaskStatuses:any[]=[];
 
   modalAlertConfig={
     modalType :'',
@@ -46,7 +51,9 @@ export class ScrumBoardComponent implements OnInit {
     private _activatedRoute : ActivatedRoute,
     private _serSprintDetails:SprintDetailsService,
     private _serScrumBoard:ScrumBoardService,
-    private _serNgxSpinner:NgxSpinnerService
+    private _serNgxSpinner:NgxSpinnerService,
+    private _serProjectWorkflow:ProjectWorkflowsService,
+    private _serTaskDetails:TaskDetailsService
   ) { }
 
   ngOnInit(): void {
@@ -77,7 +84,11 @@ export class ScrumBoardComponent implements OnInit {
               if (!tasks[tStep][0]['issue_status']){
                   tasks[tStep]=[];
               }
-              // console.log(tasks);
+
+              //Initial display flag for Status edit button
+              tasks[tStep].forEach(t=>{
+                this.showNextTaskStatuses[t.task_no]=false;
+              });
               this.tSprintTasks.push(tasks);
               this.tBoardStepsName.push({'stepName':tStep,[tStep]:refKey});
               this.tBoardStepsDisplayName.push(tStep.substring(tStep.indexOf('$')+1));
@@ -88,6 +99,7 @@ export class ScrumBoardComponent implements OnInit {
           console.log(this.tSprintTasks);
           console.log(this.tBoardStepsName);
           console.log(this.tBoardStepsDisplayName);
+          console.log(JSON.stringify(this.showNextTaskStatuses));
         });
   }
 
@@ -125,6 +137,52 @@ export class ScrumBoardComponent implements OnInit {
     console.log(this.tBoardStepsName);
     console.log(this.getRefKey(stepName));
   }
+
+  setNewTaskStatus(taskNo,status,stepName){
+    let stepNameIdx=stepName.substring(0,stepName.indexOf('$'))-1;
+    let inpData={
+      'task_no':taskNo,
+      'modified_by':localStorage.getItem('loggedInUserId'),
+      'issue_status':status
+    };
+    console.log(taskNo + ':' + status+"  :  "+stepName +"   : "+stepNameIdx);
+    console.log(this.tSprintTasks[stepNameIdx][stepName]);
+    for(let i=0;i<this.tSprintTasks[stepNameIdx][stepName].length;i++){
+      console.log(this.tSprintTasks[stepNameIdx][stepName][i]['issue_status']);
+      if (
+            this.tSprintTasks[stepNameIdx][stepName][i]['task_no'] == taskNo &&
+            this.tSprintTasks[stepNameIdx][stepName][i]['issue_status'] != status
+          ){
+        this._serTaskDetails.updateTaskStatus(inpData)
+        .subscribe(res=>{
+          console.log(res);
+          if(res['dbQryResponse'] && res['dbQryStatus']=="Success"){
+            console.log('All Okay');
+            this.tSprintTasks[stepNameIdx][stepName][i]['issue_status']=status;
+          }
+        })
+        break;
+      }
+    }
+    this.showNextTaskStatuses[taskNo]=false;
+  }
+
+  openTaskStatusModifier(taskNo,taskStatus){
+    this.nextTaskStatuses=[];
+    let inpData={
+      'project_id':localStorage.getItem('currentProjectId'),
+      'role_id':localStorage.getItem('loggedInUserRoleId'),
+      'current_status':taskStatus
+    };
+    this._serProjectWorkflow.getNextAllowedStepsForProjectRoleCurrStatus(inpData)
+        .subscribe(res=>{
+            if(res['dbQryResponse'] && res['dbQryStatus']=="Success"){
+              this.showNextTaskStatuses[taskNo]=true;
+              this.nextTaskStatuses=res['dbQryResponse'];
+            }
+        })
+  }
+
 /** 
  * Find Element in the original tasks JSON. Structure of the JSON is 
  * [  { "taskStatus1":[

@@ -53,5 +53,50 @@ export class UtilsService {
     }
   }
 
+  getAllDatesOfAMonth(inpDate:{'year':number,'month':number}){
+    console.log(inpDate);
+    let allDates:any[]=[];
+    let newDate;
+    let currMonth=inpDate['month'];
+    let currYear=inpDate['year'];
+    for(let i =1;i<=31;i++){
+      newDate=new Date(currYear,currMonth,0+i);
+      if(currMonth == newDate.getMonth()){
+          allDates.push(newDate);
+        }
+      }
+    return allDates;
+  }
   
+  // lPadDates(currDate){
+  //   console.log('-----------Lpad-----------');
+  //   console.log(currDate);
+  //   let dayOfWeek=currDate.getDay();
+  //   let newDate:any[]=[];
+  //   let currMonthFirstDayIdx=dayOfWeek;
+  //   console.log(dayOfWeek);
+  //   for (let i=dayOfWeek-1;i >=0;i--){
+  //     newDate.push(new Date(currDate.getFullYear(),currDate.getMonth(),-i));
+  //   }
+  //   this.currMonthDates=[...newDate,...this.currMonthDates];
+  // }
+
+  // rPadDates(){
+  //   this.currMonthLastDayIdx=this.currMonthDates.length-1;
+  //   let endDate=this.currMonthDates[this.currMonthDates.length-1];
+  //   let nextMonthStartDate=new Date(endDate.getFullYear(),endDate.getMonth()+1,1);
+  //   console.log('-----------rPad-----------');
+  //   console.log(nextMonthStartDate);
+  //   let dayOfWeek=nextMonthStartDate.getDay();
+  //   let newDate:any[]=[];
+
+  //   console.log(dayOfWeek);
+  //   for (let i=1;i <=(this.lastDayofWeek-dayOfWeek)+1;i++){
+  //     newDate.push(new Date(nextMonthStartDate.getFullYear(),nextMonthStartDate.getMonth(),i));
+  //   }
+  //   this.currMonthDates=[...this.currMonthDates,...newDate];
+  //   console.log(this.currMonthDates);
+  //   console.log(this.currMonthDates.length);
+  // }
+
 }

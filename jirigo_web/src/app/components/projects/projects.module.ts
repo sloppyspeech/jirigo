@@ -14,9 +14,10 @@ import { ButtonModule  } from 'primeng/button';
 
 
 import { NgxSpinnerModule  } from 'ngx-spinner';
+import { EditProjectComponent } from './edit-project/edit-project.component';
 
 @NgModule({
-  declarations: [ChangeProjectComponent,CreateProjectComponent,ListProjectsComponent],
+  declarations: [ChangeProjectComponent,CreateProjectComponent,ListProjectsComponent, EditProjectComponent],
   imports: [
     CommonModule,
     ProjectsRoutingModule,

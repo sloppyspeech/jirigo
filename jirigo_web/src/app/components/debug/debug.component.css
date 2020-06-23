@@ -66,3 +66,12 @@ cSuggestions{
   height: 1.50rem; 
   padding-top:1px;
 }
+
+.arrow-up {
+  width: 0; 
+  height: 0; 
+  border-left: 8px solid transparent;
+  border-right: 8px solid transparent;
+  
+  border-bottom: 8px solid white;
+}

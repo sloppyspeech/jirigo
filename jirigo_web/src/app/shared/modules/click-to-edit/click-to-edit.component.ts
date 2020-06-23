@@ -19,16 +19,16 @@ export class ClickToEditComponent implements OnInit {
 
 
   toggleInput(e){
-    if (e.type != "focusout"){ 
-      this.labelDivToggle=!this.labelDivToggle;
-      this._changeDetectorRef.detectChanges();
-    }
-    if (this.labelDivToggle){
-      this.inputText.nativeElement.focus();
-    }
-    if(e.type == "focusout") {
-      this.fc.setValue(this.inputText.nativeElement.value);
-      this.labelDivToggle=!this.labelDivToggle;
-    }
+    this.labelDivToggle=!this.labelDivToggle;
+    // if (e.type != "focusout"){ 
+    //   this._changeDetectorRef.detectChanges();
+    // }
+    // if (this.labelDivToggle){
+    //   this.inputText.nativeElement.focus();
+    // }
+    // if(e.type == "focusout") {
+    //   this.fc.setValue(this.inputText.nativeElement.value);
+    //   this.labelDivToggle=!this.labelDivToggle;
+    // }
   }
 }

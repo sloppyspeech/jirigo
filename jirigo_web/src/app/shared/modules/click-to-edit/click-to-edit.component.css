@@ -14,3 +14,22 @@
     position: relative;
     z-index:1;
 }
+input:focus{
+    display: block;
+    padding: .375rem .75rem;
+    font-size:1rem;
+    color:red;
+
+}
+input{
+    padding: .375rem .75rem;
+    display: block;
+    border-style:none !important;
+    outline: none;
+    background-color: transparent;
+}
+.divInput:focus{
+    border-style:solid;
+    border-color:red;
+    border-radius:0.188rem;
+}

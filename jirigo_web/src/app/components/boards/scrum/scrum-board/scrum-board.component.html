@@ -57,9 +57,22 @@
                           </p>
                         </div>
                         <div class="col-lg-5">
-                          <span class="badge float-right badge-light c-card-issue-status" >
+                          <span class="badge float-right badge-light c-card-issue-status" 
+                                style="cursor:pointer;"
+                                (click)="openTaskStatusModifier(task.task_no,task.issue_status)"
+                          >
                             {{ task.issue_status }}
                           </span>
+                            
+                              <div class="btn-group mt-1 pt-1" 
+                                    role="group" 
+                                    style='z-index: 2;'
+                                    aria-label="Task Status" 
+                                    *ngIf="showNextTaskStatuses[task.task_no]">
+                                    <ng-container *ngFor="let nextStatus of nextTaskStatuses">
+                                      <button type="button" class="btn btn-sm btn-secondary text-nowrap" (click)="setNewTaskStatus(task.task_no,nextStatus,step.stepName)">{{nextStatus}}</button>
+                                    </ng-container>
+                              </div>
                         </div>
                       </div>
                       <hr style="margin: 0.063rem 0 0.063rem 0;" />

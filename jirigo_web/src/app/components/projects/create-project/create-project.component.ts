@@ -29,6 +29,7 @@ export class CreateProjectComponent implements OnInit {
               private _router:Router) { }
 
   ngOnInit(): void {
+    this._serNgxSpinner.show();
     this.createProjectFG=this._formBuilder.group({
       fctlProjectName:new FormControl({ value: '', disabled: false }, [Validators.required,Validators.minLength(5),Validators.maxLength(50)]),
       fctlProjectAbbr:new FormControl({ value: '', disabled: false }, [Validators.required,,Validators.minLength(3),Validators.maxLength(10)]),
@@ -39,10 +40,9 @@ export class CreateProjectComponent implements OnInit {
       fctlProjectModifiedDate:new FormControl({ value: '', disabled: false }),
       fctlParentProject:new FormControl({ value: '', disabled: false })
     });
-    this._serNgxSpinner.show();
     setTimeout(() => {
         this._serNgxSpinner.hide();
-    }, 1000);
+    }, 200);
 
     this._serProjects.getAllProjects()
         .subscribe(res=>{
@@ -104,8 +104,8 @@ export class CreateProjectComponent implements OnInit {
   }
 
   cancelProjectCreationForm (){
-    alert("cancelProjectCreationForm");
     this.createProjectFG.reset();
+    this._router.navigate(['/projects/list-projects']);
   }
 
 

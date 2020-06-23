@@ -32,6 +32,7 @@ export class ProjectWorkflowsService {
     console.log(url);
     return this._httpCli.put(url, inpWorkflowData, this.sHttpOptions);
   }
+  
   getNextAllowedStepsForProjectRoleCurrStatus(inpData){
     let url=this.sApiEndPoint+'next-steps-allowed';
     let params=`?project_id=${inpData['project_id']}&role_id=${inpData['role_id']}&current_status=${inpData['current_status']}`;

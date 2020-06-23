@@ -29,6 +29,11 @@
     color:#666666;
 }
 
+.c-card-issue-status:hover{
+    background-color: #007BFC;
+    color:white;
+}
+
 .c-card-header{
     padding-left: 0.313rem !important;
     padding-top: 0.063rem !important;

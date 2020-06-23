@@ -1,0 +1,22 @@
+.cal-cell-date-muted{
+    color: #dddddd !important;
+}
+.cal-cell-date{
+    color: black;
+    font-size: 0.750rem;
+    font-weight: 400;
+}
+.cal-card-header{
+    height:2rem!important;
+    vertical-align: middle !important;
+    text-align: center;
+    padding-top:0.125rem !important;
+    margin-top:0.125rem !important;
+}
+.cal-card-body{
+    height:7.5rem !important;
+}
+.scrollable{
+    overflow-y: auto;
+    max-height: 7.5rem;
+  }

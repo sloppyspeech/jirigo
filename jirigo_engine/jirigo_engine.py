@@ -704,10 +704,10 @@ def create_task():
         return get_jsonified_error_response('Failure',get_errmsg('NAPR'))
 
 
-@app.route('/api/v1/task-management/update-assignee',methods=['POST'])
+@app.route('/api/v1/task-management/update-assignee',methods=['PUT'])
 def update_task_assignee():
-    if request.method == 'POST':
-        print('In Post update_task_assignee')
+    if request.method == 'PUT':
+        print('In PUT update_task_assignee')
         pprint.pprint(request.get_json())
         print('-'*80)
         try:
@@ -718,6 +718,24 @@ def update_task_assignee():
             return jsonify(data)
         except Exception as error:
             print(f'Error in update_task_assignee {error}')
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',get_errmsg('NAPR'))
+
+@app.route('/api/v1/task-management/update-taskstatus',methods=['PUT'])
+def update_task_status():
+    if request.method == 'PUT':
+        print('In PUT update_task_status')
+        pprint.pprint(request.get_json())
+        print('-'*80)
+        try:
+            jdb=JirigoTask(request.get_json())
+            data=jdb.update_task_status()
+            print('*'*40)
+            print(data['dbQryResponse'])
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in update_task_status {error}')
             return get_jsonified_error_response('Failure',error)
     else:
         return get_jsonified_error_response('Failure',get_errmsg('NAPR'))

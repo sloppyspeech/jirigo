@@ -74,8 +74,12 @@ export class TaskDetailsService {
   updateTaskAssignee(inpData){
     console.log("***Inside updateTaskAssignee***");
     console.log(inpData);
-    return this._httpCli.post(this.sApiEndPoint + 'update-assignee', inpData, this.sHttpOptions);
+    return this._httpCli.put(this.sApiEndPoint + 'update-assignee', inpData, this.sHttpOptions);
   }
 
-
+  updateTaskStatus(inpData){
+    console.log("***Inside updateTaskStatus***");
+    console.log(inpData);
+    return this._httpCli.put(this.sApiEndPoint + 'update-taskstatus', inpData, this.sHttpOptions);
+  }
 }

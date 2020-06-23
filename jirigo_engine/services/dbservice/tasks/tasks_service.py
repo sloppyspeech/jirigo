@@ -323,3 +323,31 @@ class JirigoTask(object):
             if(self.jdb.dbConn):
                 print(f'Error While update_task_assignee  {error}')
                 raise
+    
+    def update_task_status(self):
+        response_data={}
+        self.logger.debug("Inside  update_task_status")
+        update_sql="""
+                        UPDATE TTASKS 
+                           SET  issue_status=%s,
+                                modified_by=%s,
+                                modified_date=%s
+                         WHERE task_no=%s;
+                    """
+        values=(self.issue_status,self.modified_by,self.modified_date,self.task_no,)
+
+        self.logger.debug(f'Update : {update_sql}  {values}')
+
+        try:
+            print('-'*80)
+            print(type(self.jdb.dbConn))
+            cursor=self.jdb.dbConn.cursor()
+            cursor.execute(update_sql,values)
+            self.jdb.dbConn.commit()
+            response_data['dbQryStatus']='Success'
+            response_data['dbQryResponse']={"taskNo":self.task_no,"rowCount":1}
+            return response_data
+        except  (Exception, psycopg2.Error) as error:
+            if(self.jdb.dbConn):
+                print(f'Error While update_task_status  {error}')
+                raise

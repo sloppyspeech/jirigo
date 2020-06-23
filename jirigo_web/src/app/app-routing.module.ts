@@ -101,7 +101,7 @@ const routes: Routes = [
   },
   {
     path:'calendar',
-    loadChildren: () => import('./components/calendar/calendar.module').then( m => m.CalendarModule),
+    loadChildren: () => import('./components/project-calendar/project-calendar.module').then( m => m.ProjectCalendarModule),
     canActivate:[AuthGuard,RoleGuard]
   },
   {

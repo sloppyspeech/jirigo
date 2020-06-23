@@ -30,7 +30,7 @@
             </li>
             <li class="nav-item dropdown" [routerLinkActive]="['active']" [routerLinkActiveOptions]="{exact:true}">
                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" *ngIf="validUserMenuPaths['/tickets']">Tickets</a>
-                <div class="dropdown-menu">
+                <div class="dropdown-menu" >
                     <a [routerLink]="['/tickets/create-ticket']" href="#" class="dropdown-item" *ngIf="validUserMenuPaths['/tickets/create-ticket']">Create Ticket</a>
                     <a [routerLink]="['/tickets/list-tickets']" href="#" class="dropdown-item" *ngIf="validUserMenuPaths['/tickets/list-tickets']">List Tickets</a>
                     <a [routerLink]="['/my-items/tickets']" href="#" class="dropdown-item" *ngIf="validUserMenuPaths['/my-items/tickets']">My Tickets</a>
@@ -84,7 +84,7 @@
                     <ul class="dropdown-menu">
                         <a [routerLink]="['/role-management/crud-roles']" href="#" class="dropdown-item" *ngIf="validUserMenuPaths['/role-management/crud-roles']">Manage Roles</a>
                         <a [routerLink]="['/role-management/assign-roles']" href="#" class="dropdown-item" *ngIf="validUserMenuPaths['/role-management/assign-roles']">Assign Roles</a>
-                        <a [routerLink]="['/role-management/assign-menus-to-role']" href="#" class="dropdown-item" *ngIf="validUserMenuPaths['/role-management/assign-menus-to-role']">Assign Menu To Role</a>
+                        <a [routerLink]="['/role-management/assign-menus-to-role']" href="#" class="dropdown-item" *ngIf="validUserMenuPaths['/role-management/assign-menus-to-role']">Menu To Role</a>
                     </ul>
                   </li>  
                 </ul>

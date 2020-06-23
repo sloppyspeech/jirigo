@@ -1,6 +1,6 @@
 
-
-  <div class="fluid-container col-sm-4 col-md-4 col-lg-4 offset-md-4 jcOneRowColumnBox shadow"
+<div class="project-overlay">
+  <div class="container-fluid col-lg-4 jcOneRowColumnBox shadow mt-4"
     >
     <ngx-spinner [fullScreen]="true" type="ball-newton-cradle" size="medium"></ngx-spinner>
     <form [formGroup]="createProjectFG" (ngSubmit)="createProject()">
@@ -55,7 +55,7 @@
       <br>
       <div class="row">
         <div class="offset-lg-4 ">
-          <button type="button" value="Cancel" id="cancel" class="btn btn-dark"
+          <button type="button" value="Cancel" id="cancel" class="btn btn-light"
             (click)="cancelProjectCreationForm()">Cancel</button>
         </div>
         <div class="col-md-1 col-sm-1">
@@ -68,7 +68,7 @@
 
   </form>
   </div>
-
+</div>
 
 
 
