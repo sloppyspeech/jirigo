@@ -1,11 +1,17 @@
-import { Component, OnInit } from '@angular/core';
-
+import { Component, OnInit,ViewChild,ElementRef,Renderer2 } from '@angular/core';
+import { VacationService } from './../../services/vacations/vacation.service';
+import { UtilsService } from './../../services/shared/utils.service';
+import { FormGroup, Validators, FormBuilder, FormControl, AbstractControl } from '@angular/forms';
+import { faCalendarAlt} from '@fortawesome/free-regular-svg-icons';
 @Component({
   selector: 'app-project-calendar',
   templateUrl: './project-calendar.component.html',
   styleUrls: ['./project-calendar.component.css']
 })
 export class ProjectCalendarComponent implements OnInit {
+  @ViewChild('vacationBtn', {read: ElementRef}) vacationBtn:ElementRef;
+  vacationFG:FormGroup;
+  faCalendarAlt=faCalendarAlt;
   numRows=6;
   numCols=7;
   startDate:any;
@@ -14,7 +20,13 @@ export class ProjectCalendarComponent implements OnInit {
   currMonthLastDayIdx:number=0;
   lastDayofWeek:number=6;
   currMonth= ((new Date(Date.now()).getMonth())+1).toString();
-  constructor() { }
+  constructor(
+      private _formBuilder:FormBuilder,
+      private _utilsService:UtilsService,
+      private _serVacation:VacationService,
+      private _serUtils:UtilsService,
+      private _renderer:Renderer2
+      ) { }
 
   ngOnInit(): void {
     console.clear()
@@ -23,6 +35,25 @@ export class ProjectCalendarComponent implements OnInit {
     this.startDate=new Date(this.startDate.getFullYear(),this.startDate.getMonth(),1);
     console.log(this.startDate);
     this.getCurrMonthDates(this.startDate);
+    this.vacationFG= this._formBuilder.group({
+      fctlVacationStartDate: new FormControl({ value: '', disabled: false }, Validators.required),
+      fctlVacationEndDate: new FormControl({ value: '', disabled: false }, Validators.required),
+      fctlVacationDescription: new FormControl({ value: '', disabled: false }, [Validators.required,Validators.minLength(1),Validators.maxLength(50)]),
+    },{validator:this.validateStartAndEndDates});
+
+    this.vacationFG.controls['fctlVacationStartDate'].valueChanges.subscribe(value=>{
+        this.checkVacationOverlap(value);
+    });
+  }
+
+  validateStartAndEndDates=(fg:AbstractControl)=>{
+    console.log('validateStartAndEndDates')
+    if(fg.get('fctlVacationStartDate').value){
+      return this._utilsService.validateStartAndEndDates(fg.get('fctlVacationStartDate').value,fg.get('fctlVacationEndDate').value)
+    }
+    else{
+      return null;
+    }
   }
 
   getCurrMonthDates(currDate){
@@ -81,6 +112,47 @@ changeMonth(nextOrPrev){
 }
 weekToMonth(){
   this.numCols = this.numCols == 6 ? 1 :6;
+}
+
+cancelVacation(){
+  this.vacationFG.reset();
+}
+
+saveVacation(){
+let inpData={
+  'user_id':localStorage.getItem('loggedInUserId'),
+  'start_date':this._serUtils.getDateInYYYYMMDD(this.vacationFG.get('fctlVacationStartDate').value),
+  'end_date':this._serUtils.getDateInYYYYMMDD(this.vacationFG.get('fctlVacationEndDate').value),
+  'description':this.vacationFG.get('fctlVacationDescription').value
+};
+  this._serVacation.createVacationForUser(inpData)
+      .subscribe(res=>{
+        console.log(res);
+        if (res['dbQryStatus'] == 'Success' && res['dbQryResponse']){
+          this.vacationBtn.nativeElement.click();
+          this.vacationFG.reset();
+        }
+      })
+}
+
+checkVacationOverlap(inpVal){
+  this.vacationFG.controls['fctlVacationStartDate'].setErrors({'vacationOverlapping':false});
+  console.log('checkVacationOverlap');
+  console.log(inpVal);
+  console.log(this._serUtils.getDateInYYYYMMDD(inpVal));
+  let inpData={
+    'user_id':localStorage.getItem('loggedInUserId'),
+    'input_date':this._serUtils.getDateInYYYYMMDD(inpVal)
+    };
+   if (inpData['input_date']){
+        this._serVacation.checkVacationOverlap(inpData)
+            .subscribe(res=>{
+              console.log(res['dbQryResponse']);
+              if ( res['dbQryResponse'] != null){
+                 this.vacationFG.controls['fctlVacationStartDate'].setErrors({'vacationOverlapping':true});
+              }
+            });
+   }
 }
 
 }

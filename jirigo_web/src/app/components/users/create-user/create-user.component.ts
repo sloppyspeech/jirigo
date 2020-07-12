@@ -111,4 +111,9 @@ export class CreateUserComponent implements OnInit {
             console.log(err);
         });
   }
+
+  cancel(){
+    this.createFG.reset();
+    this._router.navigate(['/user-management/all-users']);
+  }
 }

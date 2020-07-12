@@ -45,6 +45,7 @@ import { UtilsService  } from './services/shared/utils.service';
 import { ModalConfirmModule} from './shared/modules/modal-confirm/modal-confirm.module';
 import { DataExtractsComponent } from './components/data-extracts/data-extracts.component';
 import { ClickToEditModule } from './shared/modules/click-to-edit/click-to-edit.module';
+import { ColorPickerModule } from './shared/modules/color-picker/color-picker.module';
 
 @NgModule({
   declarations: [
@@ -89,7 +90,8 @@ import { ClickToEditModule } from './shared/modules/click-to-edit/click-to-edit.
     FontAwesomeModule,
     ChartModule,
     ModalConfirmModule,
-    ClickToEditModule
+    ClickToEditModule,
+    ColorPickerModule
   ],
   providers: [UtilsService],
   bootstrap: [AppComponent]

@@ -1,5 +1,6 @@
+<div class="project-overlay">
 <div class="fluid-container col-sm-4 col-md-4 col-lg-4 offset-md-4 jcOneRowColumnBox">
-        <form [formGroup]="createFG" (ngSubmit)="createUser()">
+        <form [formGroup]="createFG" >
             <div style="padding: 0.938rem 0.938rem 0.938rem 0.938rem;">
                 <div class="row jcOneRowColumnBoxheader" >
                     <h3>Create User</h3>
@@ -59,11 +60,15 @@
             </div>
 
             <div class="form-group row">
-                <div class="col-md-12 col-lg-12">
-                    <button [disabled]="!createFG.valid" class="btn btn-primary float-right">
+                <div class="col-md-2 col-lg-2 offset-lg-7 mr-2">
+                    <button class="btn btn-light" (click)="cancel()">
+                        Cancel
+                    </button>
+                </div>
+                <div class="col-md-2 col-lg-2" (click)="createUser()">
+                    <button [disabled]="!createFG.valid" class="btn btn-primary ">
                         Create
                     </button>
-                    <!-- <a routerLink="/login" class="btn btn-secondary">Login</a> -->
                 </div>
             </div>
             <div class="form-group row" *ngIf="createFormInvalid">
@@ -73,5 +78,6 @@
             </div>
         </div>
         </form>
+</div>
 </div>
 <ngx-spinner [fullScreen]="true" type="ball-newton-cradle" size="medium"></ngx-spinner>

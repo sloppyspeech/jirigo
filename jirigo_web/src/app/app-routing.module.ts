@@ -105,6 +105,11 @@ const routes: Routes = [
     canActivate:[AuthGuard,RoleGuard]
   },
   {
+    path:'todos',
+    loadChildren: () => import('./components/todos/todos.module').then( m => m.TodosModule),
+    canActivate:[AuthGuard,RoleGuard]
+  },
+  {
     path:'**',
     component:LoginComponent
   }

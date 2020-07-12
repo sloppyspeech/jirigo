@@ -1,6 +1,6 @@
+import { FormGroup } from '@angular/forms';
 import { Injectable } from '@angular/core';
 import { DatePipe  } from '@angular/common';
-
 
 @Injectable({
   providedIn: 'root'
@@ -51,6 +51,24 @@ export class UtilsService {
     else{
       return inpDate;
     }
+  }
+
+  validateStartAndEndDates(startDate,endDate){
+    console.log('validateStartAndEndDates')
+      console.log(startDate);
+      console.log(endDate);
+      if (startDate  && endDate ){
+        let startDateYYYYMMDD=startDate['year']+startDate['month']+startDate['day'];
+        let endDateYYYYMMDD=endDate['year']+endDate['month']+endDate['day'];
+        console.log(startDateYYYYMMDD);
+        console.log(endDateYYYYMMDD);
+        console.log("--------------------------");
+        return endDateYYYYMMDD<startDateYYYYMMDD ? {'startDateGreaterThanEndDate':true} : null;
+      }
+      else{
+        return null;
+      }
+     
   }
 
   getAllDatesOfAMonth(inpDate:{'year':number,'month':number}){

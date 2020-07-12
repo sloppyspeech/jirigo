@@ -28,7 +28,8 @@ from services.dbservice.tickets.ticket_timelogging_service  import JirigoTicketL
 from services.dbservice.menus.menus_service import JirigoMenus
 from services.dbservice.data_extracts.data_extract_service import JirigoDataExtract
 from services.dbservice.homepage.homepage_service import JirigoHomePage
-
+from services.dbservice.vacations.vacation_service import JirigoVacations
+from services.dbservice.todos.todos_service import JirigoTodos
 
 #-------------------
 UPLOAD_FOLDER='./uploaded_files'
@@ -1671,6 +1672,289 @@ def get_recent_proj_ticket_task_activities():
         return get_jsonified_error_response('Failure',"get_recent_proj_ticket_task_activities " + get_errmsg('NAGR'))
 
 
+@app.route('/api/v1/vacation-management/create-vacation',methods=['POST'])
+def cre_vacation_for_user_by_timerange():
+    if request.method == 'POST':
+        print('In Post cre_vacation_for_user_by_timerange')
+        print(request.get_json())
+        try:
+            jdb=JirigoVacations(request.get_json())
+            data=jdb.cre_vacation_for_user_by_timerange()
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in cre_vacation_for_user_by_timerange {error}')
+            return get_jsonified_error_response('Failure cre_vacation_for_user_by_timerange',error)
+    else:
+        return get_jsonified_error_response('Failure', "cre_vacation_for_user_by_timerange " + get_errmsg('NAPR'))
+
+@app.route('/api/v1/vacation-management/update-vacation-for-user',methods=['PUT'])
+def upd_vacation_for_user():
+    if request.method == 'PUT':
+        print('In Post upd_vacation_for_user')
+        print(request.get_json())
+        try:
+            jdb=JirigoVacations(request.get_json())
+            data=jdb.upd_vacation_for_user()
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in upd_vacation_for_user {error}')
+            return get_jsonified_error_response('Failure upd_vacation_for_user',error)
+    else:
+        return get_jsonified_error_response('Failure', "upd_vacation_for_user " + get_errmsg('NAPUR'))
+
+
+@app.route('/api/v1/vacation-management/all-vacations-by-timerange',methods=['GET'])
+def get_all_vacations_by_timerange():
+    if request.method == 'GET':
+        print('In Get get_all_vacations_by_timerange')
+        try:
+            start_date=request.args.get('start_date')
+            end_date=request.args.get('end_date')
+            jdb=JirigoVacations({'start_date':start_date,'end_date':end_date})
+            data=jdb.get_all_vacations_by_timerange()
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in get_all_vacations_by_timerange {error}')
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',"get_all_vacations_by_timerange " + get_errmsg('NAGR'))
+
+@app.route('/api/v1/vacation-management/check-overlap',methods=['GET'])
+def check_vacation_overlap():
+    if request.method == 'GET':
+        print('In Get check_vacation_overlap')
+        try:
+            user_id=request.args.get('user_id')
+            input_date=request.args.get('input_date')
+            jdb=JirigoVacations({'user_id':user_id,'input_date':input_date})
+            data=jdb.check_vacation_overlap()
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in check_vacation_overlap {error}')
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',"check_vacation_overlap " + get_errmsg('NAGR'))
+
+@app.route('/api/v1/vacation-management/all-user-vacations',methods=['GET'])
+def get_all_vacations_for_user():
+    if request.method == 'GET':
+        print('In Get get_all_vacations_for_user')
+        try:
+            user_id=request.args.get('user_id')
+            jdb=JirigoVacations({'user_id':user_id})
+            data=jdb.get_all_vacations_for_user()
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in get_all_vacations_for_user {error}')
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',"get_all_vacations_for_user " + get_errmsg('NAGR'))
+
+@app.route('/api/v1/vacation-management/vacation-in-timerange',methods=['GET'])
+def get_vacation_for_user_by_timerange():
+    if request.method == 'GET':
+        print('In Get get_vacation_for_user_by_timerange')
+        try:
+            user_id=request.args.get('user_id')
+            input_date=request.args.get('input_date')
+            print(input_date)
+            jdb=JirigoVacations({'user_id':user_id,'input_date':input_date})
+            data=jdb.get_vacation_for_user_by_timerange()
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in get_vacation_for_user_by_timerange {error}')
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',"get_vacation_for_user_by_timerange " + get_errmsg('NAGR'))
+
+
+@app.route('/api/v1/todos-management/all-todos',methods=['GET'])
+def get_all_todos_for_user():
+    if request.method == 'GET':
+        print('In Get get_all_user_todos')
+        try:
+            user_id=request.args.get('user_id')
+            print(user_id)
+            jdb=JirigoTodos({'user_id':user_id})
+            data=jdb.get_all_todos_for_user()
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in get_all_user_todos {error}')
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',"get_all_user_todos " + get_errmsg('NAGR'))
+
+@app.route('/api/v1/todos-management/all-todo-labels',methods=['GET'])
+def get_todo_labels_for_user():
+    if request.method == 'GET':
+        print('In Get get_todo_labels_for_user')
+        try:
+            user_id=request.args.get('user_id')
+            label_id=request.args.get('label_id')
+            print(user_id)
+            jdb=JirigoTodos({'user_id':user_id,'label_id':label_id})
+            data=jdb.get_todo_labels_for_user()
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in get_todo_labels_for_user {error}')
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',"get_todo_labels_for_user " + get_errmsg('NAGR'))
+
+@app.route('/api/v1/todos-management/labels-filtered',methods=['GET'])
+def get_all_todos_for_user_filtered_by_label():
+    if request.method == 'GET':
+        print('In Get get_all_todos_for_user_filtered_by_label')
+        try:
+            user_id=request.args.get('user_id')
+            print(user_id)
+            jdb=JirigoTodos({'user_id':user_id})
+            data=jdb.get_all_todos_for_user_filtered_by_label()
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in get_all_todos_for_user_filtered_by_label {error}')
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',"get_all_todos_for_user_filtered_by_label " + get_errmsg('NAGR'))
+
+
+@app.route('/api/v1/todos-management/all-todos-by-interval',methods=['GET'])
+def get_todos_for_user_by_interval():
+    if request.method == 'GET':
+        print('In Get get_todos_for_user_by_interval')
+        try:
+            user_id=request.args.get('user_id')
+            interval_days=request.args.get('interval_days')
+            print(user_id)
+            jdb=JirigoTodos({'user_id':user_id,'interval_days':interval_days})
+            data=jdb.get_todos_for_user_by_interval()
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in get_todos_for_user_by_interval {error}')
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',"get_todos_for_user_by_interval " + get_errmsg('NAGR'))
+
+@app.route('/api/v1/todos-management/todo',methods=['POST'])
+def create_todo_for_user():
+    if request.method == 'POST':
+        print('In Post create_todo_for_user')
+        print(request.get_json())
+        try:
+            jdb=JirigoTodos(request.get_json())
+            data=jdb.create_todo_for_user()
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in create_todo_for_user {error}')
+            return get_jsonified_error_response('Failure create_todo_for_user',error)
+    else:
+        return get_jsonified_error_response('Failure', "create_todo_for_user " + get_errmsg('NAPR'))
+
+@app.route('/api/v1/todos-management/todo',methods=['PUT'])
+def upd_todo_for_user():
+    if request.method == 'PUT':
+        print('In Post upd_todo_for_user')
+        print(request.get_json())
+        try:
+            jdb=JirigoTodos(request.get_json())
+            data=jdb.upd_todo_for_user()
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in upd_todo_for_user {error}')
+            return get_jsonified_error_response('Failure upd_todo_for_user',error)
+    else:
+        return get_jsonified_error_response('Failure', "upd_todo_for_user " + get_errmsg('NAPUR'))
+
+@app.route('/api/v1/todos-management/todo',methods=['DELETE'])
+def del_todo_for_user():
+    if request.method == 'DELETE':
+        print('In DELETE del_todo_for_user')
+        print(request.get_json())
+        try:
+            jdb=JirigoTodos(request.get_json())
+            data=jdb.del_todo_for_user()
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in del_todo_for_user {error}')
+            return get_jsonified_error_response('Failure del_todo_for_user',error)
+    else:
+        return get_jsonified_error_response('Failure', "del_todo_for_user " + get_errmsg('NADR'))
+
+@app.route('/api/v1/todos-management/label',methods=['POST'])
+def create_label_for_todo():
+    if request.method == 'POST':
+        print('In POST create_label_for_todo')
+        print(request.get_json())
+        try:
+            jdb=JirigoTodos(request.get_json())
+            data=jdb.create_label_for_todo()
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in create_label_for_todo {error}')
+            return get_jsonified_error_response('Failure create_label_for_todo',error)
+    else:
+        return get_jsonified_error_response('Failure', "create_label_for_todo " + get_errmsg('NADR'))
+
+@app.route('/api/v1/todos-management/label',methods=['DELETE'])
+def del_label_for_todo():
+    if request.method == 'DELETE':
+        print('In DELETE del_label_for_todo')
+        print(request.get_json())
+        try:
+            jdb=JirigoTodos(request.get_json())
+            data=jdb.del_label_for_todo()
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in del_label_for_todo {error}')
+            return get_jsonified_error_response('Failure del_label_for_todo',error)
+    else:
+        return get_jsonified_error_response('Failure', "del_label_for_todo " + get_errmsg('NADR'))
+
+@app.route('/api/v1/todos-management/user-categories',methods=['GET'])
+def get_todo_categories_for_user():
+    if request.method == 'GET':
+        print('In Get get_todo_categories_for_user')
+        try:
+            user_id=request.args.get('user_id')
+            print(user_id)
+            jdb=JirigoTodos({'user_id':user_id})
+            data=jdb.get_todo_categories_for_user()
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in get_todo_categories_for_user {error}')
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',"get_todo_categories_for_user " + get_errmsg('NAGR'))
+
+@app.route('/api/v1/todos-management/category',methods=['POST'])
+def create_category_for_user():
+    if request.method == 'POST':
+        print('In Post create_category_for_user')
+        print(request.get_json())
+        try:
+            jdb=JirigoTodos(request.get_json())
+            data=jdb.create_category_for_user()
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in create_category_for_user {error}')
+            return get_jsonified_error_response('Failure create_category_for_user',error)
+    else:
+        return get_jsonified_error_response('Failure', "create_category_for_user " + get_errmsg('NAPR'))
+
+@app.route('/api/v1/todos-management/category',methods=['PUT'])
+def upd_category_for_user():
+    if request.method == 'PUT':
+        print('In PUT upd_category_for_user')
+        print(request.get_json())
+        try:
+            jdb=JirigoTodos(request.get_json())
+            data=jdb.upd_category_for_user()
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in upd_category_for_user {error}')
+            return get_jsonified_error_response('Failure upd_category_for_user',error)
+    else:
+        return get_jsonified_error_response('Failure', "upd_category_for_user " + get_errmsg('NAPUR'))
 
 def get_errmsg(mesg_code) :
     error_messages={

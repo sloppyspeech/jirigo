@@ -76,6 +76,7 @@
   border-color: #00B8D4;
 }
 
+
 .btn-coolgreen {
   background-color: #00c853;
   color:white;
@@ -111,7 +112,7 @@
 }
 
 .jcOneRowColumnBox{
-  background-color:#fff; 
+  background-color:#F8F8F8; 
   /* background-color:aliceblue;  */
   margin-bottom: 3.125rem; 
   border-radius: 0.625rem; 
@@ -224,7 +225,11 @@ body .ui-table .ui-table-tbody > tr {
   font-size:0.85rem;
   font-weight: 400;
   /* color: #333333; */
-  /* background-color: #f4f4f4; */
+  background-color: transparent !important;
+}
+body .ui-table .ui-table-tbody >tr:hover{
+  background-color: #E3F2FD !important;
+  color:black !important;
 }
 
 input.ui-inputtext:hover:enabled{
@@ -258,6 +263,13 @@ input.ui-inputtext:hover:enabled{
   top: 0;
   left: 0;
   background-color: rgba(0, 0, 0, 0.8);
+}
+
+.calendar{
+  font-size: 1.85rem;
+  padding: 0 0 0 0; 
+  margin: 0 0 0 0.313rem;
+  color:#888888
 }
 
 /*

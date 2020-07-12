@@ -118,7 +118,7 @@ class JirigoUsers(object):
                     select first_name,last_name,user_id,get_user_name(user_id) as name,email,
                             is_active,password_change_date
                       from tusers 
-                      order by first_name
+                      order by first_name,last_name
                     )
                     SELECT json_agg(t) from t;
                    """

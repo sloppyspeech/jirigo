@@ -1,0 +1,381 @@
+<div class="container-fluid">
+<div class="row">
+     <div class="col-lg-2" style="background-color: #F1F1F1; font-weight: 300; font-size:0.87rem;height:100vh">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="row pt-2 todo-menu-item">
+                    <div class="col-lg-12 my-2 " (click)="setTodosToDBVals()">
+                        <img src="assets/images/svgs/all1.svg" alt="calendar" sizes="" srcset="" style="width:1.125rem;height:1.125rem;margin: 0 0.625rem 0.325rem 0; fill:red;">
+                        All
+                    </div>
+                </div>
+                <div class="row  todo-menu-item">
+                    <div class="col-lg-12 my-2" (click)="getTodosByInterval('0')">
+                        <img src="assets/images/svgs/calendar.svg" alt="calendar" sizes="" srcset="" style="width:1.125rem;height:1.125rem;margin: 0 0.625rem 0.325rem 0;">
+                        Today
+                    </div>
+                </div>
+                <div class="row  todo-menu-item">
+                    <div class="col-lg-12 my-2" (click)="getTodosByInterval('7')">
+                        <img src="assets/images/svgs/calendar.svg" alt="calendar" sizes="" srcset="" style="width:1.125rem;height:1.125rem;margin: 0 0.625rem 0.325rem 0;">
+                        Next 7 days
+                    </div>
+                </div>
+                <div class="row  todo-menu-item">
+                    <div class="col-lg-12 my-2" (click)="getTodosByInterval('30')">
+                        <img src="assets/images/svgs/calendar.svg" alt="calendar" sizes="" srcset="" style="width:1.125rem;height:1.125rem;margin: 0 0.625rem 0.325rem 0;">
+                        Next 30 days
+                    </div>
+                </div>
+                <div class="row  todo-menu-item">
+                    <div class="col-lg-12 my-2">
+                        <img src="assets/images/svgs/important1.svg" alt="calendar" sizes="" srcset="" style="width:1.125rem;height:1.125rem;margin: 0 0.625rem 0.325rem 0;">
+                        Important
+                    </div>
+                </div>
+                <div class="row  todo-menu-item">
+                    <div class="col-lg-12 my-2">
+                        <img src="assets/images/svgs/done.svg" alt="calendar" sizes="" srcset="" style="width:1.125rem;height:1.125rem;margin: 0 0.625rem 0.325rem 0;">
+                        Done
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12 mt-2">
+                        <hr>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="row">
+                            <div class="col-lg-12 todo-category-header" (click)="toggleShowCategories=!toggleShowCategories">
+                                <img *ngIf="!toggleShowCategories" src="assets/images/svgs/right-arrow.svg" alt="right-arrow" sizes="" srcset="" class="todo-category-header-img">
+                                <img *ngIf="toggleShowCategories" src="assets/images/svgs/down-arrow.svg" alt="right-arrow" sizes="" srcset="" class="todo-category-header-img">
+                                Categories
+                            </div>
+                        </div>
+                          <div style="padding-left: 2.2rem;" *ngIf="toggleShowCategories">
+                                <div class="row py-1">
+                                    <div class="col-lg-10" >
+                                        <div class="row">
+                                            <div class="col-lg-1">
+                                                <fa-icon [icon]="faCircle" style="font-size:0.725rem;color:#4B8DDD;padding-right:0.675rem; vertical-align: middle !important;"></fa-icon>
+                                            </div>
+                                            <div class="col-lg-9 todo-category pl-2" (click)="filterTodosByCategory('All')">
+                                                All
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <ng-container *ngFor="let category of todoCategoriesArr">
+                                    <div class="row py-1">
+                                        <div class="col-lg-10" >
+                                            <div class="row">
+                                                <div class="col-lg-1">
+                                                    <fa-icon #categoryCircles *ngIf="!category.edit"
+                                                                [icon]="faCircle" style='font-size:0.725rem;padding-right:0.675rem;padding-bottom:0.25rem ; vertical-align: middle !important;' 
+                                                                [ngStyle]="{'color':category.colorhex}"
+                                                                (mouseover)="category.edit=true"
+                                                    ></fa-icon>
+                                                    <fa-icon [icon]="faEdit" *ngIf="category.edit" 
+                                                                class="todo-category-edit"
+                                                                (mouseout)="category.edit=false"
+                                                                (click)="editCategory(category)"
+                                                    ></fa-icon>
+                                                </div>
+                                                <div class="col-lg-8 todo-category pl-2 text-wrap" 
+                                                     [ngClass]="{'todo-category-active':category.active}"
+                                                     (click)="filterTodosByCategory(category.category)">
+                                                     {{category.category}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ng-container>
+                          </div>  
+                    </div>
+                </div>
+                <div class="row pt-2">
+                    <div class="col-lg-12 ">
+                        <div class="add-category" data-toggle="modal" data-target="#categoryModal" #openAddCategoryModalButton (click)="openAddCategory()">
+                            <img src="assets/images/svgs/add.svg" alt="add category" sizes="" srcset="" class="add-category-img">
+                            Add Category
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <hr>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="row">
+                            <div class="col-lg-12 todo-category-header" (click)="toggleShowLabels=!toggleShowLabels">
+                                <img *ngIf="!toggleShowLabels" src="assets/images/svgs/right-arrow.svg" alt="right-arrow" sizes="" srcset="" class="todo-category-header-img">
+                                <img *ngIf="toggleShowLabels" src="assets/images/svgs/down-arrow.svg" alt="right-arrow" sizes="" srcset="" class="todo-category-header-img">
+                                Labels
+                            </div>
+                        </div>
+                          <div style="padding-left: 2.2rem;" *ngIf="toggleShowLabels">
+                                <div class="row py-1">
+                                    <div class="col-lg-10" >
+                                        <div class="row">
+                                            <div class="col-lg-1">
+                                                <fa-icon [icon]="faCircle" class="todo-label-circle"></fa-icon>
+                                            </div>
+                                            <div class="col-lg-9 todo-category pl-2" (click)="filterTodosByLabel('All')">
+                                                All
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <ng-container *ngFor="let label of todoLabels">
+                                    <div class="row py-1">
+                                        <div class="col-lg-10" >
+                                            <div class="row">
+                                                <div class="col-lg-1 ">
+                                                    <fa-icon #categoryCircles [icon]="faCircle" class="todo-label-circle" ></fa-icon>
+                                                </div>
+                                                <div class="col-lg-9 todo-category pl-2 text-wrap" 
+                                                (click)="filterTodosByLabel(label.label)">
+                                                     {{label.label}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </ng-container>
+                          </div>  
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <hr>
+                    </div>
+                </div>
+            </div>
+        </div>
+     </div>
+     <div class="col-lg-10">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="row">
+                    <div class="ml-auto">
+                        <button #addTodoModalButton type="button" class="btn btn-light" style="padding-top:0;padding-bottom:0" data-toggle="modal" data-target="#todoModal" (click)="openAddTodo()">
+                            <span style="font-size:1.125rem; font-weight:200;">+</span>
+                            Add</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container-fluid todos-container">
+        <ng-container *ngFor="let todo of allToDos">
+            <div class="row ">
+                <div class="col-lg-12 todo-row ml-2 mr-2" >
+                    <div class="row" >
+                        <div class="col-lg-12" >
+                            <img *ngIf="todo.todo_status=='Open'"  
+                                 src="assets/images/svgs/unchecked.svg" 
+                                 (click)="updateTodoStatus(todo,'Closed')"
+                                 alt="right-arrow" sizes="" srcset="" 
+                                 class="todo-status">
+                            <img *ngIf="todo.todo_status!='Open'"  
+                                 src="assets/images/svgs/checked-green-inv.svg" 
+                                 (click)="updateTodoStatus(todo,'Open')"
+                                 alt="right-arrow" sizes="" srcset=""
+                                 class="todo-status">
+                            {{todo.todo_text}}
+                        </div>
+                    </div>
+                    <div class="row " >
+                        <div class="col-lg-12 mt-1" style="margin-left:2.8rem;">
+                            <small style="color:#ABABAB">
+                                <ng-container *ngIf="todo.category">
+                                    <fa-icon [icon]="faLayerGroup" style="font-size: 0.725rem;" [ngStyle]="{'color':todo.category_color}"></fa-icon>
+                                    {{todo.category}}
+                                </ng-container>
+                                <ng-container *ngIf="!todo.category">
+                                    None
+                                </ng-container>
+                            </small>
+                            <small class="todo-small-seperator">|</small>
+                            <small style="color:#ABABAB">{{todo.end_date | date :'E, dd LLL yyyy'}}</small>
+
+                            <small class="todo-small-seperator">|</small>
+                            <small class="edit-todo" (click)="editTodo(todo)">
+                                <fa-icon [icon]='faEdit'></fa-icon></small>
+
+                            <small class="todo-small-seperator">|</small>
+                            <small class="delete-todo" (click)="deleteTodo(todo)">
+                                <fa-icon [icon]='faTrashAlt'></fa-icon>
+                            </small>
+
+                            <small class="todo-small-seperator">|</small>
+                            <ng-container *ngFor="let todo_label of todo.todo_labels">
+                                <div class="badge badge-light todo-label-badge mr-1" >
+                                    {{todo_label.label}}
+                                    <div class="todo_label_close" (click)="deleteLabel(todo_label.label_id,todo.todo_id)">&times;</div>
+                                </div>
+                            </ng-container>
+                            <div #addLabel class="add-label-container add-label" data-toggle="modal" data-target="#labelModal" (click)="labelAdderClicked(todo)">
+                                <fa-icon [icon]="faPlusSquare" ></fa-icon>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>         
+            <hr>
+        </ng-container>
+        </div>
+     </div>
+</div>
+</div>
+
+  <!-- Add todoModal Modal -->
+<div class="modal fade " id="todoModal" tabindex="-1" role="dialog" aria-labelledby="todoModalLabel" aria-hidden="true">
+  <div class="modal-dialog " role="document" > 
+    <form [formGroup]="todoFG">
+      <div class="modal-content">
+        <div class="modal-body">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <label for="id_todotext" *ngIf="!todoEdit">Add Todo</label>
+                            <label for="id_todotext" *ngIf="todoEdit">Edit Todo</label>
+                            <input type="text" class="form-control" id="id_todotext" formControlName="fctlTodoText" name="name_todotext" placeholder="To do text ..." id="id_todotext" aria-describedby="helpId">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-8">
+                        <label for="id_inp_todo_category">Category</label>
+                        <div class="input-group">
+                            <input   class="btn btn-outline-secondary dropdown-toggle text-align-left" 
+                            style="border-top-right-radius : 0;border-bottom-right-radius : 0;border-top-left-radius : 0.25rem;border-bottom-left-radius : 0.25rem;"
+                            type="button" data-toggle="dropdown" 
+                            aria-haspopup="true" aria-expanded="false" 
+                            id="id_inp_todo_category"
+                            formControlName="fctlTodoCategory">
+                            <div class="input-group-append">
+                                <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span class="caret"> </span>
+                                </button>
+                                <div class="dropdown-menu  dropdown-menu-right">
+                                    <ng-container *ngFor="let c of todoCategoriesArr">
+                                        <a class="dropdown-item" (click)="setCategory(c.category)">{{c.category}}</a>
+                                    </ng-container>
+                                </div>
+                            </div>
+                        </div>
+                    </div>          
+                </div>
+                <div class="row mt-3">
+                    <div class="col-lg-6">
+                        <label for="id_inp_todo_end_date">End Date</label>
+                        <div class="input-group">
+                                <input
+                                class="form-control"
+                                formControlName="fctlTodoEndDate"
+                                id="id_inp_todo_end_date" 
+                                placeholder="yyyy-mm-dd"
+                                name="todo_end_date"
+                                ngbDatepicker
+                                #msd="ngbDatepicker"
+                                (click)="msd.toggle()"
+                            />
+                            <div class="input-group-append pl-1 calendar-icon">
+                                <span (click)="msd.toggle()" >
+                                    <img src="assets/images/svgs/calendar2.svg" alt="calendar" sizes="" srcset="" style="width:2rem;height:2.5rem;padding: 0 0rem 0.125rem 0; vertical-align:middle;">
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+         </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-light" data-dismiss="modal" (click)="todoFG.reset()">Cancel   </button>
+          <button type="button" class="btn btn-warning" (click)="todoAction()"  [disabled]="todoFG.invalid">Save</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+  
+<!-- Add Category Modal -->
+<div class="modal fade" id="categoryModal" tabindex="-1" role="dialog" aria-labelledby="categoryModal" aria-hidden="true">
+    <div class="modal-dialog" role="document" > 
+      <form [formGroup]="categoryFG">
+        <div class="modal-content">
+          <div class="modal-body">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="form-group">
+                      <label for="id_category" *ngIf="!categoryEdit">Add Category</label>
+                      <label for="id_category" *ngIf="categoryEdit">Edit Category</label>
+                      <input type="text" class="form-control" id="id_category" formControlName="fctlTodoCategory" name="name_todotext" placeholder="Category" aria-describedby="helpId">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-12" style="position:relative;">
+                    <button type="button" class="btn " (click)="showColorPicker=!showColorPicker" [ngStyle]="{'background-color':categoryFG.get('fctlTodoCategoryColor').value}">Choose Category Color</button>
+                    <app-color-picker [showColorPicker]="showColorPicker" (selectedColorHex)="setCategoryColor($event)"></app-color-picker>
+                </div>
+            </div>                
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-light" data-dismiss="modal" (click)="categoryFG.reset()">Cancel</button>
+            <button type="button" class="btn btn-warning" (click)="todoCategoryAction()" [disabled]="categoryFG.invalid">Save</button>
+          </div>
+        </div>
+      </form>
+    </div>
+</div>
+    
+<!-- Add Label Modal -->
+<div class="modal fade" id="labelModal" tabindex="-1" role="dialog" aria-labelledby="labelModal" aria-hidden="true">
+    <div class="modal-dialog" role="document" > 
+        <form [formGroup]="labelFG">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="container">
+                                <div class="row">
+                                  <div class="col-12">
+                                    <label for="id_label">Add Label <small style="color:#ABABAB">[{{20 - labelFG.get('fctlTodoLabel').value?.length}} chars left of 20]</small></label>
+                                    <div class="input-group dropdown">
+                                      <input type="text" class="form-control" 
+                                             id="id_label" placeholder="Enter New Label Or Choose From Existing" 
+                                             (focus)="labelFG.get('fctlTodoLabelId').setValue('')"
+                                             formControlName="fctlTodoLabel">
+                                      <div class="input-group-append">
+                                        <div class="btn-group position-static">
+                                          <button class="btn bg-primary text-white dropdown-toggle dropdown-toggle-split" id="searchAdvancedFilter" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <span class="caret"></span>
+                                            <span class="sr-only">Toggle Dropdown</span>
+                                          </button>
+                                          <div class="dropdown-menu dropdown-menu-right w-100" aria-labelledby="searchAdvancedFilter">
+                                              <ng-container *ngFor="let labels of todoLabels">
+                                                    <a class="dropdown-item" (click)="setSelectedLabel(labels)">{{labels.label}}</a>
+                                              </ng-container>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-dismiss="modal" (click)="labelFG.reset()">Cancel</button>
+                    <button type="button" class="btn btn-warning" (click)="createLabel()" [disabled]="labelFG.invalid">Save</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div> 

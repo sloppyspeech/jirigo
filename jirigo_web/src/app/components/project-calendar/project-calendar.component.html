@@ -2,22 +2,26 @@
     <div class="col-lg-2">
         <div class="row">
             <div class="col-4 pr-0 mr-0">
-                <button type="button" class="btn btn-primary" (click)="changeMonth(-1)">Prev</button>
+                <button id="id_btn_procal_chmonth_decr" type="button" class="btn btn-primary" (click)="changeMonth(-1)">Prev</button>
             </div>
             <div class="col-4 pl-0 ml-0">
-                <button type="button" class="btn btn-primary" (click)="changeMonth(1)">Next</button>
+                <button id="id_btn_procal_chmonth_incr"type="button" class="btn btn-primary" (click)="changeMonth(1)">Next</button>
             </div>
         </div>
     </div>
-
-    <!-- <div class="col-lg-1">
-        <button type="button" class="btn btn-primary" (click)="weekToMonth()">MtoW</button>
-    </div> -->
-    <div class="col-lg-2 ml-2 mt-2">
+    <div class="col-lg-2 mt-2 offset-lg-3">
            <h4>{{startDate | date :' MMM yyyy'}}</h4> 
+    </div>
+    <div class="col-lg-2 offset-lg-3">
+        <button id="id_btn_procal_vacation" 
+                type="button" 
+                class="btn btn-secondary"  
+                data-toggle="modal" 
+                data-target="#vacationModal" #vacationBtn>Add Vacation</button>
     </div>
 </div>
 
+<!-- Calendar Header -->
 <div class="row mx-1 mt-1" >
     <div class="col mx-0 px-0" *ngFor="let item of [].constructor(numCols); let i = index">
       <div class="card " *ngIf="currMonthDates [(i)]">
@@ -28,6 +32,7 @@
     </div>
 </div>
 
+<!-- Calendar Body -->
 <div class="row mx-1" *ngFor="let item of [].constructor(numRows); let i = index">
     <div class="col mx-0 px-0" *ngFor="let item of [].constructor(numCols); let j = index">
       <div class="card " *ngIf="currMonthDates [(i*numCols)+j]">
@@ -49,3 +54,105 @@
       </div>
     </div>
 </div>
+
+<form [formGroup]="vacationFG">
+  <div class="modal" tabindex="-1" role="dialog" id="vacationModal">
+      <div class="modal-dialog " role="document">
+        <div class="modal-content bg-light">
+          <div class="modal-header">
+            <h5 class="modal-title">Add Vacation</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+                  <div class="col-lg-6">
+                      <div class="form-group">
+                        <label for="">Start Date</label>
+                        <div class="input-group">
+                          <input
+                            class="form-control j-current-input"
+                            formControlName="fctlVacationStartDate"
+                            id="id_inp_procal_start_date" 
+                            placeholder="yyyy-mm-dd"
+                            name="procal_start_date"
+                            ngbDatepicker
+                            #msd="ngbDatepicker"
+                            (click)="msd.toggle()"
+                          />
+                          <div class="input-group-append pl-1">
+                            <span (click)="msd.toggle()" class="calendar">
+                              <i>
+                                <fa-icon [icon]="faCalendarAlt" ></fa-icon>
+                              </i>
+                            </span>
+                          </div>
+                          <small id="helpId" 
+                                 *ngIf="vacationFG.getError('startDateGreaterThanEndDate')"
+                                 class="text-danger text-sm">Start Date greater than End Date
+                          </small>
+                          <small id="helpId" 
+                                 *ngIf="vacationFG.get('fctlVacationStartDate').hasError('vacationOverlapping')"
+                                 class="text-danger text-sm">Vacation Overlapping an existing one
+                          </small>
+                        </div>
+                      </div>
+                  </div>
+                  
+              <div class="col-lg-6">
+                  <div class="form-group">
+                      <label for="">End Date</label>
+                      <div class="input-group">
+                        <input
+                          class="form-control j-current-input"
+                          formControlName="fctlVacationEndDate"
+                          id="id_inp_procal_end_date" 
+                          placeholder="yyyy-mm-dd"
+                          name="procal_end_date"
+                          ngbDatepicker
+                          #med="ngbDatepicker"
+                          (click)="med.toggle()"
+                        />
+                        <div class="input-group-append pl-1">
+                          <span (click)="med.toggle()" class="calendar">
+                            <i>
+                              <fa-icon [icon]="faCalendarAlt" ></fa-icon>
+                            </i>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col">
+                  <div class="form-group">
+                    <label for="">Description</label>
+                    <input id="id_inp_procal_description" 
+                          formControlName="fctlVacationDescription"
+                          type="text" 
+                          class="form-control" 
+                          name="vacationSummary" 
+                          id="id_procal_vacsummary" 
+                          aria-describedby="helpId" placeholder="">
+                  </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+              <button id="id_btn_procal_cancel" 
+                      type="button" 
+                      class="btn btn-light" 
+                      (click)="cancelVacation()"
+                      data-dismiss="modal">Cancel</button>
+              <button id="id_btn_procal_save" 
+                      type="button" 
+                      (click)="saveVacation()"
+                      [disabled]="vacationFG.dirty && vacationFG.invalid"
+                      class="btn btn-primary">Save</button>
+          </div>
+        </div>
+      </div>
+  </div>
+</form>

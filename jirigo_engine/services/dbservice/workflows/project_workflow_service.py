@@ -73,7 +73,6 @@ class JirigoProjectWorkflow(object):
                 raise
 
     def get_workflow_details_for_update(self):
-        print("HERER JERERERERERERERERERERERER")
         response_data={}
         self.logger.debug("Inside get_workflow_details_for_update")
         query_sql="""  

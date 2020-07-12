@@ -1,0 +1,7 @@
+<div class="cp-popup-opened" *ngIf="showColorPicker">
+    <div class="color-popup-box">
+    <ng-container *ngFor="let color of defaultColors">
+    <div class="circle" [ngStyle]="{'background':color}" (click)="selectedColor(color)"></div>
+    </ng-container>
+    </div>
+</div>
