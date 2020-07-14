@@ -42,6 +42,8 @@ class JirigoTodos(object):
                                SELECT * 
                                  FROM v_all_todos_with_labels
                                 WHERE created_by=%s
+                                  AND rnm=1
+                                  ORDER BY end_date 
                     )
                     select json_agg(t) from t ;
                    """

@@ -4,37 +4,31 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="row pt-2 todo-menu-item">
-                    <div class="col-lg-12 my-2 " (click)="setTodosToDBVals()">
-                        <img src="assets/images/svgs/all1.svg" alt="calendar" sizes="" srcset="" style="width:1.125rem;height:1.125rem;margin: 0 0.625rem 0.325rem 0; fill:red;">
+                    <div class="col-lg-12 my-2 " (click)="setTodosToDBVals($event)">
+                        <img src="assets/images/svgs/all1.svg" alt="calendar" sizes="" srcset="" style="width:1.125rem;height:1.125rem;margin: 0 0.625rem 0.325rem 0; opacity: 0.8;">
                         All
                     </div>
                 </div>
                 <div class="row  todo-menu-item">
-                    <div class="col-lg-12 my-2" (click)="getTodosByInterval('0')">
+                    <div class="col-lg-12 my-2" (click)="getTodosByInterval('0',$event)">
                         <img src="assets/images/svgs/calendar.svg" alt="calendar" sizes="" srcset="" style="width:1.125rem;height:1.125rem;margin: 0 0.625rem 0.325rem 0;">
                         Today
                     </div>
                 </div>
                 <div class="row  todo-menu-item">
-                    <div class="col-lg-12 my-2" (click)="getTodosByInterval('7')">
+                    <div class="col-lg-12 my-2" (click)="getTodosByInterval('7',$event)" #nextTodosForSevenDays>
                         <img src="assets/images/svgs/calendar.svg" alt="calendar" sizes="" srcset="" style="width:1.125rem;height:1.125rem;margin: 0 0.625rem 0.325rem 0;">
                         Next 7 days
                     </div>
                 </div>
                 <div class="row  todo-menu-item">
-                    <div class="col-lg-12 my-2" (click)="getTodosByInterval('30')">
+                    <div class="col-lg-12 my-2" (click)="getTodosByInterval('30',$event)">
                         <img src="assets/images/svgs/calendar.svg" alt="calendar" sizes="" srcset="" style="width:1.125rem;height:1.125rem;margin: 0 0.625rem 0.325rem 0;">
                         Next 30 days
                     </div>
                 </div>
                 <div class="row  todo-menu-item">
-                    <div class="col-lg-12 my-2">
-                        <img src="assets/images/svgs/important1.svg" alt="calendar" sizes="" srcset="" style="width:1.125rem;height:1.125rem;margin: 0 0.625rem 0.325rem 0;">
-                        Important
-                    </div>
-                </div>
-                <div class="row  todo-menu-item">
-                    <div class="col-lg-12 my-2">
+                    <div class="col-lg-12 my-2" (click)="filterTodosByStatus('Closed',$event)">
                         <img src="assets/images/svgs/done.svg" alt="calendar" sizes="" srcset="" style="width:1.125rem;height:1.125rem;margin: 0 0.625rem 0.325rem 0;">
                         Done
                     </div>
@@ -60,7 +54,7 @@
                                             <div class="col-lg-1">
                                                 <fa-icon [icon]="faCircle" style="font-size:0.725rem;color:#4B8DDD;padding-right:0.675rem; vertical-align: middle !important;"></fa-icon>
                                             </div>
-                                            <div class="col-lg-9 todo-category pl-2" (click)="filterTodosByCategory('All')">
+                                            <div class="col-lg-9 todo-category pl-2" (click)="filterTodosByCategory('All',$event)">
                                                 All
                                             </div>
                                         </div>
@@ -83,8 +77,7 @@
                                                     ></fa-icon>
                                                 </div>
                                                 <div class="col-lg-8 todo-category pl-2 text-wrap" 
-                                                     [ngClass]="{'todo-category-active':category.active}"
-                                                     (click)="filterTodosByCategory(category.category)">
+                                                     (click)="filterTodosByCategory(category.category,$event)">
                                                      {{category.category}}
                                                 </div>
                                             </div>
@@ -123,7 +116,7 @@
                                             <div class="col-lg-1">
                                                 <fa-icon [icon]="faCircle" class="todo-label-circle"></fa-icon>
                                             </div>
-                                            <div class="col-lg-9 todo-category pl-2" (click)="filterTodosByLabel('All')">
+                                            <div class="col-lg-9 todo-category pl-2" (click)="filterTodosByLabel('All',$event)">
                                                 All
                                             </div>
                                         </div>
@@ -137,7 +130,7 @@
                                                     <fa-icon #categoryCircles [icon]="faCircle" class="todo-label-circle" ></fa-icon>
                                                 </div>
                                                 <div class="col-lg-9 todo-category pl-2 text-wrap" 
-                                                (click)="filterTodosByLabel(label.label)">
+                                                (click)="filterTodosByLabel(label.label,$event)">
                                                      {{label.label}}
                                                 </div>
                                             </div>
@@ -156,21 +149,33 @@
         </div>
      </div>
      <div class="col-lg-10">
-        <div class="row">
+        <div class="row mb-3 mt-1">
             <div class="col-lg-12">
                 <div class="row">
-                    <div class="ml-auto">
-                        <button #addTodoModalButton type="button" class="btn btn-light" style="padding-top:0;padding-bottom:0" data-toggle="modal" data-target="#todoModal" (click)="openAddTodo()">
-                            <span style="font-size:1.125rem; font-weight:200;">+</span>
-                            Add</button>
+                    <div class="col-lg-2">
+                            <fa-icon [icon]="faPlusSquare" #addTodoModalButton type="button" class="todo-add-btn"  data-toggle="modal" data-target="#todoModal" (click)="openAddTodo()">
+                            </fa-icon>
+                            <fa-icon [icon]="faArrowAltCircleLeft" 
+                                     (click)="todoPagination=todoPagination <= 0 ? todoPagination : todoPagination-1"
+                                     class="todo-nav-icon-left"></fa-icon>
+                            <fa-icon [icon]="faArrowAltCircleRight" 
+                                     (click)="todoPagination=todoPagination >= allToDos.length ? todoPagination : todoPagination+1"
+                                     class="todo-nav-icon-right"></fa-icon>
+                    </div>
+                    <div class="col-lg-6 offset-lg-1">
+                        <div class="form-group has-search">
+                            <span class="form-control-feedback"><fa-icon [icon]="faSearch"></fa-icon></span>
+                            <input type="text" class="form-control" (keyup)="searchTodos($event)" name="nm_searchTodos" id="id_searchTodos" aria-describedby="helpId" placeholder="Search">
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="container-fluid todos-container">
-        <ng-container *ngFor="let todo of allToDos">
-            <div class="row ">
-                <div class="col-lg-12 todo-row ml-2 mr-2" >
+        <ng-container *ngFor="let todo of allToDos;let idx=index;">
+            <div class="row " *ngIf="Math.floor(idx/todoNumRows) == todoPagination">
+                <div class="col-lg-12 ml-2 mr-2" >
+                    <div class="todo-row ">
                     <div class="row" >
                         <div class="col-lg-12" >
                             <img *ngIf="todo.todo_status=='Open'"  
@@ -188,6 +193,18 @@
                     </div>
                     <div class="row " >
                         <div class="col-lg-12 mt-1" style="margin-left:2.8rem;">
+                            <small style="color:#ABABAB">{{todo.end_date | date :'E, dd LLL yyyy'}}</small>
+                            <small class="todo-small-seperator">|</small>
+
+                            <small class="edit-todo" (click)="editTodo(todo)">
+                                <fa-icon [icon]='faEdit'></fa-icon></small>
+                            <small class="todo-small-seperator">|</small>
+
+                            <small class="delete-todo" (click)="deleteTodo(todo)">
+                                <fa-icon [icon]='faTrashAlt'></fa-icon>
+                            </small>
+                            <small class="todo-small-seperator">|</small>
+                            
                             <small style="color:#ABABAB">
                                 <ng-container *ngIf="todo.category">
                                     <fa-icon [icon]="faLayerGroup" style="font-size: 0.725rem;" [ngStyle]="{'color':todo.category_color}"></fa-icon>
@@ -197,18 +214,6 @@
                                     None
                                 </ng-container>
                             </small>
-                            <small class="todo-small-seperator">|</small>
-                            <small style="color:#ABABAB">{{todo.end_date | date :'E, dd LLL yyyy'}}</small>
-
-                            <small class="todo-small-seperator">|</small>
-                            <small class="edit-todo" (click)="editTodo(todo)">
-                                <fa-icon [icon]='faEdit'></fa-icon></small>
-
-                            <small class="todo-small-seperator">|</small>
-                            <small class="delete-todo" (click)="deleteTodo(todo)">
-                                <fa-icon [icon]='faTrashAlt'></fa-icon>
-                            </small>
-
                             <small class="todo-small-seperator">|</small>
                             <ng-container *ngFor="let todo_label of todo.todo_labels">
                                 <div class="badge badge-light todo-label-badge mr-1" >
@@ -221,9 +226,10 @@
                             </div>
                         </div>
                     </div>
+                  </div>
+                 <hr>
                 </div>
             </div>         
-            <hr>
         </ng-container>
         </div>
      </div>

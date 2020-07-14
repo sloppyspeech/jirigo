@@ -6,9 +6,7 @@
 
 .droppable:hover {
     background-color: #E8EAF6;
-
 }
-
 
 .card:hover {
     background-color: #E8EAF6;
@@ -48,6 +46,7 @@
     margin-top: 0.063rem !important;
     padding-right: 0.25rem !important;
     padding-left: 0.25rem !important;
+    
 }
 
 .c-card{
@@ -60,6 +59,7 @@
     height: 1.25rem;
     margin-bottom: 0.063rem !important;
     padding-bottom: 0.125rem !important;
+    
 }
 
 .card.c-main-header:hover{

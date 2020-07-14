@@ -2,8 +2,9 @@ import { UtilsService } from './../../services/shared/utils.service';
 import { Component, OnInit,ViewChild,ElementRef,Renderer2 } from '@angular/core';
 import { TodosService } from './../../services/todos/todos.service';
 import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
-import { faCircle,faDotCircle,faLayerGroup,faTrashAlt} from '@fortawesome/free-solid-svg-icons';
-import { faEdit,faPlusSquare }  from '@fortawesome/free-regular-svg-icons';
+import { faCircle,faDotCircle,faLayerGroup,faTrashAlt,faSearch} from '@fortawesome/free-solid-svg-icons';
+import { faEdit,faPlusSquare,faArrowAltCircleLeft,faArrowAltCircleRight }  from '@fortawesome/free-regular-svg-icons';
+import * as $ from 'jquery'
 
 @Component({
   selector: 'app-todos',
@@ -17,11 +18,17 @@ export class TodosComponent implements OnInit {
   faLayerGroup=faLayerGroup;
   faTrashAlt=faTrashAlt;
   faPlusSquare=faPlusSquare;
+  faArrowAltCircleLeft=faArrowAltCircleLeft;
+  faArrowAltCircleRight=faArrowAltCircleRight;
+  faSearch=faSearch;
+
   showColorPicker:boolean=false;
+
   @ViewChild('addTodoModalButton', { static: true }) addTodoModalButton: ElementRef;
   @ViewChild('openAddCategoryModalButton', { static: true }) openAddCategoryModalButton: ElementRef;
   @ViewChild('categoryCircles', { static: true }) categoryCircle:ElementRef;
   @ViewChild('addLabel', { static: false }) addLabel:ElementRef;
+  @ViewChild('nextTodosForSevenDays', { static: false }) nextTodosForSevenDays:ElementRef;
 
   categoryEdit:boolean=false;
   todoEdit:boolean=false;
@@ -37,6 +44,11 @@ export class TodosComponent implements OnInit {
   minDate:any;
   toggleShowCategories:boolean=false;
   toggleShowLabels:boolean=false;
+  todoStrtArrIdx:number=0;
+  todoNumRows:number=5;
+  todoPagination=0;
+  todoEndArrIdx:number=0;
+  Math=Math;
 
   constructor(
     private _serTodos:TodosService,
@@ -50,7 +62,7 @@ export class TodosComponent implements OnInit {
     let todaysDate= new Date();
     this.minDate= this._serUtils.parseDateAsYYYYMMDD(todaysDate.toISOString());
     this.todoCategories={};
-
+    
     this.todoFG=  this._formBuilder.group({
       fctlTodoText : new FormControl({ value: '', disabled: false }, [Validators.required,Validators.minLength(1),Validators.maxLength(140)]),
       fctlTodoCategory : new FormControl({ value: 'Select Category', disabled: false }),
@@ -75,6 +87,7 @@ export class TodosComponent implements OnInit {
     this.getCategories();
     this.getTodos('all');
     this.getTodoLabels();
+
   }
 
   getTodos(filter){
@@ -102,27 +115,36 @@ export class TodosComponent implements OnInit {
     
   }
 
-  getTodosByInterval(interval_days){
+  getTodosByInterval(interval_days,event){
+    this.setActiveLinkClass(event);
+
     console.log('getTodosByInterval :'+interval_days);
     this.allToDos=[];
     this.allToDosFromDB=[];
     this._serTodos.getAllTodosForUserByInterval({'user_id':localStorage.getItem('loggedInUserId'),'interval_days':interval_days})
         .subscribe(res=>{
           console.log(res);
-          res['dbQryResponse'].forEach(e => {
-            this.allToDos.push({
-              todo_status:e.todo_status,
-              todo_text:e.todo_text,
-              end_date:e.end_date,
-              category:e.category,
-              category_id:e.category_id,
-              todo_id:e.todo_id,
-              category_color:e.colorhex,
-              todo_labels:e.todo_labels
+          if (res['dbQryResponse']){
+            res['dbQryResponse'].forEach(e => {
+              this.allToDos.push({
+                todo_status:e.todo_status,
+                todo_text:e.todo_text,
+                end_date:e.end_date,
+                category:e.category,
+                category_id:e.category_id,
+                todo_id:e.todo_id,
+                category_color:e.colorhex,
+                todo_labels:e.todo_labels
+              });
             });
-          });
-          this.allToDosFromDB=this.allToDos;
-          console.log(this.allToDos);
+            this.allToDosFromDB=this.allToDos;
+            console.log(this.allToDosFromDB);
+            console.log(this.allToDos);
+
+            // Set the first todos for landing page
+            this.todoStrtArrIdx=0;
+            this.todoEndArrIdx=this.todoNumRows;
+          }
         });
   }
 
@@ -153,6 +175,9 @@ export class TodosComponent implements OnInit {
           if (res['dbQryStatus']=="Success"){
             this.todoLabels=res['dbQryResponse'];
           }
+
+        // Set default todos on landing page 
+        this.nextTodosForSevenDays.nativeElement.click();
         });
   }
 
@@ -160,7 +185,8 @@ export class TodosComponent implements OnInit {
     this.todoFG.get('fctlTodoCategory').setValue(value);
   }
 
-  setTodosToDBVals(){
+  setTodosToDBVals(event){
+    this.setActiveLinkClass(event);
     this.getTodos('All');
   }
 
@@ -176,6 +202,10 @@ export class TodosComponent implements OnInit {
     this.labelFG.get('fctlTodoLabelId').setValue(labelItem.label_id);
   }
 
+  setActiveLinkClass(event){
+    $("div").removeClass('todo-label-active');
+    event.srcElement.classList.add('todo-label-active');
+  }
   openAddCategory(){
     if (!this.categoryEdit){
       this.categoryFG.get('fctlTodoCategory').setValue('');
@@ -267,11 +297,14 @@ export class TodosComponent implements OnInit {
     this.openAddCategoryModalButton.nativeElement.click();
   }
 
-  filterTodosByCategory(category){
+  filterTodosByCategory(category,event){
+    this.allToDos=[];
+    this.setActiveLinkClass(event);
+
     console.log('category is :'+category);
+    console.log(this.allToDosFromDB);
     this.activateCategoryLink(category);
 
-    this.allToDos=[];
     if (category != 'All'){
       this.allToDosFromDB.forEach(e=>{
         if(e['category']==category){
@@ -284,12 +317,35 @@ export class TodosComponent implements OnInit {
     }
   }
 
-  filterTodosByLabel(label){
+  filterTodosByStatus(status,event){
+    this.allToDos=[];
+    this.setActiveLinkClass(event);
+
+    console.log('category is :'+status);
+    console.log(this.allToDosFromDB);
+    this.activateCategoryLink(status);
+
+    if (status != 'All'){
+      this.allToDosFromDB.forEach(e=>{
+        if(e['todo_status']==status){
+          this.allToDos.push(e);
+        }
+      });
+    }
+    else{
+      this.allToDos=this.allToDosFromDB;
+    }
+  }
+
+
+  filterTodosByLabel(label,event){
+    this.allToDos=[];
+    this.setActiveLinkClass(event);
+
     console.log('label is :'+label);
     this.activateCategoryLink(label);
     console.log(this.allToDosFromDB);
 
-    this.allToDos=[];
     if (label != 'All'){
       this.allToDosFromDB.forEach(e=>{
         e.todo_labels?.forEach(l=>{
@@ -445,6 +501,28 @@ export class TodosComponent implements OnInit {
     console.log(todo);
     this.labelFG.get('fctlTodoId').setValue(todo.todo_id);
   }
+
+  searchTodos(event){
+    console.log(event.target.value);
+    if (event.target.value?.length == 0){
+      this.allToDos=[];
+      this.allToDos=this.allToDosFromDB;
+    }
+    else{
+      this.allToDos=[];
+      this.allToDosFromDB.forEach(item=>{
+        Object.keys(item).forEach(k=>{
+          if (item[k]?.toString().toLowerCase().indexOf(event.target.value.toLowerCase()) >=0){
+            // console.log(k+":"+item[k]);
+            this.allToDos.push(item);
+          }
+        })
+      });
+      console.log(this.allToDos);
+    }
+  }
+
+  
 
 }
 
