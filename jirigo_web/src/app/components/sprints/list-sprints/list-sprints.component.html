@@ -44,7 +44,8 @@
           ><fa-icon [icon]="faListUl"></fa-icon></button>
         <button (click)="showSprintBoard(sprint)" type="button" class="btn btn-light btn-scrumboard" label="Edit"
           ><fa-icon [icon]="faTh"></fa-icon></button>
-          
+        <button (click)="showSprintTasksDashBoard(sprint)" type="button" class="btn btn-light btn-scrumboard" label="Edit"
+          ><fa-icon [icon]="faChartLine"></fa-icon></button>
       </td>
     </tr>
   </ng-template>
@@ -92,6 +93,14 @@
               class="required-field"></span></label>
           <input formControlName="fctlEndDate" id="endDate" class="form-control required datePicker" required
             type="text" ngbDatepicker #de="ngbDatepicker" (click)="de.toggle()" />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <label for="formGroupExampleInput" class="col-form-label col-form-label-sm">Number of Developers Working on the sprint<span
+              class="required-field"></span></label>
+          <input formControlName="fctlNumDevs" type="number" placeholder="" id="id_sprint_numdevs" class="form-control required"
+            required />
         </div>
       </div>
     </div>

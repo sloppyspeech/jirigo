@@ -1,0 +1,91 @@
+<div class="container-fluid" *ngIf="showTable" >
+    <div class="row" >
+        <div class="col-lg">
+            <div class="row">
+                <div class="col-lg px-0 pt-1 sprint-header" >
+                    Overall Sprint {{sprintName}} Progress [
+                    {{sprintEfforts.sprint_start_date  | date : 'dd MMM yyyy'}} -
+                    {{sprintEfforts.sprint_end_date  | date : 'dd MMM yyyy'}} 
+                    ]
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg px-0 pb-2 ">
+                    <div class="text-center sprint-pct-completed pt-1" [ngStyle]="{'width': (sprintEfforts.tot_act/sprintEfforts.tot_est)*100+'%'}" >
+                        <span class="text-light ">{{ (sprintEfforts.tot_act/sprintEfforts.tot_est)*100 | number :'1.0-0'}}%</span>
+                    </div>
+                    <div class="text-center sprint-pct-not-completed pt-1" [ngStyle]="{'width': (100-(sprintEfforts.tot_act/sprintEfforts.tot_est)*100)+'%'}">
+                        <span class="text-light ">{{ (100-(sprintEfforts.tot_act/sprintEfforts.tot_est)*100) | number :'1.0-0'}}%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-2">
+        <div class="col-lg card  " style="height:5rem; padding-top:0.125rem;">
+            <p class="card-text text-center task-effort-nums" >{{sprintEfforts.tot_task_count}}</p>
+            <p class="card-text text-center task-effort-text" >Total Tasks For Sprint</p>
+        </div>
+        <div class="col-lg card  " style="height:5rem; padding-top:0.125rem;">
+            <p class="card-text text-center task-effort-nums">{{sprintEfforts.tot_est}}</p>
+            <p class="card-text text-center task-effort-text">Total Estimated Hours</p>
+        </div>
+        <div class="col-lg card " style="height:5rem; padding-top:0.125rem; ">
+            <p class="card-text text-center task-effort-nums">{{sprintEfforts.tot_act}}</p>
+            <p class="card-text text-center task-effort-text">Actual Effort In Hours</p>
+        </div>
+        <div class="col-lg card " style="height:5rem; padding-top:0.125rem;">
+            <p class="card-text text-center task-effort-nums">{{sprintEfforts.tot_rem}}</p>
+            <p class="card-text text-center task-effort-text">Remaining Effort In Hours</p>
+        </div>
+        <div class="col-lg card " style="height:5rem; padding-top:0.125rem;">
+            <p class="card-text text-center task-effort-nums">{{ (sprintEfforts.tot_act/sprintEfforts.tot_est)*100 | number :'1.0-0'}}%</p>
+            <p class="card-text text-center task-effort-text">Percentage Completion</p>
+        </div>
+    </div>
+    <div class="row mb-2">
+        <div class="col-lg-4 card">
+          <canvas id="id_issuetypeChart" height="300" *ngIf="showIssueTypesChart">
+            <app-bar-chart [chartOptions]="issueTypeChartOptions" #barChart>
+            </app-bar-chart>
+          </canvas>
+        </div>
+        <div class="col-lg-4 card">
+            <canvas id="id_priorityChart" height="300" >
+              <app-bar-chart [chartOptions]="prioritiesChartOptions" #barChart1>
+              </app-bar-chart>
+            </canvas>
+          </div>
+          <div class="col-lg-4 card">
+            <canvas id="id_severityChart" height="300">
+              <app-bar-chart [chartOptions]="severitiesChartOptions" #barChart2>
+              </app-bar-chart>
+            </canvas>
+          </div>
+    </div>
+    <div class="row mb-2">
+            <ng-container *ngFor="let issueStatus of sprintAttributes['issue_statuses']|keyvalue">
+                <div class="col-lg card" style="height:5rem; padding-top:0.125rem;">
+                    <p class="card-text text-center task-effort-nums" >{{issueStatus.value}}</p>
+                    <p class="card-text text-center task-effort-text" >{{issueStatus.key}}</p>
+                </div>
+            </ng-container>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-6 card" >
+          <canvas id="id_burndownChart" height="300" *ngIf="showBurnDownChart">
+            <app-line-chart [chartOptions]="burndownChartOptions" #barChart>
+            </app-line-chart>
+          </canvas>
+        </div>
+        <div class="col-lg-6 card" >
+            <canvas id="id_sprintWorkloadByUser" height="300" *ngIf="showSprintWorkloadByUser">
+              <app-bar-chart [chartOptions]="sprintWorkloadByUserChartOptions" #barChart>
+              </app-bar-chart>
+            </canvas>
+          </div>
+    </div>
+
+</div>

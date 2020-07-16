@@ -1,11 +1,20 @@
-<div class="container-fluid">
+<div class="row">
+  <div class="col-lg-6">
+    <canvas id="id_mycanvas" height="300">
+      <app-bar-chart [chartOptions]="chartOptions" #barChart>
+      </app-bar-chart>
+    </canvas>
+  </div>
+</div>
+
+<!-- <div class="container-fluid">
   <div class="row">
     <div class="col-lg-2">
       <button type="button" class="btn btn-danger" (click)="launchIt=!launchIt">danger</button>
     </div>
   </div>
-</div>
-<app-color-picker [showColorPicker]="launchIt"></app-color-picker>
+</div> -->
+<!-- <app-color-picker [showColorPicker]="launchIt"></app-color-picker> -->
 <!-- 
 <div class="container-fluid">
   <div class="row">

@@ -23,6 +23,7 @@ class JirigoSprints(object):
         self.modified_date=datetime.datetime.now()
         self.start_date=data.get('start_date')
         self.end_date=data.get('end_date')
+        self.num_devs=data.get('num_devs')
 
         self.jdb=JirigoDBConn()
         self.logger=Logger()
@@ -159,7 +160,8 @@ class JirigoSprints(object):
                                     get_proj_name(project_id) proj_name,
                                     status,
                                     TO_CHAR(start_date :: DATE, 'yyyy-mm-dd') start_date,
-                                    TO_CHAR(end_date :: DATE, 'yyyy-mm-dd') end_date
+                                    TO_CHAR(end_date :: DATE, 'yyyy-mm-dd') end_date,
+                                    num_devs
                               FROM tsprints
                              WHERE project_id=get_proj_id(%s)
                              order by sprint_id
@@ -193,10 +195,11 @@ class JirigoSprints(object):
                                     start_date=%s,
                                     end_date=%s,
                                     modified_by=%s,
-                                    modified_date=%s
+                                    modified_date=%s,
+                                    num_devs=%s
                              WHERE  sprint_id=%s;
                             """
-        sprint_values=(self.sprint_name,self.sprint_status,self.start_date,self.end_date,self.modified_by,self.modified_date,self.sprint_id,)
+        sprint_values=(self.sprint_name,self.sprint_status,self.start_date,self.end_date,self.modified_by,self.modified_date,self.num_devs,self.sprint_id,)
         print(sprint_values)
         try:
             print('-'*80)

@@ -7,7 +7,7 @@ import { StaticDataService  } from '../../../services/static-data.service';
 import * as moment from 'moment';
 import { NgbDate } from '@ng-bootstrap/ng-bootstrap';
 
-import { faPenSquare,faPenNib,faPencilAlt,faEdit,faListUl,faNewspaper,faTh  } from '@fortawesome/free-solid-svg-icons';
+import { faPenSquare,faPenNib,faPencilAlt,faEdit,faListUl,faNewspaper,faTh,faChartLine  } from '@fortawesome/free-solid-svg-icons';
 
 declare var $: any;
 
@@ -24,6 +24,7 @@ export class ListSprintsComponent implements OnInit {
   faListUl=faListUl;
   faNewspaper=faNewspaper;
   faTh=faTh;
+  faChartLine=faChartLine;
 
   allSprints=[];
   refSprintStatus=[];
@@ -60,7 +61,8 @@ export class ListSprintsComponent implements OnInit {
       fctlProjectName: new FormControl({ value: "", disabled: true }),
       fctlSprintStatus: new FormControl({ value: "", disabled: false }),
       fctlStartDate: new FormControl({ value: "", disabled: false }),
-      fctlEndDate: new FormControl({ value: "", disabled: false })
+      fctlEndDate: new FormControl({ value: "", disabled: false }),
+      fctlNumDevs: new FormControl({ value: "", disabled: false })
     });
   }
 
@@ -93,6 +95,11 @@ export class ListSprintsComponent implements OnInit {
     this._router.navigate(['boards/scrum'],{queryParams:{'sprint_id':sprint['sprint_id'],'sprint_name':sprint['sprint_name']}});
   }
 
+  showSprintTasksDashBoard(sprint){
+    console.log(sprint);
+    this._router.navigate(['dashboard/sprint-tasks-dashboard'],{queryParams:{'sprint_id':sprint['sprint_id'],'sprint_name':sprint['sprint_name']}});
+  }
+
   editSprint(ele){
     let [sYear, sMonth, sDay]=['','',''];
     let [eYear, eMonth, eDay]=['','',''];
@@ -113,6 +120,7 @@ export class ListSprintsComponent implements OnInit {
     this.modifySprintFB.get('fctlSprintStatus').setValue(ele['status']);
     this.modifySprintFB.get('fctlStartDate').setValue(sDate);
     this.modifySprintFB.get('fctlEndDate').setValue(eDate);
+    this.modifySprintFB.get('fctlNumDevs').setValue(ele['num_devs']);
     this.currEditedRowData=ele;
   }
   sprintDetails(ele){
@@ -160,7 +168,8 @@ export class ListSprintsComponent implements OnInit {
         'sprint_name':this.modifySprintFB.get('fctlSprintName').value,
         'start_date':moment(this.modifySprintFB.get('fctlStartDate').value).subtract(1,'months').format('YYYY-MM-DD'),
         'end_date':moment(this.modifySprintFB.get('fctlEndDate').value).subtract(1,'months').format('YYYY-MM-DD'),
-        'modified_by':localStorage.getItem("loggedInUserId")
+        'modified_by':localStorage.getItem("loggedInUserId"),
+        'num_devs':this.modifySprintFB.get('fctlNumDevs').value
       };
       console.log("***************");
       console.log(this.updateSprintData);

@@ -6,6 +6,7 @@ import { Chart } from 'chart.js';
 import { TicketsDashboardService } from '../../services/dashboards/tickets-dashboard.service';
 import 'chartjs-plugin-colorschemes';
 import { compileNgModule } from '@angular/compiler';
+import * as tableau from 'chartjs-plugin-colorschemes/src/colorschemes/colorschemes.tableau.js';
 
 @Component({
   selector: 'app-dashboard',
@@ -175,7 +176,8 @@ legend: {
                   {
                     data: this.ticket_smry_by_isst_count,
                     fill: true,
-                    backgroundColor: ['#803690', '#ffce56', '#36a2eb', '#cc65fe', '#ff6384', '#949FB1', '#4D5360']
+                    // backgroundColor: ['#803690', '#ffce56', '#36a2eb', '#cc65fe', '#ff6384', '#949FB1', '#4D5360']
+                    backgroundColor:tableau.Tableau20
                   }
                 ]
               },
@@ -193,8 +195,9 @@ legend: {
                 scales: {
                   xAxes: [{
                     display: true,
-                    gridLines: true,
-                    zeroLineColor:'black',
+                    gridLines: {
+                      zeroLineColor:'black'
+                    },
                     ticks: {
                       fontSize: 12,
                       suggestedMin: 1,
@@ -210,6 +213,7 @@ legend: {
                   yAxes: [{
                     display: true,
                     gridLines: {
+                      zeroLineColor:'black'
                     },
                     ticks: {
                       fontColor: "black",
@@ -265,7 +269,8 @@ legend: {
               {
                 data: this.ticket_smry_by_istyp_count,
                 fill: true,
-                backgroundColor: ['#803690', '#ffce56', '#36a2eb', '#cc65fe', '#ff6384', '#949FB1', '#4D5360']
+                // backgroundColor: ['#803690', '#ffce56', '#36a2eb', '#cc65fe', '#ff6384', '#949FB1', '#4D5360']
+                backgroundColor:tableau.Tableau20
               }
             ]
           },
@@ -283,8 +288,9 @@ legend: {
             scales: {
               xAxes: [{
                 display: true,
-                gridLines: true,
-                zeroLineColor:'black',
+                gridLines: {
+                  display:true,
+                },
                 ticks: {
                   fontSize: 12,
                   suggestedMin: 40,
@@ -378,8 +384,10 @@ legend: {
               scales: {
                 xAxes: [{
                   display: true,
-                  gridLines: true,
-                  zeroLineColor:'black',
+                  gridLines: {
+                    display:true,
+                    zeroLineColor:'black'
+                  },
                   ticks: {
                     fontSize: 12,
                     stepSize: 5,
@@ -482,8 +490,10 @@ legend: {
               scales: {
                 xAxes: [{
                   display: true,
-                  gridLines: true,
-                  zeroLineColor:'black',
+                  gridLines: {
+                    display:true,
+                    zeroLineColor:'black'
+                  },
                   ticks: {
                     fontSize: 12,
                     stepSize: 5,
@@ -562,7 +572,8 @@ legend: {
                 {
                   data: this.ticket_stillopen_bymodule_last_n_days_count,
                   fill: true,
-                  backgroundColor: ['#803690', '#ffce56', '#36a2eb', '#cc65fe', '#ff6384', '#949FB1', '#4D5360']
+                  // backgroundColor: ['#803690', '#ffce56', '#36a2eb', '#cc65fe', '#ff6384', '#949FB1', '#4D5360']
+                  backgroundColor:tableau.Tableau20
                 }
               ]
             },
@@ -580,8 +591,10 @@ legend: {
               scales: {
                 xAxes: [{
                   display: true,
-                  gridLines: true,
-                  zeroLineColor:'black',
+                  gridLines: {
+                    display:true,
+                    zeroLineColor:'black'
+                  },
                   ticks: {
                     fontSize: 12,
                     suggestedMin: 1,
@@ -648,7 +661,8 @@ legend: {
                 {
                   data: this.ticket_count_bychannel_last_n_days_count,
                   fill: true,
-                  backgroundColor: ['#803690', '#ffce56', '#36a2eb', '#cc65fe', '#ff6384', '#949FB1', '#4D5360']
+                  // backgroundColor: ['#803690', '#ffce56', '#36a2eb', '#cc65fe', '#ff6384', '#949FB1', '#4D5360']
+                  backgroundColor:tableau.Tableau20
                 }
               ]
             },
@@ -666,8 +680,10 @@ legend: {
               scales: {
                 xAxes: [{
                   display: true,
-                  gridLines: true,
-                  zeroLineColor:'black',
+                  gridLines: {
+                    display:true,
+                    zeroLineColor:'black'
+                  },
                   ticks: {
                     fontSize: 12,
                     suggestedMin: 1,

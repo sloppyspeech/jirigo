@@ -1,3 +1,4 @@
+import { LineChartModule } from './shared/modules/charts/line-chart/line-chart.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule,ReactiveFormsModule,FormGroup,FormBuilder  }  from '@angular/forms';
@@ -46,6 +47,7 @@ import { ModalConfirmModule} from './shared/modules/modal-confirm/modal-confirm.
 import { DataExtractsComponent } from './components/data-extracts/data-extracts.component';
 import { ClickToEditModule } from './shared/modules/click-to-edit/click-to-edit.module';
 import { ColorPickerModule } from './shared/modules/color-picker/color-picker.module';
+import { BarChartModule } from './shared/modules/charts/bar-chart/bar-chart.module';
 
 @NgModule({
   declarations: [
@@ -91,7 +93,9 @@ import { ColorPickerModule } from './shared/modules/color-picker/color-picker.mo
     ChartModule,
     ModalConfirmModule,
     ClickToEditModule,
-    ColorPickerModule
+    ColorPickerModule,
+    BarChartModule,
+    LineChartModule
   ],
   providers: [UtilsService],
   bootstrap: [AppComponent]

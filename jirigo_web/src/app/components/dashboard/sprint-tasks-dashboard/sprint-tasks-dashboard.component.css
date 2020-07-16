@@ -1,0 +1,34 @@
+.task-effort-nums{
+    font-size:2rem;
+    font-weight: 400;
+    color:#888888;
+    height:2rem;
+}
+
+.task-effort-text{
+    font-size:0.9rem;
+    font-weight: 300;
+    color:#888888;
+    height:2rem;
+}
+
+.sprint-header{
+    font-size:0.9rem;
+    font-weight: 300;
+    color:#888888;
+    height:2rem;
+}
+.sprint-pct-completed{
+    background-color: #486481;
+    height:2rem;display:inline-block;
+    border-top-left-radius:0.25rem;
+    border-bottom-left-radius:0.25rem;
+}
+
+.sprint-pct-not-completed{
+    background-color: #E67819;
+    height:2rem;
+    display:inline-block;
+    border-top-right-radius:0.25rem;
+    border-bottom-right-radius:0.25rem;
+}

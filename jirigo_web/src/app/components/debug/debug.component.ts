@@ -1,4 +1,5 @@
-import {Component, OnInit,ViewChild,ElementRef,Renderer2} from '@angular/core';
+import { BarChartComponent } from './../../shared/modules/charts/bar-chart/bar-chart.component';
+import { Component, OnInit, ViewChild, ElementRef, Renderer2, AfterViewInit } from '@angular/core';
 import {FormBuilder, FormGroup, FormControl, Validators} from '@angular/forms';
 import {Router,ActivatedRoute} from '@angular/router';
 import {TaskTicketLinkService} from '../../services/task-ticket-links/task-ticket-link.service';
@@ -31,6 +32,18 @@ export class DebugComponent implements OnInit {
       "Access-Control-Allow-Headers":"Content-Type"
     })
   };
+
+  @ViewChild('barChart') barChart:BarChartComponent;
+
+  chartOptions:any={
+    chartType:'bar',
+    barChartElementId:'id_mycanvas',
+    barChartType:'horizontalBar',
+    chartLabels:['A','B','C','D'],
+    chartData:[9,1,15,4],
+    xAxisLabel:'x-axis is here',
+    yAxisLabel:'y-axis is here'
+  }
   typeahead: FormControl = new FormControl();
   testFC: FormControl = new FormControl();
   suggestions:string[]=[];
@@ -358,8 +371,13 @@ options = {
     //     this.statusGrid.push({status:ps,nextStatuses:s});
     // });
 
+    
 
   }
+
+  ngAfterViewInit() {
+  }
+  
 
   drop(ev) {
     ev.preventDefault();

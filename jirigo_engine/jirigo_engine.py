@@ -30,6 +30,7 @@ from services.dbservice.data_extracts.data_extract_service import JirigoDataExtr
 from services.dbservice.homepage.homepage_service import JirigoHomePage
 from services.dbservice.vacations.vacation_service import JirigoVacations
 from services.dbservice.todos.todos_service import JirigoTodos
+from services.dbservice.boards.scrum.sprint_dashboard_service import JirigoSprintDashboard
 
 #-------------------
 UPLOAD_FOLDER='./uploaded_files'
@@ -1955,6 +1956,73 @@ def upd_category_for_user():
             return get_jsonified_error_response('Failure upd_category_for_user',error)
     else:
         return get_jsonified_error_response('Failure', "upd_category_for_user " + get_errmsg('NAPUR'))
+
+
+@app.route('/api/v1/sprint-dashboard/attributes-summary',methods=['GET'])
+def get_all_tasks_attribute_summary():
+    if request.method == 'GET':
+        print('In Get get_all_tasks_attribute_summary')
+        try:
+            sprint_id=request.args.get('sprint_id')
+            print(sprint_id)
+            jdb=JirigoSprintDashboard({'sprint_id':sprint_id})
+            data=jdb.get_all_tasks_attribute_summary()
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in get_all_tasks_attribute_summary {error}')
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',"get_all_tasks_attribute_summary " + get_errmsg('NAGR'))
+
+@app.route('/api/v1/sprint-dashboard/efforts-summary',methods=['GET'])
+def get_sprint_efforts_summary():
+    if request.method == 'GET':
+        print('In Get get_sprint_efforts_summary')
+        try:
+            sprint_id=request.args.get('sprint_id')
+            print(sprint_id)
+            jdb=JirigoSprintDashboard({'sprint_id':sprint_id})
+            data=jdb.get_sprint_efforts_summary()
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in get_sprint_efforts_summary {error}')
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',"get_sprint_efforts_summary " + get_errmsg('NAGR'))
+
+@app.route('/api/v1/sprint-dashboard/burndown-chart',methods=['GET'])
+def get_sprint_burndown_chart_data():
+    if request.method == 'GET':
+        print('In Get get_sprint_burndown_chart_data')
+        try:
+            sprint_id=request.args.get('sprint_id')
+            print(sprint_id)
+            jdb=JirigoSprintDashboard({'sprint_id':sprint_id})
+            data=jdb.get_sprint_burndown_chart_data()
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in get_sprint_burndown_chart_data {error}')
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',"get_sprint_burndown_chart_data " + get_errmsg('NAGR'))
+
+@app.route('/api/v1/sprint-dashboard/sprint-workloadby-user',methods=['GET'])
+def get_sprint_workload_by_user():
+    if request.method == 'GET':
+        print('In Get get_sprint_workload_by_user')
+        try:
+            sprint_id=request.args.get('sprint_id')
+            print(sprint_id)
+            jdb=JirigoSprintDashboard({'sprint_id':sprint_id})
+            data=jdb.get_sprint_workload_by_user()
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in get_sprint_workload_by_user {error}')
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',"get_sprint_workload_by_user " + get_errmsg('NAGR'))
+
+
 
 def get_errmsg(mesg_code) :
     error_messages={
