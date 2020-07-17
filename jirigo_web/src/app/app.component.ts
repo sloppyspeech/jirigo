@@ -7,7 +7,7 @@ import { Component,OnInit,HostListener } from '@angular/core';
 })
 export class AppComponent {
   title = 'Jirigo';
-
+  jirigoBroadcastChannel;
   // @HostListener('window:beforeunload')
   // clearLocalStorage() {
   //   /*  
@@ -20,7 +20,14 @@ export class AppComponent {
   constructor(){}
 
   
-  ngOnInit() {}
+  ngOnInit() {
+    this.jirigoBroadcastChannel= new BroadcastChannel('jirigo-broadcast');
+    this.jirigoBroadcastChannel.onmessage = (message) =>{
+      console.log("*******App Message broadcast*********");
+      console.log(message);
+      console.log("***************")
+    };
+  }
   
 
 }

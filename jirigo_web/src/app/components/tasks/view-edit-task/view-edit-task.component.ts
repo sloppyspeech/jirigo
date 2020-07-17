@@ -145,7 +145,8 @@ export class ViewEditTaskComponent implements OnInit {
         fctlAssigneeName:new FormControl({ value: localStorage.getItem('currentProjectName'), disabled: true }),
         fctlTabOptions: new FormControl({ value: 'showTaskDetails'}),
         fctlStartDate: new FormControl({ value: '', disabled: true }),
-        fctlEndDate: new FormControl({ value: '', disabled: true })
+        fctlEndDate: new FormControl({ value: '', disabled: true }),
+        fctlRowHash: new FormControl({ value: '', disabled: true })
       },{validator:this.validateStartAndEndDates});
 
   }
@@ -261,7 +262,8 @@ export class ViewEditTaskComponent implements OnInit {
       "reported_date":this.viewModifyTaskFB.get('fctlReportedDate').value,
       "estimated_time":this.viewModifyTaskFB.get('fctlEstimatedTime').value,
       "start_date":this._serUtils.getDateInYYYYMMDD(this.viewModifyTaskFB.get('fctlStartDate').value),
-      "end_date":this._serUtils.getDateInYYYYMMDD(this.viewModifyTaskFB.get('fctlEndDate').value)
+      "end_date":this._serUtils.getDateInYYYYMMDD(this.viewModifyTaskFB.get('fctlEndDate').value),
+      "row_hash":this.viewModifyTaskFB.get('fctlRowHash').value
     }
     console.log('@@------@@');
     console.log(formData);
@@ -293,10 +295,16 @@ export class ViewEditTaskComponent implements OnInit {
 
           }
           else{
+
             this._serNgxSpinner.hide(); 
             this.modalAlertConfig.dialogConfirmed="TaskUpdateModalFailureConfirm";
             this.modalAlertConfig.title="Task Update Failed";
-            this.modalAlertConfig.modalContent=formData['task_no']  + "  update failed. Contact Adminstrator.";
+            if (res['dbQryStatus']== "FailureNoRowFound"){
+              this.modalAlertConfig.modalContent=formData['task_no']  + "  update failed. Record updated since you last retrieved. Refresh the page and try again.";
+            }
+            else{
+              this.modalAlertConfig.modalContent=formData['task_no']  + "  update failed. Contact Adminstrator.";
+            }
             this.modalAlertConfig.modalType="danger";
             this.modalAlertConfig.showModal=true;
           }

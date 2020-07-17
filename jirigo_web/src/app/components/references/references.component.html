@@ -2,12 +2,11 @@
 <hr />
 <div
   class="container-fluid"
-  style="background-color: #f4f4f4; border-radius: 0.313rem; margin: 0 0 1.063rem 0;"
+  style="background-color: #f4f4f4; border-radius: 0.313rem; "
 >
-  <div class="row" style="padding:1.25rem 0 0 0;">
+  <div class="row" >
     <div class="col-lg-3">
       <div class="form-group">
-        <!-- <label class="col-form-label">Project</label> -->
         <select
           class="form-control  j-dropdown"
           [(ngModel)]="defProjectName"
@@ -25,7 +24,6 @@
     </div>
     <div class="col-lg-3">
       <div class="form-group">
-        <!-- <label class="col-form-label">Reference Category</label> -->
         <select
           class="form-control j-dropdown"
           (change)="setRefCategory($event.target.value)"
@@ -39,7 +37,6 @@
     </div>
     <div class="col-lg-3">
       <div class="form-group">
-        <!-- <label class="col-form-label">Reference Name</label> -->
         <select class="form-control  j-dropdown" (change)="setRefName($event.target.value)">
           <option class= "j-dropdown-item" value="" selected>Choose Reference Name</option>
           <option class= "j-dropdown-item" *ngFor="let refName of refNameList" [value]="refName">

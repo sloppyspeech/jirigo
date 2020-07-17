@@ -31,6 +31,7 @@ from services.dbservice.homepage.homepage_service import JirigoHomePage
 from services.dbservice.vacations.vacation_service import JirigoVacations
 from services.dbservice.todos.todos_service import JirigoTodos
 from services.dbservice.boards.scrum.sprint_dashboard_service import JirigoSprintDashboard
+from services.dbservice.global_search.global_search_service import JirigoGlobalSearch
 
 #-------------------
 UPLOAD_FOLDER='./uploaded_files'
@@ -2022,6 +2023,21 @@ def get_sprint_workload_by_user():
     else:
         return get_jsonified_error_response('Failure',"get_sprint_workload_by_user " + get_errmsg('NAGR'))
 
+@app.route('/api/v1/global-search',methods=['GET'])
+def global_search():
+    if request.method == 'GET':
+        print('In Get global_search')
+        try:
+            search_text=request.args.get('search_text')
+            print(search_text)
+            jdb=JirigoGlobalSearch({'search_text':search_text})
+            data=jdb.global_search()
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in global_search {error}')
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',"global_search " + get_errmsg('NAGR'))
 
 
 def get_errmsg(mesg_code) :

@@ -35,6 +35,7 @@ class JirigoTicket(object):
         self.assignee_name=data.get('assignee_name','')
         self.module=data.get('module','')
         self.assignee_id = data.get('assignee_id','')
+        self.row_hash = data.get('row_hash','')
 
         self.logger=Logger()
 
@@ -166,7 +167,8 @@ class JirigoTicket(object):
                                         get_user_name(COALESCE(modified_by, 0)) modified_by,
                                         modified_date,
                                         get_user_name(COALESCE(reported_by, 0)) reported_by,
-                                        reported_date
+                                        reported_date,
+                                        row_hash
                                 FROM ttickets
                                 WHERE TICKET_NO=%s )
                                 SELECT json_agg(t)
@@ -216,13 +218,13 @@ class JirigoTicket(object):
                                 is_blocking=%s,
                                 module=%s,
                                 channel=%s
-                         WHERE ticket_no=%s;
+                         WHERE ticket_no=%s and row_hash=%s
                     """
         values=(self.summary,self.description,self.severity,self.priority,
                 self.issue_status,self.issue_type,self.environment,self.modified_by,
                 datetime.datetime.today(),self.reported_by,datetime.datetime.today(),
                 self.project_name,self.assignee_name,self.is_blocking,self.module,self.channel,
-                self.ticket_no,)
+                self.ticket_no,self.row_hash,)
 
         self.logger.debug(f'Update : {update_sql}  {values}')
 
@@ -231,9 +233,14 @@ class JirigoTicket(object):
             print(type(self.jdb.dbConn))
             cursor=self.jdb.dbConn.cursor()
             cursor.execute(update_sql,values)
+            response_data['dbQryResponse']={"ticketId":self.ticket_no,"rowCount":cursor.rowcount}
             self.jdb.dbConn.commit()
-            response_data['dbQryStatus']='Success'
-            response_data['dbQryResponse']={"ticketId":self.ticket_no,"rowCount":1}
+
+            if response_data['dbQryResponse']['rowCount'] == 0:
+                response_data['dbQryStatus']='FailureNoRowFound'
+            else:
+                response_data['dbQryStatus']='Success'
+            
             return response_data
         except  (Exception, psycopg2.Error) as error:
             if(self.jdb.dbConn):
@@ -248,7 +255,7 @@ class JirigoTicket(object):
         insert_sql="""
                         INSERT INTO ttickets (ticket_no, SUMMARY, description, issue_status, issue_type, 
                                               severity, priority, environment, is_blocking, module,created_by, 
-                                              created_date, reported_by, reported_date, project_id,channel)
+                                              created_date, reported_by, reported_date, project_id,channel,row_hash)
                                     SELECT get_issue_no_by_proj(get_proj_name(project_id)),
                                         SUMMARY,
                                         description,
@@ -264,7 +271,8 @@ class JirigoTicket(object):
                                         reported_by,
                                         reported_date,
                                         project_id,
-                                        channel
+                                        channel,
+                                        row_hash
                                     FROM ttickets
                                     WHERE ticket_no=%s
                                     returning ticket_no;

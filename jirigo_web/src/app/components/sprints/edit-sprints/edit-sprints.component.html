@@ -15,7 +15,10 @@
     <ng-template let-task pTemplate="item" >
       <!-- background-color: #DEF3FD -->
       <div class="ui-helper-clearfix task menu-item-assigned"  >
-        <button type="button" class="btn btn-light btn-sm">{{task.task_no}}</button>
+        <!-- <button type="button" class="btn btn-light btn-sm">{{task.task_no}}</button> -->
+        <div class="btn btn-light btn-sm mt-0 pt-0">
+          <a  [routerLink]="['/tasks/view-edit-tasks']" [queryParams]="{'task_no':task.task_no}" class="a-item" >{{task.task_no}}</a>
+        </div>
           <span class="badge badge-info float-right task-badge "  >Severity : {{task.severity}}</span>
           <span class="badge badge-info float-right task-badge "  >Priority : {{task.priority}}</span>
           <span class="badge badge-info float-right task-badge "  >Status : {{task.issue_status}}</span>

@@ -160,6 +160,7 @@ export class TaskDetailsComponent implements OnInit {
               this.parentForm.get('fctlAssigneeName').setValue(this.task_data.assignee_name);
               this.parentForm.get('fctlIsBlocking').setValue((this.task_data.is_blocking == 'Y') ? true : false);
               this.parentForm.get('fctlEstimatedTime').setValue(this.task_data.estimated_time);
+              this.parentForm.get('fctlRowHash').setValue(this.task_data.row_hash);
 
               console.log('------@@@@@@@--------');
               console.log(this.parentForm.get('fctlReportedDate').value);

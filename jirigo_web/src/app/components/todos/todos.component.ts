@@ -372,6 +372,9 @@ export class TodosComponent implements OnInit {
   }
 
   openAddTodo(){
+    let jirigobcmsg = new BroadcastChannel('jirigo-broadcast');
+    jirigobcmsg.postMessage({'mesg_id':1,'mesg_text':'First Broadcast'});
+
     this.getCategories();
     if(!this.todoEdit){
       this.todoFG.get('fctlTodoText').setValue('');
@@ -394,7 +397,7 @@ export class TodosComponent implements OnInit {
         .subscribe(res=>{
           console.log("----------------------");
           console.log(res);
-          this.addTodoModalButton.nativeElement.click();
+          // this.addTodoModalButton.nativeElement.click();
           this.getTodos('all');
         })
   }

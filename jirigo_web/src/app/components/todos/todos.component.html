@@ -301,7 +301,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-light" data-dismiss="modal" (click)="todoFG.reset()">Cancel   </button>
-          <button type="button" class="btn btn-warning" (click)="todoAction()"  [disabled]="todoFG.invalid">Save</button>
+          <button type="button" class="btn btn-warning" data-dismiss="modal" (click)="todoAction()"  [disabled]="todoFG.invalid">Save</button>
         </div>
       </div>
     </form>

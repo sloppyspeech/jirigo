@@ -81,7 +81,7 @@
     <div class="col offset-lg-5">
         <button type="button"  (click)="cancelViewEditForm()" class="btn btn-light mr-4">Cancel</button>
         <button type="submit" 
-        [disabled]="!viewModifyTaskFB.valid || !(viewModifyTaskFB.dirty && viewModifyTaskFB.touched)"  
+        [disabled]="!viewModifyTaskFB.valid || !(viewModifyTaskFB.dirty || viewModifyTaskFB.touched)"  
         class="btn btn-primary">Submit</button>
       </div>
   </div>

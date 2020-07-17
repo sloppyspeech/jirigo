@@ -37,6 +37,7 @@ class JirigoTask(object):
         self.estimated_time=data.get('estimated_time',0)
         self.start_date=data.get('start_date',None)
         self.end_date=data.get('end_date',None)
+        self.row_hash=data.get('row_hash',None)
         self.assignee_id = data.get('assignee_id',None)
         self.logger=Logger()
 
@@ -166,7 +167,8 @@ class JirigoTask(object):
                                         estimated_time,
                                         start_date,
                                         end_date,
-                                        get_task_remaining_time(task_no) task_remaining_time
+                                        get_task_remaining_time(task_no) task_remaining_time,
+                                        row_hash
                                 FROM ttasks
                                 WHERE TASK_NO=%s )
                                 SELECT json_agg(t)
@@ -195,6 +197,7 @@ class JirigoTask(object):
 
     
     def update_task(self):
+
         response_data={}
         self.logger.debug("Inside Update Task update_tasks")
 
@@ -218,7 +221,7 @@ class JirigoTask(object):
                                 estimated_time=%s,
                                 start_date=%s,
                                 end_date=%s  
-                         WHERE task_no=%s;
+                         WHERE task_no=%s and row_hash=%s;
                     """
 
         self.estimated_time = None if self.estimated_time == '' else self.estimated_time
@@ -227,18 +230,23 @@ class JirigoTask(object):
                 self.issue_status,self.issue_type,self.environment,self.modified_by,
                 datetime.datetime.today(),self.reported_by,datetime.datetime.today(),
                 self.project_name,self.assignee_name,self.is_blocking,self.module_name,
-                self.estimated_time,self.start_date,self.end_date,self.task_no,)
+                self.estimated_time,self.start_date,self.end_date,self.task_no,self.row_hash,)
 
         self.logger.debug(f'Update : {update_sql}  {values}')
 
         try:
             print('-'*80)
-            print(type(self.jdb.dbConn))
             cursor=self.jdb.dbConn.cursor()
             cursor.execute(update_sql,values)
+            print(dir(cursor))
+            response_data['dbQryResponse']={"taskNo":self.task_no,"rowCount":cursor.rowcount}
+            print(response_data)
+            print('-'*80)
             self.jdb.dbConn.commit()
-            response_data['dbQryStatus']='Success'
-            response_data['dbQryResponse']={"taskNo":self.task_no,"rowCount":1}
+            if response_data['dbQryResponse']['rowCount'] == 0:
+                response_data['dbQryStatus']='FailureNoRowFound'
+            else:
+                response_data['dbQryStatus']='Success'
             return response_data
         except  (Exception, psycopg2.Error) as error:
             if(self.jdb.dbConn):
@@ -254,7 +262,7 @@ class JirigoTask(object):
                         INSERT INTO ttasks (task_no, SUMMARY, description, issue_status, issue_type, 
                                               severity, priority, environment, is_blocking, module_name,created_by, 
                                               created_date, reported_by, reported_date, project_id,estimated_time,
-                                              start_date,end_date)
+                                              start_date,end_date,row_hash)
                                     SELECT get_issue_no_by_proj(get_proj_name(project_id)),
                                         SUMMARY,
                                         description,
@@ -272,7 +280,8 @@ class JirigoTask(object):
                                         project_id,
                                         estimated_time,
                                         start_date,
-                                        end_date
+                                        end_date,
+                                        row_hash
                                     FROM ttasks
                                     WHERE task_no=%s
                                     returning task_no;

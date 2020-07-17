@@ -283,7 +283,12 @@ export class ViewEditTicketsComponent implements OnInit {
             this._serNgxSpinner.hide(); 
             this.modalAlertConfig.dialogConfirmed="TicketUpdateModalFailureConfirm";
             this.modalAlertConfig.title="Ticket Update Failed";
-            this.modalAlertConfig.modalContent=formData['ticket_no']  + "  update failed. Contact Adminstrator.";
+            if (res['dbQryStatus']== "FailureNoRowFound"){
+              this.modalAlertConfig.modalContent=formData['ticket_no']  + "  update failed. Record updated since you last retrieved. Refresh the page and try again.";
+            }
+            else{
+              this.modalAlertConfig.modalContent=formData['ticket_no']  + "  update failed. Contact Adminstrator.";
+            }
             this.modalAlertConfig.modalType="danger";
             this.modalAlertConfig.showModal=true;
           }

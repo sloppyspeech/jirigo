@@ -1,0 +1,17 @@
+<div class="form-group has-search">
+    <span class="form-control-feedback"><fa-icon [icon]="faSearch"></fa-icon></span>
+    <input type="text" class="form-control" [(ngModel)]="searchText"  (keyup)="globalSearch($event)" name="nm_globalsearch" id="id_globalsearch" aria-describedby="helpId" placeholder="Search By Keywords..">
+</div>
+
+<div class="search-popup-opened" *ngIf="showSearchDropdown">
+    <div class="search-popup-box">
+        <div class="container-fluid">
+            <ng-container *ngFor="let res of globalSearchResults">
+                <div class="row py-1 search-row mx-1" style="flex:38rem; border-bottom-color: #eee;border-bottom-width: 1px;border-bottom-style: solid;" (click)="navigateToItem(res)">
+                        <div class="col-3 search-item-row pr-1 mr-0">{{res.item_no}}</div>
+                        <div class="col-9 search-item-row pl-1 ml-0">{{res.summary}}</div>
+                </div>
+            </ng-container>
+        </div>
+    </div>
+</div>

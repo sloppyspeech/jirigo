@@ -16,7 +16,15 @@ export class HomepageComponent implements OnInit {
     private _serHomepage: HomepageService
   ) { }
 
+  jirigoBroadcastChannel;
+
   ngOnInit(): void {
+    this.jirigoBroadcastChannel= new BroadcastChannel('jirigo-broadcast');
+    this.jirigoBroadcastChannel.onmessage = (message) =>{
+      console.log("*******broadcast*********");
+      console.log(message);
+      console.log("***************")
+    };
     this.currentProjectName=localStorage.getItem('currentProjectName');
     this.getRecentProjectActivities();
   }

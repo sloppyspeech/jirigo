@@ -1,3 +1,4 @@
+import { GlobalSearchModule } from './shared/modules/global-search/global-search.module';
 import { LineChartModule } from './shared/modules/charts/line-chart/line-chart.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -95,7 +96,8 @@ import { BarChartModule } from './shared/modules/charts/bar-chart/bar-chart.modu
     ClickToEditModule,
     ColorPickerModule,
     BarChartModule,
-    LineChartModule
+    LineChartModule,
+    GlobalSearchModule
   ],
   providers: [UtilsService],
   bootstrap: [AppComponent]

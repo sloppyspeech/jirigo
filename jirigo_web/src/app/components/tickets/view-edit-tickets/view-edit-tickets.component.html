@@ -12,7 +12,7 @@
   <div class="form-group">
 
 
-    <div class="row btn-group"  *ngIf="viewEditFormEditBtnDisabled" style="margin-bottom: 0.5rem;">
+    <div class="row btn-group mt-1"  *ngIf="viewEditFormEditBtnDisabled" style="margin-bottom: 0.5rem;">
       <div class="col-lg-12" >
         <button
           type="button"
@@ -51,17 +51,16 @@
 
 
     <br />
-    <div class="card">
-      <div class="card-header ticketnum-header" >
-        <h4>{{ ticket_no }}</h4>
+    <div class="row">
+      <div class="col-lg-12  ticketnum-header" >
+        <h5> {{ ticket_no }}</h5>
       </div>
     </div>
-    <br />
     <div class="row">
       <div class="col">
-        <label for="formGroupExampleInput" class="col-form-label-md"
+        <!-- <label for="formGroupExampleInput" class="col-form-label-md"
           >Summary</label
-        >
+        > -->
         <input
           formControlName="fctlSummary"
           type="text"
@@ -130,7 +129,7 @@
       </button>
       <button
         type="submit"
-        [disabled]="!viewModifyTicketFB.valid || !( viewModifyTicketFB.dirty && viewModifyTicketFB.touched) "
+        [disabled]="!viewModifyTicketFB.valid || !( viewModifyTicketFB.dirty || viewModifyTicketFB.touched) "
         class="btn btn-primary"
       >
         Submit

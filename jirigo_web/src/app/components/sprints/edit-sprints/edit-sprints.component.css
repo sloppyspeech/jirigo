@@ -15,6 +15,10 @@
     background-color: #E3F2FD;
     color: black;
 }
+.task-badge:hover{
+    background-color: #b9def8;
+    cursor:text;
+}
 
 .menu-item-assigned{
     font-size: 0.938rem; 
