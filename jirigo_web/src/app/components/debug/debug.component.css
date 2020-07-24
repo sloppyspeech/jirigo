@@ -75,3 +75,7 @@ cSuggestions{
   
   border-bottom: 8px solid white;
 }
+
+.card-columns {
+    column-count: 6;
+}

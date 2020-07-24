@@ -20,6 +20,31 @@ export class BarChartComponent implements OnInit {
   }
 
   ngAfterViewInit(){
+    let chartDataSets=[];
+    if (this.chartOptions.barChartType == 'horizontalBarGrouped'){
+
+      for(let i=0;i<this.chartOptions.chartData.length;i++){
+        chartDataSets.push({
+          label: this.chartOptions.legendLabels[i],
+          data: this.chartOptions.chartData[i],
+          fill: false,
+          datalabels: {
+            color: '#fff'
+          }
+        });
+      }
+
+    }
+    else{
+      chartDataSets.push({
+            data: this.chartOptions.chartData,
+            fill: false,
+            backgroundColor:tableau.Tableau20,
+            datalabels: {
+              color: '#fff'
+            }
+        });
+    }
     console.log("--------------------------");
     console.log(this.chartOptions);
     console.log("--------------------------");
@@ -28,26 +53,9 @@ export class BarChartComponent implements OnInit {
       type:  this.chartOptions.chartType,
       data: {
         labels: this.chartOptions.chartLabels,
-        datasets: [
-          {
-            data: this.chartOptions.chartData,
-            fill: false,
-            backgroundColor:tableau.Tableau20,
-            datalabels: {
-              color: '#fff'
-            }
-          }
-          // ,
-          // {
-          //   data: [2,1,15,7],
-          //   fill: false,
-          //   backgroundColor:tableau.Tableau20,
-          //   datalabels: {
-          //     color: '#fff'
-          //   }
-          // }
-        ]
-      },
+        datasets: chartDataSets
+      }
+      ,
       options: {
         title:{
           display:this.chartOptions.displayTitle,
@@ -65,7 +73,7 @@ export class BarChartComponent implements OnInit {
         maintainAspectRatio: false,
         responsive: true,
         legend: {
-          display: false
+          display: this.chartOptions.legendDisplay
         },
         scales: {
           xAxes: [{
@@ -128,5 +136,7 @@ export interface chartOptions{
   yTickStepSize?:number,
   stacked?:boolean,
   displayTitle?:boolean,
-  titleText?:string
+  titleText?:string,
+  legendDisplay?:boolean,
+  legendLabels?:string[]
 }

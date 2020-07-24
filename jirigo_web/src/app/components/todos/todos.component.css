@@ -208,7 +208,7 @@
     background-color: transparent;
   }
   .todo-add-btn:hover{
-    color:#00C853;
+    color:black;
     cursor: pointer;
     transition: background 0.3s ease-in-out;
   }
@@ -282,3 +282,7 @@
     pointer-events: none;
     color: #aaa;
   }
+
+  .card-columns {
+      column-count: 4;
+    }

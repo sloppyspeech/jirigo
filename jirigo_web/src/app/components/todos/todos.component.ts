@@ -1,9 +1,10 @@
+import { Component, OnInit,ViewChild,ElementRef,Renderer2,ChangeDetectorRef } from '@angular/core';
 import { UtilsService } from './../../services/shared/utils.service';
-import { Component, OnInit,ViewChild,ElementRef,Renderer2 } from '@angular/core';
 import { TodosService } from './../../services/todos/todos.service';
 import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
-import { faCircle,faDotCircle,faLayerGroup,faTrashAlt,faSearch} from '@fortawesome/free-solid-svg-icons';
+import { faCircle,faDotCircle,faLayerGroup,faTrashAlt,faSearch,faTh,faListUl} from '@fortawesome/free-solid-svg-icons';
 import { faEdit,faPlusSquare,faArrowAltCircleLeft,faArrowAltCircleRight }  from '@fortawesome/free-regular-svg-icons';
+import { BehaviorSubject } from 'rxjs';
 import * as $ from 'jquery'
 
 @Component({
@@ -20,11 +21,25 @@ export class TodosComponent implements OnInit {
   faPlusSquare=faPlusSquare;
   faArrowAltCircleLeft=faArrowAltCircleLeft;
   faArrowAltCircleRight=faArrowAltCircleRight;
+  faTh=faTh;
+  faListUl=faListUl;
   faSearch=faSearch;
+  todosBroadcast:any;
+  rows_limit:number=5;
+  row_offset:number=0;
+
+  toggleTodoListToColumns=true;
+  showTodoCntBadgeFor:any={
+    'AllTodos':false,
+    '0Days':false,
+    '7Days':false,
+    '30Days':false,
+    'Done':false
+  };
 
   showColorPicker:boolean=false;
 
-  @ViewChild('addTodoModalButton', { static: true }) addTodoModalButton: ElementRef;
+  @ViewChild('addTodoModalButton', { static: false }) addTodoModalButton: ElementRef;
   @ViewChild('openAddCategoryModalButton', { static: true }) openAddCategoryModalButton: ElementRef;
   @ViewChild('categoryCircles', { static: true }) categoryCircle:ElementRef;
   @ViewChild('addLabel', { static: false }) addLabel:ElementRef;
@@ -34,6 +49,7 @@ export class TodosComponent implements OnInit {
   todoEdit:boolean=false;
   enableCategoryEditIcon:boolean=false;
   allToDos:todo[]=[];
+  allToDos$: BehaviorSubject <todo[]> ;
   allToDosFromDB:todo[]=[];
   todoFG:FormGroup;
   categoryFG:FormGroup;
@@ -54,7 +70,8 @@ export class TodosComponent implements OnInit {
     private _serTodos:TodosService,
     private _formBuilder:FormBuilder,
     private _renderer:Renderer2,
-    private _serUtils:UtilsService
+    private _serUtils:UtilsService,
+    private _changeDetectRef:ChangeDetectorRef
 
   ) { }
 
@@ -88,9 +105,21 @@ export class TodosComponent implements OnInit {
     this.getTodos('all');
     this.getTodoLabels();
 
+    this.todosBroadcast= new BroadcastChannel('todo-broadcast');
+    this.todosBroadcast.onmessage = (message) =>{
+      console.log("*******todosBroadcast*********");
+      console.log(message['data']);
+      this.getTodos('all');
+      // this._changeDetectRef.detectChanges();
+      setInterval(() => { this._changeDetectRef.detectChanges(); }, 1000);
+      console.log("***************")
+    };
+
+
   }
 
   getTodos(filter){
+    console.log('getTodosCalled');
     this.allToDos=[];
     this.allToDosFromDB=[];
 
@@ -110,22 +139,26 @@ export class TodosComponent implements OnInit {
               });
             });
             this.allToDosFromDB=this.allToDos;
+            this.allToDos$=new BehaviorSubject<todo[]>(this.allToDos);
             console.log(this.allToDos);
           });
     
   }
 
-  getTodosByInterval(interval_days,event){
+  getTodosByInterval(interval_days:string,event){
     this.setActiveLinkClass(event);
 
     console.log('getTodosByInterval :'+interval_days);
-    this.allToDos=[];
-    this.allToDosFromDB=[];
+    console.log(this.allToDosFromDB);
+    console.log(this.allToDos);
     this._serTodos.getAllTodosForUserByInterval({'user_id':localStorage.getItem('loggedInUserId'),'interval_days':interval_days})
         .subscribe(res=>{
           console.log(res);
           if (res['dbQryResponse']){
+            this.allToDos=[];
+            this.allToDosFromDB=[];
             res['dbQryResponse'].forEach(e => {
+              console.log(e);
               this.allToDos.push({
                 todo_status:e.todo_status,
                 todo_text:e.todo_text,
@@ -145,9 +178,16 @@ export class TodosComponent implements OnInit {
             this.todoStrtArrIdx=0;
             this.todoEndArrIdx=this.todoNumRows;
           }
+          this.setTodoCounter(interval_days+'Days');
+          
         });
   }
 
+  setTodoCounter(filterKey){
+    //reset all counts to false
+    Object.keys(this.showTodoCntBadgeFor).forEach(v => this.showTodoCntBadgeFor[v] = false);
+    this.showTodoCntBadgeFor[filterKey]=true;
+  }
 
   getCategories(){
     this.todoCategoriesArr=[];
@@ -174,10 +214,10 @@ export class TodosComponent implements OnInit {
           console.log(res);
           if (res['dbQryStatus']=="Success"){
             this.todoLabels=res['dbQryResponse'];
+            this.nextTodosForSevenDays.nativeElement.click();
           }
 
         // Set default todos on landing page 
-        this.nextTodosForSevenDays.nativeElement.click();
         });
   }
 
@@ -188,6 +228,7 @@ export class TodosComponent implements OnInit {
   setTodosToDBVals(event){
     this.setActiveLinkClass(event);
     this.getTodos('All');
+    this.setTodoCounter('AllTodos');
   }
 
   setCategoryColor(e){
@@ -244,6 +285,7 @@ export class TodosComponent implements OnInit {
           console.log(res);
           this.categoryFG.reset();
           this.openAddCategoryModalButton.nativeElement.click();
+          this.todosBroadcast.postMessage({'mesg_text':'categoryCreated'});
         });
   }
 
@@ -269,13 +311,15 @@ export class TodosComponent implements OnInit {
               }
             }
           }
-          this.getTodos('all');
+          // this.getTodos('all');
           this.categoryFG.reset();
           this.openAddCategoryModalButton.nativeElement.click();
+          this.todosBroadcast.postMessage({'mesg_text':'todoCategoryUpdated'});
         });
   }
 
   editTodo(todo){
+    console.log('Edit Todo');
     this.todoEdit=true;
     console.log(todo);
     this.todoFG.get('fctlTodoId').setValue(todo.todo_id);
@@ -311,30 +355,55 @@ export class TodosComponent implements OnInit {
           this.allToDos.push(e);
         }
       });
+      this.setTodoCounter(category);
     }
     else{
       this.allToDos=this.allToDosFromDB;
     }
   }
 
-  filterTodosByStatus(status,event){
-    this.allToDos=[];
-    this.setActiveLinkClass(event);
+   filterTodosByStatus(status,event){
+    // console.log(this.allToDos$.value)
+    // this.allToDos=this.allToDos$.value;
+    // this.setActiveLinkClass(event);
 
-    console.log('category is :'+status);
-    console.log(this.allToDosFromDB);
-    this.activateCategoryLink(status);
+    // console.log('status is :'+status);
+    // console.log(this.allToDosFromDB);
+    // this.activateCategoryLink(status);
 
-    if (status != 'All'){
-      this.allToDosFromDB.forEach(e=>{
-        if(e['todo_status']==status){
-          this.allToDos.push(e);
-        }
-      });
+    // if (status != 'All'){
+    //   this.allToDos=[];
+    //   this.allToDos$.value.forEach(e=>{
+    //     if(e['todo_status']==status){
+    //       console.log(e);
+    //       this.allToDos.push(e);
+    //     }
+    //   });
+    //   console.log(this.allToDos);
+    //   if(status=='Done'){
+    //     console.log('Setting COunter for Done')
+    //     this.setTodoCounter('Done');
+    //   }
+    // }
+    // else{
+    //   this.allToDos=this.allToDosFromDB;
+    // }
+    let inpData={
+      'user_id':localStorage.getItem('loggedInUserId'),
+      'todo_status':status
     }
-    else{
-      this.allToDos=this.allToDosFromDB;
-    }
+    this._serTodos.getAllTodosForUserByStatus(inpData)
+        .subscribe(res=>{
+          if (res['dbQryStatus'] == "Success" && res['dbQryResponse']){
+            this.allToDos=res['dbQryResponse'];
+            console.log(this.allToDos);
+            if(status=='Done'){
+                  console.log('Setting COunter for Done')
+                  this.setTodoCounter('Done');
+                }
+          }
+        })
+
   }
 
 
@@ -372,9 +441,6 @@ export class TodosComponent implements OnInit {
   }
 
   openAddTodo(){
-    let jirigobcmsg = new BroadcastChannel('jirigo-broadcast');
-    jirigobcmsg.postMessage({'mesg_id':1,'mesg_text':'First Broadcast'});
-
     this.getCategories();
     if(!this.todoEdit){
       this.todoFG.get('fctlTodoText').setValue('');
@@ -398,7 +464,8 @@ export class TodosComponent implements OnInit {
           console.log("----------------------");
           console.log(res);
           // this.addTodoModalButton.nativeElement.click();
-          this.getTodos('all');
+          // this.getTodos('all');
+          this.todosBroadcast.postMessage({'mesg_text':'todoCreated'});
         })
   }
 
@@ -419,12 +486,14 @@ export class TodosComponent implements OnInit {
         .subscribe(res=>{
             console.log(res);
             if(res['dbQryStatus'] == "Success"){
-              for(let i=0;i<this.allToDos.length;i++){
-                if (this.allToDos[i].todo_id == todo_item.todo_id){
-                  this.allToDos[i].todo_status=status;
-                  break;
-                }
-              }
+              // for(let i=0;i<this.allToDos.length;i++){
+              //   if (this.allToDos[i].todo_id == todo_item.todo_id){
+              //     this.allToDos[i].todo_status=status;
+              //     break;
+              //   }
+              // }
+              this.getTodos('all');
+              this.todosBroadcast.postMessage({'mesg_text':'todoStatusUpdated'});
             }            
         });
   }
@@ -445,10 +514,11 @@ export class TodosComponent implements OnInit {
         .subscribe(res=>{
           console.log("----------------------");
           console.log(res);
-          this.getTodos('all');
+          // this.getTodos('all');
           this.todoEdit=false;
           this.todoFG.reset();
           this.addTodoModalButton.nativeElement.click();
+          this.todosBroadcast.postMessage({'mesg_text':'todoDeleted'});
         })
   }
 
@@ -463,7 +533,8 @@ export class TodosComponent implements OnInit {
         .subscribe(res=>{
           console.log("----------------------");
           console.log(res);
-          this.getTodos('all');
+          // this.getTodos('all');
+          this.todosBroadcast.postMessage({'mesg_text':'todoDeleted'});
         });
   }
   createLabel(){
@@ -479,7 +550,8 @@ export class TodosComponent implements OnInit {
           if(res['dbQryStatus']=="Success"){
               this.addLabel.nativeElement.click();
               this.labelFG.reset();
-              this.getTodos('all');
+              // this.getTodos('all');
+              this.todosBroadcast.postMessage({'mesg_text':'todosLabelCreated'});
               this.getTodoLabels();
           } 
         });
@@ -494,7 +566,8 @@ export class TodosComponent implements OnInit {
     this._serTodos.deleteLabelForTodo(inpData)
         .subscribe(res=>{
           console.log(res);
-          this.getTodos('all');
+          // this.getTodos('all');
+          this.todosBroadcast.postMessage({'mesg_text':'todosLabelDeleted'});
           this.getTodoLabels();
         })
   }
@@ -524,8 +597,6 @@ export class TodosComponent implements OnInit {
       console.log(this.allToDos);
     }
   }
-
-  
 
 }
 

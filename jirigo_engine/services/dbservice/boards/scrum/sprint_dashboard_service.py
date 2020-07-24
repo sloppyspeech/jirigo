@@ -161,12 +161,11 @@ class JirigoSprintDashboard(object):
         response_data={}
         self.logger.debug("Sprints Inside get_sprint_workload_by_user")
         query_sql="""  
-                        WITH tc AS (SELECT task_no,get_user_name(assignee_id ) user_name,estimated_time ,assignee_id 
-                                    FROM ttasks 
-                                    WHERE task_no IN (SELECT task_no 
-                                                        FROM tsprint_tasks tt 
-                                                        WHERE tt.sprint_id=%s) AND assignee_id IS NOT null
-                                                        ORDER BY estimated_time DESC
+                        WITH tc AS ( SELECT get_user_name(assignee_id ) user_name,sum(estimated_time) estimated_time 
+                                    FROM v_sprint_details 
+                                    WHERE sprint_id=%s
+                                    GROUP BY get_user_name(assignee_id )
+                                    order by estimated_time desc
                       ) 
                         select json_agg(tc) from tc;
 
@@ -186,4 +185,64 @@ class JirigoSprintDashboard(object):
         except  (Exception, psycopg2.Error) as error:
             if(self.jdb.dbConn):
                 print(f'Error While get_sprint_workload_by_user {error}')
+                raise
+
+    def get_sprint_num_tasks_by_user(self):
+        response_data={}
+        self.logger.debug("Sprints Inside get_sprint_num_tasks_by_user")
+        query_sql="""  
+                        WITH tc AS (SELECT get_user_name(assignee_id ) user_name,count(*) cnt 
+                                    FROM v_sprint_details 
+                                    WHERE sprint_id=%s
+                                    GROUP BY  get_user_name(assignee_id ) 
+                                    ORDER BY 2 DESC
+                      ) 
+                        select json_agg(tc) from tc;
+
+                   """
+        values=(self.sprint_id,)
+        self.logger.debug(f'Select : {query_sql} values {values}')
+        try:
+            print('-'*80)
+            cursor=self.jdb.dbConn.cursor()
+            cursor.execute(query_sql,values)
+            json_data=cursor.fetchone()[0]
+            row_count=cursor.rowcount
+            self.logger.debug(f'Select Success with {row_count} row(s) get_sprint_num_tasks_by_user  {json_data}')
+            response_data['dbQryStatus']='Success'
+            response_data['dbQryResponse']=json_data
+            return response_data
+        except  (Exception, psycopg2.Error) as error:
+            if(self.jdb.dbConn):
+                print(f'Error While get_sprint_num_tasks_by_user {error}')
+                raise
+    
+    def get_esti_acts_by_task_status(self):
+        response_data={}
+        self.logger.debug("Sprints Inside get_est_acts_by_task_status")
+        query_sql="""  
+                        WITH tc AS (SELECT issue_status ,sum(estimated_time) tot_est,sum(task_actuals)tot_act
+                                    FROM v_sprint_details 
+                                    WHERE sprint_id=%s 
+                                    GROUP BY  issue_status 
+                                    ORDER BY 2 DESC
+                      ) 
+                        select json_agg(tc) from tc;
+
+                   """
+        values=(self.sprint_id,)
+        self.logger.debug(f'Select : {query_sql} values {values}')
+        try:
+            print('-'*80)
+            cursor=self.jdb.dbConn.cursor()
+            cursor.execute(query_sql,values)
+            json_data=cursor.fetchone()[0]
+            row_count=cursor.rowcount
+            self.logger.debug(f'Select Success with {row_count} row(s) get_est_acts_by_task_status  {json_data}')
+            response_data['dbQryStatus']='Success'
+            response_data['dbQryResponse']=json_data
+            return response_data
+        except  (Exception, psycopg2.Error) as error:
+            if(self.jdb.dbConn):
+                print(f'Error While get_est_acts_by_task_status {error}')
                 raise

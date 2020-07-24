@@ -29,6 +29,10 @@ class JirigoTodos(object):
         self.interval_days=data.get('interval_days')
         self.created_date=datetime.datetime.now()
         self.modified_date=datetime.datetime.now()
+        # self.limit=data.get('limit',5)
+        # self.offset=data.get('offset',0)
+        self.limit=10000000
+        self.offset=0
         self.jdb=JirigoDBConn()
 
         self.logger=Logger()
@@ -44,11 +48,13 @@ class JirigoTodos(object):
                                 WHERE created_by=%s
                                   AND rnm=1
                                   ORDER BY end_date 
+                                      LIMIT %s
+                                      OFFSET %s
                     )
                     select json_agg(t) from t ;
                    """
         self.logger.debug(f'Select all todos : {query_sql}')
-        values=(self.user_id,)
+        values=(self.user_id,self.limit,self.offset,)
         try:
             print('-'*80)
             cursor=self.jdb.dbConn.cursor()
@@ -58,7 +64,6 @@ class JirigoTodos(object):
             self.logger.debug(f'get_all_todos_for_user Select Success with {row_count} row(s) data {json_data}')
             response_data['dbQryStatus']='Success'
             response_data['dbQryResponse']=json_data if json_data != None else 'No Rows Fetched'
-            print(response_data)
             return response_data
         except  (Exception, psycopg2.Error) as error:
             print(f'Error While Select Reference get_all_todos_for_user {error}')
@@ -75,11 +80,14 @@ class JirigoTodos(object):
                                  FROM v_all_todos_with_labels
                                 WHERE created_by=%s
                                   AND label_id=%s
+                                  ORDER BY end_date 
+                                      LIMIT %s
+                                      OFFSET %s
                     )
                     select json_agg(t) from t ;
                    """
         self.logger.debug(f'Select all todos : {query_sql}')
-        values=(self.user_id,self.label_id,)
+        values=(self.user_id,self.label_id,self.limit,self.offset,)
         try:
             print('-'*80)
             cursor=self.jdb.dbConn.cursor()
@@ -97,6 +105,41 @@ class JirigoTodos(object):
                 print(f'Error While Select Reference get_all_todos_for_user_filtered_by_label {error}')
                 raise
     
+
+    def get_all_todos_for_user_filtered_by_status(self):
+        response_data={}
+        self.logger.debug("Inside get_all_todos_for_user_filtered_by_status")
+        query_sql="""  
+                    with t as (
+                               SELECT * 
+                                 FROM v_all_todos_with_labels
+                                WHERE created_by=%s
+                                  AND todo_status=%s
+                                  ORDER BY end_date 
+                                      LIMIT %s
+                                      OFFSET %s
+                    )
+                    select json_agg(t) from t ;
+                   """
+        self.logger.debug(f'Select all todos : {query_sql}')
+        values=(self.user_id,self.todo_status,self.limit,self.offset,)
+        try:
+            print('-'*80)
+            cursor=self.jdb.dbConn.cursor()
+            cursor.execute(query_sql,values)
+            json_data=cursor.fetchone()[0]
+            row_count=cursor.rowcount
+            self.logger.debug(f'get_all_todos_for_user_filtered_by_status Select Success with {row_count} row(s) data {json_data}')
+            response_data['dbQryStatus']='Success'
+            response_data['dbQryResponse']=json_data if json_data != None else 'No Rows Fetched'
+            print(response_data)
+            return response_data
+        except  (Exception, psycopg2.Error) as error:
+            print(f'Error While Select Reference get_all_todos_for_user_filtered_by_status {error}')
+            if(self.jdb.dbConn):
+                print(f'Error While Select Reference get_all_todos_for_user_filtered_by_status {error}')
+                raise
+
     def get_todos_for_user_by_interval(self):
         response_data={}
         self.logger.debug("Inside get_todos_for_user_by_interval")
@@ -114,11 +157,13 @@ class JirigoTodos(object):
                                 ORDER BY
                                     td.created_date DESC,
                                     td.modified_date DESC
+                                    LIMIT %s
+                                    OFFSET %s
                     )
                     select json_agg(t) from t ;
                    """
         self.interval_days= f'{self.interval_days} days' if int(self.interval_days) > 1 else f'{self.interval_days} day'
-        values=(self.user_id,self.interval_days,)
+        values=(self.user_id,self.interval_days,self.limit,self.offset,)
         self.logger.debug(f'Select all todos : {query_sql} Values {values}')
         try:
             print('-'*80)

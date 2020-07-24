@@ -16,6 +16,7 @@
   }
   .has-search  >input::placeholder {
     font-size: 0.8rem;;
+    color: darkgrey;
   }
 
   .search-popup-box{

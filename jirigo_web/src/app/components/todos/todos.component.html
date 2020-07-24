@@ -6,31 +6,46 @@
                 <div class="row pt-2 todo-menu-item">
                     <div class="col-lg-12 my-2 " (click)="setTodosToDBVals($event)">
                         <img src="assets/images/svgs/all1.svg" alt="calendar" sizes="" srcset="" style="width:1.125rem;height:1.125rem;margin: 0 0.625rem 0.325rem 0; opacity: 0.8;">
-                        All
+                        All 
+                        <!-- <ng-container *ngIf="this.showTodoCntBadgeFor['AllTodos']">
+                            <span class="badge badge-light ">{{allToDos?.length}}</span>
+                        </ng-container>  -->
                     </div>
                 </div>
                 <div class="row  todo-menu-item">
                     <div class="col-lg-12 my-2" (click)="getTodosByInterval('0',$event)">
                         <img src="assets/images/svgs/calendar.svg" alt="calendar" sizes="" srcset="" style="width:1.125rem;height:1.125rem;margin: 0 0.625rem 0.325rem 0;">
                         Today
+                            <ng-container *ngIf="this.showTodoCntBadgeFor['0Days']">
+                                <span class="badge badge-light ">{{allToDos?.length}}</span>
+                            </ng-container> 
                     </div>
                 </div>
                 <div class="row  todo-menu-item">
                     <div class="col-lg-12 my-2" (click)="getTodosByInterval('7',$event)" #nextTodosForSevenDays>
                         <img src="assets/images/svgs/calendar.svg" alt="calendar" sizes="" srcset="" style="width:1.125rem;height:1.125rem;margin: 0 0.625rem 0.325rem 0;">
-                        Next 7 days
+                        Next 7 days 
+                        <ng-container *ngIf="this.showTodoCntBadgeFor['7Days']">
+                            <span class="badge badge-light ">{{allToDos?.length}}</span>
+                        </ng-container> 
                     </div>
                 </div>
                 <div class="row  todo-menu-item">
                     <div class="col-lg-12 my-2" (click)="getTodosByInterval('30',$event)">
                         <img src="assets/images/svgs/calendar.svg" alt="calendar" sizes="" srcset="" style="width:1.125rem;height:1.125rem;margin: 0 0.625rem 0.325rem 0;">
-                        Next 30 days
+                        Next 30 days 
+                        <ng-container *ngIf="this.showTodoCntBadgeFor['30Days']">
+                            <span class="badge badge-light ">{{allToDos?.length}}</span>
+                        </ng-container> 
                     </div>
                 </div>
                 <div class="row  todo-menu-item">
-                    <div class="col-lg-12 my-2" (click)="filterTodosByStatus('Closed',$event)">
+                    <div class="col-lg-12 my-2" (click)="filterTodosByStatus('Done',$event)">
                         <img src="assets/images/svgs/done.svg" alt="calendar" sizes="" srcset="" style="width:1.125rem;height:1.125rem;margin: 0 0.625rem 0.325rem 0;">
-                        Done
+                        Done 
+                        <ng-container *ngIf="this.showTodoCntBadgeFor['Done']">
+                            <span class="badge badge-light ">{{allToDos?.length}}</span>
+                        </ng-container> 
                     </div>
                 </div>
                 <div class="row">
@@ -152,85 +167,189 @@
         <div class="row mb-3 mt-1">
             <div class="col-lg-12">
                 <div class="row">
-                    <div class="col-lg-2">
-                            <fa-icon [icon]="faPlusSquare" #addTodoModalButton type="button" class="todo-add-btn"  data-toggle="modal" data-target="#todoModal" (click)="openAddTodo()">
+                    <div class="col-lg-3">
+                            <!-- <fa-icon [icon]="faPlusSquare" #addTodoModalButton type="button" class="todo-add-btn"  
+                                     data-toggle="modal" data-target="#todoModal" (click)="openAddTodo()"> -->
+
+                            <button #addTodoModalButton  class="todo-add-btn pl-0 ml-0 pr-1 mr-0"  
+                                     data-toggle="modal" data-target="#todoModal" (click)="openAddTodo()">
+                                     <span>
+                                        <fa-icon [icon]="faPlusSquare"  type="button" class="todo-add-btn"  >
+                                        </fa-icon>
+                                     </span>
+                            </button>
+                            
+                            <span>
+                            <fa-icon [icon]="faListUl"  
+                                        type="button" class="todo-add-btn"  
+                                        *ngIf="!toggleTodoListToColumns"
+                                        (click)="toggleTodoListToColumns=!toggleTodoListToColumns">
                             </fa-icon>
-                            <fa-icon [icon]="faArrowAltCircleLeft" 
+                            <fa-icon [icon]="faTh"  
+                                        type="button" class="todo-add-btn"  
+                                        *ngIf="toggleTodoListToColumns"
+                                        (click)="toggleTodoListToColumns=!toggleTodoListToColumns">
+                            </fa-icon>
+                            </span>
+                            
+                            <!-- <fa-icon [icon]="faArrowAltCircleLeft" 
                                      (click)="todoPagination=todoPagination <= 0 ? todoPagination : todoPagination-1"
                                      class="todo-nav-icon-left"></fa-icon>
                             <fa-icon [icon]="faArrowAltCircleRight" 
                                      (click)="todoPagination=todoPagination >= allToDos.length ? todoPagination : todoPagination+1"
-                                     class="todo-nav-icon-right"></fa-icon>
+                                     class="todo-nav-icon-right"></fa-icon> -->
                     </div>
-                    <div class="col-lg-6 offset-lg-1">
+                    <div class="col-lg-6 ">
                         <div class="form-group has-search">
                             <span class="form-control-feedback"><fa-icon [icon]="faSearch"></fa-icon></span>
-                            <input type="text" class="form-control" (keyup)="searchTodos($event)" name="nm_searchTodos" id="id_searchTodos" aria-describedby="helpId" placeholder="Search">
+                            <input type="text" class="form-control" (keyup)="searchTodos($event)" name="nm_searchTodos" id="id_searchTodos" aria-describedby="helpId" placeholder="Search Todos">
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        
         <div class="container-fluid todos-container">
-        <ng-container *ngFor="let todo of allToDos;let idx=index;">
-            <div class="row " *ngIf="Math.floor(idx/todoNumRows) == todoPagination">
-                <div class="col-lg-12 ml-2 mr-2" >
-                    <div class="todo-row ">
-                    <div class="row" >
-                        <div class="col-lg-12" >
-                            <img *ngIf="todo.todo_status=='Open'"  
-                                 src="assets/images/svgs/unchecked.svg" 
-                                 (click)="updateTodoStatus(todo,'Closed')"
-                                 alt="right-arrow" sizes="" srcset="" 
-                                 class="todo-status">
-                            <img *ngIf="todo.todo_status!='Open'"  
-                                 src="assets/images/svgs/checked-green-inv.svg" 
-                                 (click)="updateTodoStatus(todo,'Open')"
-                                 alt="right-arrow" sizes="" srcset=""
-                                 class="todo-status">
-                            {{todo.todo_text}}
-                        </div>
-                    </div>
-                    <div class="row " >
-                        <div class="col-lg-12 mt-1" style="margin-left:2.8rem;">
-                            <small style="color:#ABABAB">{{todo.end_date | date :'E, dd LLL yyyy'}}</small>
-                            <small class="todo-small-seperator">|</small>
+            <ng-container *ngIf="toggleTodoListToColumns">
+                    <ng-container *ngFor="let todo of allToDos;let idx=index;">
+                        <div class="row " >
+                            <div class="col-lg-12 ml-2 mr-2" >
+                                <div class="todo-row ">
+                                    <div class="row" >
+                                        <div class="col-lg-12" >
+                                            <img *ngIf="todo.todo_status=='Open'"  
+                                                src="assets/images/svgs/unchecked.svg" 
+                                                (click)="updateTodoStatus(todo,'Done')"
+                                                alt="right-arrow" sizes="" srcset="" 
+                                                class="todo-status">
+                                            <img *ngIf="todo.todo_status!='Open'"  
+                                                src="assets/images/svgs/checked-green-inv.svg" 
+                                                (click)="updateTodoStatus(todo,'Open')"
+                                                alt="right-arrow" sizes="" srcset=""
+                                                class="todo-status">
+                                            {{todo.todo_text}}
+                                        </div>
+                                    </div>
+                                    <div class="row " >
+                                        <div class="col-lg-12 mt-1" style="margin-left:2.8rem;">
+                                            <small style="color:#ABABAB">{{todo.end_date | date :'E, dd LLL yyyy'}}</small>
+                                            <small class="todo-small-seperator">|</small>
 
-                            <small class="edit-todo" (click)="editTodo(todo)">
-                                <fa-icon [icon]='faEdit'></fa-icon></small>
-                            <small class="todo-small-seperator">|</small>
+                                            <small class="edit-todo" (click)="editTodo(todo)">
+                                                <fa-icon [icon]='faEdit'></fa-icon></small>
+                                            <small class="todo-small-seperator">|</small>
 
-                            <small class="delete-todo" (click)="deleteTodo(todo)">
-                                <fa-icon [icon]='faTrashAlt'></fa-icon>
-                            </small>
-                            <small class="todo-small-seperator">|</small>
-                            
-                            <small style="color:#ABABAB">
-                                <ng-container *ngIf="todo.category">
-                                    <fa-icon [icon]="faLayerGroup" style="font-size: 0.725rem;" [ngStyle]="{'color':todo.category_color}"></fa-icon>
-                                    {{todo.category}}
-                                </ng-container>
-                                <ng-container *ngIf="!todo.category">
-                                    None
-                                </ng-container>
-                            </small>
-                            <small class="todo-small-seperator">|</small>
-                            <ng-container *ngFor="let todo_label of todo.todo_labels">
-                                <div class="badge badge-light todo-label-badge mr-1" >
-                                    {{todo_label.label}}
-                                    <div class="todo_label_close" (click)="deleteLabel(todo_label.label_id,todo.todo_id)">&times;</div>
+                                            <small class="delete-todo" (click)="deleteTodo(todo)">
+                                                <fa-icon [icon]='faTrashAlt'></fa-icon>
+                                            </small>
+                                            <small class="todo-small-seperator">|</small>
+                                            
+                                            <small style="color:#ABABAB">
+                                                <ng-container *ngIf="todo.category">
+                                                    <fa-icon [icon]="faLayerGroup" style="font-size: 0.725rem;" [ngStyle]="{'color':todo.category_color}"></fa-icon>
+                                                    {{todo.category}}
+                                                </ng-container>
+                                                <ng-container *ngIf="!todo.category">
+                                                    None
+                                                </ng-container>
+                                            </small>
+                                            <small class="todo-small-seperator">|</small>
+                                            <ng-container *ngFor="let todo_label of todo.todo_labels">
+                                                <div class="badge badge-light todo-label-badge mr-1" >
+                                                    {{todo_label.label}}
+                                                    <div class="todo_label_close" (click)="deleteLabel(todo_label.label_id,todo.todo_id)">&times;</div>
+                                                </div>
+                                            </ng-container>
+                                            <div #addLabel class="add-label-container add-label" data-toggle="modal" data-target="#labelModal" (click)="labelAdderClicked(todo)" placement="top" ngbTooltip="Add Label">
+                                                <fa-icon [icon]="faPlusSquare" ></fa-icon>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                            </ng-container>
-                            <div #addLabel class="add-label-container add-label" data-toggle="modal" data-target="#labelModal" (click)="labelAdderClicked(todo)">
-                                <fa-icon [icon]="faPlusSquare" ></fa-icon>
+                                <hr>
                             </div>
-                        </div>
-                    </div>
-                  </div>
-                 <hr>
+                        </div>          
+                    </ng-container>
+                </ng-container>
+        <div class="row" *ngIf="!toggleTodoListToColumns">
+                <div class="col-lg-12">
+                    <div class="card-columns">
+                        <ng-container *ngFor="let todo of allToDos;let idx=index;">
+                            <div class="card px-2 pb-2" 
+                                [ngStyle]="{'border-left-color':todo.category_color,'border-left-style':'solid','border-left-width':'0.325rem'}">
+                                <header>
+                                    <div class="row">
+                                        <div class="col-lg-6">
+                                            <small style="color:#ABABAB">{{todo.end_date | date :'E, dd LLL yyyy'}}</small>
+                                        </div>
+                                        <div class="col-lg-3 pl-3">
+                                            <small class="edit-todo" (click)="editTodo(todo)">
+                                                <fa-icon [icon]='faEdit'></fa-icon></small>
+                                            <small class="delete-todo pl-2" (click)="deleteTodo(todo)">
+                                                <fa-icon [icon]='faTrashAlt'></fa-icon>
+                                            </small>
+                                        </div>
+                                        <div class="col-lg-3 ml-auto pt-1 pl-3 pr-0" >
+                                            <img *ngIf="todo.todo_status=='Open'"  
+                                                src="assets/images/svgs/unchecked.svg" 
+                                                (click)="updateTodoStatus(todo,'Done')"
+                                                alt="right-arrow" sizes="" srcset="" 
+                                                class="todo-status">
+                                            <img *ngIf="todo.todo_status!='Open'"  
+                                                src="assets/images/svgs/checked-green-inv.svg" 
+                                                (click)="updateTodoStatus(todo,'Open')"
+                                                alt="right-arrow" sizes="" srcset=""
+                                                class="todo-status">
+                                            <!-- {{todo.todo_text}} -->
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg">
+                                            <small style="color:#ABABAB">
+                                                <ng-container *ngIf="todo.category">
+                                                    <fa-icon [icon]="faLayerGroup" style="font-size: 0.725rem;" [ngStyle]="{'color':todo.category_color}"></fa-icon>
+                                                    {{todo.category}}
+                                                </ng-container>
+                                                <ng-container *ngIf="!todo.category">
+                                                    None
+                                                </ng-container>
+                                            </small>
+                                        </div>
+                                    </div>
+                                </header>
+                                <div class="card-block">
+                                    <p class="card-text">
+                                        <ng-container *ngIf="todo.todo_status=='Open'">
+                                                {{todo.todo_text}}
+                                        </ng-container>
+                                        <ng-container *ngIf="todo.todo_status!='Open'">
+                                            <del>
+                                                {{todo.todo_text}}
+                                            </del>
+                                        </ng-container>
+                                    </p>
+                                </div>
+                                <footer class="pt-1">
+                                    <div class="row " >
+                                        <div class="col-lg-12 mt-1" >
+                                            <ng-container *ngFor="let todo_label of todo.todo_labels">
+                                                <div class="badge badge-light todo-label-badge mr-1 mt-1" >
+                                                    {{todo_label.label}}
+                                                    <div class="todo_label_close" (click)="deleteLabel(todo_label.label_id,todo.todo_id)">&times;</div>
+                                                </div>
+                                            </ng-container>
+                                            <div #addLabel class="add-label-container add-label pl-1" data-toggle="modal" data-target="#labelModal" (click)="labelAdderClicked(todo)">
+                                                <fa-icon [icon]="faPlusSquare" ></fa-icon>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </footer>
+                            </div>
+                        </ng-container>
                 </div>
-            </div>         
-        </ng-container>
+            </div>
+        </div>
+
         </div>
      </div>
 </div>

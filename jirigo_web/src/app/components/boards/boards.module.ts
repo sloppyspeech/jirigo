@@ -4,6 +4,7 @@ import { ModalConfirmModule } from './../../shared/modules/modal-confirm/modal-c
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { BoardsRoutingModule } from './boards-routing.module';
 import {ScrumBoardComponent} from './scrum/scrum-board/scrum-board.component';
@@ -17,7 +18,8 @@ import {ScrumBoardComponent} from './scrum/scrum-board/scrum-board.component';
     FontAwesomeModule,
     ModalConfirmModule,
     NgxSpinnerModule,
-    ClickToEditModule
+    ClickToEditModule,
+    NgbModule
   ]
 })
 export class BoardsModule { }

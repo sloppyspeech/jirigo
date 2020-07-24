@@ -49,4 +49,19 @@ export class SprintTasksDashboardService {
     console.log(url);
     return this._httpCli.get(url);
   }
+
+  getSprintTaskCountByUser(sprint_id:string){
+    let url=this.sApiEndPoint+`sprint-task-count-user?sprint_id=${sprint_id}`;
+    console.log('getSprintTaskCountByUser');
+    console.log(url);
+    return this._httpCli.get(url);
+  }
+
+  getSprintEstActsByIssueStatus(sprint_id:string){
+    let url=this.sApiEndPoint+`sprint-issue-statuses-by-efforts?sprint_id=${sprint_id}`;
+    console.log('getSprintEstActsByIssueStatus');
+    console.log(url);
+    return this._httpCli.get(url);
+  }
+
 }

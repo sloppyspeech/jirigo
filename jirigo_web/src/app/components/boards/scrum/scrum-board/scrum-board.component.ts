@@ -1,6 +1,6 @@
 import { FormControl } from '@angular/forms';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,ViewChild,ElementRef } from '@angular/core';
 import { Router,ActivatedRoute,ParamMap  } from '@angular/router';
 
 import { SprintDetailsService  }  from '../../../../services/sprints/sprint-details.service';
@@ -8,15 +8,16 @@ import { ScrumBoardService  } from '../../../../services/boards/scrum/scrum-boar
 import { ProjectWorkflowsService } from './../../../../services/workflows/project-workflows.service';
 import { TaskDetailsService } from './../../../../services/tasks/task-details.service';
 
-
-
-
 @Component({
   selector: 'app-scrum-board',
   templateUrl: './scrum-board.component.html',
-  styleUrls: ['./scrum-board.component.css']
+  styleUrls: ['./scrum-board.component.css'],
+  host: {
+    '(document:click)': 'closeNewTaskStatusBtnGroup($event)',
+  }
 })
 export class ScrumBoardComponent implements OnInit {
+  @ViewChild('newTaskStatusBtnGroup') newTaskStatusBtnGroup:ElementRef;
   sprint_id:string;
   sprint_name:string;
   tSprintTasks:any[]=[];
@@ -32,6 +33,7 @@ export class ScrumBoardComponent implements OnInit {
   stepNameFC:FormControl;
   showNextTaskStatuses:any[]=[];
   nextTaskStatuses:any[]=[];
+  showNextTaskStatusesEle:boolean=false;
 
   modalAlertConfig={
     modalType :'',
@@ -159,6 +161,7 @@ export class ScrumBoardComponent implements OnInit {
           if(res['dbQryResponse'] && res['dbQryStatus']=="Success"){
             console.log('All Okay');
             this.tSprintTasks[stepNameIdx][stepName][i]['issue_status']=status;
+            this.showNextTaskStatusesEle=true;
           }
         })
         break;
@@ -356,9 +359,15 @@ modalAlertAction(action){
   this.modalAlertConfig.modalContent='';
 }
 
+
+closeNewTaskStatusBtnGroup(e){
+  console.log('newTaskStatusBtnGroup');
+  console.log(this.showNextTaskStatusesEle);
+  console.log(e);
+  if (this.showNextTaskStatusesEle=true){
+    this.newTaskStatusBtnGroup?.nativeElement.click();
+    this.showNextTaskStatusesEle=false;
+  }
 }
 
-/*
-https://www.codeply.com/go/kJuy0MV7sk/bootstrap-4-kanban-layout
-
-*/
+}

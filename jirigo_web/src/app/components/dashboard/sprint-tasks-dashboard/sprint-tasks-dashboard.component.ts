@@ -12,6 +12,8 @@ export class SprintTasksDashboardComponent implements OnInit {
   showIssueTypesChart:boolean=false;
   showBurnDownChart:boolean=false;
   showSprintWorkloadByUser:boolean=false;
+  showSprintTaskByCountForUser:boolean=false;
+  showSprintIssueStatusesByEfforts:boolean=false;
   sprintAttributes:any;
   sprintEfforts:any;
   issueTypeCounts:any;
@@ -22,6 +24,8 @@ export class SprintTasksDashboardComponent implements OnInit {
   severitiesChartOptions:any;
   burndownChartOptions:any;
   sprintWorkloadByUserChartOptions:any;
+  sprintTaskCountByUserChartOptions:any;
+  sprintIssueStatusesByEfforts:any;
   
   sprintId:string="";
   sprintName:string="";
@@ -150,6 +154,66 @@ export class SprintTasksDashboardComponent implements OnInit {
           }
           this.showSprintWorkloadByUser=true;
         });
+
+    this._serSprintTasksDashboard.getSprintTaskCountByUser(this.sprintId)
+        .subscribe(res=>{
+          let user:string[]=[];
+          let task_count:number[]=[];
+          console.log(res['dbQryResponse']);
+          if(res['dbQryStatus'] == "Success"){
+            res['dbQryResponse'].forEach(e => {
+              user.push(e['user_name']);
+              task_count.push(e['cnt']);
+            });
+            console.log(user);
+            console.log(task_count);
+            this.sprintTaskCountByUserChartOptions={
+              chartType:'horizontalBar',
+              barChartElementId:'id_sprintTaskCountByUser',
+              barChartType:'horizontalBar',
+              chartLabels:user,
+              chartData:task_count,
+              xAxisLabel:'Assigned Task Count By User',
+              yAxisLabel:'User',
+              yTickSuggestedMin:0,
+              xTickSuggestedMin:0,
+              xTickStepSize:1
+            };
+          }
+          this.showSprintTaskByCountForUser=true;
+        });
+    
+    this._serSprintTasksDashboard.getSprintEstActsByIssueStatus(this.sprintId)
+        .subscribe(res=>{
+          let issue_statuses:string[]=[];
+          let tot_est:number[]=[];
+          let tot_act:number[]=[];
+          console.log(res['dbQryResponse']);
+          if(res['dbQryStatus'] == "Success"){
+            res['dbQryResponse'].forEach(e => {
+              issue_statuses.push(e['issue_status']);
+              tot_est.push(e['tot_est']);
+              tot_act.push(e['tot_act']);
+            });
+            this.sprintIssueStatusesByEfforts={
+              chartType:'horizontalBar',
+              barChartElementId:'id_sprintTaskIssueStatusesByEfforts',
+              barChartType:'horizontalBarGrouped',
+              chartLabels:issue_statuses,
+              chartData:[tot_est,tot_act],
+              xAxisLabel:'Hours',
+              yAxisLabel:'Issue Status',
+              yTickSuggestedMin:0,
+              xTickSuggestedMin:0,
+              legendDisplay:true,
+              legendLabels:['Estimated','Actuals']
+            };
+          }
+          this.showSprintIssueStatusesByEfforts=true;
+        });
+
+
+
   }
 
 }

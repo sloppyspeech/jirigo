@@ -22,19 +22,25 @@ export class TodosService {
   ) { }
 
   getAllTodosForUser(inpData){
-    let url = this.sApiEndPoint +`all-todos?user_id=${inpData['user_id']}`;
+    let url = this.sApiEndPoint +`all-todos?user_id=${inpData['user_id']}&limit=${inpData['limit']}&offset=${inpData['offset']}`;
     console.log(url);
     return this._httpCli.get(url);
   }
 
   getAllTodosForUserByInterval(inpData){
-    let url = this.sApiEndPoint +`all-todos-by-interval?user_id=${inpData['user_id']}&interval_days=${inpData['interval_days']}`;
+    let url = this.sApiEndPoint +`all-todos-by-interval?user_id=${inpData['user_id']}&interval_days=${inpData['interval_days']}&limit=${inpData['limit']}&offset=${inpData['offset']}`;
     console.log(url);
     return this._httpCli.get(url);
   }
 
   getAllTodosForUserByLabel(inpData){
-    let url = this.sApiEndPoint +`all-todos-by-interval?user_id=${inpData['user_id']}&label_id=${inpData['label_id']}`;
+    let url = this.sApiEndPoint +`labels-filtered?user_id=${inpData['user_id']}&label_id=${inpData['label_id']}&limit=${inpData['limit']}&offset=${inpData['offset']}`;
+    console.log(url);
+    return this._httpCli.get(url);
+  }
+
+  getAllTodosForUserByStatus(inpData){
+    let url = this.sApiEndPoint +`status-filtered?user_id=${inpData['user_id']}&todo_status=${inpData['todo_status']}&limit=${inpData['limit']}&offset=${inpData['offset']}`;
     console.log(url);
     return this._httpCli.get(url);
   }

@@ -323,6 +323,7 @@ def validate_userid_password():
     if request.method == 'POST':
         print('In Post validate_userid_password')
         try:
+            print(request.get_json())
             jdb=JirigoUsers(request.get_json())
             data=jdb.validate_userid_password()
             return jsonify(data)
@@ -1776,7 +1777,8 @@ def get_all_todos_for_user():
         print('In Get get_all_user_todos')
         try:
             user_id=request.args.get('user_id')
-            print(user_id)
+            limit=request.args.get('limit')
+            offset=request.args.get('offset')
             jdb=JirigoTodos({'user_id':user_id})
             data=jdb.get_all_todos_for_user()
             return jsonify(data)
@@ -1793,7 +1795,6 @@ def get_todo_labels_for_user():
         try:
             user_id=request.args.get('user_id')
             label_id=request.args.get('label_id')
-            print(user_id)
             jdb=JirigoTodos({'user_id':user_id,'label_id':label_id})
             data=jdb.get_todo_labels_for_user()
             return jsonify(data)
@@ -1809,7 +1810,8 @@ def get_all_todos_for_user_filtered_by_label():
         print('In Get get_all_todos_for_user_filtered_by_label')
         try:
             user_id=request.args.get('user_id')
-            print(user_id)
+            limit=request.args.get('limit')
+            offset=request.args.get('offset')
             jdb=JirigoTodos({'user_id':user_id})
             data=jdb.get_all_todos_for_user_filtered_by_label()
             return jsonify(data)
@@ -1819,6 +1821,24 @@ def get_all_todos_for_user_filtered_by_label():
     else:
         return get_jsonified_error_response('Failure',"get_all_todos_for_user_filtered_by_label " + get_errmsg('NAGR'))
 
+@app.route('/api/v1/todos-management/status-filtered',methods=['GET'])
+def get_all_todos_for_user_filtered_by_status():
+    if request.method == 'GET':
+        print('In Get get_all_todos_for_user_filtered_by_label')
+        try:
+            user_id=request.args.get('user_id')
+            todo_status=request.args.get('todo_status')
+            limit=request.args.get('limit')
+            offset=request.args.get('offset')
+            jdb=JirigoTodos({'user_id':user_id,'todo_status':todo_status})
+            data=jdb.get_all_todos_for_user_filtered_by_status()
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in get_all_todos_for_user_filtered_by_status {error}')
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',"get_all_todos_for_user_filtered_by_status " + get_errmsg('NAGR'))
+
 
 @app.route('/api/v1/todos-management/all-todos-by-interval',methods=['GET'])
 def get_todos_for_user_by_interval():
@@ -1827,7 +1847,8 @@ def get_todos_for_user_by_interval():
         try:
             user_id=request.args.get('user_id')
             interval_days=request.args.get('interval_days')
-            print(user_id)
+            limit=request.args.get('limit')
+            offset=request.args.get('offset')
             jdb=JirigoTodos({'user_id':user_id,'interval_days':interval_days})
             data=jdb.get_todos_for_user_by_interval()
             return jsonify(data)
@@ -1990,6 +2011,38 @@ def get_sprint_efforts_summary():
             return get_jsonified_error_response('Failure',error)
     else:
         return get_jsonified_error_response('Failure',"get_sprint_efforts_summary " + get_errmsg('NAGR'))
+
+@app.route('/api/v1/sprint-dashboard/sprint-task-count-user',methods=['GET'])
+def get_sprint_num_tasks_by_user():
+    if request.method == 'GET':
+        print('In Get get_sprint_num_tasks_by_user')
+        try:
+            sprint_id=request.args.get('sprint_id')
+            print(sprint_id)
+            jdb=JirigoSprintDashboard({'sprint_id':sprint_id})
+            data=jdb.get_sprint_num_tasks_by_user()
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in get_sprint_num_tasks_by_user {error}')
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',"get_sprint_num_tasks_by_user " + get_errmsg('NAGR'))
+
+@app.route('/api/v1/sprint-dashboard/sprint-issue-statuses-by-efforts',methods=['GET'])
+def get_esti_acts_by_task_status():
+    if request.method == 'GET':
+        print('In Get get_esti_acts_by_task_status')
+        try:
+            sprint_id=request.args.get('sprint_id')
+            print(sprint_id)
+            jdb=JirigoSprintDashboard({'sprint_id':sprint_id})
+            data=jdb.get_esti_acts_by_task_status()
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in get_esti_acts_by_task_status {error}')
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',"get_esti_acts_by_task_status " + get_errmsg('NAGR'))
 
 @app.route('/api/v1/sprint-dashboard/burndown-chart',methods=['GET'])
 def get_sprint_burndown_chart_data():

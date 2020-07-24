@@ -87,4 +87,12 @@ Thumbs.db
 **/jirigo_engine/services/dbservice/email_service.py
 **/jirigo_web/src/app/services/error_messages/
 **/jirigo_web/src/assets/data/error_messages.json
+**/docker
+**/jirigo_engine/loadtesting
+**/jirigo_engine/wsgi.py
+
+
+
+
+
 
