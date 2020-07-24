@@ -2028,21 +2028,21 @@ def get_sprint_num_tasks_by_user():
     else:
         return get_jsonified_error_response('Failure',"get_sprint_num_tasks_by_user " + get_errmsg('NAGR'))
 
-@app.route('/api/v1/sprint-dashboard/sprint-issue-statuses-by-efforts',methods=['GET'])
-def get_esti_acts_by_task_status():
+@app.route('/api/v1/sprint-dashboard/sprint-task-activity-actuals',methods=['GET'])
+def get_task_actuals_by_activity():
     if request.method == 'GET':
-        print('In Get get_esti_acts_by_task_status')
+        print('In Get get_task_actuals_by_activity')
         try:
             sprint_id=request.args.get('sprint_id')
             print(sprint_id)
             jdb=JirigoSprintDashboard({'sprint_id':sprint_id})
-            data=jdb.get_esti_acts_by_task_status()
+            data=jdb.get_task_actuals_by_activity()
             return jsonify(data)
         except Exception as error:
-            print(f'Error in get_esti_acts_by_task_status {error}')
+            print(f'Error in get_task_actuals_by_activity {error}')
             return get_jsonified_error_response('Failure',error)
     else:
-        return get_jsonified_error_response('Failure',"get_esti_acts_by_task_status " + get_errmsg('NAGR'))
+        return get_jsonified_error_response('Failure',"get_task_actuals_by_activity " + get_errmsg('NAGR'))
 
 @app.route('/api/v1/sprint-dashboard/burndown-chart',methods=['GET'])
 def get_sprint_burndown_chart_data():

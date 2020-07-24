@@ -217,14 +217,16 @@ class JirigoSprintDashboard(object):
                 print(f'Error While get_sprint_num_tasks_by_user {error}')
                 raise
     
-    def get_esti_acts_by_task_status(self):
+    def get_task_actuals_by_activity(self):
         response_data={}
-        self.logger.debug("Sprints Inside get_est_acts_by_task_status")
+        self.logger.debug("Sprints Inside get_task_actuals_by_activity")
         query_sql="""  
-                        WITH tc AS (SELECT issue_status ,sum(estimated_time) tot_est,sum(task_actuals)tot_act
-                                    FROM v_sprint_details 
-                                    WHERE sprint_id=%s 
-                                    GROUP BY  issue_status 
+                        WITH tc AS (SELECT activity ,sum(actual_time_spent)/60 tot_act
+                                    FROM ttask_actuals 
+                                    WHERE task_no in (SELECT task_no 
+                                                        FROM v_sprint_details vsd  
+                                                       WHERE sprint_id=%s )
+                                    GROUP BY  activity 
                                     ORDER BY 2 DESC
                       ) 
                         select json_agg(tc) from tc;
@@ -238,11 +240,11 @@ class JirigoSprintDashboard(object):
             cursor.execute(query_sql,values)
             json_data=cursor.fetchone()[0]
             row_count=cursor.rowcount
-            self.logger.debug(f'Select Success with {row_count} row(s) get_est_acts_by_task_status  {json_data}')
+            self.logger.debug(f'Select Success with {row_count} row(s) get_task_actuals_by_activity  {json_data}')
             response_data['dbQryStatus']='Success'
             response_data['dbQryResponse']=json_data
             return response_data
         except  (Exception, psycopg2.Error) as error:
             if(self.jdb.dbConn):
-                print(f'Error While get_est_acts_by_task_status {error}')
+                print(f'Error While get_task_actuals_by_activity {error}')
                 raise

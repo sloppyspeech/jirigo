@@ -57,9 +57,9 @@ export class SprintTasksDashboardService {
     return this._httpCli.get(url);
   }
 
-  getSprintEstActsByIssueStatus(sprint_id:string){
-    let url=this.sApiEndPoint+`sprint-issue-statuses-by-efforts?sprint_id=${sprint_id}`;
-    console.log('getSprintEstActsByIssueStatus');
+  getSprintTaskActualsByActivity(sprint_id:string){
+    let url=this.sApiEndPoint+`sprint-task-activity-actuals?sprint_id=${sprint_id}`;
+    console.log('getSprintTaskActualsByActivity');
     console.log(url);
     return this._httpCli.get(url);
   }
