@@ -882,6 +882,41 @@ def get_task_audit(task_no):
     else:
         return get_jsonified_error_response('Failure',"get_task_audit " + get_errmsg('NAGR'))
 
+@app.route('/api/v1/task-management/task-estimates',methods=['POST'])
+def create_update_task_estimates():
+    if request.method == 'POST':
+        print('In Post create_update_task_estimates')
+        print(request.get_json())
+        try:
+            jdb=JirigoTask(request.get_json())
+            data=jdb.create_update_task_estimates()
+            print('*'*40)
+            print(data['dbQryResponse'])
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in create_update_task_estimates {error}')
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',"create_update_task_estimates " + get_errmsg('NAPR'))
+
+
+@app.route('/api/v1/task-management/task-estimates',methods=['GET'])
+def get_task_estimates():
+    if request.method == 'GET':
+        print('In Get global_search')
+        try:
+            task_no=request.args.get('task_no')
+            print(task_no)
+            jdb=JirigoTask({'task_no':task_no})
+            data=jdb.get_task_estimates()
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in get_task_estimates {error}')
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',"get_task_estimates " + get_errmsg('NAGR'))
+
+
 
 @app.route('/api/v1/sprint-management/tasks-not-closed/<project_name>',methods=['GET'])
 def get_all_not_closed_tasks_byproj_for_sprint(project_name):
@@ -2043,6 +2078,24 @@ def get_task_actuals_by_activity():
             return get_jsonified_error_response('Failure',error)
     else:
         return get_jsonified_error_response('Failure',"get_task_actuals_by_activity " + get_errmsg('NAGR'))
+
+
+@app.route('/api/v1/sprint-dashboard/sprint-task-estimated-vs-actuals',methods=['GET'])
+def get_task_estimated_vs_actual_efforts():
+    if request.method == 'GET':
+        print('In Get get_task_estimated_vs_actual_efforts')
+        try:
+            sprint_id=request.args.get('sprint_id')
+            print(sprint_id)
+            jdb=JirigoSprintDashboard({'sprint_id':sprint_id})
+            data=jdb.get_task_estimated_vs_actual_efforts()
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in get_task_estimated_vs_actual_efforts {error}')
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',"get_task_estimated_vs_actual_efforts " + get_errmsg('NAGR'))
+
 
 @app.route('/api/v1/sprint-dashboard/burndown-chart',methods=['GET'])
 def get_sprint_burndown_chart_data():

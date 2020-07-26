@@ -1,4 +1,4 @@
-import { Component, OnInit, Input,Output,EventEmitter } from '@angular/core';
+import { Component, OnInit, Input,Output,EventEmitter,ViewChild,ElementRef } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 
@@ -15,7 +15,8 @@ import { Observable, of } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, map, tap, switchMap } from 'rxjs/operators';
 // import { faCalendar} from '@fortawesome/free-solid-svg-icons';
 import { faCalendar} from  '@fortawesome/free-regular-svg-icons';
-import { faCalendarAlt} from '@fortawesome/free-regular-svg-icons';
+import { faCalendarAlt,faPlusSquare} from '@fortawesome/free-regular-svg-icons';
+import { EstimateTaskComponent} from './../estimate-task/estimate-task.component';
 
 @Component({
   selector: 'app-task-details',
@@ -24,9 +25,12 @@ import { faCalendarAlt} from '@fortawesome/free-regular-svg-icons';
 })
 export class TaskDetailsComponent implements OnInit {
   @Input() parentForm: FormGroup;
+  @ViewChild('childGetTaskEstimate') childGetTaskEstimate:EstimateTaskComponent;
   faCalendarAlt=faCalendarAlt;
+  faPlusSquare=faPlusSquare;
   dataPipe = new DatePipe('en-US');
   taskEnvRef: [any];
+  AllTaskIssueStatusRefs:any[]=[];
   taskIssueStatusesRef:any[]=[];
   taskPrioritiesRef: [any];
   taskSeveritiesRef: [any];
@@ -60,141 +64,137 @@ export class TaskDetailsComponent implements OnInit {
     private _serUtils: UtilsService,
     private _serProjectWorkflows : ProjectWorkflowsService) {
 
-    console.log("Constructor for New Child Issue Details Component");
-
   }
 
-  // ngOnInit(): void {
-
-  //   this.currentDate = new Date().toISOString().substring(0, 10);
-
-  // }
-
   ngOnInit() {
-    var tempDate = [];
-    // New Entry
     console.log("NgOnInit Issue Details Component");
     this.isLoaded = false;
 
     this._serNgxSpinner.show();
     try {
       this.task_no = this.parentForm.get('fctlTaskNo').value;
+      this.getTaskDetails();
     }
     catch (e) {
       console.log('@@@@@@@@@@@@@');
       console.log(e);
     }
 
-    this._staticRefData.getRefTaskMaster(localStorage.getItem('currentProjectId'))
-      .then(res => {
-        console.log(res);
 
-        this.taskEnvRef = res.Environments;
-        this.taskIssueStatusesRef = res.IssueStatuses;
-        this.taskIssueTypesRef = res.IssueTypes;
-        this.taskPrioritiesRef = res.Priorities;
-        this.taskSeveritiesRef = res.Severities;
-        this.taskModuleRef = res.Modules;
-
-        // console.log("taskEnvRef:" + JSON.stringify(this.taskEnvRef));
-        // console.log("taskIssueStatusesRef:" + JSON.stringify(this.taskIssueStatusesRef));
-        // console.log("taskPrioritiesRef:" + JSON.stringify(this.taskPrioritiesRef));
-        // console.log("taskSeverityRef:" + JSON.stringify(this.taskSeveritiesRef));
-        // console.log("taskIssueTypesRef:" + JSON.stringify(this.taskIssueTypesRef));
-        // console.log("taskModuleRef:" + JSON.stringify(this.taskModuleRef));
-        // console.log('Activated Route check');
-        // console.log(this._activatedRoute.snapshot.paramMap.get('task_no'));
-        console.log('@@@@@ this.task_no:' + this.task_no);
-
-        if (this.task_no !== 'NA') {
-          console.log('if done @@@@@ this.task_no:' + this.task_no);
-
-          this._serTaskDetails.getTaskDetails(this.task_no)
-            .then(res => {
-              console.log("Inside Response this._serTaskDetails.getRefMaster");
-              console.log(res);
-              console.log('------------')
-              console.log(res['dbQryResponse']);
-              console.log(res['dbQryStatus']);
-              this.task_data = {
-                "dbQryResponse": res['dbQryResponse'][0],
-                "dbQryStatus": res['dbQryStatus']
-              };
-              console.log('------*******--------');
-              console.log(this.task_data['dbQryResponse']);
-
-              console.log('------@@@@@@@--------');
-              // console.log(this.task_data.dbQryResponse);
-              this.task_data = this.task_data.dbQryResponse;
-              console.log(this.task_data.task_remaining_time);
-              console.log(this.task_data.task_no);
-              /** 
-                 * Based on the current status, fetch the next allowed status of the workflow.
-                 * e.g. if current status is 'Open', next allowed status could be
-                 * 'WIP','Development','On Hold' etc.
-              **/
-              this.workFlowNextStatusQryParams.current_status=this.task_data.issue_status;
-              this._serProjectWorkflows.getNextAllowedStepsForProjectRoleCurrStatus(this.workFlowNextStatusQryParams)
-              .subscribe(res=>{
-                this.taskIssueStatusesRef=[];
-                res['dbQryResponse'].forEach(ele => {
-                    this.taskIssueStatusesRef.push({'name':ele});
-                });
-              });
-
-              this.parentForm.get('fctlTaskNo').setValue(this.task_data.task_no);
-              this.parentForm.get('fctlSummary').setValue(this.task_data.summary);
-              this.parentForm.get('fctlDescription').setValue(this.task_data.description);
-              this.parentForm.get('fctlIssueType').setValue(this.task_data.issue_type);
-              this.parentForm.get('fctlIssueStatus').setValue(this.task_data.issue_status);
-              this.parentForm.get('fctlSeverity').setValue(this.task_data.severity);
-              this.parentForm.get('fctlPriority').setValue(this.task_data.priority);
-              this.parentForm.get('fctlModuleName').setValue(this.task_data.module);
-              this.parentForm.get('fctlEnvironment').setValue(this.task_data.environment);
-              this.parentForm.get('fctlCreatedDate').setValue(this.task_data.created_date);
-              this.parentForm.get('fctlModifiedDate').setValue(this.task_data.modified_date);
-              this.parentForm.get('fctlCreatedBy').setValue(this.task_data.created_by);
-              this.parentForm.get('fctlModifiedBy').setValue(this.task_data.modified_by);
-              this.parentForm.get('fctlReportedDate').setValue(this.task_data.reported_date);
-              this.parentForm.get('fctlReportedBy').setValue(this.task_data.reported_by);
-              this.parentForm.get('fctlAssigneeName').setValue(this.task_data.assignee_name);
-              this.parentForm.get('fctlIsBlocking').setValue((this.task_data.is_blocking == 'Y') ? true : false);
-              this.parentForm.get('fctlEstimatedTime').setValue(this.task_data.estimated_time);
-              this.parentForm.get('fctlRowHash').setValue(this.task_data.row_hash);
-
-              console.log('------@@@@@@@--------');
-              console.log(this.parentForm.get('fctlReportedDate').value);
-              this.parentForm.get('fctlReportedDate').setValue(this._serUtils.parseDateAsYYYYMMDD(this.task_data.reported_date));
-              this.parentForm.get('fctlStartDate').setValue(this._serUtils.parseDateAsYYYYMMDD(this.task_data.start_date));
-              this.parentForm.get('fctlEndDate').setValue(this._serUtils.parseDateAsYYYYMMDD(this.task_data.end_date));
-              this.isLoaded = true;
-
-              this._serNgxSpinner.hide();
-            });
-
-        }
-        else {
-          //Set Defaults While Creating tasks
-          // Status should be Open while creating the ticket
-          console.log("------@@@@@@@@@@ In Creation of Task @@@@@@@@------");
-          console.log("ticketIssueStatusesRef:" + JSON.stringify(this.taskIssueStatusesRef));
-          console.log(this.currentDate);
-          this.taskIssueStatusesRef.forEach(ele => {
-            if (ele['name'].toUpperCase() === 'OPEN') {
-              console.log("Only Open Status for Opening " + JSON.stringify(this.taskIssueStatusesRef));
-              this.taskIssueStatusesRef = [{ "name": ele['name'] }];
-              this.parentForm.get('fctlIssueStatus').setValue(ele['name']);
-            }
-          });
-          this.parentForm.get('fctlReportedBy').setValue(localStorage.getItem('loggedInUserName'));
-          this.parentForm.get('fctlAssigneeName').setValue(localStorage.getItem('loggedInUserName'));
-          this.parentForm.get('fctlReportedDate').setValue(this._serUtils.parseDateAsYYYYMMDD(this.currentDate));
-        }
-      }
-      );
     // New Entry end
   }
 
+  getTaskDetails(){
+    this._staticRefData.getRefTaskMaster(localStorage.getItem('currentProjectId'))
+    .then(res => {
+      console.log(res);
+
+      this.taskEnvRef = res.Environments;
+      this.taskIssueStatusesRef = res.IssueStatuses;
+      this.AllTaskIssueStatusRefs=res.IssueStatuses;
+      this.taskIssueTypesRef = res.IssueTypes;
+      this.taskPrioritiesRef = res.Priorities;
+      this.taskSeveritiesRef = res.Severities;
+      this.taskModuleRef = res.Modules;
+
+      // console.log("taskEnvRef:" + JSON.stringify(this.taskEnvRef));
+      // console.log("taskIssueStatusesRef:" + JSON.stringify(this.taskIssueStatusesRef));
+      // console.log("taskPrioritiesRef:" + JSON.stringify(this.taskPrioritiesRef));
+      // console.log("taskSeverityRef:" + JSON.stringify(this.taskSeveritiesRef));
+      // console.log("taskIssueTypesRef:" + JSON.stringify(this.taskIssueTypesRef));
+      // console.log("taskModuleRef:" + JSON.stringify(this.taskModuleRef));
+      // console.log('Activated Route check');
+      // console.log(this._activatedRoute.snapshot.paramMap.get('task_no'));
+      console.log('@@@@@ this.task_no:' + this.task_no);
+
+      if (this.task_no !== 'NA') {
+        console.log('if done @@@@@ this.task_no:' + this.task_no);
+
+        this._serTaskDetails.getTaskDetails(this.task_no)
+          .then(res => {
+            console.log("Inside Response this._serTaskDetails.getRefMaster");
+            console.log(res);
+            console.log('------------')
+            console.log(res['dbQryResponse']);
+            console.log(res['dbQryStatus']);
+            this.task_data = {
+              "dbQryResponse": res['dbQryResponse'][0],
+              "dbQryStatus": res['dbQryStatus']
+            };
+            console.log('------*******--------');
+            console.log(this.task_data['dbQryResponse']);
+
+            console.log('------@@@@@@@--------');
+            // console.log(this.task_data.dbQryResponse);
+            this.task_data = this.task_data.dbQryResponse;
+            console.log(this.task_data.task_remaining_time);
+            console.log(this.task_data.task_no);
+            /** 
+               * Based on the current status, fetch the next allowed status of the workflow.
+               * e.g. if current status is 'Open', next allowed status could be
+               * 'WIP','Development','On Hold' etc.
+            **/
+            this.workFlowNextStatusQryParams.current_status=this.task_data.issue_status;
+            this._serProjectWorkflows.getNextAllowedStepsForProjectRoleCurrStatus(this.workFlowNextStatusQryParams)
+            .subscribe(res=>{
+              this.taskIssueStatusesRef=[];
+              res['dbQryResponse'].forEach(ele => {
+                  this.taskIssueStatusesRef.push({'name':ele});
+              });
+            });
+
+            this.parentForm.get('fctlTaskNo').setValue(this.task_data.task_no);
+            this.parentForm.get('fctlSummary').setValue(this.task_data.summary);
+            this.parentForm.get('fctlDescription').setValue(this.task_data.description);
+            this.parentForm.get('fctlIssueType').setValue(this.task_data.issue_type);
+            this.parentForm.get('fctlIssueStatus').setValue(this.task_data.issue_status);
+            this.parentForm.get('fctlSeverity').setValue(this.task_data.severity);
+            this.parentForm.get('fctlPriority').setValue(this.task_data.priority);
+            this.parentForm.get('fctlModuleName').setValue(this.task_data.module);
+            this.parentForm.get('fctlEnvironment').setValue(this.task_data.environment);
+            this.parentForm.get('fctlCreatedDate').setValue(this.task_data.created_date);
+            this.parentForm.get('fctlModifiedDate').setValue(this.task_data.modified_date);
+            this.parentForm.get('fctlCreatedBy').setValue(this.task_data.created_by);
+            this.parentForm.get('fctlModifiedBy').setValue(this.task_data.modified_by);
+            this.parentForm.get('fctlReportedDate').setValue(this.task_data.reported_date);
+            this.parentForm.get('fctlReportedBy').setValue(this.task_data.reported_by);
+            this.parentForm.get('fctlAssigneeName').setValue(this.task_data.assignee_name);
+            this.parentForm.get('fctlIsBlocking').setValue((this.task_data.is_blocking == 'Y') ? true : false);
+            this.parentForm.get('fctlEstimatedTime').setValue(this.task_data.estimated_time);
+            this.parentForm.get('fctlRowHash').setValue(this.task_data.row_hash);
+            this.parentForm.get('fctlSprintName').setValue(this.task_data.sprint_name);
+
+            console.log('------@@@@@@@--------');
+            console.log(this.parentForm.get('fctlReportedDate').value);
+            this.parentForm.get('fctlReportedDate').setValue(this._serUtils.parseDateAsYYYYMMDD(this.task_data.reported_date));
+            this.parentForm.get('fctlStartDate').setValue(this._serUtils.parseDateAsYYYYMMDD(this.task_data.start_date));
+            this.parentForm.get('fctlEndDate').setValue(this._serUtils.parseDateAsYYYYMMDD(this.task_data.end_date));
+            this.isLoaded = true;
+
+            this._serNgxSpinner.hide();
+          });
+
+      }
+      else {
+        //Set Defaults While Creating tasks
+        // Status should be Open while creating the ticket
+        console.log("------@@@@@@@@@@ In Creation of Task @@@@@@@@------");
+        console.log("ticketIssueStatusesRef:" + JSON.stringify(this.taskIssueStatusesRef));
+        console.log(this.currentDate);
+        this.taskIssueStatusesRef.forEach(ele => {
+          if (ele['name'].toUpperCase() === 'OPEN') {
+            console.log("Only Open Status for Opening " + JSON.stringify(this.taskIssueStatusesRef));
+            this.taskIssueStatusesRef = [{ "name": ele['name'] }];
+            this.parentForm.get('fctlIssueStatus').setValue(ele['name']);
+          }
+        });
+        this.parentForm.get('fctlReportedBy').setValue(localStorage.getItem('loggedInUserName'));
+        this.parentForm.get('fctlAssigneeName').setValue(localStorage.getItem('loggedInUserName'));
+        this.parentForm.get('fctlReportedDate').setValue(this._serUtils.parseDateAsYYYYMMDD(this.currentDate));
+      }
+    }
+    );
+  }
   validateEstimatedTime(inpData) {
     console.log(inpData);
   }
@@ -304,6 +304,19 @@ export class TaskDetailsComponent implements OnInit {
 
     ngAfterContentInit(){
       this.parentForm.untouched;
+    }
+
+    launchGetTaskEstimates(){
+      this.childGetTaskEstimate.toggleEstimateModal();
+    }
+
+    updateEstimateInParent(e){
+      console.log('updateEstimateInParent');
+      console.log(e);
+      this.parentForm.get('fctlEstimatedTime').setValue(e['estimated_time']);
+      this.parentForm.get('fctlEstimatedTime').disable();
+      this.parentForm.markAsDirty();
+      this.getTaskDetails();
     }
     
 }

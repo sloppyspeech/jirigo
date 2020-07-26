@@ -210,7 +210,13 @@
                 for="typeahead-http"
                 class="col-form-label col-form-label-sm"
                 >Estimated Time(Hrs)
-                <!-- <small class="text-muted">0.5 = 30 minutes</small> -->
+                <ng-container *ngIf="this.task_no!='NA'">
+                  <span placement="top" ngbTooltip="Add Task Estimates"
+                    class="task-estimate-btn" (click)="launchGetTaskEstimates()"
+                    *ngIf="this.parentForm.get('fctlIssueStatus').enabled" >
+                    <fa-icon [icon]="faPlusSquare"></fa-icon>
+                  </span>
+                </ng-container>
               </label>
               <input
                 step="0.5"
@@ -362,9 +368,29 @@
                 </div>
               </div>
             </div>
+            <div class="col-md-3 col-lg-3">
+              <label class="col-form-label col-form-label-sm"
+                >Sprint Name</label
+              >
+              <div class="input-group">
+                <input
+                  class="form-control j-current-input"
+                  formControlName="fctlSprintName"
+                  name="nm_sprintName"
+                  id="tdc_sprintName"
+                  readonly
+                />
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
 </form>
+
+<app-estimate-task #childGetTaskEstimate 
+                  [activityList]="AllTaskIssueStatusRefs" 
+                  [task_no]="task_no"
+                  (creUpdEstimatestatus)="updateEstimateInParent($event)"
+                  ></app-estimate-task>

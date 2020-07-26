@@ -123,7 +123,7 @@ export class SprintTasksDashboardComponent implements OnInit {
               displayTitle:false,
               titleText:'Burndown Chart',
               multiple:true,
-              legendLabels:['Estimated','Actual']
+              legendLabels:['Ideal','Actual']
             };
           }
           this.showBurnDownChart=true;
@@ -147,7 +147,7 @@ export class SprintTasksDashboardComponent implements OnInit {
               chartLabels:user,
               chartData:workload,
               xAxisLabel:'Workload in Hours',
-              yAxisLabel:'User',
+              yAxisLabel:'Developer',
               yTickSuggestedMin:0,
               xTickSuggestedMin:0
             };
@@ -173,8 +173,8 @@ export class SprintTasksDashboardComponent implements OnInit {
               barChartType:'horizontalBar',
               chartLabels:user,
               chartData:task_count,
-              xAxisLabel:'Assigned Task Count By User',
-              yAxisLabel:'User',
+              xAxisLabel:'Assigned Task Count By Developer',
+              yAxisLabel:'Developer',
               yTickSuggestedMin:0,
               xTickSuggestedMin:0,
               xTickStepSize:1
@@ -183,33 +183,60 @@ export class SprintTasksDashboardComponent implements OnInit {
           this.showSprintTaskByCountForUser=true;
         });
     
-    this._serSprintTasksDashboard.getSprintTaskActualsByActivity(this.sprintId)
-        .subscribe(res=>{
-          let issue_statuses:string[]=[];
-          let tot_est:number[]=[];
-          let tot_act:number[]=[];
-          console.log(res['dbQryResponse']);
-          if(res['dbQryStatus'] == "Success"){
-            res['dbQryResponse'].forEach(e => {
-              issue_statuses.push(e['activity']);
-              tot_act.push(e['tot_act']);
-            });
-            this.sprintTaskActivityActuals={
-              chartType:'horizontalBar',
-              barChartElementId:'id_sprintTaskActualsByActivity',
-              barChartType:'horizontalBar',
-              chartLabels:issue_statuses,
-              chartData:tot_act,
-              xAxisLabel:'Hours',
-              yAxisLabel:'Activities',
-              yTickSuggestedMin:0,
-              xTickSuggestedMin:0
-            };
-          }
-          this.showSprintTaskActivityActuals=true;
-        });
+    // this._serSprintTasksDashboard.getSprintTaskActualsByActivity(this.sprintId)
+    //     .subscribe(res=>{
+    //       let issue_statuses:string[]=[];
+    //       let tot_est:number[]=[];
+    //       let tot_act:number[]=[];
+    //       console.log(res['dbQryResponse']);
+    //       if(res['dbQryStatus'] == "Success"){
+    //         res['dbQryResponse'].forEach(e => {
+    //           issue_statuses.push(e['activity']);
+    //           tot_act.push(e['tot_act']);
+    //         });
+    //         this.sprintTaskActivityActuals={
+    //           chartType:'horizontalBar',
+    //           barChartElementId:'id_sprintTaskActualsByActivity',
+    //           barChartType:'horizontalBar',
+    //           chartLabels:issue_statuses,
+    //           chartData:tot_act,
+    //           xAxisLabel:'Hours',
+    //           yAxisLabel:'Activities',
+    //           yTickSuggestedMin:0,
+    //           xTickSuggestedMin:0
+    //         };
+    //       }
+    //       this.showSprintTaskActivityActuals=true;
+    //     });
 
-
+          this._serSprintTasksDashboard.getSprintTaskEstimatedVsActualEfforts(this.sprintId)
+          .subscribe(res=>{
+            let issue_statuses:string[]=[];
+            let tot_est:number[]=[];
+            let tot_act:number[]=[];
+            console.log(res['dbQryResponse']);
+            if(res['dbQryStatus'] == "Success"){
+              res['dbQryResponse'].forEach(e => {
+                issue_statuses.push(e['activity']);
+                tot_est.push(e['tot_est']);
+                tot_act.push(e['tot_act']);
+              });
+              this.sprintTaskActivityActuals={
+                chartType:'horizontalBar',
+                barChartElementId:'id_sprintTaskActualsByActivity',
+                barChartType:'horizontalBarGrouped',
+                chartLabels:issue_statuses,
+                chartData:[tot_est,tot_act],
+                xAxisLabel:'Hours',
+                yAxisLabel:'Activities',
+                yTickSuggestedMin:0,
+                xTickSuggestedMin:0,
+                legendLabels:['Estimated','Actuals'],
+                legendDisplay:true
+              };
+            }
+            this.showSprintTaskActivityActuals=true;
+          });
 
   }
 

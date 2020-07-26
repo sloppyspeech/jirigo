@@ -243,7 +243,7 @@ class JirigoRoles(object):
             cursor.execute(del_role,values)
             role_id=cursor.fetchone()[0]
             row_count=cursor.rowcount
-            self.logger.debug(f'Insert Success with {row_count} row(s) and role_id {role_id}')
+            self.logger.debug(f'Delete Success with {row_count} row(s) and role_id {role_id}')
 
             response_data['dbQryStatus']='Success'
             response_data['dbQryResponse']={"role_id":role_id,"rowCount":row_count}

@@ -22,51 +22,52 @@
         </div>
     </div>
 
-    <div class="row mb-2">
-        <div class="col-lg card  " style="height:5rem; padding-top:0.125rem;">
+    <div class="row mb-2 ">
+        <div class="col-lg card mr-2" style="height:5rem; padding-top:0.125rem;">
             <p class="card-text text-center task-effort-nums" >{{sprintEfforts.tot_task_count}}</p>
             <p class="card-text text-center task-effort-text" >Total Tasks For Sprint</p>
         </div>
-        <div class="col-lg card  " style="height:5rem; padding-top:0.125rem;">
+        <div class="col-lg card mx-2" style="height:5rem; padding-top:0.125rem;">
             <p class="card-text text-center task-effort-nums">{{sprintEfforts.tot_est}}</p>
             <p class="card-text text-center task-effort-text">Total Estimated Hours</p>
         </div>
-        <div class="col-lg card " style="height:5rem; padding-top:0.125rem; ">
+        <div class="col-lg card mx-2" style="height:5rem; padding-top:0.125rem; ">
             <p class="card-text text-center task-effort-nums">{{sprintEfforts.tot_act}}</p>
             <p class="card-text text-center task-effort-text">Actual Effort In Hours</p>
         </div>
-        <div class="col-lg card " style="height:5rem; padding-top:0.125rem;">
+        <div class="col-lg card mx-2" style="height:5rem; padding-top:0.125rem;">
             <p class="card-text text-center task-effort-nums">{{sprintEfforts.tot_rem}}</p>
             <p class="card-text text-center task-effort-text">Remaining Effort In Hours</p>
         </div>
-        <div class="col-lg card " style="height:5rem; padding-top:0.125rem;">
+        <div class="col-lg card ml-2" style="height:5rem; padding-top:0.125rem;">
             <p class="card-text text-center task-effort-nums">{{ (sprintEfforts.tot_act/sprintEfforts.tot_est)*100 | number :'1.0-0'}}%</p>
             <p class="card-text text-center task-effort-text">Percentage Completion</p>
         </div>
     </div>
     <div class="row mb-2">
-        <div class="col-lg-4 card">
-          <canvas id="id_issuetypeChart" height="200" *ngIf="showIssueTypesChart">
+        <div class="col-lg-4 card " >
+          <canvas id="id_issuetypeChart" height="200" width="400"  *ngIf="showIssueTypesChart">
             <app-bar-chart [chartOptions]="issueTypeChartOptions" #barChart>
             </app-bar-chart>
           </canvas>
         </div>
-        <div class="col-lg-4 card">
-            <canvas id="id_priorityChart" height="200" >
+        <div class="col-lg-4 card ">
+            <canvas id="id_priorityChart" height="200" width="400" >
               <app-bar-chart [chartOptions]="prioritiesChartOptions" #barChart1>
               </app-bar-chart>
             </canvas>
           </div>
-          <div class="col-lg-4 card">
-            <canvas id="id_severityChart" height="200">
+          <div class="col-lg-4 card " >
+            <canvas id="id_severityChart" height="200" width="400" >
               <app-bar-chart [chartOptions]="severitiesChartOptions" #barChart2>
               </app-bar-chart>
             </canvas>
           </div>
     </div>
     <div class="row mb-2">
-            <ng-container *ngFor="let issueStatus of sprintAttributes['issue_statuses']|keyvalue">
-                <div class="col-lg card" style="height:5rem; padding-top:0.125rem;">
+            <ng-container *ngFor="let issueStatus of sprintAttributes['issue_statuses']|keyvalue;let i=index">
+                <div class="col-lg card " style="height:5rem; padding-top:0.125rem;"
+                     [ngClass]="{'ml-3':i>0}">
                     <p class="card-text text-center task-effort-nums" >{{issueStatus.value}}</p>
                     <p class="card-text text-center task-effort-text" >{{issueStatus.key}}</p>
                 </div>

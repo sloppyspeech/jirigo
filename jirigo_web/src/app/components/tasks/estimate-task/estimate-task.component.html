@@ -1,0 +1,67 @@
+  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#estimateModal" 
+    [hidden]="true" #launchEstimateModal>
+  </button>
+  <p-toast position="top-right"></p-toast>
+  <!-- Modal -->
+  <div class="modal fade" id="estimateModal" tabindex="-1" role="dialog" 
+  aria-labelledby="estimateModalLabel" aria-hidden="true">
+    <div class="modal-dialog " role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="estimateModalLabel">Task Estimates</h5>
+            <span aria-hidden="true"
+                style="font-size: 1.5rem;color: #007BFB;font-weight: 300;cursor:pointer;" 
+                (click)="addActivityEstimate({'activity':'','hours':0,'minutes':0})" >
+                <fa-icon [icon]="faPlusSquare"></fa-icon>
+            </span>
+        </div>
+        <div class="modal-body">
+            <div class="container-fluid">
+                <ng-container *ngFor="let formRow of activityEstimatesFA.controls; index as i">
+                    {{formRow[i]|json}}
+                    <div class="row form-group">
+                        <div class=" col-lg-5">
+                          <small id="helpId" class="form-text text-muted">Activity</small>
+                            <select #inpSelectedActivity [formControl]="activityEstimatesFA.controls[i].get('activity')" class="form-control" 
+                                    name="name_{{i}}_activity" id="id_{{i}}_activity"
+                            >
+                                <option value="" selected >Choose Activity...</option>
+                                <option *ngFor="let activity of activityList" [ngValue]="activity.name">{{activity.name}}</option>
+                                
+                            </select>
+                        </div>
+                        <div class="col-lg-3">
+                          <small id="helpId" class="form-text text-muted">Hours</small>
+                            <input type="number" class="form-control" 
+                                   [formControl]="activityEstimatesFA.controls[i].get('hours')"
+                                   name="name_{{i}}_hours" id="id_{{i}}_hours"
+                                    aria-describedby="helpId" 
+                                    placeholder="00" max="999" maxlength="3">
+                        </div>
+                        <div class="col-lg-3">
+                          <small id="helpId" class="form-text text-muted">minutes</small>
+                            <input type="number" class="form-control" 
+                                   [formControl]="activityEstimatesFA.controls[i].get('minutes')"
+                                   name="name_{{i}}_minutes" id="id_{{i}}_minutes" aria-describedby="helpId"
+                                    placeholder="00"  max="59" maxlength="2" step="30">
+                        </div>
+                        <div class="col-lg-1">
+                            <fa-icon [icon]="faTimesCircle " 
+                                     (click)="removeActivityEstimate(i);"
+                                     style="font-size: 1.5rem;color:red; font-weight: 200;cursor:pointer;">
+                            </fa-icon>
+                        </div>
+                    </div>
+                </ng-container>
+
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-light" data-dismiss="modal" (click)="cancelEstimateTaskModal()">Cancel</button>
+          <button type="button" class="btn btn-primary" (click)="saveEstimateToDB()">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  

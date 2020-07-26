@@ -8,6 +8,7 @@ import { UsersService } from '../../../services/users/users.service';
 import { NgbDateStruct, NgbCalendar } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerService } from "ngx-spinner";
 import { Router } from '@angular/router';
+import { MessageService} from 'primeng/api';
 
 import { Observable, of } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, map, tap, switchMap } from 'rxjs/operators';
@@ -17,7 +18,8 @@ import { catchError, debounceTime, distinctUntilChanged, map, tap, switchMap } f
 @Component({
   selector: 'app-create-task',
   templateUrl: './create-task.component.html',
-  styleUrls: ['./create-task.component.css']
+  styleUrls: ['./create-task.component.css'],
+  providers:[MessageService]
 })
 export class CreateTaskComponent implements OnInit {
   createTaskFB: FormGroup;
@@ -116,7 +118,8 @@ export class CreateTaskComponent implements OnInit {
       fctlAssigneeName: new FormControl({ value: '', disabled: false }),
       fctlEstimatedTime: new FormControl({ value: 0, disabled: false }),
       fctlStartDate: new FormControl({ value: '', disabled: false }),
-      fctlEndDate: new FormControl({ value: '', disabled: false })
+      fctlEndDate: new FormControl({ value: '', disabled: false }),
+      fctlSprintName: new FormControl({ value: '', disabled: true }),
     },{validator:this.validateStartAndEndDates});
   }
 

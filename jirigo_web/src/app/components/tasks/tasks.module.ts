@@ -37,7 +37,7 @@ import { DuplicatedByComponent } from './relationships/duplicated-by/duplicated-
 import { ModalTimeloggingModule} from '../../shared/modules/modal-timelogging/modal-timelogging.module';
 import { TimelogComponent } from './timelog/timelog.component';
 import { NumToHhmiPipeModule } from './../../shared/modules/pipes/num-to-hhmi.pipe.module';
-
+import { EstimateTaskComponent } from './estimate-task/estimate-task.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +51,8 @@ import { NumToHhmiPipeModule } from './../../shared/modules/pipes/num-to-hhmi.pi
     DependsOnComponent,
     RelatedToComponent,
     DuplicatedByComponent,
-    TimelogComponent
+    TimelogComponent,
+    EstimateTaskComponent
   ],
   imports: [
     CommonModule,

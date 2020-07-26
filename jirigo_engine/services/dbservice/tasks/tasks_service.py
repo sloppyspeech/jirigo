@@ -3,6 +3,7 @@ from services.logging.logger import Logger
 from flask import jsonify
 
 import psycopg2
+from psycopg2.extras import execute_values
 import datetime
 
 from pprint import pprint
@@ -34,11 +35,12 @@ class JirigoTask(object):
         self.project_id=data.get('project_id','')
         self.assignee_name=data.get('assignee_name','')
         self.module_name=data.get('module_name','')
-        self.estimated_time=data.get('estimated_time',0)
+        self.estimated_time=0 # At the time of task creation est is 0
         self.start_date=data.get('start_date',None)
         self.end_date=data.get('end_date',None)
         self.row_hash=data.get('row_hash',None)
         self.assignee_id = data.get('assignee_id',None)
+        self.task_estimates=data.get('task_estimates',None)
         self.logger=Logger()
 
     def create_task(self):
@@ -99,7 +101,7 @@ class JirigoTask(object):
                                     to_char(created_date, 'DD-Mon-YYYY HH24:MI:SS') modified_date,
                                     get_user_name(reported_by) reported_by,
                                     to_char(created_date, 'DD-Mon-YYYY HH24:MI:SS') reported_date,
-                                    estimated_time,
+                                    estimated_time/60 estimated_time,
                                     get_user_name(assignee_id) assigned_to,
                                     to_char(start_date, 'DD-Mon-YYYY') start_date,
                                     to_char(end_date, 'DD-Mon-YYYY') end_date,
@@ -164,11 +166,12 @@ class JirigoTask(object):
                                         modified_date,
                                         get_user_name(COALESCE(reported_by, 0)) reported_by,
                                         reported_date,
-                                        estimated_time,
+                                        estimated_time/60 estimated_time,
                                         start_date,
                                         end_date,
                                         get_task_remaining_time(task_no) task_remaining_time,
-                                        row_hash
+                                        row_hash,
+                                        get_sprint_name_for_task(task_no) as sprint_name
                                 FROM ttasks
                                 WHERE TASK_NO=%s )
                                 SELECT json_agg(t)
@@ -218,7 +221,6 @@ class JirigoTask(object):
                                 assignee_id=get_user_id(%s),
                                 is_blocking=%s,
                                 module_name=%s,
-                                estimated_time=%s,
                                 start_date=%s,
                                 end_date=%s  
                          WHERE task_no=%s and row_hash=%s;
@@ -230,7 +232,7 @@ class JirigoTask(object):
                 self.issue_status,self.issue_type,self.environment,self.modified_by,
                 datetime.datetime.today(),self.reported_by,datetime.datetime.today(),
                 self.project_name,self.assignee_name,self.is_blocking,self.module_name,
-                self.estimated_time,self.start_date,self.end_date,self.task_no,self.row_hash,)
+                self.start_date,self.end_date,self.task_no,self.row_hash,)
 
         self.logger.debug(f'Update : {update_sql}  {values}')
 
@@ -359,4 +361,94 @@ class JirigoTask(object):
         except  (Exception, psycopg2.Error) as error:
             if(self.jdb.dbConn):
                 print(f'Error While update_task_status  {error}')
+                raise
+
+    def create_update_task_estimates(self):
+        response_data={}
+        t_task_estimated_time=0
+        self.logger.debug("create_update_task_estimates")
+        set_task_estimate_to_zero="""
+                                        UPDATE ttasks
+                                           SET estimated_time=0
+                                         WHERE task_no=%s
+                                    """
+        t_task_no=(self.task_no,)
+
+        clean_up_task_estimates_sql="""
+                                        DELETE
+                                          FROM ttask_estimates
+                                         WHERE task_no=%s
+                                    """
+        t_task_no=(self.task_no,)
+        print(f'task No  {t_task_no}')
+        self.logger.debug(f'task No  {t_task_no}')
+
+        ins_task_estimate_sql="""
+                                INSERT INTO ttask_estimates (task_no,activity,estimated_time)
+                                       VALUES %s
+                                """
+    
+        get_task_estimate_sql="""
+                                SELECT estimated_time/60 estimated_time
+                                  FROM ttasks
+                                 WHERE task_no=%s
+                            """
+        try:
+            print('-'*80)
+            cursor=self.jdb.dbConn.cursor()
+            cursor.execute(set_task_estimate_to_zero,t_task_no)
+            row_count=cursor.rowcount
+            print(f'Task estimate set to zero OK {row_count}')
+            self.logger.debug(f'Task estimate set to zero OK {row_count}')
+            cursor.execute(clean_up_task_estimates_sql,t_task_no)
+            row_count=cursor.rowcount
+            print(f'Delete Success with {row_count} row(s) ID {self.task_no}')
+            self.logger.debug(f'Delete Success with {row_count} row(s) ID {self.task_no}')
+            print(self.task_estimates)
+            estimate_values=[(self.task_no,x['activity'],x['estimated_time']) for x in self.task_estimates]
+            print(f'estimate_values {estimate_values}')
+            execute_values(cursor,ins_task_estimate_sql,estimate_values,template="(%s,%s,%s)")
+            row_count=cursor.rowcount
+            self.logger.debug(f'Bulk Insert Success with {row_count} row(s)  ID {self.task_no}')
+            self.jdb.dbConn.commit()
+            cursor.execute(get_task_estimate_sql,t_task_no)
+            row_count=cursor.rowcount
+            t_task_estimated_time=cursor.fetchone()[0]
+            response_data['dbQryStatus']='Success'
+            response_data['dbQryResponse']={"rowCount":row_count,"taskEstimatedTime":t_task_estimated_time}
+            return response_data
+        except  (Exception, psycopg2.Error) as error:
+            if(self.jdb.dbConn):
+                print(f'Error While creating estimates  {error}')
+                raise
+    
+    def get_task_estimates(self):
+        self.logger.debug('Inside get_task_estimates')
+        response_data={}
+        query_sql="""  
+                       WITH t AS
+                                (SELECT * 
+                                   FROM ttask_estimates
+                                  WHERE task_no=%s )
+                                SELECT json_agg(t)
+                                FROM t;
+                   """
+        values=(self.task_no,)
+        # print(f'Select : {query_sql} Values :{values}')
+        self.logger.debug(f'Select : {query_sql} Values :{values}')
+
+        try:
+            cursor=self.jdb.dbConn.cursor()
+            cursor.execute(query_sql,values)
+            json_data=cursor.fetchone()[0]
+            row_count=cursor.rowcount
+            print(f'Select Success with {row_count} row(s) Task ID {json_data}')
+            self.logger.debug(f'Select Success with {row_count} row(s) Task ID {json_data}')
+            response_data['dbQryStatus']='Success'
+            response_data['dbQryResponse']=json_data
+            return response_data
+        except  (Exception, psycopg2.OperationalError) as error:
+            if(self.jdb.dbConn):
+                print(f'Error While Creating Task :{error.pgcode} == {error.pgerror}')
+                print('-'*80)
                 raise

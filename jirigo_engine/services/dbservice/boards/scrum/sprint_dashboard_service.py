@@ -75,10 +75,10 @@ class JirigoSprintDashboard(object):
                                             sprint_name,
                                             sprint_start_date ,
                                             sprint_end_date ,
-                                            sum(estimated_time) tot_est,
+                                            round(CAST(sum(estimated_time)/60 AS NUMERIC),2) tot_est,
                                             sum(task_actuals)tot_act,
                                             count(*) tot_task_count,
-                                            sum(estimated_time)-sum(task_actuals) tot_rem
+                                            round(CAST(sum(estimated_time)/60-sum(task_actuals) as Numeric),2) tot_rem
                                     FROM v_sprint_details 
                                     WHERE sprint_id=%s
                                     GROUP BY sprint_id,sprint_name,sprint_start_date ,
@@ -112,7 +112,7 @@ class JirigoSprintDashboard(object):
                                     WITH gen_days AS (
                                             SELECT t2.sprint_id,t2.sprint_name,t2.num_devs,generate_series(t2.start_date::timestamptz ,t2.end_date::timestamptz ,'1 days' ) c_date
                                                 ,(
-                                                    SELECT sum(tt.estimated_time)
+                                                    SELECT round(CAST(sum(tt.estimated_time)/60 AS NUMERIC),2)
                                                     FROM  ttasks tt 
                                                     INNER JOIN tsprint_tasks tst
                                                             ON  tt.task_no=tst.task_no 
@@ -161,7 +161,8 @@ class JirigoSprintDashboard(object):
         response_data={}
         self.logger.debug("Sprints Inside get_sprint_workload_by_user")
         query_sql="""  
-                        WITH tc AS ( SELECT get_user_name(assignee_id ) user_name,sum(estimated_time) estimated_time 
+                        WITH tc AS ( SELECT get_user_name(assignee_id ) user_name,
+                                    round(CAST(sum(estimated_time)/60 AS NUMERIC),2) estimated_time 
                                     FROM v_sprint_details 
                                     WHERE sprint_id=%s
                                     GROUP BY get_user_name(assignee_id )
@@ -241,6 +242,55 @@ class JirigoSprintDashboard(object):
             json_data=cursor.fetchone()[0]
             row_count=cursor.rowcount
             self.logger.debug(f'Select Success with {row_count} row(s) get_task_actuals_by_activity  {json_data}')
+            response_data['dbQryStatus']='Success'
+            response_data['dbQryResponse']=json_data
+            return response_data
+        except  (Exception, psycopg2.Error) as error:
+            if(self.jdb.dbConn):
+                print(f'Error While get_task_actuals_by_activity {error}')
+                raise
+    
+    def get_task_estimated_vs_actual_efforts(self):
+        response_data={}
+        self.logger.debug("Sprints Inside get_task_estimated_vs_actual_efforts")
+        query_sql="""  
+                        WITH tc AS (
+                                    WITH 
+                                        ts_act AS (
+                                        SELECT activity ,sum(actual_time_spent)/60 tot_act
+                                                                            FROM ttask_actuals 
+                                                                            WHERE task_no in (SELECT task_no 
+                                                                                                FROM v_sprint_details vsd  
+                                                                                            WHERE sprint_id=%s )
+                                                                            GROUP BY  activity 
+                                                                            ),
+                                        ts_est  AS (                                  
+                                        SELECT activity ,sum(estimated_time )/60 tot_est
+                                                                            FROM ttask_estimates te 
+                                                                            WHERE task_no in (SELECT task_no 
+                                                                                                FROM v_sprint_details vsd  
+                                                                                            WHERE sprint_id=%s )
+                                                                            GROUP BY  activity 
+                                                                            )
+                                                                            
+                                        SELECT  COALESCE (ts_est.activity,COALESCE (ts_act.activity,ts_est.activity)) activity
+                                                ,ts_est.tot_est,ts_act.tot_act
+                                          FROM ts_est 
+                                          FULL OUTER JOIN ts_act ON ts_est.activity=ts_act.activity
+                                         ORDER BY 1
+                      ) 
+                        select json_agg(tc) from tc;
+
+                   """
+        values=(self.sprint_id,self.sprint_id,)
+        self.logger.debug(f'Select : {query_sql} values {values}')
+        try:
+            print('-'*80)
+            cursor=self.jdb.dbConn.cursor()
+            cursor.execute(query_sql,values)
+            json_data=cursor.fetchone()[0]
+            row_count=cursor.rowcount
+            self.logger.debug(f'Select Success with {row_count} row(s) get_task_estimated_vs_actual_efforts  {json_data}')
             response_data['dbQryStatus']='Success'
             response_data['dbQryResponse']=json_data
             return response_data

@@ -63,5 +63,10 @@ export class SprintTasksDashboardService {
     console.log(url);
     return this._httpCli.get(url);
   }
-
+  getSprintTaskEstimatedVsActualEfforts(sprint_id:string){
+    let url=this.sApiEndPoint+`sprint-task-estimated-vs-actuals?sprint_id=${sprint_id}`;
+    console.log('getSprintTaskEstimatedVsActualEfforts');
+    console.log(url);
+    return this._httpCli.get(url);
+  }
 }

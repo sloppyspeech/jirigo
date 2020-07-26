@@ -146,7 +146,8 @@ export class ViewEditTaskComponent implements OnInit {
         fctlTabOptions: new FormControl({ value: 'showTaskDetails'}),
         fctlStartDate: new FormControl({ value: '', disabled: true }),
         fctlEndDate: new FormControl({ value: '', disabled: true }),
-        fctlRowHash: new FormControl({ value: '', disabled: true })
+        fctlRowHash: new FormControl({ value: '', disabled: true }),
+        fctlSprintName: new FormControl({ value: '', disabled: true }),
       },{validator:this.validateStartAndEndDates});
 
   }
