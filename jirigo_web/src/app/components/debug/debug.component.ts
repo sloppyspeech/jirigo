@@ -35,6 +35,31 @@ export class DebugComponent implements OnInit {
 
   @ViewChild('barChart') barChart:BarChartComponent;
 
+
+//   ganttTasks:any=[
+//     {'taskNo':'Proj-1','startDate':'2020-07-01','endDate':'2020-07-20','duration':'20','days':[1,1,1,1,1,1,1,1,1,1,1,1,1,1]},
+//     {'taskNo':'Proj-2','startDate':'2020-07-05','endDate':'2020-07-10','duration':'15','days':[0,0,0,1,1,1,1,1,1,1,1,1,0,0]},
+//     {'taskNo':'Proj-3','startDate':'2020-07-07','endDate':'2020-07-15','duration':'8','days':[0,0,0,0,0,1,1,1,1,1,1,1,1,0]}
+// ];
+  
+  Tableau20 = ['#4E79A7', '#A0CBE8', '#F28E2B', '#FFBE7D', '#59A14F', '#8CD17D', '#B6992D', '#F1CE63', '#499894', '#86BCB6', '#E15759', '#FF9D9A', '#79706E', '#BAB0AC', '#D37295', '#FABFD2', '#B07AA1', '#D4A6C8', '#9D7660', '#D7B5A6'];
+  assigneeColors={};
+  ganttTasks:any=[
+    {'taskNo':'Proj-1','startDate':'2020-07-01','endDate':'2020-07-20','duration':'20','assignee':'AAAA','days':[1,1,1,1,1,1,1,1,1,1,1,1,1,1]},
+    {'taskNo':'Proj-2','startDate':'2020-07-05','endDate':'2020-07-10','duration':'15','assignee':'BBBB','days':[0,0,0,1,1,1,1,1,1,1,1,1,0,0]},
+    {'taskNo':'Proj-3','startDate':'2020-07-07','endDate':'2020-07-15','duration':'8','assignee':'CCCC','days':[0,0,0,0,0,1,1,1,1,1,1,1,1,0]},
+    {'taskNo':'Proj-4','startDate':'2020-07-06','endDate':'2020-07-08','duration':'6','assignee':'AAAA','days':[0,0,0,0,1,1,1,1,1,1,1,0,0,0]},
+    {'taskNo':'Proj-5','startDate':'2020-07-02','endDate':'2020-07-08','duration':'6','assignee':'BBBB','days':[0,0,0,0,1,1,1,1,1,1,1,0,0,0]},
+    {'taskNo':'Proj-6','startDate':'2020-07-03','endDate':'2020-07-18','duration':'6','assignee':'BBBB','days':[0,0,0,0,1,1,1,1,1,1,1,0,0,0]},
+    {'taskNo':'Proj-7','startDate':'2020-07-06','endDate':'2020-07-11','duration':'6','assignee':'CCCC','days':[0,0,0,0,1,1,1,1,1,1,1,0,0,0]},
+    {'taskNo':'Proj-8','startDate':'2020-07-08','endDate':'2020-07-08','duration':'6','assignee':'CCCC','days':[0,0,0,0,1,1,1,1,1,1,1,0,0,0]},
+    {'taskNo':'Proj-9','startDate':'2020-07-02','endDate':'2020-07-13','duration':'6','assignee':'CCCC','days':[0,0,0,0,1,1,1,1,1,1,1,0,0,0]},
+    {'taskNo':'Proj-10','startDate':'2020-07-04','endDate':'2020-07-08','duration':'6','assignee':'DDDD','days':[0,0,0,0,1,1,1,1,1,1,1,0,0,0]},
+    {'taskNo':'Proj-11','startDate':'2020-07-02','endDate':'2020-07-16','duration':'6','assignee':'EEEE','days':[0,0,0,0,1,1,1,1,1,1,1,0,0,0]},
+    {'taskNo':'Proj-12','startDate':'2020-07-10','endDate':'2020-07-19','duration':'6','assignee':'AAAA','days':[0,0,0,0,1,1,1,1,1,1,1,0,0,0]},
+    {'taskNo':'Proj-13','startDate':'2020-07-02','endDate':'2020-07-28','duration':'6','assignee':'AAAA','days':[0,0,0,0,1,1,1,1,1,1,1,0,0,0]}
+  ];
+
   chartOptions:any={
     chartType:'bar',
     barChartElementId:'id_mycanvas',
@@ -256,12 +281,18 @@ export class DebugComponent implements OnInit {
       "ZimbabweZimbabweZimbabweZimbabweZimbabweZimbabweZimbabweZimbabweZimbabwe"
   ];
   @ViewChild('myModal') myModal:ElementRef;
-
-  constructor(private _formBuilder: FormBuilder,private _router:Router,
-    private _taskTicketLinkSer:TaskTicketLinkService,
+//   constructor(
+//     private _formBuilder: FormBuilder,
+//     private _router:Router,
+//     private _taskTicketLinkSer:TaskTicketLinkService,
+//     private _httpCli:HttpClient,
+//     private _ren2:Renderer2,
+//     private _errSer:ErrorMessageService ,
+//     private _serReferences:ReferencesService
+//     ) {
+// }
+  constructor(
     private _httpCli:HttpClient,
-    private _ren2:Renderer2,
-    private _errSer:ErrorMessageService ,
     private _serReferences:ReferencesService
     ) {
 }
@@ -286,54 +317,11 @@ export class DebugComponent implements OnInit {
     ]
 };
 
-options = {
-  title: {
-      display: false,
-      text: 'My Title',
-      fontSize: 2
-  },
-  legend: {
-      display:false,
-      position: 'bottom'
-  },
-              scales: {
-                xAxes: [{
-                  display: true,
-                  gridLines: true,
-                  zeroLineColor:'white',
-                  ticks: {
-                    fontSize: 2,
-                    stepSize: 5,
-                    padding:8,
-                    fontColor:'white'
-                  },
-                  scaleLabel: {
-                    fontColor: "black",
-                    labelString: "Last "+" days",
-                    display: false,
-                    fontSize: 2
-                  }
-                }],
-                yAxes: [{
-                  display: false,
-                  gridLines: {},
-                  ticks: {
-                    fontColor: "black",
-                    fontSize: 2,
-                    padding:15,
-                  },
-                  scaleLabel: {
-                    fontColor: "white",
-                    fontSize: 2,
-                    labelString: "Count Of Open Tickets",
-                    display: false
-                  }
-                }]
-              }
-};
+
 
   filteredTaskTickets:any=[];
   selectedTaskTickets:any=[];
+  ganttHeaderDates:any[]=[];
   selectedFile:any;
   debugFG: FormGroup;
   statusGrid:Array< {
@@ -349,35 +337,42 @@ options = {
 
   ngOnInit(): void {
     this.testFC.setValue('Test Button');
-    // this._errSer.getErrorMessage('TASK')
-    //     .subscribe(res=>{
-    //       console.log('Error Message here here ');
-    //       console.log(res);
-    //       console.log(res.CRE_OK.text);
-    //       // this.launchIt=true;
-    //       // this.newModalContent=res.CRE_OK.text;
-    //     })
-
-    // this.projStatuses.forEach(ps=>{
-    //     let s:any[]=[];
-    //     this.projStatuses.forEach(nxtSts=>{
-    //       if(ps === nxtSts){
-    //         s.push({name:nxtSts,allowed:true})
-    //       }
-    //       else{
-    //         s.push({name:nxtSts,allowed:false})
-    //       }
-    //     });
-    //     this.statusGrid.push({status:ps,nextStatuses:s});
-    // });
-
-    
-
+    this.showGantt();
   }
 
   ngAfterViewInit() {
   }
   
+  showGantt(){
+
+    let startDate;
+    let endDate;
+    this.ganttHeaderDates=this.getDatesArray('2020-07-01', '2020-07-28');
+    this.assignDevColors();
+    console.log('-----------------Dates Start------------------------');
+    for(let i=0;i<this.ganttTasks.length;i++){
+      startDate=this.ganttTasks[i]['startDate'];
+      endDate=this.ganttTasks[i]['endDate'];
+      this.ganttTasks[i]['days']=this.getTaskWorkDates('2020-07-01', '2020-07-28',startDate,endDate);
+    }
+    console.log(this.ganttTasks);
+    console.log('-----------------Dates End------------------------');
+    // this.getTaskWorkDates('2020-01-01', '2020-01-15','2020-01-05', '2020-01-10');
+  }
+
+  assignDevColors(){
+    let assignees=[];
+    for (let i=0;i<this.ganttTasks.length;i++){
+      if(!assignees.includes(this.ganttTasks[i]['assignee'])){
+        assignees.push(this.ganttTasks[i]['assignee']);
+      }
+    }
+    console.log(assignees);
+    for (let i=0;i<assignees.length;i++){
+      this.assigneeColors[assignees[i]]=this.Tableau20[i];
+    }
+    console.log(this.assigneeColors);
+  }
 
   drop(ev) {
     ev.preventDefault();
@@ -420,17 +415,17 @@ options = {
 
 
 
-  openModal(){
+  // openModal(){
     
-    this._ren2.removeClass(this.myModal.nativeElement, 'hide');
-    this._ren2.addClass(this.myModal.nativeElement, "show");
-  }
+  //   this._ren2.removeClass(this.myModal.nativeElement, 'hide');
+  //   this._ren2.addClass(this.myModal.nativeElement, "show");
+  // }
 
-  closeModal(){
-    console.log('closemodal Called');
-    this._ren2.removeClass(this.myModal.nativeElement, 'show');
-    this._ren2.addClass(this.myModal.nativeElement, "hide");
-  }
+  // closeModal(){
+  //   console.log('closemodal Called');
+  //   this._ren2.removeClass(this.myModal.nativeElement, 'show');
+  //   this._ren2.addClass(this.myModal.nativeElement, "hide");
+  // }
 
   testLaunch(){
     this.launchIt=!this.launchIt;
@@ -500,6 +495,55 @@ options = {
      str += line + '\r\n';
     }
     return str;
+   }
+
+   getDatesArray(pStartDate,pEndDate){
+    let startDate= new Date(pStartDate);
+    let endDate= new Date(pEndDate);
+    let datesArray:any[]=[];
+    let idx=0;
+       while(true){
+        let tempDate=new Date(pStartDate);
+        tempDate.setDate(startDate.getDate()+idx)
+        console.log(`${tempDate} : ${endDate}`);
+        datesArray.push(tempDate);
+        if (tempDate.getTime() == endDate.getTime()){
+          break;
+        }
+        idx++;
+     }
+     return datesArray;
+   }
+   getTaskWorkDates(pSprintStartDate,pSprintEndDate,pTaskStartDate,pTaskEndDate){
+     console.log('getTaskDates');
+     let sprintStartDate= new Date(pSprintStartDate);
+     let sprintEndDate= new Date(pSprintEndDate);
+     let taskStartDate= new Date(pTaskStartDate);
+     let taskEndDate= new Date(pTaskEndDate);
+     let taskWorkDates:any[]=[];
+     console.log(taskEndDate);
+
+     let idx=0;
+     while(true){
+      let tempDate=new Date(sprintStartDate);
+        tempDate.setDate(sprintStartDate.getDate()+idx)
+        // console.log(`${tempDate} : ${sprintEndDate}`);
+        
+        if (tempDate.getTime()>= taskStartDate.getTime() && tempDate.getTime() <= taskEndDate.getTime()){
+          taskWorkDates.push({'sprintDate':tempDate,'isTaskScheduledDay':true});
+        }
+        else{
+          taskWorkDates.push({'sprintDate':tempDate,'isTaskScheduledDay':false});
+        }
+
+        if (tempDate.getTime() == sprintEndDate.getTime()){
+          break;
+        }
+      idx++;
+     }
+
+     console.log(taskWorkDates);
+     return taskWorkDates;
    }
 
 }

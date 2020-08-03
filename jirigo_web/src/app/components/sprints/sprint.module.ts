@@ -6,6 +6,7 @@ import { FormsModule,ReactiveFormsModule} from '@angular/forms';
 import { CreateSprintComponent  } from './create-sprint/create-sprint.component';
 import { ListSprintsComponent } from './list-sprints/list-sprints.component';
 import { SprintRoutingModule } from './sprint-routing.module';
+import { GanttChartComponent } from './gantt-chart/gantt-chart.component';
 
 import { TicketDetailsService   } from '../../services/tickets/ticket-details.service';
 
@@ -24,7 +25,7 @@ import { EditSprintsComponent } from './edit-sprints/edit-sprints.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @NgModule({
-  declarations: [CreateSprintComponent, ListSprintsComponent, EditSprintsComponent],
+  declarations: [CreateSprintComponent, ListSprintsComponent, EditSprintsComponent,GanttChartComponent],
   imports: [
     CommonModule,
     SprintRoutingModule,

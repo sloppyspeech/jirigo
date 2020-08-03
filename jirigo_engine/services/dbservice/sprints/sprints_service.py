@@ -275,3 +275,33 @@ class JirigoSprints(object):
             if(self.jdb.dbConn):
                 print(f'Error While Updating Sprint  {error}')
                 raise
+
+    def get_data_for_sprint_gantt(self):
+        response_data={}
+        self.logger.debug("Sprints Inside get_data_for_sprint_gantt")
+        query_sql="""  
+                        WITH t AS (
+                                    SELECT 	task_no,summary,start_date,end_date,get_user_name(assignee_id ) assignee, 
+                                            estimated_time/60 duration,sprint_start_date ,sprint_end_date 
+                                      FROM v_sprint_details vsd  
+                                     WHERE sprint_id=%s 
+                                     ORDER BY start_date ,end_date,task_no
+                                )
+                                SELECT json_agg(t) FROM t; 
+                   """
+        values=(self.sprint_id,)
+        self.logger.debug(f'Select : {query_sql} values {values}')
+        try:
+            print('-'*80)
+            cursor=self.jdb.dbConn.cursor()
+            cursor.execute(query_sql,values)
+            json_data=cursor.fetchone()[0]
+            row_count=cursor.rowcount
+            self.logger.debug(f'Select Success with {row_count} row(s) Sprint Data {json_data}')
+            response_data['dbQryStatus']='Success'
+            response_data['dbQryResponse']=json_data
+            return response_data
+        except  (Exception, psycopg2.Error) as error:
+            if(self.jdb.dbConn):
+                print(f'Error While get_data_for_sprint_gantt {error}')
+                raise

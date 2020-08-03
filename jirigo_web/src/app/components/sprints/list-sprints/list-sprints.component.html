@@ -30,7 +30,8 @@
     <tr class="ui-selectable-row">
       <td>{{i+1}}</td>
       <td>
-        <fa-icon [icon]="faEdit" style="color:orange;" class="p-2" size="lg" (click)="editSprint(sprint)" pull="left">
+        <fa-icon [icon]="faEdit" style="color:orange;cursor:pointer;" class="p-2" size="lg" (click)="editSprint(sprint)" pull="left"
+        >
         </fa-icon>
         {{sprint.sprint_name}}
       </td>
@@ -46,6 +47,8 @@
           ><fa-icon [icon]="faTh"></fa-icon></button>
         <button (click)="showSprintTasksDashBoard(sprint)" type="button" class="btn btn-light btn-scrumboard" label="Edit"
           ><fa-icon [icon]="faChartLine"></fa-icon></button>
+          <button (click)="showSprintGanttChart(sprint)" type="button" class="btn btn-light btn-scrumboard" label="Edit"
+          ><fa-icon [icon]="faStream"></fa-icon></button>
       </td>
     </tr>
   </ng-template>

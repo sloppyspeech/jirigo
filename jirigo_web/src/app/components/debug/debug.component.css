@@ -1,81 +1,75 @@
-.show{
-    display: block;
+.flex-grid {
+  display: flex;
 }
-.hide{
-    display: none;
-}
-
-#div1, #div2 {
-    float: left;
-    width: 6.875rem;
-    height: 3.938rem;
-    margin: 0.625rem;
-    padding: 0.625rem;
-    border: 0.063rem solid black;
+.col {
+  flex: 1;
 }
 
-option {
-    color:red;  
-}
-
-cSuggestions{
-    z-index: 20000;
-    background-color: beige;
-}
-
-/* The container <div> - needed to position the dropdown content */
-.dropdown {
-    position: relative;
-    display: inline-block;
-  }
+.horizontal-scrollable > .row { 
+  overflow-x: auto; 
+  white-space: nowrap; 
   
-  /* Dropdown Content (Hidden by Default) */
-  .dropdown-content {
-    display: block;
-    position: absolute;
-    background-color: #f9f9f9;
-    min-width: 100%;
-    width: auto;
-    box-shadow: 0rem 0.5rem 1rem 0rem rgba(0,0,0,0.2);
-    z-index: 1;
-  }
+} 
 
-  /* Links inside the dropdown */
-.dropdown-content p {
-    color: black;
-    padding: 0 1rem;
-    text-decoration: none;
-    display: block;
-  }
+.horizontal-scrollable  > .row >.col > .row > .col { 
+  display: inline-block; 
+  float: none; 
+} 
 
-  /* Change color of dropdown links on hover */
-.dropdown-content p:hover {
-    background-color: #4285f4;
-    color:white;
+.rp-header{
+  /* font-family: 'Courier New', Courier, monospace; */
+}
+.rp-row{
+  font-family: 'Courier New', Courier, monospace;
 }
 
-/* Show the dropdown menu on hover */
-.dropdown:hover .dropdown-content {
-  display: block;
-}
 
-.cal-card{
-  height:5.375rem;
+.task-details-popup-container {
+  display: flex;
+  flex-wrap:wrap;
+  cursor: pointer;
 }
-.cal-header{
-  height: 1.50rem; 
-  padding-top:1px;
+.task-details-popup-container .task-details-popup{
+  overflow-x: auto;
+  max-width: 10rem;
+  max-height: auto;
+  min-width: 10rem;
+  min-height: 5rem;
+  font-size:0.875rem;
+  font-weight:400;
+  box-shadow: 0 0.5rem 0.875rem 0 rgba(86, 95, 102, 0.07);
+  background-color: yellow;
+  padding: 1rem;
+  border-radius: 0.313rem;
+  position: absolute;
+  z-index: 200;
+  margin-top:1rem;
+  box-sizing: border-box;
 }
-
-.arrow-up {
-  width: 0; 
-  height: 0; 
-  border-left: 8px solid transparent;
-  border-right: 8px solid transparent;
-  
-  border-bottom: 8px solid white;
-}
-
-.card-columns {
-    column-count: 6;
-}
+/* .task-details-popup-container .task-details-popup::before{
+  background-color: #666666;
+  opacity: 0.6;
+  left:0; top:0;
+  position:fixed;
+  min-height:100vh !important; 
+  width:100%; 
+  z-index: -2;
+} */
+.task-details-popup-container .task-details-popup:after{
+  /* display: inline-block;
+  content:"";
+  border: 0.625rem solid transparent;
+  border-bottom: 0.625rem solid #888;
+  position: absolute;
+  top:-15%;
+  left: 50%;
+  margin-left: -5px;
+  z-index:200; */
+  border: 0.625rem solid transparent;
+  border-bottom: 0.625rem solid yellow;;
+  content: '';
+  /* right: 8.3rem; */
+  right:80%;
+  position: absolute;
+  top: -1.25rem;
+} 

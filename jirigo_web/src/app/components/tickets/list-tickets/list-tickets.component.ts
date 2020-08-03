@@ -52,7 +52,8 @@ export class ListTicketsComponent implements OnInit {
     // 'Modified Date'
   ];
   
-  dtOptions: DataTables.Settings = {};
+  // dtOptions: DataTables.Settings = {};
+  dtOptions: any = {};
 
   constructor(private _router:Router,
               private _serTicketDetails:TicketDetailsService,

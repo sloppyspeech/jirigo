@@ -60,11 +60,6 @@ const routes: Routes = [
     canActivate:[AuthGuard,RoleGuard]
   },
   {
-    path:'dashboard',
-    loadChildren: () => import('./components/dashboard/dashboard.module').then( m => m.DashboardModule),
-    canActivate:[AuthGuard,RoleGuard]
-  },
-  {
     path:'sprints',
     loadChildren: () => import('./components/sprints/sprint.module').then( m => m.SprintModule),
     canActivate:[AuthGuard,RoleGuard]

@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TaskCommentsComponent } from './tasks-comments.component';
+import { GanttChartComponent } from './gantt-chart.component';
 
-describe('TaskCommentsComponent', () => {
-  let component: TaskCommentsComponent;
-  let fixture: ComponentFixture<TaskCommentsComponent>;
+describe('GanttChartComponent', () => {
+  let component: GanttChartComponent;
+  let fixture: ComponentFixture<GanttChartComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TaskCommentsComponent ]
+      declarations: [ GanttChartComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(TaskCommentsComponent);
+    fixture = TestBed.createComponent(GanttChartComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

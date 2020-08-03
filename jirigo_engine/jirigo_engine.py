@@ -974,7 +974,7 @@ def get_all_tasks_for_sprint(sprint_id):
     if request.method == 'GET':
         print('In GET get_all_tasks_for_sprint :'+sprint_id)
         try:
-            jdb=JirigoSprints({'project_name':sprint_id})
+            jdb=JirigoSprints({'sprint_id':sprint_id})
             data=jdb.get_all_tasks_of_sprint()
             return jsonify(data)
         except Exception as error:
@@ -982,6 +982,21 @@ def get_all_tasks_for_sprint(sprint_id):
             return get_jsonified_error_response('Failure',error)
     else:
         return get_jsonified_error_response('Failure',"get_all_tasks_for_sprint " + get_errmsg('NAGR'))
+
+@app.route('/api/v1/sprint-management/sprint-gantt-data',methods=['GET'])
+def get_data_for_sprint_gantt():
+    data={}
+    if request.method == 'GET':
+        try:
+            sprint_id=request.args.get('sprint_id')
+            jdb=JirigoSprints({'sprint_id':sprint_id})
+            data=jdb.get_data_for_sprint_gantt()
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in get_data_for_sprint_gantt {error}')
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',"get_data_for_sprint_gantt " + get_errmsg('NAGR'))
 
 
 @app.route('/api/v1/sprint-management/create-sprint',methods=['POST'])

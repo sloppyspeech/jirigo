@@ -1,0 +1,141 @@
+<div class="container-fluid" >
+    <div class="row" style="background-color: #ffffff; z-index:1;">
+      <!-- Left Pane -->
+      <div class="col-lg-5 mx-0 px-0" >
+        <div class="container horizontal-scrollable ">
+            <div class=" row flex-nowrap ">
+              <div class="col">
+                <div class="row flex-nowrap lp-header">
+                  <div class="col-lg-1 lp-row-col-border text-center" >
+                    #
+                  </div>
+                  <div class="col-lg-4 lp-row-col-border text-center" >
+                    Task Details
+                  </div>
+                  <div class="col-lg-3 lp-row-col-border text-center" >
+                    Start 
+                  </div>
+                  <!-- <div class="col-lg-3 lp-row-col-border text-center" >
+                    End
+                  </div> -->
+                  <div class="col-lg-1 lp-row-col-border text-center" >
+                    Hrs
+                  </div>
+                  <div class="col-lg-3 lp-row-col-border text-center" >
+                    Assignee
+                  </div>
+                </div>
+                <ng-container *ngFor="let task of ganttChartDispData; let idx=index;">
+                  <div class="row flex-nowrap lp-row " >
+                    <!-- Left Pane -->
+                        <div class="col-lg-1 lp-row-border-bottom lp-row-col-right-border  text-center" >
+                          {{idx}} 
+                        </div>
+                        <div class="col-lg-4  lp-row-border-bottom lp-row-border-left lp-row-col-right-border lp-task-summary" >
+                            <span style="font-weight: 500;padding-right:0.375rem;">{{task.task_no}} </span>
+                            {{task.summary}}
+                        </div>
+                        <div class="col-lg-3 lp-row-border-bottom lp-row-col-right-border  text-center" >
+                          {{task.start_date | date :'dd MMM yyyy'}} 
+                        </div>
+                        <!-- <div class="col-lg-3 lp-row-border-bottom lp-row-col-right-border text-center" >
+                          {{task.end_date | date :'dd MMM yyyy'}}
+                        </div> -->
+                        <div class="col-lg-1 lp-row-border-bottom lp-row-col-right-border text-left " >
+                          {{task.duration | number:'1.0-1'}}
+                        </div>
+                        <div class="col-lg-3 lp-row-border-bottom lp-row-col-right-border text-center " >
+                          {{task.assignee}}
+                        </div>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+        </div>
+      </div>
+  
+      <!-- Right Pane -->
+      <div class="col-lg-7  mx-0 px-0" >
+          <div class="container-fluid horizontal-scrollable overflow-auto">
+            <div class=" row flex-nowrap ">
+              <div class="col">
+          
+                <div class="row flex-nowrap rp-header" >
+                  <ng-container *ngFor="let day of ganttHeaderDates;let i=index;">
+                    <div class="col rp-col-header flex-lg-grow-1 px-3">{{day | date :'dd MMM'}}</div>
+                  </ng-container>
+                </div>
+             
+                <ng-container *ngFor="let task of ganttChartDispData;let i=index;">
+                    <div class="row flex-nowrap " style="border-left: 1px solid #dfdfdf;border-bottom: 1px solid #dfdfdf !important; ">
+                      
+                      <ng-container *ngFor="let day of task.days ; let dIdx=index;">
+                        <div class="col flex-lg-grow-1 task-line-fill px-3 " 
+                             [ngStyle]="{'background-color':assigneeColors[task.assignee],'cursor':'help'}"
+                             *ngIf="day.isTaskScheduledDay" 
+                             (click)="showHideTaskDetails(task['task_no'],true)"
+                             (mouseleave)="showHideTaskDetails(task['task_no'],false)"
+                             >
+                          {{day.sprintDate | date :'dd MMM'}}
+                        </div>
+                        <div class="col flex-lg-grow-1 task-line-nofill px-3"  *ngIf="!day.isTaskScheduledDay">
+                          {{day.sprintDate | date :'dd MMM'}}
+                        </div>
+                        <!-- popup -->
+                          <ng-container 
+                            *ngIf="(day.isTaskScheduledDay && dIdx==0)  || ( dIdx >0 && day.isTaskScheduledDay && !task.days[dIdx-1].isTaskScheduledDay)"
+                          >
+                            <div class="task-details-popup-container" *ngIf="showTaskDetails[task['task_no']] ">
+                              <div class="task-details-popup"  >
+                                <div class="container mt-2">
+                                  <div class="row">
+                                    <div class="col">
+                                      <span style="font-size:0.750rem;font-weight:500;margin-right:0.25rem;">Task No:</span>
+                                      {{task.task_no}}
+                                    </div>
+                                  </div>
+                                  <div class="row">
+                                    <div class="col">
+                                      <span style="font-size:0.750rem;font-weight:500;margin-right:0.25rem;">Assignee:</span>
+                                      {{task.assignee}}
+                                    </div>
+                                  </div>
+                                  <div class="row">
+                                    <div class="col">
+                                      <span style="font-size:0.750rem;font-weight:500;margin-right:0.25rem;">Start Date:</span>
+                                      {{task.start_date| date :'dd MMM'}}
+                                    </div>
+                                  </div>
+                                  <div class="row">
+                                    <div class="col">
+                                      <span style="font-size:0.750rem;font-weight:500;margin-right:0.25rem;">End Date:</span>
+                                      {{task.end_date| date :'dd MMM'}}
+                                    </div>
+                                  </div>
+                                  <div class="row">
+                                    <div class="col">
+                                      <span style="font-size:0.750rem;font-weight:500;margin-right:0.25rem;">Duration:</span>
+                                      {{task.duration| number:'1.0-1'}} Hrs
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </ng-container>
+                        <!--  popup -->
+                      </ng-container>
+                      
+                    </div>
+                </ng-container>
+              </div>
+            </div>
+  
+          </div>
+  
+      </div>
+  
+    </div>
+  
+  </div>
+
+  <ngx-spinner [fullScreen]="true" type="ball-newton-cradle" size="medium"></ngx-spinner>

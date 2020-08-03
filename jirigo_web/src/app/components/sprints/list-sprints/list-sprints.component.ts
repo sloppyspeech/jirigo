@@ -7,7 +7,7 @@ import { StaticDataService  } from '../../../services/static-data.service';
 import * as moment from 'moment';
 import { NgbDate } from '@ng-bootstrap/ng-bootstrap';
 
-import { faPenSquare,faPenNib,faPencilAlt,faEdit,faListUl,faNewspaper,faTh,faChartLine  } from '@fortawesome/free-solid-svg-icons';
+import { faPenSquare,faPenNib,faPencilAlt,faEdit,faListUl,faNewspaper,faTh,faChartLine,faStream  } from '@fortawesome/free-solid-svg-icons';
 
 declare var $: any;
 
@@ -25,6 +25,7 @@ export class ListSprintsComponent implements OnInit {
   faNewspaper=faNewspaper;
   faTh=faTh;
   faChartLine=faChartLine;
+  faStream=faStream;
 
   allSprints=[];
   refSprintStatus=[];
@@ -98,6 +99,11 @@ export class ListSprintsComponent implements OnInit {
   showSprintTasksDashBoard(sprint){
     console.log(sprint);
     this._router.navigate(['dashboard/sprint-tasks-dashboard'],{queryParams:{'sprint_id':sprint['sprint_id'],'sprint_name':sprint['sprint_name']}});
+  }
+
+  showSprintGanttChart(sprint){
+    console.log(sprint);
+    this._router.navigate(['sprints/sprint-gantt'],{queryParams:{'sprint_id':sprint['sprint_id'],'sprint_name':sprint['sprint_name']}});
   }
 
   editSprint(ele){

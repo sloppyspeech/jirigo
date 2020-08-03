@@ -4,9 +4,12 @@
     font-size: 0.875rem;
     font-weight: 500;
     color:green;
+    border-radius: 0.25rem;
 }
-.active-user:hover{
+.inactive-user:hover{
     cursor: pointer;
+    color: #DCEDC8;
+    background-color:green;
 }
 .inactive-user{
     padding: 0.313rem 0.625rem 0.313rem 0.625rem; 
@@ -14,9 +17,12 @@
     font-size: 0.875rem;
     font-weight: 500;
     color:#BF360C;
+    border-radius: 0.25rem;
 }
-.inactive-user:hover{
+.active-user:hover{
     cursor: pointer;
+    background-color:#BF360C;
+    color: #FBE9E7;
 }
 .edit-icon{
     background-image: url("/assets/images/svgs/password-05.svg");

@@ -54,6 +54,11 @@ export class SprintDetailsService {
     console.log(inpData);
     return this._httpCli.put(this.sApiEndPoint+'sprint-tasks',inpData,this.sHttpOptions);
   }
+
+  getSprintDataForGantt(inpSprintId:string){
+    console.log("getSprintDataForGantt End point :" + this.sApiEndPoint + 'sprint-gantt-data?sprint_id='+inpSprintId);
+    return this._httpCli.get<any>(this.sApiEndPoint + 'sprint-gantt-data?sprint_id='+inpSprintId);
+  }
   
   
 

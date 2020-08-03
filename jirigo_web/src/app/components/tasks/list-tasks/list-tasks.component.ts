@@ -54,7 +54,7 @@ export class ListTasksComponent implements OnInit {
     // 'Modified Date'
   ];
   
-  dtOptions: DataTables.Settings = {};
+  dtOptions: any = {};
 // dtOptions: DataTables.Settings = {
 //   "columnDefs": [
 //     { "orderable": false, "targets": 0 },

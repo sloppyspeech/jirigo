@@ -86,6 +86,26 @@ export class UtilsService {
     return allDates;
   }
   
+  // Given a start and end date,return all dates inbetween those tow
+  // as an array.
+  getDatesArrayForADateRange(pStartDate,pEndDate){
+    let startDate= new Date(pStartDate);
+    let endDate= new Date(pEndDate);
+    let datesArray:any[]=[];
+    let idx=0;
+       while(true){
+        let tempDate=new Date(pStartDate);
+        tempDate.setDate(startDate.getDate()+idx)
+        console.log(`${tempDate} : ${endDate}`);
+        datesArray.push(tempDate);
+        if (tempDate.getTime() == endDate.getTime()){
+          break;
+        }
+        idx++;
+     }
+     return datesArray;
+   }
+
   // lPadDates(currDate){
   //   console.log('-----------Lpad-----------');
   //   console.log(currDate);

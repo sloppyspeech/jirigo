@@ -116,9 +116,9 @@ export class UsersGridComponent implements OnInit {
     .toPromise()
     .then(res=>{
         console.log("In Service Get All Active Users");
-        console.log(res);
         if (res['dbQryStatus'] == "Success"){
           this.users=res['dbQryResponse'];
+          console.table("%o",res['dbQryResponse']);
         }
     })
     .catch(err=>{
