@@ -63,6 +63,11 @@
     font-weight: 450;
     color:transparent;
     border-radius:0.063;
+    opacity:0.3;
+  }
+  .task-line-fill-overlay{
+    z-index: 20;
+    opacity: 1;
   }
   .task-line-nofill{
     width:100%;

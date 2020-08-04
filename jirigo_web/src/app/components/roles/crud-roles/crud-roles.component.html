@@ -2,18 +2,18 @@
   <div class="row">
     <!-- <div class="col-lg-8" style="background-color:#53708F;padding:0.625rem 0rem 0.625rem 0rem; border-radius:0.188rem;"> -->
     <div
-      class="col-lg-8"
+      class="col-lg-12"
       style="
-        background-color: #bfc8c1;
+        background-color: transparent;
         padding: 0.625rem 0rem 0.625rem 0rem;
         border-radius: 0.188rem;
       "
-    >
-      <div class="row">
-        <div class="col-lg-10">
-          <h5 style="color: white; padding: 0.25rem 0 0 0.625rem;">Manage Roles</h5>
+    > 
+      <div class="row ">
+        <div class="col-lg-10 mr-0 pr-0" >
+          <h4 style="color: black; padding: 0.25rem 0 0 0.625rem;">Manage Roles</h4>
         </div>
-        <div class="col-lg-2">
+        <div class="col-lg-1 ml-auto pl-0 mr-0 pr-0">
           <button
             type="button"
             class="btn btn-primary"
@@ -28,61 +28,62 @@
                 style="padding: 0 0.313rem 0 0;"
               ></fa-icon>
             </span>
-            Add Role
+            Add 
           </button>
         </div>
       </div>
     </div>
   </div>
-  <br />
   <!-- #53708F -->
-  <div class="row">
-    <div class="col-lg-8">
-      <table class="table table-stripped table-sm">
-        <thead>
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">Role Id</th>
-            <th scope="col">Role Name</th>
-            <th scope="col">Is Active</th>
-            <th scope="col">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let role of allActiveRoles; let idx = index">
-            <th scope="row">{{ idx + 1 }}</th>
-            <td>{{ role.role_id }}</td>
-            <td>{{ role.role_name }}</td>
-            <td>{{ role.is_active }}</td>
-            <td>
+  <section > 
+    <div class="row pt-0 mt-0">
+      <div class="col-lg-12">
+        <table class="table table-stripped table-sm">
+          <thead style="background-color: #eeeeee;">
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Role Id</th>
+              <th scope="col">Role Name</th>
+              <th scope="col">Is Active</th>
+              <th scope="col">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let role of allActiveRoles; let idx = index">
+              <th scope="row">{{ idx + 1 }}</th>
+              <td>{{ role.role_id }}</td>
+              <td>{{ role.role_name }}</td>
+              <td>{{ role.is_active }}</td>
+              <td>
 
-              <span>
-                <fa-icon
-                  [icon]="faEdit"
-                  style="
-                    padding: 0 1.25rem 0 0;
-                    color: lightsalmon;
-                    font-size: larger;
-                  "
-                data-toggle="modal"
-                data-target="#editRoleModal"
-                (click)="editRole(role)"
-                ></fa-icon>
-              </span>
                 <span>
                   <fa-icon
-                    [icon]="faTrashAlt"
-                    style="padding: 0 1.25rem 0 0; color: red; font-size: larger;"
-
-                  >
-                  </fa-icon>
+                    [icon]="faEdit"
+                    style="
+                      padding: 0 1.25rem 0 0;
+                      color: lightsalmon;
+                      font-size: larger;
+                    "
+                  data-toggle="modal"
+                  data-target="#editRoleModal"
+                  (click)="editRole(role)"
+                  ></fa-icon>
                 </span>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+                  <span>
+                    <fa-icon
+                      [icon]="faTrashAlt"
+                      style="padding: 0 1.25rem 0 0; color: red; font-size: larger;"
+
+                    >
+                    </fa-icon>
+                  </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
-  </div>
+  </section>
 </div>
 
 <div

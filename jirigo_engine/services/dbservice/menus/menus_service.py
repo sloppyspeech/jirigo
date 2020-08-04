@@ -24,6 +24,10 @@ class JirigoMenus(object):
         self.created_date = datetime.datetime.now()
         self.modified_by=data.get('modified_by')
         self.modified_date=datetime.datetime.now()
+        self.menu_name=data.get('menu_name','')
+        self.menu_url=data.get('menu_url','')
+        self.parent_menu_id=data.get('parent_menu_id','')
+
 
         self.jdb=JirigoDBConn()
         self.logger=Logger()
@@ -179,4 +183,61 @@ class JirigoMenus(object):
         except  (Exception, psycopg2.Error) as error:
             if(self.jdb.dbConn):
                 print(f'Error While add_menus_to_role {error}')
+                raise
+
+    def get_all_menus_for_project(self):
+        response_data={}
+        self.logger.debug("Inside get_all_menus_for_project")
+        query_sql="""  
+                        WITH t AS (
+                                    SELECT
+                                        menu_id,parent_menu_id ,menu_url,COALESCE (PATH,'root') path
+                                    FROM
+                                        v_menu_details vrm
+                                    ORDER BY path
+                        )
+                        SELECT json_agg(t) from t
+                   """
+
+        # values=(self.project_id,)
+        self.logger.debug(f'Select : {query_sql} ')
+        try:
+            print('-'*80)
+            cursor=self.jdb.dbConn.cursor()
+            cursor.execute(query_sql)
+            json_data=cursor.fetchone()[0]
+            row_count=cursor.rowcount
+            self.logger.debug(f'Select Success with {row_count} row(s) {json_data}')
+            response_data['dbQryStatus']='Success'
+            response_data['dbQryResponse']=json_data
+            return response_data
+        except  (Exception, psycopg2.Error) as error:
+            if(self.jdb.dbConn):
+                print(f'Error While get_all_menus_for_project {error}')
+                raise
+    
+    def add_menu(self):
+        response_data={}
+                        # INSERT INTO tmenus (menu_id,menu_name,menu_url,parent_menu_id,created_date,created_by) VALUES("dfdfd",%s,%s,%s,%s,%s);
+        self.logger.debug("add_menu")
+        add_menu_sql="""
+                        INSERT INTO 
+                            TMENUS (menu_id,menu_name,menu_url,parent_menu_id,created_date,created_by)
+                        VALUES((SELECT MAX(menu_id)+1 FROM tmenus),%s,%s,%s,%s,%s)
+                     """
+        add_menu_values=(self.menu_name,self.menu_name,self.parent_menu_id,self.created_date,self.created_by,)
+        print(f'{add_menu_sql} : {add_menu_values}')
+        try:
+            print('-'*80)
+            cursor=self.jdb.dbConn.cursor()
+            cursor.execute(add_menu_sql,add_menu_values)
+            row_count=cursor.rowcount
+            self.logger.debug(f'Insert Success with {row_count} row(s)  ID {self.menu_name} ')
+            self.jdb.dbConn.commit()
+            response_data['dbQryStatus']='Success'
+            response_data['dbQryResponse']={"manuName":self.menu_name,"rowCount":row_count}
+            return response_data
+        except  (Exception, psycopg2.Error) as error:
+            if(self.jdb.dbConn):
+                print(f'Error While add_menu {error}')
                 raise

@@ -282,7 +282,8 @@ class JirigoSprints(object):
         query_sql="""  
                         WITH t AS (
                                     SELECT 	task_no,summary,start_date,end_date,get_user_name(assignee_id ) assignee, 
-                                            estimated_time/60 duration,sprint_start_date ,sprint_end_date 
+                                            estimated_time/60 duration,sprint_start_date ,sprint_end_date ,
+                                            get_sumof_task_actuals(task_no) actual_time
                                       FROM v_sprint_details vsd  
                                      WHERE sprint_id=%s 
                                      ORDER BY start_date ,end_date,task_no

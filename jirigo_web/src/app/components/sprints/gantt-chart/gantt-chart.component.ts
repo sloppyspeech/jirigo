@@ -66,7 +66,7 @@ export class GanttChartComponent implements OnInit {
       this.ganttChartDispData[i]['days']=this.getTaskWorkScheduledDates(sprintStartDate, sprintEndDate,startDate,endDate);
     }
     this.ganttHeaderDates=this._serUtils.getDatesArrayForADateRange(sprintStartDate, sprintEndDate);
-    console.table(this.ganttChartDispData);
+    console.log(this.ganttChartDispData);
     console.log('-----------------Dates End------------------------');
   }
 
@@ -105,16 +105,20 @@ export class GanttChartComponent implements OnInit {
     console.log(taskEndDate);
 
     let idx=0;
+    let scheduledDayCounter=0;
     while(true){
      let tempDate=new Date(sprintStartDate);
        tempDate.setDate(sprintStartDate.getDate()+idx)
        // console.log(`${tempDate} : ${sprintEndDate}`);
        
        if (tempDate.getTime()>= taskStartDate.getTime() && tempDate.getTime() <= taskEndDate.getTime()){
-         taskWorkDates.push({'sprintDate':tempDate,'isTaskScheduledDay':true});
+         if(tempDate.getDay() !=0 && tempDate.getDay() !=6){
+           scheduledDayCounter++;
+         }
+         taskWorkDates.push({'sprintDate':tempDate,'isTaskScheduledDay':true,'scheduledDayCounter':scheduledDayCounter,'dayNo':tempDate.getDay()});
        }
        else{
-         taskWorkDates.push({'sprintDate':tempDate,'isTaskScheduledDay':false});
+         taskWorkDates.push({'sprintDate':tempDate,'isTaskScheduledDay':false,'scheduledDayCounter':0,'dayNo':tempDate.getDay()});
        }
 
        if (tempDate.getTime() == sprintEndDate.getTime()){

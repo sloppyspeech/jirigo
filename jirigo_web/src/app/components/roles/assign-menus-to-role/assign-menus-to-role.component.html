@@ -1,9 +1,31 @@
-<h4>Assign Menus To Role</h4>
 <div
-  class="container-fluid"
-  style="background-color:transparent; border-radius: 0.313rem; margin: 0 0 1.063rem 0;"
+class="container-fluid"
+style="background-color:transparent; border-radius: 0.313rem; margin: 0 0 1.063rem 0;"
 >
-  <div class="row" style="padding:1.25rem 0 0 0;">
+  <div class="row pt-1">
+    <div class="col-lg-4">
+      <h4>Assign Menus To Role</h4>
+    </div>
+    <div class="col-lg-3 ml-auto">
+      <button
+            type="button"
+            class="btn btn-coolgreen float-right"
+            style="margin-right: 0.625rem;"
+            data-toggle="modal"
+            data-target="#idaddNewMenuItem"
+          >
+            <span>
+              <fa-icon
+                [icon]="faPlusSquare"
+                style="padding: 0 0.313rem 0 0;"
+              ></fa-icon>
+            </span>
+            Add Menu
+          </button>
+    </div>
+  </div>
+  <hr>
+  <div class="row" style="padding:0.25rem 0 0 0;">
     <div class="col-lg-3 offset-lg-3">
       <div class="form-group">
         <!-- <label class="col-form-label">Project</label> -->
@@ -105,3 +127,68 @@
   (dialogClosed)="modalAlertAction(modalAlertConfig.dialogClosed)"
 >
 </app-modal-confirm>
+
+
+<!-- New Menu Item -->
+<div
+  class="modal fade"
+  id="idaddNewMenuItem"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="idaddNewMenuItemLabel"
+  aria-hidden="true"
+>
+  <form [formGroup]="addMenuItemFG">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="idaddNewMenuItemModalTitle">
+            Add New Menu Item
+          </h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-lg-6">
+              <div class="form-group">
+                <label for="idMenuName">New Menu Name</label>
+                <input type="text" class="form-control" 
+                       formControlName="fctlMenuName"
+                       name="nm_MenuName" id="idMenuName" aria-describedby="helpId"
+                       placeholder="New Menu Name">
+                <small id="helpId" class="form-text text-muted">[a-zA-Z0-9 -] only,no spaces.</small>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="form-group">
+                <div class="form-group">
+                  <label for="">Parent Menu </label>
+                  <select class="form-control" name="" id="" formControlName="fctlParentMenuId" >
+                    <option *ngFor="let parentMenu of allMenusForProject" value="parentMenu.menu_url">
+                      {{parentMenu.menu_url}}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-light" data-dismiss="modal" (click)="addMenuItemFG.reset()">
+            Cancel
+          </button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal" (click)="addNewMenu()" [disabled]="addMenuItemFG.invalid">
+            Confirm
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<!-- New Menu Item End -->

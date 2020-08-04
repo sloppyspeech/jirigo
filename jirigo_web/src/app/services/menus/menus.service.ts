@@ -24,6 +24,12 @@ export class MenusService {
     console.log(url);
     return this._httpCli.get(url);
   }
+  
+  getAllMenusForProject(){
+    let url = this.sApiEndPoint +'all-menus-for-project';
+    console.log(url);
+    return this._httpCli.get(url);
+  }
 
   getAllUnassignedMenusForProjectRole(inpData){
     let url = this.sApiEndPoint +'all-unassigned-menuitems-by-role-project'+`?project_id=${inpData['project_id']}&role_id=${inpData['role_id']}`;
@@ -39,6 +45,12 @@ export class MenusService {
 
   addMenusToRole(inpData){
     let url = this.sApiEndPoint +'add-menus-to-role';
+    console.log(url);
+    return this._httpCli.post(url,inpData,this.sHttpOptions);
+  }
+
+  addNewMenu(inpData){
+    let url = this.sApiEndPoint +'add-menu';
     console.log(url);
     return this._httpCli.post(url,inpData,this.sHttpOptions);
   }

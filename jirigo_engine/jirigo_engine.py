@@ -1457,6 +1457,8 @@ def get_roles_active_for_allprojects():
     else:
         return get_jsonified_error_response('Failure',"get_roles_active_for_allprojects" + get_errmsg('NAGR'))
 
+
+
 @app.route('/api/v1/role-management/roles-assignable-for-user-by-project',methods=['GET'])
 def get_roles_for_user_assignment():
     data={}
@@ -1602,6 +1604,20 @@ def get_all_menus_details_for_projectrole():
     else:
         return get_jsonified_error_response('Failure',"get_all_menus_details_for_projectrole " + get_errmsg('NAGR'))
 
+@app.route('/api/v1/menu-management/all-menus-for-project',methods=['GET'])
+def get_all_menus_for_project():
+    data={}
+    if request.method == 'GET':
+        print('In GET get_active_project_roles')
+        try:
+            jdb=JirigoMenus()
+            data=jdb.get_all_menus_for_project()
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in get_all_menus_for_project {error}')
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',"get_all_menus_for_project" + get_errmsg('NAGR'))
 
 @app.route('/api/v1/menu-management/valid-routes-for-user',methods=['GET'])
 def get_all_valid_routes_for_user():
@@ -1673,6 +1689,21 @@ def add_menus_to_role():
             return get_jsonified_error_response('Failure',error)
     else:
         return get_jsonified_error_response('Failure',"add_menus_to_role " + get_errmsg('NAPR'))
+
+@app.route('/api/v1/menu-management/add-menu',methods=['POST'])
+def add_menu():
+    if request.method == 'POST':
+        print('In Get add_menu')
+        print(request.get_json())
+        try:
+            jdb=JirigoMenus(request.get_json())
+            data=jdb.add_menu()
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in add_menu {error}')
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',"add_menu " + get_errmsg('NAPR'))
 
 
 @app.route('/api/v1/data-extracts/tickets-by-daterange',methods=['GET'])

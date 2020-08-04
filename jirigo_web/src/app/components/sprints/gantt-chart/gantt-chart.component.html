@@ -72,12 +72,21 @@
                       <ng-container *ngFor="let day of task.days ; let dIdx=index;">
                         <div class="col flex-lg-grow-1 task-line-fill px-3 " 
                              [ngStyle]="{'background-color':assigneeColors[task.assignee],'cursor':'help'}"
+                             [ngClass]="{'task-line-fill-overlay': ( (day.scheduledDayCounter*8<=task.actual_time))}"
                              *ngIf="day.isTaskScheduledDay" 
                              (click)="showHideTaskDetails(task['task_no'],true)"
                              (mouseleave)="showHideTaskDetails(task['task_no'],false)"
                              >
                           {{day.sprintDate | date :'dd MMM'}}
                         </div>
+                        <!-- <div class="col flex-lg-grow-1 task-line-fill task-line-fill-overlay px-3 " 
+                             [ngStyle]="{'background-color':assigneeColors[task.assignee],'cursor':'help'}"
+                             *ngIf="day.isTaskScheduledDay && dIdx<5" 
+                             (click)="showHideTaskDetails(task['task_no'],true)"
+                             (mouseleave)="showHideTaskDetails(task['task_no'],false)"
+                             >
+                          {{day.sprintDate | date :'dd MMM'}}
+                        </div> -->
                         <div class="col flex-lg-grow-1 task-line-nofill px-3"  *ngIf="!day.isTaskScheduledDay">
                           {{day.sprintDate | date :'dd MMM'}}
                         </div>
@@ -114,8 +123,14 @@
                                   </div>
                                   <div class="row">
                                     <div class="col">
-                                      <span style="font-size:0.750rem;font-weight:500;margin-right:0.25rem;">Duration:</span>
+                                      <span style="font-size:0.750rem;font-weight:500;margin-right:0.25rem;">Estimated:</span>
                                       {{task.duration| number:'1.0-1'}} Hrs
+                                    </div>
+                                  </div>
+                                  <div class="row">
+                                    <div class="col">
+                                      <span style="font-size:0.750rem;font-weight:500;margin-right:0.25rem;">Actual:</span>
+                                      {{task.actual_time| number:'1.0-1'}} Hrs
                                     </div>
                                   </div>
                                 </div>

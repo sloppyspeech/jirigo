@@ -1,15 +1,17 @@
+import { FormGroup, FormBuilder,FormControl,Validators } from '@angular/forms';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { RolesService } from './../../../services/roles/roles.service';
 import { Component, OnInit } from '@angular/core';
 import { ProjectsService } from './../../../services/projects/projects.service';
 import { MenusService } from './../../../services/menus/menus.service';
-
+import { faPlusSquare} from '@fortawesome/free-regular-svg-icons';
 @Component({
   selector: 'app-assign-menus-to-role',
   templateUrl: './assign-menus-to-role.component.html',
   styleUrls: ['./assign-menus-to-role.component.css']
 })
 export class AssignMenusToRoleComponent implements OnInit {
+  faPlusSquare=faPlusSquare;
   selectedProjectId:number=0;
   selectedRoleId:number=0;
   projectList:projectValues[]=[];
@@ -17,6 +19,7 @@ export class AssignMenusToRoleComponent implements OnInit {
   filteredRolesList:roleValues[]=[];
   unAssignedMenus:menuItem[]=[];
   assignedMenus:menuItem[]=[];
+  allMenusForProject:any[]=[];
   modalAlertConfig={
     modalType :'',
     showModal:false,
@@ -28,15 +31,24 @@ export class AssignMenusToRoleComponent implements OnInit {
     dialogConfirmed:'',
     dialogClosed:''
 };
+
+  addMenuItemFG:FormGroup;
   constructor(private _serMenu:MenusService,
               private _serProjects:ProjectsService,
               private _serRoles:RolesService,
+              private _serFormBuilder:FormBuilder,
               private _serNgxSpinner:NgxSpinnerService) { }
 
   ngOnInit(): void {
+
     this.populateProjectDropDown();
     this.getAllActiveRoles();
     // this.populateMenuDetailsFromDB({'project_id':this.selectedProjectId,'role_id':this.selectedRoleId});
+    this.getAllMenusForProject();
+    this.addMenuItemFG=this._serFormBuilder.group({
+      'fctlMenuName':['',[Validators.required,Validators.pattern('[a-zA-Z0-9\-]*')]],
+      'fctlParentMenuId':['1',]
+    });
   }
 
   removeUndefined(){
@@ -52,10 +64,9 @@ export class AssignMenusToRoleComponent implements OnInit {
     this._serProjects.getAllProjects()
         .subscribe(res=>{
             if(res['dbQryStatus'] && res['dbQryStatus'] == "Success"){
-              console.log(res);
               res['dbQryResponse'].forEach(e=>{
                 this.projectList.push({'project_id': e.project_id,'project_name':e.project_name});
-              })
+              });
             }
         });
   }
@@ -221,6 +232,32 @@ this._serMenu.getAllUnassignedMenusForProjectRole(inpData)
     this.modalAlertConfig.showModal=false;
   }
 
+  getAllMenusForProject(){
+    this._serMenu.getAllMenusForProject()
+        .subscribe(res=>{
+            console.log(res['dbQryResponse']);
+            if (res['dbQryResponse'] && res['dbQryStatus'] == "Success"){
+              res['dbQryResponse'].forEach(e => {
+                this.allMenusForProject.push({'menu_id':e.menu_id,'menu_url':e.path == ''?'root':e.path });
+              });
+            }
+        })  
+  }
+
+  addNewMenu(){
+    console.log(this.addMenuItemFG.getRawValue());
+    let inpData={
+      'menu_name':this.addMenuItemFG.get('fctlMenuName').value,
+      'parent_menu_id':this.addMenuItemFG.get('fctlParentMenuId').value,
+      'created_by':localStorage.getItem('loggedInUserId')
+    };
+    console.log(inpData);
+    this._serMenu.addNewMenu(inpData)
+        .subscribe(res=>{
+            console.log(res);
+            this.addMenuItemFG.reset();
+        });
+  }
 }
 
 interface menuItem{
