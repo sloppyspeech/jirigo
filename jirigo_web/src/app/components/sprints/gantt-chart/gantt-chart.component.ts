@@ -131,7 +131,9 @@ export class GanttChartComponent implements OnInit {
     return taskWorkDates;
   }
 
-  showHideTaskDetails(taskNo,showHide){
+  showHideTaskDetails(taskNo,showHide,e){
+    console.log(e);
+    console.log(`${e.pageY}: :${window.pageYOffset}`);
     console.log(`${taskNo} : ${showHide}`);
     this.showTaskDetails.forEach(e => {
       this.showTaskDetails[e]=false;

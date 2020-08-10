@@ -233,9 +233,11 @@
               <label
                 for="typeahead-http"
                 class="col-form-label col-form-label-sm"
-                >Remaining Time(Hrs)
-                </label
-              >
+                >Remaining Time(Hrs) 
+                  <small *ngIf=" task_data?.task_remaining_time <0" style="color:red;"> 
+                      Estimation Overshot
+                  </small>
+                </label>
               <input
                 id="tdc_RemainingTime"
                 type="number"

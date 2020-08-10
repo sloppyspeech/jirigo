@@ -49,6 +49,7 @@ import { DataExtractsComponent } from './components/data-extracts/data-extracts.
 import { ClickToEditModule } from './shared/modules/click-to-edit/click-to-edit.module';
 import { ColorPickerModule } from './shared/modules/color-picker/color-picker.module';
 import { BarChartModule } from './shared/modules/charts/bar-chart/bar-chart.module';
+import { AreaChartModule } from './shared/modules/charts/area-chart/area-chart.module';
 
 @NgModule({
   declarations: [
@@ -97,7 +98,8 @@ import { BarChartModule } from './shared/modules/charts/bar-chart/bar-chart.modu
     ColorPickerModule,
     BarChartModule,
     LineChartModule,
-    GlobalSearchModule
+    GlobalSearchModule,
+    AreaChartModule
   ],
   providers: [UtilsService],
   bootstrap: [AppComponent]

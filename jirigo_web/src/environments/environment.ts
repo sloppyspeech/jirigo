@@ -6,7 +6,8 @@
 export const environment = {
   production: false,
   url:"http://0.0.0.0/",
-  apiBaseUrl:"http://0.0.0.0:9001/api/v1/"
+  apiBaseUrl:"http://0.0.0.0:9001/api/v1/",
+  avatarImgLoc:"assets/images/avatars"
 };
 
 /*

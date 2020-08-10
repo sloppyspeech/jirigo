@@ -218,7 +218,6 @@ class JirigoMenus(object):
     
     def add_menu(self):
         response_data={}
-                        # INSERT INTO tmenus (menu_id,menu_name,menu_url,parent_menu_id,created_date,created_by) VALUES("dfdfd",%s,%s,%s,%s,%s);
         self.logger.debug("add_menu")
         add_menu_sql="""
                         INSERT INTO 

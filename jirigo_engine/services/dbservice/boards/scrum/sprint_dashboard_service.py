@@ -19,6 +19,7 @@ class JirigoSprintDashboard(object):
         # self.sprint_tasks=data.get('sprint_tasks')
         # self.sprint_status=data.get('sprint_status')
         self.sprint_id=data.get('sprint_id')
+        self.project_id=data.get('project_id')
         self.sprint_tasks=data.get('sprint_tasks')
         self.modified_by=data.get('modified_by')
         self.modified_date=datetime.datetime.now()
@@ -296,5 +297,48 @@ class JirigoSprintDashboard(object):
             return response_data
         except  (Exception, psycopg2.Error) as error:
             if(self.jdb.dbConn):
-                print(f'Error While get_task_actuals_by_activity {error}')
+                print(f'Error While get_task_estimated_vs_actual_efforts {error}')
+                raise
+
+    def get_count_of_task_in_current_status(self):
+        response_data={}
+        self.logger.debug("Sprints Inside get_count_of_task_in_current_status")
+        query_sql="""  
+                        WITH tc AS (
+                                    WITH task_status_order AS (
+                                                SELECT ref_value,order_id FROM tref_master tm  
+                                                 WHERE ref_category ='TASKS' 
+                                                   AND ref_name='Status' 
+                                                   AND project_id =%s 
+                                                 ORDER BY order_id
+                                            ),
+                                            sprint_task_statuses AS (
+                                                SELECT vsd.issue_status,count(*) issue_count
+                                                  FROM v_sprint_details vsd 
+                                                 WHERE vsd.sprint_id =%s
+                                                 GROUP BY vsd.issue_status
+                                            )
+                                            SELECT tso.*,sts.*
+                                              FROM task_status_order tso, sprint_task_statuses sts
+                                             WHERE sts.issue_status=tso.ref_value
+                                             ORDER BY tso.order_id
+                      ) 
+                        select json_agg(tc) from tc;
+
+                   """
+        values=(self.project_id,self.sprint_id,)
+        self.logger.debug(f'Select : {query_sql} values {values}')
+        try:
+            print('-'*80)
+            cursor=self.jdb.dbConn.cursor()
+            cursor.execute(query_sql,values)
+            json_data=cursor.fetchone()[0]
+            row_count=cursor.rowcount
+            self.logger.debug(f'Select Success with {row_count} row(s) get_task_count_by_status  {json_data}')
+            response_data['dbQryStatus']='Success'
+            response_data['dbQryResponse']=json_data
+            return response_data
+        except  (Exception, psycopg2.Error) as error:
+            if(self.jdb.dbConn):
+                print(f'Error While get_task_count_by_status {error}')
                 raise

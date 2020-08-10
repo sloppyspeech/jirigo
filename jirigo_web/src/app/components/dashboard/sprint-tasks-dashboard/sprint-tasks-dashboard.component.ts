@@ -14,6 +14,8 @@ export class SprintTasksDashboardComponent implements OnInit {
   showSprintWorkloadByUser:boolean=false;
   showSprintTaskByCountForUser:boolean=false;
   showSprintTaskActivityActuals:boolean=false;
+  showSprintTaskCountByStatus:boolean=false;
+  showSprintCumulativeWorkflow:boolean=false;
   sprintAttributes:any;
   sprintEfforts:any;
   issueTypeCounts:any;
@@ -26,6 +28,7 @@ export class SprintTasksDashboardComponent implements OnInit {
   sprintWorkloadByUserChartOptions:any;
   sprintTaskCountByUserChartOptions:any;
   sprintTaskActivityActuals:any;
+  sprintTaskCountByStatuses:any;
   
   sprintId:string="";
   sprintName:string="";
@@ -236,6 +239,32 @@ export class SprintTasksDashboardComponent implements OnInit {
               };
             }
             this.showSprintTaskActivityActuals=true;
+          });
+
+          this._serSprintTasksDashboard.getSprintCountOfTasksByStatus(this.sprintId)
+          .subscribe(res=>{
+            let issue_statuses:string[]=[];
+            let status_count:number[]=[];
+            console.log(res['dbQryResponse']); 
+            if(res['dbQryStatus'] == "Success"){
+              res['dbQryResponse'].forEach(e => {
+                issue_statuses.push(e['issue_status']);
+                status_count.push(e['issue_count']);
+              });
+              this.sprintTaskCountByStatuses={
+                chartType:'bar',
+                barChartElementId:'id_sprintTaskCountByStatues',
+                barChartType:'bar',
+                chartLabels:issue_statuses,
+                chartData:status_count,
+                yAxisLabel:'Current Status Count',
+                xAxisLabel:'Statuses',
+                yTickSuggestedMin:0,
+                xTickSuggestedMin:0,
+                legendDisplay:false
+              };
+            }
+            this.showSprintTaskCountByStatus=true;
           });
 
   }

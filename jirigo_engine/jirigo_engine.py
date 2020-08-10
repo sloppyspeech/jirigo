@@ -917,7 +917,6 @@ def get_task_estimates():
         return get_jsonified_error_response('Failure',"get_task_estimates " + get_errmsg('NAGR'))
 
 
-
 @app.route('/api/v1/sprint-management/tasks-not-closed/<project_name>',methods=['GET'])
 def get_all_not_closed_tasks_byproj_for_sprint(project_name):
     data={}
@@ -2174,6 +2173,23 @@ def get_sprint_workload_by_user():
             return get_jsonified_error_response('Failure',error)
     else:
         return get_jsonified_error_response('Failure',"get_sprint_workload_by_user " + get_errmsg('NAGR'))
+
+@app.route('/api/v1/sprint-dashboard/count-of-tasks-in-current-status',methods=['GET'])
+def get_count_of_task_in_current_status():
+    if request.method == 'GET':
+        print('In Get global_search')
+        try:
+            project_id=request.args.get('project_id')
+            sprint_id=request.args.get('sprint_id')
+            jdb=JirigoSprintDashboard({'project_id':project_id,'sprint_id':sprint_id})
+            data=jdb.get_count_of_task_in_current_status()
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in get_count_of_task_in_current_status {error}')
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',"get_count_of_task_in_current_status " + get_errmsg('NAGR'))
+
 
 @app.route('/api/v1/global-search',methods=['GET'])
 def global_search():

@@ -36,19 +36,32 @@
   Comment History
 </h5>
 <hr>
-<div *ngIf="allComments" style="background-color:#FFFFFF;">
-  <div class="container-fluid" style="background-color: #F8F8F8;">
+<div *ngIf="allComments" >
+  <div class="container-fluid" >
     <ng-container *ngFor="let comment of allComments">
-      <div class="row mb-3" >
-        <div class="col-lg-12 comment-item-col" >
-          <p  class="comment-header">
-            <span class="comment-author">{{comment.created_by}}</span>
-            commented on :
-            {{comment.created_date | date : 'dd MMM yyyy HH:mm'}}</p>
-          <quill-editor [(ngModel)]="comment.comment" [readOnly]="true" [modules]="{toolbar:false}"
-            [styles]="{'height':'auto','border':'0rem','margin':'0rem 0rem 0rem 0rem'}"></quill-editor>
+        <div class="row pt-2 mb-0 pb-0 comment-header-border"  >
+          <div class="col-lg-5pct comment-header-avatar-img pr-0 mr-0" >
+            <img src="{{avatarImg}}" alt="MyAvatarImage" sizes="" srcset="" class="comment-avatar-img" >
+          </div>
+          <div class="col-lg-95pct pl-0 ml-0  mb-0 pb-0" >
+            <div  class="row comment-header-1">
+              <div class="col-lg-4 pl-0">
+                <span class="comment-author">{{comment.created_by}}</span>
+              </div>
+            </div>
+            <div class="row comment-header-2 mt-0 pt-0 pb-2 mb-0">
+              <div class="col-lg-4 pl-0">
+                {{comment.created_date | date : 'dd MMM yyyy, HH:mm:ss'}}
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
+        <div class="row">
+          <div class="col-lg-12 comment-text-col">
+            <quill-editor [(ngModel)]="comment.comment" [readOnly]="true" [modules]="{toolbar:false}"
+              [styles]="{'height':'auto','border':'0rem','margin':'0rem 0rem 0rem 0rem'}"></quill-editor>
+          </div>
+        </div>
     </ng-container>
   </div>
 </div>

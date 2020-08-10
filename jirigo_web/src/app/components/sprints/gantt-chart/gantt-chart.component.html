@@ -28,10 +28,10 @@
                 <ng-container *ngFor="let task of ganttChartDispData; let idx=index;">
                   <div class="row flex-nowrap lp-row " >
                     <!-- Left Pane -->
-                        <div class="col-lg-1 lp-row-border-bottom lp-row-col-right-border  text-center" >
+                        <div class="col-lg-1 lp-row-border-bottom lp-row-col-right-border lp-row-border-left text-center" >
                           {{idx}} 
                         </div>
-                        <div class="col-lg-4  lp-row-border-bottom lp-row-border-left lp-row-col-right-border lp-task-summary" >
+                        <div class="col-lg-4  lp-row-border-bottom lp-row-col-right-border lp-task-summary" >
                             <span style="font-weight: 500;padding-right:0.375rem;">{{task.task_no}} </span>
                             {{task.summary}}
                         </div>
@@ -67,70 +67,82 @@
                 </div>
              
                 <ng-container *ngFor="let task of ganttChartDispData;let i=index;">
-                    <div class="row flex-nowrap " style="border-left: 1px solid #dfdfdf;border-bottom: 1px solid #dfdfdf !important; ">
-                      
+                    <div class="row flex-nowrap rp-row-border-bottom" >
                       <ng-container *ngFor="let day of task.days ; let dIdx=index;">
                         <div class="col flex-lg-grow-1 task-line-fill px-3 " 
                              [ngStyle]="{'background-color':assigneeColors[task.assignee],'cursor':'help'}"
                              [ngClass]="{'task-line-fill-overlay': ( (day.scheduledDayCounter*8<=task.actual_time))}"
                              *ngIf="day.isTaskScheduledDay" 
-                             (click)="showHideTaskDetails(task['task_no'],true)"
-                             (mouseleave)="showHideTaskDetails(task['task_no'],false)"
+                             (click)="showHideTaskDetails(task['task_no'],true,$event)"
+                             (mouseleave)="showHideTaskDetails(task['task_no'],false,$event)"
                              >
                           {{day.sprintDate | date :'dd MMM'}}
                         </div>
-                        <!-- <div class="col flex-lg-grow-1 task-line-fill task-line-fill-overlay px-3 " 
-                             [ngStyle]="{'background-color':assigneeColors[task.assignee],'cursor':'help'}"
-                             *ngIf="day.isTaskScheduledDay && dIdx<5" 
-                             (click)="showHideTaskDetails(task['task_no'],true)"
-                             (mouseleave)="showHideTaskDetails(task['task_no'],false)"
-                             >
-                          {{day.sprintDate | date :'dd MMM'}}
-                        </div> -->
-                        <div class="col flex-lg-grow-1 task-line-nofill px-3"  *ngIf="!day.isTaskScheduledDay">
+                        <div class="col flex-lg-grow-1 task-line-nofill px-3 "  *ngIf="!day.isTaskScheduledDay">
                           {{day.sprintDate | date :'dd MMM'}}
                         </div>
                         <!-- popup -->
                           <ng-container 
                             *ngIf="(day.isTaskScheduledDay && dIdx==0)  || ( dIdx >0 && day.isTaskScheduledDay && !task.days[dIdx-1].isTaskScheduledDay)"
                           >
+                            <!-- THe popup always appears over the start date of a task and then is offset to right -->
                             <div class="task-details-popup-container" *ngIf="showTaskDetails[task['task_no']] ">
-                              <div class="task-details-popup"  >
+                              <div class="task-details-popup"  [ngStyle]="{'border-color':assigneeColors[task.assignee],'cursor':'help'}">
                                 <div class="container mt-2">
                                   <div class="row">
-                                    <div class="col">
-                                      <span style="font-size:0.750rem;font-weight:500;margin-right:0.25rem;">Task No:</span>
+                                    <div class="col-lg-5">
+                                      <span class="task-popup-task-details-container">Task No :</span>
+                                    </div>
+                                    <div class="col-lg-7">
                                       {{task.task_no}}
                                     </div>
                                   </div>
-                                  <div class="row">
-                                    <div class="col">
-                                      <span style="font-size:0.750rem;font-weight:500;margin-right:0.25rem;">Assignee:</span>
+                                  <div class="row mt-2">
+                                    <div class="col-lg-5">
+                                      <span class="task-popup-task-details-container">Assignee :</span>
+                                    </div>
+                                    <div class="col-lg-7">
                                       {{task.assignee}}
                                     </div>
                                   </div>
-                                  <div class="row">
-                                    <div class="col">
-                                      <span style="font-size:0.750rem;font-weight:500;margin-right:0.25rem;">Start Date:</span>
+                                  <div class="row  mt-2">
+                                    <div class="col-lg-5">
+                                      <span class="task-popup-task-details-container">Start Date :</span>
+                                    </div>
+                                    <div class="col-lg-7">
                                       {{task.start_date| date :'dd MMM'}}
                                     </div>
                                   </div>
-                                  <div class="row">
-                                    <div class="col">
-                                      <span style="font-size:0.750rem;font-weight:500;margin-right:0.25rem;">End Date:</span>
+                                  <div class="row  mt-2">
+                                    <div class="col-lg-5">
+                                      <span class="task-popup-task-details-container">End Date :</span>
+                                    </div>
+                                    <div class="col-lg-7">
                                       {{task.end_date| date :'dd MMM'}}
                                     </div>
                                   </div>
-                                  <div class="row">
-                                    <div class="col">
-                                      <span style="font-size:0.750rem;font-weight:500;margin-right:0.25rem;">Estimated:</span>
+                                  <div class="row  mt-2">
+                                    <div class="col-lg-5">
+                                      <span class="task-popup-task-details-container">Estimated :</span>
+                                    </div>
+                                    <div class="col-lg-7">
                                       {{task.duration| number:'1.0-1'}} Hrs
                                     </div>
                                   </div>
-                                  <div class="row">
-                                    <div class="col">
-                                      <span style="font-size:0.750rem;font-weight:500;margin-right:0.25rem;">Actual:</span>
+                                  <div class="row  mt-2">
+                                    <div class="col-lg-5">
+                                      <span class="task-popup-task-details-container">Actual :</span>
+                                    </div>
+                                    <div class="col-lg-7">
                                       {{task.actual_time| number:'1.0-1'}} Hrs
+                                    </div>
+                                  </div>
+                                  <div class="row  mt-2">
+                                    <div class="col-lg-5">
+                                      <span class="task-popup-task-details-container">Pct Complete :</span>
+                                    </div>
+                                    <div class="col-lg-7">
+                                      {{(task.actual_time/task.duration)*100| number:'2.0-2'}} %
                                     </div>
                                   </div>
                                 </div>

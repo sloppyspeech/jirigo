@@ -1,3 +1,4 @@
+import { AvatarServiceService } from './../../../services/shared/avatar-service.service';
 import { Component, OnInit, Input,Output,EventEmitter } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { TicketCommentsService } from '../../../services/tickets/ticket-comments.service';
@@ -12,6 +13,7 @@ import { Router,ActivatedRoute} from '@angular/router';
 })
 export class TicketCommentsComponent implements OnInit {
   disableComment:boolean=true;
+  avatarImg:string="";
 
   @Input()
   parentForm: FormGroup;
@@ -51,9 +53,11 @@ export class TicketCommentsComponent implements OnInit {
     private _serNgxSpinner:NgxSpinnerService,
     private _router:Router,
     private _activatedRoute: ActivatedRoute,
+    private _avatarImgSer:AvatarServiceService
   ) { }
 
   ngOnInit(): void {
+    this.avatarImg=this._avatarImgSer.getUserAvatarImage();
     console.log('===========Ticket Component NgInit=============');
     console.log(this.parentForm.getRawValue());
     console.log('fctlComment :'+this.parentForm.get('fctlComment').value);

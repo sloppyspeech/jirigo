@@ -102,7 +102,20 @@
             </app-bar-chart>
           </canvas>
         </div>
-       
     </div>
+    <div class="row">
+      <div class="col-lg-6 card" >
+          <canvas id="id_sprintTaskCountByStatues" height="300" *ngIf="showSprintTaskCountByStatus">
+            <app-bar-chart [chartOptions]="sprintTaskCountByStatuses" #barChart>
+            </app-bar-chart>
+          </canvas>
+        </div>
+      <!-- <div class="col-lg-6 card" >
+        <canvas id="id_sprintCumulativeFlow" height="300" *ngIf="showSprintTaskByCountForUser">
+          <app-bar-chart [chartOptions]="sprintTaskCountByUserChartOptions" #barChart>
+          </app-bar-chart>
+        </canvas>
+      </div> -->
+  </div>
 
 </div>

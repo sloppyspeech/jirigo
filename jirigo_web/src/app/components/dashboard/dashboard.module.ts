@@ -1,3 +1,4 @@
+import { AreaChartModule } from './../../shared/modules/charts/area-chart/area-chart.module';
 import { LineChartModule } from './../../shared/modules/charts/line-chart/line-chart.module';
 import { BarChartModule } from './../../shared/modules/charts/bar-chart/bar-chart.module';
 import { NgModule } from '@angular/core';
@@ -15,7 +16,8 @@ import { SprintTasksDashboardComponent } from './sprint-tasks-dashboard/sprint-t
     FontAwesomeModule,
     ChartModule,
     BarChartModule,
-    LineChartModule
+    LineChartModule,
+    AreaChartModule
   ]
 })
 export class DashboardModule { }

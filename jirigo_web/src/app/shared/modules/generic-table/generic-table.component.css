@@ -1,0 +1,13 @@
+:host ::ng-deep p-table .ui-table-caption{
+    background-color: #ffffff;
+}
+:host ::ng-deep p-table .ui-table-wrapper{
+    background-color: #ffffff;
+}
+:host ::ng-deep p-table .ui-table .ui-table-thead >tr > th{
+    background-color: #ffffff !important;
+}
+
+:host ::ng-deep p-table .ui-table .ui-table-tbody > tr:nth-last-child(1){
+    border-bottom: 0.063rem solid #C8C8C8 !important;
+}

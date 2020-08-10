@@ -1,3 +1,4 @@
+import { AvatarServiceService } from './../../../services/shared/avatar-service.service';
 import { Component, OnInit, Input,Output,EventEmitter } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { TaskCommentsService } from '../../../services/tasks/task-comments.service';
@@ -11,6 +12,7 @@ import { Router,ActivatedRoute} from '@angular/router';
   styleUrls: ['./tasks-comments.component.css']
 })
 export class TaskCommentsComponent implements OnInit {
+  avatarImg:string="";
   @Input()
   parentForm: FormGroup;
 
@@ -52,11 +54,14 @@ export class TaskCommentsComponent implements OnInit {
     private _serTaskComments: TaskCommentsService,
     private _serNgxSpinner:NgxSpinnerService,
     private _router:Router,
-    private _activatedRoute:ActivatedRoute
+    private _activatedRoute:ActivatedRoute,
+    private _avatarImgSer:AvatarServiceService
   ) { }
 
   ngOnInit(): void {
+    this.avatarImg=this._avatarImgSer.getUserAvatarImage();
     console.log('===========Task Component NgInit=============');
+    console.log(this.avatarImg);
     console.log(this.parentForm.getRawValue());
     console.log("===============================================");
     this._serNgxSpinner.show();

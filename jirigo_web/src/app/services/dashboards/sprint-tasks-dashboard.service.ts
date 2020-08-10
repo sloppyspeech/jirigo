@@ -69,4 +69,13 @@ export class SprintTasksDashboardService {
     console.log(url);
     return this._httpCli.get(url);
   }
+
+  getSprintCountOfTasksByStatus(sprint_id:string){
+    let project_id=localStorage.getItem('currentProjectId')
+    let url=this.sApiEndPoint+`count-of-tasks-in-current-status?project_id=${project_id}&sprint_id=${sprint_id}`;
+    console.log('getSprintCountOfTasksByStatus');
+    console.log(url);
+    return this._httpCli.get(url);
+  }
+
 }

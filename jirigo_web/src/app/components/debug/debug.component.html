@@ -76,7 +76,7 @@
 
       <div class="col-lg-7 mx-0 px-0" >
         <div class="container horizontal-scrollable overflow-auto">
-            <!-- <div class=" row flex-nowrap ">
+            <div class=" row flex-nowrap ">
               <div class="col">
                 <div class="row flex-nowrap rp-header">
                   <ng-container *ngFor="let hd of ganttHeaderDates">
@@ -96,42 +96,20 @@
                 </ng-container>
               </div>
 
-            </div> -->
-            <table>
-              <th>
-                <tr>
-                <ng-container *ngFor="let hd of ganttHeaderDates">
-                  <td class="col">
-                    {{hd | date : 'dd MMM'}}
-                  </td>
-                </ng-container>
-              </tr>
-              </th>
-              <ng-container *ngFor="let task of ganttTasks">
-                <tr class="row flex-nowrap rp-row " >
-                        <ng-container *ngFor="let day of task.days">
-                          <td class="col">
-                            {{day.sprintDate | date : 'dd MMM'}}
-                          </td>
-                        </ng-container>
-                </tr>
-              </ng-container>
-            </table>
-
-
+            </div>
         </div>
       </div>
   </div>
 </div>
 
-<button type="button" class="btn btn-warning" (click)="launchIt=!launchIt">warning</button>
+<!-- <button type="button" class="btn btn-warning" (click)="launchIt=!launchIt">warning</button>
 <div class="task-details-popup-container" *ngIf="launchIt">
   <div class="task-details-popup">
     <div style="overflow:auto ;"> sdfsdfdsfdsfsdfdsfdsfs</div>
   </div>
-</div>
+</div> -->
 
-<div class="container">
+<!-- <div class="container">
   <div class="box" style="background: red;"></div>
   <div class="box stack-top" style="background: blue;opacity:0.5;"></div>
-</div>
+</div> -->
