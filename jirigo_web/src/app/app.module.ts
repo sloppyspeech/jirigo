@@ -50,6 +50,7 @@ import { ClickToEditModule } from './shared/modules/click-to-edit/click-to-edit.
 import { ColorPickerModule } from './shared/modules/color-picker/color-picker.module';
 import { BarChartModule } from './shared/modules/charts/bar-chart/bar-chart.module';
 import { AreaChartModule } from './shared/modules/charts/area-chart/area-chart.module';
+import { ChatbotComponent } from './components/chatbot/chatbot.component';
 
 @NgModule({
   declarations: [
@@ -62,7 +63,8 @@ import { AreaChartModule } from './shared/modules/charts/area-chart/area-chart.m
     LogoutComponent,
     MenuComponent,
     DebugComponent,
-    DataExtractsComponent
+    DataExtractsComponent,
+    ChatbotComponent
   ],
   imports: [
     BrowserModule,

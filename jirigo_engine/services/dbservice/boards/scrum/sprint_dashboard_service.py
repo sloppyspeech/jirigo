@@ -10,7 +10,7 @@ from pprint import pprint
 
 class JirigoSprintDashboard(object):
     def __init__(self,data={}):
-        print("Initializing JirigoSprintDashboard")
+        print("Initializing JirigoSprintDashboard ")
         print(f'In for Create Sprints **** :{data}')
         # self.sprint_name=data.get('sprint_name','')
         # self.project_name=data.get('project_name','')

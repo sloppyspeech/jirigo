@@ -32,6 +32,7 @@ from services.dbservice.vacations.vacation_service import JirigoVacations
 from services.dbservice.todos.todos_service import JirigoTodos
 from services.dbservice.boards.scrum.sprint_dashboard_service import JirigoSprintDashboard
 from services.dbservice.global_search.global_search_service import JirigoGlobalSearch
+from services.chats.chat_service import JirigoChatBot
 
 #-------------------
 UPLOAD_FOLDER='./uploaded_files'
@@ -2206,6 +2207,22 @@ def global_search():
             return get_jsonified_error_response('Failure',error)
     else:
         return get_jsonified_error_response('Failure',"global_search " + get_errmsg('NAGR'))
+
+@app.route('/api/v1/chatbot-action',methods=['GET'])
+def get_chatbot_response():
+    if request.method == 'GET':
+        print('In Get get_chatbot_response')
+        try:
+            query_text=request.args.get('query')
+            print(query_text)
+            jcb=JirigoChatBot()
+            data=jcb.get_query_response(query_text)
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in get_chatbot_response {error}')
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',"get_chatbot_response " + get_errmsg('NAGR'))
 
 
 def get_errmsg(mesg_code) :
