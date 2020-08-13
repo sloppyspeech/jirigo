@@ -5,6 +5,7 @@ import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms'
 import { faCircle,faDotCircle,faLayerGroup,faTrashAlt,faSearch,faTh,faListUl} from '@fortawesome/free-solid-svg-icons';
 import { faEdit,faPlusSquare,faArrowAltCircleLeft,faArrowAltCircleRight }  from '@fortawesome/free-regular-svg-icons';
 import { BehaviorSubject } from 'rxjs';
+import { Router  } from '@angular/router';
 import * as $ from 'jquery'
 
 @Component({
@@ -71,7 +72,8 @@ export class TodosComponent implements OnInit {
     private _formBuilder:FormBuilder,
     private _renderer:Renderer2,
     private _serUtils:UtilsService,
-    private _changeDetectRef:ChangeDetectorRef
+    private _changeDetectRef:ChangeDetectorRef,
+    private _router:Router
 
   ) { }
 
@@ -154,9 +156,9 @@ export class TodosComponent implements OnInit {
     this._serTodos.getAllTodosForUserByInterval({'user_id':localStorage.getItem('loggedInUserId'),'interval_days':interval_days})
         .subscribe(res=>{
           console.log(res);
+          this.allToDos=[];
+          this.allToDosFromDB=[];
           if (res['dbQryResponse']){
-            this.allToDos=[];
-            this.allToDosFromDB=[];
             res['dbQryResponse'].forEach(e => {
               console.log(e);
               this.allToDos.push({
@@ -315,6 +317,7 @@ export class TodosComponent implements OnInit {
           this.categoryFG.reset();
           this.openAddCategoryModalButton.nativeElement.click();
           this.todosBroadcast.postMessage({'mesg_text':'todoCategoryUpdated'});
+          this.reloadComponent();
         });
   }
 
@@ -596,6 +599,14 @@ export class TodosComponent implements OnInit {
       });
       console.log(this.allToDos);
     }
+  }
+
+  reloadComponent() {
+    console.log("===============reloadComponent=================");
+    console.log(this._router.url);
+    this._router.routeReuseStrategy.shouldReuseRoute = () => false;
+    this._router.onSameUrlNavigation = 'reload';
+    this._router.navigate([this._router.url]);
   }
 
 }

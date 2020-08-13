@@ -1,11 +1,19 @@
 pairs = [
     [
-        r"what is proj(.*)status",
-        ["proj%1 is in Development",]
+        r"what is (.*) status",
+        ["GET_ITEM_STATUS:%1",]
     ],
     [
         r"(.*) status (.*) proj(.*)",
-        ["proj%3 is in Testing",]
+        ["GET_ITEM_STATUS:%3",]
+    ],
+    [
+        r"(what|show|get|fetch|pull) (.*) details",
+        ["GET_ITEM_DETAILS:%1 %2",]
+    ],
+    [
+        r"(.*) details (.*) proj(.*)",
+        ["GET_ITEM_DETAILS:%3",]
     ],
     [
         r"what(.*)up",

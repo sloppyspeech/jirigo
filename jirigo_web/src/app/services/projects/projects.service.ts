@@ -29,16 +29,19 @@ export class ProjectsService {
     return  this._httpCli.post(this.sApiEndPoint+'create-project',inpData,this.sHttpOptions);
   }
   getAllProjects(){
-    console.log("@@@@getAllProjects@@@@@")
     console.log("getAllProjects:");
     console.log("this.sApiEndPoint:"+this.sApiEndPoint+'projects');
     return this._httpCli.get(this.sApiEndPoint+'projects');
   }
 
   getAllProjectsForUser(userId){
-    console.log("@@@@getAllProjectsForUser@@@@@")
     console.log("this.sApiEndPoint:"+this.sApiEndPoint+'projects/user-projects/'+userId);
     return this._httpCli.get(this.sApiEndPoint+'projects/user-projects/'+userId);
+  }
+  getProjectDetails(projectId){
+    let url=`${this.sApiEndPoint}projects/project?project_id=${projectId}`
+    console.log(url);
+    return this._httpCli.get(url);
   }
 
 }

@@ -270,6 +270,21 @@ def get_all_projects_for_user(user_id):
     else:
         return get_jsonified_error_response('Failure',"get_all_projects_for_user " + get_errmsg('NAGR'))
 
+@app.route('/api/v1/project-management/projects/project',methods=['GET'])
+def get_project_details():
+    if request.method == 'GET':
+        print('In Get get_project_details')
+        try:
+            project_id=request.args.get('project_id')
+            jdb=JirigoProjects({'project_id':project_id})
+            data=jdb.get_project_details()
+            return jsonify(data)
+        except Exception as error:
+            print(f'Error in get_project_details {error}')
+            return get_jsonified_error_response('Failure',error)
+    else:
+        return get_jsonified_error_response('Failure',"get_project_details " + get_errmsg('NAGR'))
+
 
 @app.route('/api/v1/user-management/register-user',methods=['POST'])
 def register_user():
@@ -2214,8 +2229,9 @@ def get_chatbot_response():
         print('In Get get_chatbot_response')
         try:
             query_text=request.args.get('query')
+            project_abbr=request.args.get('proj_abbr')
             print(query_text)
-            jcb=JirigoChatBot()
+            jcb=JirigoChatBot({'project_abbr':project_abbr})
             data=jcb.get_query_response(query_text)
             return jsonify(data)
         except Exception as error:

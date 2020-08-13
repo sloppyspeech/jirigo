@@ -25,8 +25,8 @@ class JirigoTaskAudit(object):
                             SELECT task_no,
                                     column_name,
                                     display_column_name,
-                                    old_value,
-                                    new_value,
+                                    CASE column_name WHEN 'estimated_time' THEN (round(old_value::NUMERIC(5)/60,2))::text ELSE old_value::text END as old_value,
+                                    CASE column_name WHEN 'estimated_time' THEN (round(new_value::NUMERIC(5)/60,2))::text ELSE new_value::text END as new_value,
                                     get_user_name(created_by) created_by,
                                     to_char(created_date, 'DD-Mon-YYYY HH24:MI:SS') created_date
                               FROM htasks 

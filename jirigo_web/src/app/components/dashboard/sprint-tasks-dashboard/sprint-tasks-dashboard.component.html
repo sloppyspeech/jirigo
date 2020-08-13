@@ -65,6 +65,7 @@
           </div>
     </div>
     <div class="row mb-2">
+          <ng-container *ngIf="sprintAttributes['issue_statuses']">
             <ng-container *ngFor="let issueStatus of sprintAttributes['issue_statuses']|keyvalue;let i=index">
                 <div class="col-lg card " style="height:5rem; padding-top:0.125rem;"
                      [ngClass]="{'ml-3':i>0}">
@@ -72,6 +73,7 @@
                     <p class="card-text text-center task-effort-text" >{{issueStatus.key}}</p>
                 </div>
             </ng-container>
+          </ng-container>
     </div>
 
     <div class="row mb-2">

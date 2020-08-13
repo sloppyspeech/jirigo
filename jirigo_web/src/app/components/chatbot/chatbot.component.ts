@@ -1,5 +1,5 @@
 import { Component, OnInit ,ViewChild,ElementRef,Renderer2} from '@angular/core';
-import { faAngleDoubleDown,faComments} from '@fortawesome/free-solid-svg-icons';
+import { faAngleDoubleDown,faComments,faTrashAlt} from '@fortawesome/free-solid-svg-icons';
 import { ChatbotService } from './../../services/chatbot/chatbot.service';
 
 @Component({
@@ -13,6 +13,7 @@ export class ChatbotComponent implements OnInit {
   showChatWindow:boolean=false;
   chatData:chatDataType[]=[];
   faAngleDoubleDown=faAngleDoubleDown;
+  faTrashAlt=faTrashAlt;
   faComments=faComments;
   userQuery:string="";
   showWaitingSpinner:boolean=false;
@@ -23,6 +24,7 @@ export class ChatbotComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    console.log("Chatbot Initializing");
     let currDate=new Date();
     let lChatData;
       lChatData={
@@ -33,13 +35,14 @@ export class ChatbotComponent implements OnInit {
       }
       this.chatData.push(lChatData);
       this.scrollToBottom();
-      this.chatBotQueryInputBox.nativeElement.focus();
+      this.chatBotQueryInputBox?.nativeElement.focus();
+      this._serChatBot.getProjectDetails();
 
   }
 
   ngAfterViewChecked() {
     this.scrollToBottom();
-    this.chatBotQueryInputBox.nativeElement.focus();
+    this.chatBotQueryInputBox?.nativeElement.focus();
   }
 
   toggleChatWindow(){
@@ -87,6 +90,14 @@ export class ChatbotComponent implements OnInit {
     if (e.code == "Enter"){
       this.askQuestion(); 
     }
+  }
+
+  clearChat(){
+    this.chatData=[];
+  }
+
+  formatItemStatus(){
+    
   }
 
 }

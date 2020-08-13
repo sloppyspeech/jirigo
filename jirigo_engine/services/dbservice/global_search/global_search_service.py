@@ -28,7 +28,7 @@ class JirigoGlobalSearch(object):
                         WITH tc AS (SELECT item_no,summary,item_type
                                       FROM v_all_tickets_tasks vatt 
                                      WHERE to_tsvector(item_no||'-'||summary||description) @@ plainto_tsquery (%s) 
-                                     LIMIT 5
+                                     LIMIT 10
                       ) 
                         select json_agg(tc) from tc;
 

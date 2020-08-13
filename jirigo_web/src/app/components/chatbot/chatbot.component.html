@@ -1,6 +1,6 @@
 <div >
     <button type="button" class="btn btn-danger float-right" (click)="toggleChatWindow()">
-        <span style="font-size:1.25rem;color:white;"><fa-icon [icon]="faComments"></fa-icon></span>
+        <span style="font-size:1.375rem;color:white; padding:0.0625rem;"><fa-icon [icon]="faComments"></fa-icon></span>
     </button>
 
 </div>
@@ -12,6 +12,11 @@
                 <div class="float-right" (click)="showChatWindow=!showChatWindow" style="cursor: pointer;">
                     <span style="font-size:1.25rem;color:black;">
                         <fa-icon [icon]="faAngleDoubleDown"></fa-icon>
+                    </span>
+                </div>
+                <div class="float-right"  (click)="clearChat()" style="cursor: pointer;">
+                    <span style="font-size:1.25rem;color:orangered;padding-right:0.675rem">
+                        <fa-icon [icon]="faTrashAlt"></fa-icon>
                     </span>
                 </div>
             </div>

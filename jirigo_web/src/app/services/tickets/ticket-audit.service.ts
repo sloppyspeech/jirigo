@@ -23,7 +23,6 @@ export class TicketAuditService {
   ) { }
 
   getTicketAuditData(ticketNo:string){
-    console.log("@@@@getAllComments@@@@@")
     console.log("getAllTicketComments:"+ticketNo);
     console.log("this.sApiEndPoint+ticketNo :"+this.sApiEndPoint+ticketNo);
     return this._httpCli.get(this.sApiEndPoint+ticketNo);

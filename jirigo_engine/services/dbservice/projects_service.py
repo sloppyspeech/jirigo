@@ -14,6 +14,7 @@ class JirigoProjects(object):
         print("Initializing JirigoProject")
         pprint(data)
         self.user_id = data.get('user_id',0)
+        self.project_id = data.get('project_id',0)
         self.project_name = data.get('project_name')
         self.parent_project_id = data.get('parent_project_id',0)
         self.project_abbr = data.get('project_abbr')
@@ -146,21 +147,16 @@ class JirigoProjects(object):
 
     def get_project_details(self):
         response_data={}
-        self.logger.debug("Inside get_all_projects_for_user")
+        self.logger.debug("Inside get_project_details")
         query_sql="""  
                     WITH t AS (
-                            SELECT t.user_id,t.email,tup.default_project ,
-                                   tp.project_name ,tp.project_id,tp.project_abbr,
-                                   get_user_name(t.user_id) user_name
-                              FROM tuser_projects tup,tusers t ,tprojects tp  
-                             WHERE tup.project_id = tp.project_id 
-                               AND tup.user_id =t.user_id 
-                               AND t.user_id =%s
-                              ORDER BY tp.project_id
+                            SELECT tp.*
+                              FROM tprojects tp  
+                             WHERE tp.project_id=%s
                     )
                     SELECT json_agg(t) from t;
                    """
-        values=(self.user_id,)
+        values=(self.project_id,)
         self.logger.debug(f'Select : {query_sql} values{values}')
         try:
             print('-'*80)
@@ -168,7 +164,7 @@ class JirigoProjects(object):
             cursor.execute(query_sql,values)
             json_data=cursor.fetchone()[0]
             row_count=cursor.rowcount
-            self.logger.debug(f'get_all_projects_for_user Select Success with {row_count} row(s) data {json_data}')
+            self.logger.debug(f'get_project_details Select Success with {row_count} row(s) data {json_data}')
             if (json_data == None):
                 response_data['dbQryStatus']='No Data Found'
             else:
