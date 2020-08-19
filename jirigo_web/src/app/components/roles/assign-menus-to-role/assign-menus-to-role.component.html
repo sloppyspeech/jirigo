@@ -171,7 +171,7 @@ style="background-color:transparent; border-radius: 0.313rem; margin: 0 0 1.063r
                 <div class="form-group">
                   <label for="">Parent Menu </label>
                   <select class="form-control" name="" id="" formControlName="fctlParentMenuId" >
-                    <option *ngFor="let parentMenu of allMenusForProject" value="parentMenu.menu_url">
+                    <option *ngFor="let parentMenu of allMenusForProject" [ngValue]="parentMenu.menu_id">
                       {{parentMenu.menu_url}}</option>
                   </select>
                 </div>

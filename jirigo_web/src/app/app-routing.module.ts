@@ -105,6 +105,11 @@ const routes: Routes = [
     canActivate:[AuthGuard,RoleGuard]
   },
   {
+    path:'outages',
+    loadChildren: () => import('./components/outages/outage.module').then( m => m.OutageModule),
+    canActivate:[AuthGuard,RoleGuard]
+  },
+  {
     path:'**',
     component:LoginComponent
   }

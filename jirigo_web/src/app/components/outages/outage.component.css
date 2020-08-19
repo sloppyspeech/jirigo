@@ -1,0 +1,15 @@
+.outage-header{
+    height:2rem;
+    color: #fff;
+    font-weight: 300;
+    font-size: 1.25rem;
+    border-radius: 0.25rem;
+}
+/* div {
+    background-image: 
+      repeating-linear-gradient(
+        #fd44b980 0 1px,
+        transparent 1px 100%
+      );
+      background-size: 100px 100px;
+} */
