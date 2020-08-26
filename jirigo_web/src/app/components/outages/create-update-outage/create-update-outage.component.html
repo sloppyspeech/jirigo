@@ -1,0 +1,58 @@
+<!-- Button trigger modal -->
+<button #outageCreUpdModalBtn
+        type="button" 
+        class="btn btn-primary" 
+        data-toggle="modal" 
+        data-target="#outageCreUpdModal" hidden>
+    cre/upd Outage
+</button>
+  
+  <!-- outageCreUpdModal  -->
+  <div class="modal fade" id="outageCreUpdModal" tabindex="-1" role="dialog" aria-labelledby="outageCreUpdModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="outageCreUpdModal">Modal title</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <div class="container-fluid">
+                <form>
+                    <div class="row">
+                      <div class="col-lg-4 form-group">
+                        <label for="recipient-name" class="col-form-label">Start Time</label>
+                        <input type="text" class="form-control" placeholder="">
+                      </div>
+                      <div class="col-lg-4 form-group">
+                        <label for="recipient-name" class="col-form-label">End Time</label>
+                        <input type="text" class="form-control" placeholder="">
+                      </div>
+                      <div class="col-lg-4 form-group">
+                        <label for="recipient-name" class="col-form-label">Status</label>
+                        <input type="text" class="form-control" placeholder="">
+                      </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 form-group">
+                          <label for="recipient-name" class="col-form-label">Summary</label>
+                          <input type="text" class="form-control" placeholder="">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12 form-group">
+                          <label for="recipient-name" class="col-form-label">Description</label>
+                          <input type="text" class="form-control" placeholder="">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>

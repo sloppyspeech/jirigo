@@ -1,12 +1,80 @@
 <div class="container-fluid">
-    <div class="row">
-        <div class="col-lg-12 align-middle  text-center outage-header bg-success">
-            <span >
-                Outage : 
-            </span>
-            <span >
-                Work In Progress
-            </span>
+    <div class="row outage-header bg-warning">
+        <div class="col-lg-2 ">
+            <span>ID # 3434343</span> 
+        </div>
+        <div class="col-lg-8">
+            <div class="row">
+                <div class="col-lg-12 align-middle  text-center ">
+                    <span >
+                        Outage : 
+                    </span>
+                    <span >
+                        Work In Progress
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-2 text-right">
+            <span>Planned</span> 
         </div>
     </div>
+    <div class="row border-btm-lft-rght" >
+        <div class="col-lg-1 text-right">
+            <span class="font-weight-bold"> Status   </span>
+        </div>
+        <div class="col-lg-2 ">
+            <span class="font-weight-light">Open</span>
+        </div>
+        <div class="col-lg-3 ">
+            <span class="font-weight-bold"> Start Time :  </span>
+            <span class="font-weight-light">19/Aug/2020 20:38:17</span>
+        </div>
+        <div class="col-lg-3 ">
+            <span class="font-weight-bold"> End Time :  </span>
+            <span class="font-weight-light">19/Aug/2020 20:48:17</span>
+        </div>
+        <div class="col-lg-2 offset-lg-1 ">
+            <span class="font-weight-bold"> Duration :  </span>
+            <span class="font-weight-light">10 mins</span>
+        </div>
+
+    </div>
+    <div class="row  border-btm-lft-rght" >
+        <div class="col-lg-1 font-weight-bold text-right">
+            Impacted
+        </div>
+        <div class="col-lg-11 font-weight-light">
+                All Users
+        </div>
+    </div>
+    <div class="row  border-btm-lft-rght">
+        <div class="col-lg-1 font-weight-bold text-right">
+            Summary
+        </div>
+        <div class="col-lg-11 font-weight-light">
+                There is an Outage in the air
+        </div>
+    </div>
+    <div class="row  border-btm-lft-rght">
+        <div class="col-lg-1 font-weight-bold text-right">
+            Description
+        </div>
+        <div class="col-lg-11 font-weight-light">
+                Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
+                Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
+                when an unknown printer took a galley of type and scrambled it to make a type specimen book. 
+                It has survived not only five centuries, but also the leap into electronic typesetting, 
+                remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset
+                 sheets containing Lorem Ipsum passages, 
+                and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+        </div>
+    </div>
+
 </div>
+<div>
+    <button type="button" class="btn btn-danger" (click)="toggleOutageCreUpdModal=!toggleOutageCreUpdModal">
+        show outage modal
+    </button>
+</div>
+<app-create-update-outage [toggleoutageCreUpdModalBtn]="toggleOutageCreUpdModal"></app-create-update-outage>

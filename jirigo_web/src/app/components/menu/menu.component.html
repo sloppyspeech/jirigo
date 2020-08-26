@@ -1,5 +1,5 @@
-<nav class="navbar navbar-expand-md navbar-toggleable-md navbar-dark mb-1 py-0" 
-     style="background-color: #333333;border-radius: 0.25rem;" 
+<nav class="navbar navbar-expand-md navbar-toggleable-md navbar-light mb-1 py-0" 
+     style="background-color: #eeeeee;border-radius: 0.25rem;" 
      *ngIf="loggedIn" 
      >
      <a  [routerLink]="['/homepage']" href="#" class="nav-link" *ngIf="validUserMenuPaths['/homepage']" >
@@ -105,6 +105,11 @@
                 </a>
                 <div class="dropdown-menu dropdown-menu-right">
                     <!-- <a href="#" class="dropdown-item">Profile</a> -->
+                    <a  (click)="toggleDarkMode()" class="dropdown-item" style="cursor: pointer;">
+                        <span *ngIf="darkModeEnabled">Light</span> 
+                        <span *ngIf="!darkModeEnabled">Dark</span> 
+                        Mode
+                    </a>
                     <a [routerLink]="['/todos']" class="dropdown-item">Todos</a>
                     <div class="dropdown-divider"></div>
                     <a [routerLink]="['/logout']" class="dropdown-item">Logout</a>

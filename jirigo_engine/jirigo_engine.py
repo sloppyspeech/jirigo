@@ -2271,7 +2271,7 @@ def get_jsonified_error_response(status,error):
         error_response['dbQryResponse']['error_message']=error+':'+e
         print(error_response)
         print("------")
-        return make_response(jsonify(error_response),200)
+        return make_response(jsonify(error_response),300)
 
 if  __name__ == 'jirigo_engine':
     test_if_db_up=JirigoDBConn()

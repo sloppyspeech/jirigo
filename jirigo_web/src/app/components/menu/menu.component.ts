@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { MenusService } from './../../services/menus/menus.service';
 import { Component, OnInit,ViewChild,AfterViewInit } from '@angular/core';
 import { UsersService  } from '../../services/users/users.service';
@@ -20,9 +21,11 @@ export class MenuComponent implements OnInit,AfterViewInit {
   showProjectChangeMenu:boolean=false;
   random_avatar_png_no=1;
   validUserMenuPaths:any={};
+  darkModeEnabled:boolean=false;
 
   constructor(private _serUser:UsersService,
-              private _serMenu:MenusService) { }
+              private _serMenu:MenusService,
+              private _router:Router) { }
 
   ngOnInit(): void {
     console.log('MenuComponent Init :loggedIn:'+this.loggedIn);
@@ -110,6 +113,22 @@ export class MenuComponent implements OnInit,AfterViewInit {
     console.log("Inside Change Project");
     console.log(e);
     this.showProjectChangeMenu=true;
+  }
+
+  toggleDarkMode(){
+    console.log('darkMode Called');
+    this.darkModeEnabled=!this.darkModeEnabled;
+    // this.darkModeEnabled ? document.body.setAttribute('data-theme', 'dark') : document.body.removeAttribute('data-theme')
+    this.darkModeEnabled ? document.getElementsByTagName('html')[0].setAttribute('data-theme', 'dark') : document.getElementsByTagName('html')[0].removeAttribute('data-theme');
+    this.reloadComponent();
+  }
+  reloadComponent() {
+    console.log("===============reloadComponent=================");
+    console.log(this._router.url);
+    this._router.routeReuseStrategy.shouldReuseRoute = () => false;
+    this._router.onSameUrlNavigation = 'reload';
+    this._router.navigate([this._router.url]);
+
   }
 
 }

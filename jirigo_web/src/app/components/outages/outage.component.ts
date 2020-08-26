@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./outage.component.css']
 })
 export class OutageComponent implements OnInit {
-
+  toggleOutageCreUpdModal:boolean=false;
   constructor() { }
 
   ngOnInit(): void {

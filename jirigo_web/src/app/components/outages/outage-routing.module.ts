@@ -4,7 +4,7 @@ import { OutageComponent } from './outage.component';
 
 const routes: Routes = [
   {
-    'path':'outage',
+    'path':'view-outage',
     'component':OutageComponent
   }
 

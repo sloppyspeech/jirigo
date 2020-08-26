@@ -279,3 +279,27 @@ OverRide Bootstrap
   box-shadow:0px 20px 40px rgba(0,0,0,0.4); 
   border:none;
 }
+
+:root {
+  --color-bg: #FaFaFa;
+  --dark-theme-color-bg:red;
+}
+
+html {
+  background-color: var(--color-bg);
+}
+
+/* Dark Mode  */
+html {
+  transition: color 1000ms ,background-color 1000ms;
+}
+html[data-theme='dark'] {
+  background :#888888;
+  filter : invert(1) hue-rotate(180deg);
+}
+
+html[data-theme='dark'] img{
+  filter : invert(1) hue-rotate(180deg);
+}
+
+
