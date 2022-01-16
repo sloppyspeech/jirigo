@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { NgxSpinnerService  } from 'ngx-spinner';
-import { Router  } from '@angular/router';
-import { UsersService} from '../../services/users/users.service';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { Router } from '@angular/router';
+import { UsersService } from '../../services/users/users.service';
 @Component({
   selector: 'app-logout',
   templateUrl: './logout.component.html',
@@ -9,9 +9,9 @@ import { UsersService} from '../../services/users/users.service';
 })
 export class LogoutComponent implements OnInit {
 
-  constructor(private _serNgxSpinner:NgxSpinnerService,
-              private _router:Router,
-              private _serUsers:UsersService) { }
+  constructor(private _serNgxSpinner: NgxSpinnerService,
+    private _router: Router,
+    private _serUsers: UsersService) { }
 
 
   ngOnInit(): void {
@@ -22,7 +22,10 @@ export class LogoutComponent implements OnInit {
 
     setTimeout(() => {
       this._serNgxSpinner.hide();
-      this._router.navigate(['login']);
+      localStorage.clear();
+      this._router.navigate(['login']).then(() => {
+        window.location.reload();
+      });;
     }, 1000);
   }
 

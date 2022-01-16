@@ -264,7 +264,7 @@ class JirigoUsers(object):
                       FROM tusers tu
                      LEFT OUTER JOIN tuser_projects tup
                         ON tu.user_id = tup.user_id 
-                     WHERE tu.email=%s
+                     WHERE lower(tu.email)=lower(%s)
                        AND tu.password=%s
                        AND COALESCE (tup.default_project,'Y') ='Y'
                     )

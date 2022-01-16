@@ -1,102 +1,187 @@
 <div class="row mt-2">
-    <div class="col-lg-12 welcomepage__projname">
-        <h4>{{currentProjectName}}</h4>
-    </div>
+  <div class="col-lg-12 welcomepage__projname">
+    <h4>{{ currentProjectName }}</h4>
+  </div>
 </div>
 
 <div class="row mt-2">
-    <div class="col-lg-6">
-      <div class="card">
-        <div class="card-header  py-1">
-            <h5 class="card-title mt-2">Recent activities on the project</h5>
-        </div>
-        <div class="card-body">
-          <div class="row" *ngFor="let activity of recentProjectActivities">
-              <div class="col-lg-12 text-muted ">
-                  <div class="row ">
-                      <div class="col-lg-2 pr-1 mt-1">
-                          <div  class="jhp-activity-date" *ngIf="activity.c_or_m=='C'">{{activity.created_date | date : 'dd MMM HH:mm'}}</div>
-                          <div  class="jhp-activity-date" *ngIf="activity.c_or_m=='M'">{{activity.modified_date | date : 'dd MMM HH:mm'}}</div>
-                      </div>
-                      <div class="col-lg-9">
-                        <ng-container *ngIf="activity.item_type == 'Task'">
-                          <a [routerLink]="['/tasks/view-edit-tasks']" [queryParams]="{'task_no':activity.item_no}" class="a-item">
-                            <fa-icon [icon]="faTasks" class="jhp-icon-task" ></fa-icon>
-                            <span style="margin-right:0.563rem;">{{activity.item_type}}</span>
-                            <span class="jhp-item-details" style="margin-right:0.563rem;">{{activity.item_no}}:</span>
-                            <span class="jhp-item-summary ">{{activity.summary}}</span>
-                          </a>
-                        </ng-container>
-                        <ng-container *ngIf="activity.item_type == 'Ticket'">
-                          <a [routerLink]="['/tickets/view-edit-tickets']" [queryParams]="{'ticket_no':activity.item_no}" class="a-item">
-                            <fa-icon [icon]="faTicketAlt" class="jhp-icon-ticket" ></fa-icon>
-                            <span style="margin-right:0.563rem;">{{activity.item_type}}</span>
-                            <span class="jhp-item-details" style="margin-right:0.563rem;">{{activity.item_no}}:</span>
-                            <span class="jhp-item-summary ">{{activity.summary}}</span>
-                          </a>
-                        </ng-container>
-                      </div>
-                  </div>
-                  <div class="row  mb-2">
-                    <div class="col-lg-9 offset-lg-2">
-                      <span class="jhp-item-changer-text" *ngIf="activity.c_or_m=='M'" >Updated by</span>
-                      <span class="jhp-item-changer-username" *ngIf="activity.c_or_m=='M'">{{activity.modified_by}}</span>
-                      <span class="jhp-item-changer-text" *ngIf="activity.c_or_m=='C'">Created by</span>
-                      <span class="jhp-item-changer-username" *ngIf="activity.c_or_m=='C'">{{activity.created_by}}</span>
-                    </div>
-                  </div>
-                  <hr>
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header py-1">
+        <h5 class="card-title mt-2">Recent activities on the project</h5>
+      </div>
+      <div class="card-body">
+        <div class="row" *ngFor="let activity of recentProjectActivities">
+          <div class="col-lg-12 text-muted">
+            <div class="row">
+              <div class="col-lg-2 pr-1 mt-1">
+                <div class="jhp-activity-date" *ngIf="activity.c_or_m == 'C'">
+                  {{ activity.created_date | date: "dd MMM yyyy HH:mm" }}
+                </div>
+                <div class="jhp-activity-date" *ngIf="activity.c_or_m == 'M'">
+                  {{ activity.modified_date | date: "dd MMM yyyy HH:mm" }}
+                </div>
+              </div>
+              <div class="col-lg-9">
+                <ng-container *ngIf="activity.item_type == 'Task'">
+                  <a
+                    [routerLink]="['/tasks/view-edit-tasks']"
+                    [queryParams]="{ task_no: activity.item_no }"
+                    class="a-item"
+                  >
+                    <fa-icon [icon]="faTasks" class="jhp-icon-task"></fa-icon>
+                    <span style="margin-right: 0.563rem">{{
+                      activity.item_type
+                    }}</span>
+                    <span
+                      class="jhp-item-details"
+                      style="margin-right: 0.563rem"
+                      >{{ activity.item_no }}:</span
+                    >
+                    <span class="jhp-item-summary">{{ activity.summary }}</span>
+                  </a>
+                </ng-container>
+                <ng-container *ngIf="activity.item_type == 'Ticket'">
+                  <a
+                    [routerLink]="['/tickets/view-edit-tickets']"
+                    [queryParams]="{ ticket_no: activity.item_no }"
+                    class="a-item"
+                  >
+                    <fa-icon
+                      [icon]="faTicketAlt"
+                      class="jhp-icon-ticket"
+                    ></fa-icon>
+                    <span style="margin-right: 0.563rem">{{
+                      activity.item_type
+                    }}</span>
+                    <span
+                      class="jhp-item-details"
+                      style="margin-right: 0.563rem"
+                      >{{ activity.item_no }}:</span
+                    >
+                    <span class="jhp-item-summary">{{ activity.summary }}</span>
+                  </a>
+                </ng-container>
               </div>
             </div>
-        </div>
-      </div>
-    </div>
-
-
-    <div class="col-lg-6">
-      <div class="card">
-        <div class="card-header  py-1">
-            <h5 class="card-title mt-2">Your recent activities</h5>
-        </div>
-        <div class="card-body">
-          <div class="row" *ngFor="let activity  of yourRecentActivities">
-            <div class="col-lg-12 text-muted ">
-                <div class="row">
-                  <div class="col-lg-2 pr-1 mt-1">
-                    <div  class="jhp-activity-date" *ngIf="activity.c_or_m=='C'">{{activity.created_date | date : 'dd MMM HH:mm'}}</div>
-                    <div  class="jhp-activity-date" *ngIf="activity.c_or_m=='M'">{{activity.modified_date | date : 'dd MMM HH:mm'}}</div>
-                  </div>
-                    <div class="col-lg-9">
-                      <ng-container *ngIf="activity.item_type == 'Task'">
-                        <a [routerLink]="['/tasks/view-edit-tasks']" [queryParams]="{'task_no':activity.item_no}" class="a-item">
-                          <fa-icon [icon]="faTasks" class="jhp-icon-task" ></fa-icon>
-                          <span style="margin-right:0.563rem;">{{activity.item_type}}</span>
-                          <span class="jhp-item-details" style="margin-right:0.563rem;">{{activity.item_no}}:</span>
-                          <span class="jhp-item-summary ">{{activity.summary}}</span>
-                        </a>
-                      </ng-container>
-                      <ng-container *ngIf="activity.item_type == 'Ticket'">
-                        <a [routerLink]="['/tickets/view-edit-tickets']" [queryParams]="{'ticket_no':activity.item_no}" class="a-item">
-                          <fa-icon [icon]="faTicketAlt" class="jhp-icon-ticket" ></fa-icon>
-                          <span style="margin-right:0.563rem;">{{activity.item_type}}</span>
-                          <span class="jhp-item-details" style="margin-right:0.563rem;">{{activity.item_no}}:</span>
-                          <span class="jhp-item-summary ">{{activity.summary}}</span>
-                        </a>
-                      </ng-container>
-                    </div>
-                </div>
-                <div class="row  mb-2">
-                  <div class="col-lg-9 offset-lg-2">
-                    <span class="jhp-item-changer-text" *ngIf="activity.c_or_m=='M'" >Updated by</span>
-                    <span class="jhp-item-changer-username" *ngIf="activity.c_or_m=='M'">{{activity.modified_by}}</span>
-                    <span class="jhp-item-changer-text" *ngIf="activity.c_or_m=='C'">Created by</span>
-                    <span class="jhp-item-changer-username" *ngIf="activity.c_or_m=='C'">{{activity.created_by}}</span>
-                  </div>
-                </div>
-                <hr>
+            <div class="row mb-2">
+              <div class="col-lg-9 offset-lg-2">
+                <span
+                  class="jhp-item-changer-text"
+                  *ngIf="activity.c_or_m == 'M'"
+                  >Updated by</span
+                >
+                <span
+                  class="jhp-item-changer-username"
+                  *ngIf="activity.c_or_m == 'M'"
+                  >{{ activity.modified_by }}</span
+                >
+                <span
+                  class="jhp-item-changer-text"
+                  *ngIf="activity.c_or_m == 'C'"
+                  >Created by</span
+                >
+                <span
+                  class="jhp-item-changer-username"
+                  *ngIf="activity.c_or_m == 'C'"
+                  >{{ activity.created_by }}</span
+                >
+              </div>
             </div>
-        </div>
+            <hr />
+          </div>
         </div>
       </div>
     </div>
   </div>
+
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-header py-1">
+        <h5 class="card-title mt-2">Your recent activities</h5>
+      </div>
+      <div class="card-body">
+        <div class="row" *ngFor="let activity of yourRecentActivities">
+          <div class="col-lg-12 text-muted">
+            <div class="row">
+              <div class="col-lg-2 pr-1 mt-1">
+                <div class="jhp-activity-date" *ngIf="activity.c_or_m == 'C'">
+                  {{ activity.created_date | date: "dd MMM yyyy HH:mm" }}
+                </div>
+                <div class="jhp-activity-date" *ngIf="activity.c_or_m == 'M'">
+                  {{ activity.modified_date | date: "dd MMM yyyy HH:mm" }}
+                </div>
+              </div>
+              <div class="col-lg-9">
+                <ng-container *ngIf="activity.item_type == 'Task'">
+                  <a
+                    [routerLink]="['/tasks/view-edit-tasks']"
+                    [queryParams]="{ task_no: activity.item_no }"
+                    class="a-item"
+                  >
+                    <fa-icon [icon]="faTasks" class="jhp-icon-task"></fa-icon>
+                    <span style="margin-right: 0.563rem">{{
+                      activity.item_type
+                    }}</span>
+                    <span
+                      class="jhp-item-details"
+                      style="margin-right: 0.563rem"
+                      >{{ activity.item_no }}:</span
+                    >
+                    <span class="jhp-item-summary">{{ activity.summary }}</span>
+                  </a>
+                </ng-container>
+                <ng-container *ngIf="activity.item_type == 'Ticket'">
+                  <a
+                    [routerLink]="['/tickets/view-edit-tickets']"
+                    [queryParams]="{ ticket_no: activity.item_no }"
+                    class="a-item"
+                  >
+                    <fa-icon
+                      [icon]="faTicketAlt"
+                      class="jhp-icon-ticket"
+                    ></fa-icon>
+                    <span style="margin-right: 0.563rem">{{
+                      activity.item_type
+                    }}</span>
+                    <span
+                      class="jhp-item-details"
+                      style="margin-right: 0.563rem"
+                      >{{ activity.item_no }}:</span
+                    >
+                    <span class="jhp-item-summary">{{ activity.summary }}</span>
+                  </a>
+                </ng-container>
+              </div>
+            </div>
+            <div class="row mb-2">
+              <div class="col-lg-9 offset-lg-2">
+                <span
+                  class="jhp-item-changer-text"
+                  *ngIf="activity.c_or_m == 'M'"
+                  >Updated by</span
+                >
+                <span
+                  class="jhp-item-changer-username"
+                  *ngIf="activity.c_or_m == 'M'"
+                  >{{ activity.modified_by }}</span
+                >
+                <span
+                  class="jhp-item-changer-text"
+                  *ngIf="activity.c_or_m == 'C'"
+                  >Created by</span
+                >
+                <span
+                  class="jhp-item-changer-username"
+                  *ngIf="activity.c_or_m == 'C'"
+                  >{{ activity.created_by }}</span
+                >
+              </div>
+            </div>
+            <hr />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
