@@ -16,7 +16,7 @@ Jinja2==2.11.1
 locust==1.0.2
 MarkupSafe==1.1.1
 msgpack==1.0.0
-numpy==1.18.2
+numpy==1.22.0
 pandas==1.0.3
 psutil==5.7.0
 psycopg2-binary==2.8.5
